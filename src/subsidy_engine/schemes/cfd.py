@@ -49,7 +49,8 @@ def parse_generation(records: list[dict]) -> pl.DataFrame:
             pl.col("Strike_Price_GBP_Per_MWh").cast(pl.Float64, strict=False)
               .alias("strike_price_gbp_mwh"),
         )
-        .with_columns(pl.col("technology").is_in(RENEWABLE_TECHNOLOGIES).alias("is_renewable"))
+        .drop_nulls("payment_gbp")
+        .with_columns(pl.col("technology").is_in(RENEWABLE_TECHNOLOGIES).fill_null(False).alias("is_renewable"))
         .sort("date", "cfd_id")
     )
 

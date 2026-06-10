@@ -1,5 +1,3 @@
-import json
-
 import httpx
 
 from subsidy_engine.ckan import fetch_all_records
@@ -26,3 +24,13 @@ def test_fetch_paginates_until_total():
 def test_fetch_single_short_page():
     client = make_client({0: [{"_id": 1}]}, total=1)
     assert len(fetch_all_records("res-id", client=client, page_size=100)) == 1
+
+
+def test_fetch_raises_on_truncated_result():
+    # server claims 5 records but stops serving after 1
+    client = make_client({0: [{"_id": 1}]}, total=5)
+    try:
+        fetch_all_records("res-id", client=client, page_size=1)
+        assert False, "expected RuntimeError"
+    except RuntimeError as e:
+        assert "1 of 5" in str(e)

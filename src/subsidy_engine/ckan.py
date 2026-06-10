@@ -27,8 +27,14 @@ def fetch_all_records(
             batch = result["records"]
             records.extend(batch)
             offset += len(batch)
-            if not batch or offset >= int(result["total"]):
+            total = int(result["total"])
+            if offset >= total:
                 return records
+            if not batch:
+                raise RuntimeError(
+                    f"datastore_search returned {len(records)} of {total} "
+                    f"records for {resource_id}"
+                )
     finally:
         if own_client:
             client.close()

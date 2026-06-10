@@ -104,3 +104,15 @@ def test_parse_tracking_drops_rows_without_actuals():
     df = cfd.parse_tracking(TRACKING_RECORDS)
     assert df.height == 1
     assert df.to_dicts()[0] == {"date": date(2024, 10, 1), "payment_gbp": 8880757.19}
+
+
+def test_null_technology_is_not_renewable():
+    record = dict(GENERATION_RECORDS[0], Technology=None)
+    df = cfd.parse_generation([record])
+    assert df.to_dicts()[0]["is_renewable"] is False
+
+
+def test_blank_payment_rows_dropped():
+    record = dict(GENERATION_RECORDS[0], CFD_Payments_GBP="")
+    df = cfd.parse_generation([record])
+    assert df.height == 0
