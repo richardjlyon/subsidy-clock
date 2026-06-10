@@ -80,3 +80,30 @@ def test_build_writes_all_files(tmp_path):
 
     meta = json.loads((tmp_path / "meta.json").read_text())
     assert meta["deflator"]["base_year"] == 2024
+
+
+def test_build_writes_electricity_bill(tmp_path):
+    bill = pl.DataFrame(
+        {"year": [2023, 2024],
+         "total_bill_gbp": [71.2e9, 60.0e9],
+         "total_bill_gbp_2024": [72.0e9, 60.0e9]},
+        schema={"year": pl.Int64, "total_bill_gbp": pl.Float64,
+                "total_bill_gbp_2024": pl.Float64})
+    sitedata.build(model(), CTX, {}, tmp_path,
+                   generated_at="2026-06-09T07:00:00+00:00",
+                   bill_annual=bill,
+                   bill_info={"source": "DUKES 1.3",
+                              "source_url": "https://gov.uk/dukes",
+                              "verified": True})
+    ts = json.loads((tmp_path / "timeseries.json").read_text())
+    assert ts["electricity_bill"]["annual"][0] == {
+        "year": 2023, "total_bill_gbp": 71.2e9, "total_bill_gbp_2024": 72.0e9}
+    meta = json.loads((tmp_path / "meta.json").read_text())
+    assert meta["bill"]["source_url"] == "https://gov.uk/dukes"
+
+
+def test_build_without_bill_omits_electricity_bill_block(tmp_path):
+    sitedata.build(model(), CTX, {}, tmp_path,
+                   generated_at="2026-06-09T07:00:00+00:00")
+    ts = json.loads((tmp_path / "timeseries.json").read_text())
+    assert "electricity_bill" not in ts

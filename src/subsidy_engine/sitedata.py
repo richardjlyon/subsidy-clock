@@ -41,7 +41,9 @@ def _money_block(p: dict, households: int, population: int, demand_mwh: float) -
 
 
 def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
-          *, generated_at: str, deflator_info: dict | None = None) -> None:
+          *, generated_at: str, deflator_info: dict | None = None,
+          bill_annual: pl.DataFrame | None = None,
+          bill_info: dict | None = None) -> None:
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     households = ctx["households"]["value"]
@@ -60,7 +62,7 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
             model["indirect"], households, population, demand_mwh)
     (out / "totals.json").write_text(json.dumps(totals, indent=1, allow_nan=False))
 
-    (out / "timeseries.json").write_text(json.dumps({
+    ts: dict = {
         "generated_at": generated_at,
         "perspectives": {
             name: {"annual": _annual_records(p["annual"])}
@@ -72,7 +74,14 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
             s.scheme_id: {"annual": _annual_records(s.annual)}
             for s in model["schemes"]
         },
-    }, indent=1, allow_nan=False))
+    }
+    if bill_annual is not None:
+        ts["electricity_bill"] = {"annual": bill_annual.select(
+            pl.col("year").cast(pl.Int64),
+            pl.col("total_bill_gbp").cast(pl.Float64),
+            pl.col("total_bill_gbp_2024").cast(pl.Float64),
+        ).to_dicts()}
+    (out / "timeseries.json").write_text(json.dumps(ts, indent=1, allow_nan=False))
 
     (out / "breakdown.json").write_text(json.dumps({
         "generated_at": generated_at,
@@ -100,4 +109,5 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
         "freshness": freshness,
         "context": ctx,
         "deflator": deflator_info,
+        "bill": bill_info,
     }, indent=1, allow_nan=False))
