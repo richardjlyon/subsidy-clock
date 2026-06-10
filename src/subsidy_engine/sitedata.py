@@ -39,7 +39,7 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
     (out / "totals.json").write_text(json.dumps({
         "generated_at": generated_at,
         "perspectives": perspectives,
-    }, indent=1))
+    }, indent=1, allow_nan=False))
 
     (out / "timeseries.json").write_text(json.dumps({
         "generated_at": generated_at,
@@ -51,7 +51,7 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
             s.scheme_id: {"annual": _annual_records(s.annual)}
             for s in model["schemes"]
         },
-    }, indent=1))
+    }, indent=1, allow_nan=False))
 
     (out / "breakdown.json").write_text(json.dumps({
         "generated_at": generated_at,
@@ -68,10 +68,10 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
             }
             for s in model["schemes"]
         ],
-    }, indent=1, default=str))
+    }, indent=1, default=str, allow_nan=False))
 
     (out / "meta.json").write_text(json.dumps({
         "generated_at": generated_at,
         "freshness": freshness,
         "context": ctx,
-    }, indent=1))
+    }, indent=1, allow_nan=False))

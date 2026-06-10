@@ -43,12 +43,15 @@ def annualise_daily(daily: pl.DataFrame, col: str = "cost_gbp") -> pl.DataFrame:
 
 def trailing_runrate(daily: pl.DataFrame, *, col: str = "cost_gbp",
                      window_days: int = 365) -> float:
+    """Annualised rate from the trailing window, scaled by the days the data
+    actually covers so short backfills are not understated."""
     if not daily.height:
         return 0.0
     end = daily["date"].max()
     start = end - timedelta(days=window_days - 1)
     window = daily.filter(pl.col("date") >= start)
-    return float(window[col].sum()) * (365.25 / window_days)
+    covered_days = (end - max(start, daily["date"].min())).days + 1
+    return float(window[col].sum()) * (365.25 / covered_days)
 
 
 def rate_per_second(runrate_gbp_per_year: float) -> float:
@@ -85,7 +88,7 @@ def annual_to_result(scheme_id: str, ref: ReferenceScheme) -> SchemeResult:
         runrate_gbp_per_year=float(
             annual.filter(pl.col("year") == latest_year)["cost_gbp"][0]
         ),
-        data_to=date(latest_year, 12, 31),
+        data_to=date(latest_year + 1, 3, 31),  # obligation/scheme year ends 31 March of the following year
         extras={"source": ref.source, "source_url": ref.source_url,
                 "verified": ref.verified},
     )
@@ -150,12 +153,17 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme]) -> dict:
     if con_daily is not None and con_daily.height:
         daily = (con_daily.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date"))
         bottom_up_annual = annualise_daily(daily)
-        # Only trust bottom-up for years fully covered by the backfill window
+        # Only trust bottom-up for years fully covered by the backfill window,
+        # but also keep partial years that are after the history's last year.
         first_full_year = int(daily["date"].min().year) + (
             0 if daily["date"].min().month == 1 and daily["date"].min().day == 1 else 1
         )
-        bottom_up_full = bottom_up_annual.filter(pl.col("year") >= first_full_year)
-        annual = merge_annual(history.annual, bottom_up_full)
+        last_history_year = int(history.annual["year"].max())
+        usable = bottom_up_annual.filter(
+            (pl.col("year") >= first_full_year)
+            | (pl.col("year") > last_history_year)
+        )
+        annual = merge_annual(history.annual, usable)
         runrate = trailing_runrate(daily)
         data_to = daily["date"].max()
         by_recipient = (con_daily.group_by("lead_party")
@@ -163,11 +171,15 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme]) -> dict:
                              pl.col("volume_mwh").sum())
                         .sort("cost_gbp", descending=True).head(25).to_dicts())
         curtailed_mwh = float(-con_daily["volume_mwh"].sum())
+        bottom_up_from = daily["date"].min().isoformat()
+        bottom_up_to = daily["date"].max().isoformat()
     else:
         annual = history.annual
         runrate = float(annual["cost_gbp"][-1])
         data_to = date(int(annual["year"].max()), 12, 31)
         by_recipient, curtailed_mwh = [], 0.0
+        bottom_up_from = None
+        bottom_up_to = None
     schemes.append(SchemeResult(
         scheme_id="constraints", label="Constraint payments (paid to switch off)",
         perspectives=PERSPECTIVES, cadence="daily",
@@ -176,7 +188,8 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme]) -> dict:
         runrate_gbp_per_year=runrate,
         data_to=data_to,
         extras={"by_recipient": by_recipient, "curtailed_mwh": curtailed_mwh,
-                "history_source_url": history.source_url},
+                "history_source_url": history.source_url,
+                "bottom_up_from": bottom_up_from, "bottom_up_to": bottom_up_to},
     ))
 
     # --- Capacity Market: bottom-up monthly
@@ -184,8 +197,10 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme]) -> dict:
     if cm is not None and cm.height:
         daily_like = cm.rename({"payment_gbp": "cost_gbp"})
         monthly = daily_like.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date")
-        # run-rate: last 12 complete months
-        last12 = monthly.tail(12)
+        # run-rate: the 12 calendar months ending at the latest published month
+        max_d = monthly["date"].max()
+        cutoff = date(max_d.year - 1, max_d.month, 1)
+        last12 = monthly.filter(pl.col("date") > cutoff)
         schemes.append(SchemeResult(
             scheme_id="capacity_market", label="Capacity Market",
             perspectives=["all_levy"], cadence="monthly",
