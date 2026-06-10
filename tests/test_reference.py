@@ -58,6 +58,18 @@ def test_load_ref_crosscheck():
     assert all(v > 0 for v in rc["components"].values())
 
 
+def test_load_electricity_bill():
+    df = reference.load_electricity_bill(REF_DIR / "electricity_bill.yaml")
+    assert df.columns == ["year", "total_bill_gbp"]
+    years = df["year"].to_list()
+    assert years[0] == 2002 and years == sorted(years)
+    b2002 = df.filter(df["year"] == 2002)["total_bill_gbp"][0]
+    b2023 = df.filter(df["year"] == 2023)["total_bill_gbp"][0]
+    assert 8e9 < b2002 < 20e9       # ~£14bn
+    assert 50e9 < b2023 < 90e9      # ~£71bn (2022-23 price spike)
+    assert b2023 > b2002
+
+
 def test_load_baselines():
     b = reference.load_baselines(REF_DIR / "baselines.yaml")
     for key in ("bsuos", "tnuos"):
