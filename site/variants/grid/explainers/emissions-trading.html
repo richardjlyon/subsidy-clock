@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en-gb">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Emissions trading — The Subsidy Counter</title>
+  <meta name="description" content="What the UK Emissions Trading Scheme is, why it exists, and what the power-sector share has cost.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../grid.css">
+</head>
+<body data-scheme-id="ets" data-scheme-slug="emissions-trading">
+<div class="xwrap">
+  <p class="crumb"><a href="../index.html">← All subsidies</a> · The Subsidy Counter</p>
+  <div class="xhead">
+    <span class="chip" style="background:var(--c-ets)"></span>
+    <h1>Emissions trading</h1>
+    <span class="badge est">indirect · estimated</span>
+  </div>
+
+  <div class="xstrip">
+    <div class="m"><div class="k">Total since 2009</div><div class="v num" id="x-total">&nbsp;</div></div>
+    <div class="m"><div class="k">Right now</div><div class="v num" id="x-rate">&nbsp;</div></div>
+    <div class="m"><div class="k">Your household</div><div class="v num" id="x-household">&nbsp;</div></div>
+  </div>
+
+  <div class="xbody">
+    <h2>What is it?</h2>
+    <p>Under the UK Emissions Trading Scheme, electricity generators must buy an allowance for every
+    tonne of CO₂ they emit. Generators price those allowances into the electricity they sell, so
+    the cost flows into the wholesale price of power — and into your bill.</p>
+
+    <h2>Why does it exist?</h2>
+    <p>Carbon pricing is the textbook tool for cutting emissions: make emitting expensive and cleaner
+    options win on price. The revenue goes to the Treasury.</p>
+
+    <h2>What has it cost?</h2>
+    <div class="spark" id="x-spark" style="--spark-c: var(--c-ets)"></div>
+    <p><span data-live="cumulative"></span> since 2009, currently growing at about
+    <span data-live="runrate"></span> a year — <span data-live="rate"></span> every second.
+    Spread across Britain's households, that is about <span data-live="household"></span>
+    per household per year, reaching you through the wholesale price of power. Only the
+    power-sector share of auction revenue is counted here.</p>
+
+    <h2>Where it hides on your bill</h2>
+    <div class="bill">
+      <div class="ln"><span>Unit rate (per kWh)</span><span class="num">26p</span></div>
+      <div class="ln hi"><span>&nbsp;&nbsp;↳ inside it: the wholesale price of electricity</span><span class="num">—</span></div>
+      <div class="ln"><span>Standing charge (per day)</span><span class="num">57p</span></div>
+    </div>
+    <p>Illustrative bill, not your tariff. There is no ETS line on a bill; it is embedded in the
+    price generators charge for power.</p>
+
+    <h2>How sure are we?</h2>
+    <p>Auction revenue is measured from published UK ETS auction results — the total is solid. What
+    is estimated is the power sector's share. The rule scales auction revenue by the power sector's
+    share of verified covered emissions. Power generation receives no free allocation, so it buys a
+    larger share of auctioned allowances than its share of total covered emissions — the figures
+    here are therefore a lower bound on what the power sector actually pays. Attribution confidence
+    is <strong>medium</strong>.</p>
+
+    <h2>Sources</h2>
+    <p class="src">UK ETS auction results (power-sector share) — see the
+    <a href="../../../methodology.html">methodology</a>.
+    Unit rate and standing charge from
+    <a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026">Ofgem Q3 2026 price cap announcement</a>.</p>
+  </div>
+
+  <footer class="vfoot">
+    <span>Anonymous view counting by GoatCounter — no cookies, no personal data</span>
+    <span><a href="../index.html">← back to the counter</a></span>
+  </footer>
+</div>
+<script src="../common.js"></script>
+<script src="../explainer.js"></script>
+</body>
+</html>
