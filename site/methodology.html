@@ -74,6 +74,9 @@
   <h2>Run-rate semantics</h2>
   <p>The per-second rates that drive the live counter are derived from each scheme’s recent run-rate: the trailing 365 days for daily schemes (CfD and constraints), the last 12 months for the Capacity Market, and the latest completed scheme year for RO and FIT. Values shown between official data updates are therefore <strong>estimates</strong>, and are replaced by official figures as they are published.</p>
 
+  <h2>Data freshness</h2>
+  <p>Each scheme on the dashboard carries a badge showing its update cadence and the latest date its data covers. Every source publishes in arrears — LCCC releases daily CfD data weekly, and Capacity Market monthly data follows the settlement calendar — so a publication lag is normal and is not flagged. A scheme is marked <strong>stale</strong> only when its latest data is older than that scheme’s normal publication lag: 21 days for CfD, 3 days for constraints, 75 days after the end of the latest data month for the Capacity Market, and 2 years for RO and FIT annual reports.</p>
+
   <h2>Restatements</h2>
   <p>Source datasets are revised by their publishers. When a source revises history, the change is logged as a restatement; figures are never silently overwritten.</p>
 
@@ -100,7 +103,7 @@
     return sign + '£' + Math.abs(Math.round(v)).toLocaleString('en-GB');
   }
   function fmtDate(iso) {
-    return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
   }
 
   var byId = {};

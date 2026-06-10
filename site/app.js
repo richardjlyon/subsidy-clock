@@ -45,7 +45,7 @@
     return Math.round(v).toLocaleString('en-GB');
   }
   function fmtDate(iso) {
-    return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
   }
   function esc(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -192,9 +192,26 @@
   }
 
   // ---------- scheme breakdown bars ----------
-  var STALE_LIMIT_MS = { daily: 2 * 864e5, monthly: 2 * 30.44 * 864e5, annual: 2 * 365.25 * 864e5 };
+  // Per-scheme staleness thresholds (days): each source publishes in arrears,
+  // so the threshold is set beyond that scheme's normal publication lag.
+  var STALE_DAYS = {
+    cfd: 21, cfd_renewable: 21, cfd_low_carbon: 21,
+    constraints: 3, capacity_market: 75, ro: 730, fit: 730
+  };
+  var STALE_FALLBACK_MS = { daily: 2 * 864e5, monthly: 2 * 30.44 * 864e5, annual: 2 * 365.25 * 864e5 };
+  function dataCoverageEnd(s) {
+    // Monthly series are dated by the first day of the month they cover.
+    if (s.cadence === 'monthly') {
+      var d = new Date(s.data_to + 'T00:00:00Z');
+      return Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1);
+    }
+    return Date.parse(s.data_to);
+  }
   function isStale(s) {
-    return generatedAt - Date.parse(s.data_to) > (STALE_LIMIT_MS[s.cadence] || Infinity);
+    var limitMs = STALE_DAYS[s.id]
+      ? STALE_DAYS[s.id] * 864e5
+      : (STALE_FALLBACK_MS[s.cadence] || Infinity);
+    return generatedAt - dataCoverageEnd(s) > limitMs;
   }
 
   function renderSchemeBars() {
@@ -212,7 +229,7 @@
         '<div class="bar-head">' +
           '<span class="bar-name">' + esc(s.label) + '</span>' +
           '<span class="badge" title="Update cadence and latest data date">' + esc(s.cadence) + ' · to ' + fmtDate(s.data_to) + '</span>' +
-          (stale ? '<span class="badge badge-stale" title="Latest data is older than twice this scheme’s update cadence">stale</span>' : '') +
+          (stale ? '<span class="badge badge-stale" title="Latest data is older than this scheme’s normal publication lag">stale</span>' : '') +
           '<span class="bar-amount money num">' + fmtCompact(s.cumulative_gbp) + '</span>' +
         '</div>' +
         '<div class="bar-track"><div class="bar-fill" style="width:' + w.toFixed(2) + '%"></div></div>' +
