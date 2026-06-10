@@ -55,6 +55,12 @@ def cmd_build_site(args: argparse.Namespace) -> int:
     refs.update(reference.load_annual_costs(args.root / "reference" / "indirect_annual.yaml"))
     ctx = reference.load_context(args.root / "reference" / "context.yaml")
     deflators = reference.load_deflators(args.root / "reference" / "deflators.yaml")
+    bill_raw = reference.load_electricity_bill(args.root / "reference" / "electricity_bill.yaml")
+    bill = (money.add_real(bill_raw.rename({"total_bill_gbp": "cost_gbp"}), deflators)
+            .rename({"cost_gbp": "total_bill_gbp", "cost_gbp_2024": "total_bill_gbp_2024"}))
+    bill_yaml = yaml.safe_load((args.root / "reference" / "electricity_bill.yaml").read_text())
+    bill_info = {"source": bill_yaml["source"], "source_url": bill_yaml["source_url"],
+                 "verified": bill_yaml.get("verified", False)}
     baselines = reference.load_baselines(args.root / "reference" / "baselines.yaml")
     model = money.build(store, refs, deflators=deflators, baselines=baselines)
     freshness = {}
@@ -73,7 +79,8 @@ def cmd_build_site(args: argparse.Namespace) -> int:
                      "verified": deflator_yaml.get("verified", False)}
     sitedata.build(model, ctx, freshness, out_dir,
                    generated_at=datetime.now(timezone.utc).isoformat(),
-                   deflator_info=deflator_info)
+                   deflator_info=deflator_info,
+                   bill_annual=bill, bill_info=bill_info)
 
     gen = store.latest("cfd", "generation")
     trk = store.latest("cfd", "tracking")
