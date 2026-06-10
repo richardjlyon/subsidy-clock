@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Subsidy Counter — what UK energy subsidies cost</title>
+<meta name="description" content="A live, sourced count of the total cost of subsidies paid to renewable and low-carbon electricity generators in the UK, in pounds sterling.">
+<meta property="og:title" content="The Subsidy Counter">
+<meta property="og:description" content="What UK energy subsidies cost — a live counter of payments to renewable and low-carbon electricity generators, traced to official sources (LCCC, Ofgem, Elexon, REF).">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Subsidy Counter">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container masthead-inner">
+    <p class="brand">The Subsidy Counter</p>
+    <nav><a href="methodology.html">Methodology &amp; sources</a></nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- ====================== HERO ====================== -->
+  <section class="hero" aria-label="Headline counter">
+
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Perspective" id="perspective-switch">
+        <button data-perspective="renewables" aria-pressed="true">Renewables only</button>
+        <button data-perspective="low_carbon" aria-pressed="false">All low-carbon <span class="seg-note">incl. nuclear &amp; biomass</span></button>
+        <button data-perspective="all_levy" aria-pressed="false">All levy <span class="seg-note">incl. Capacity Market</span></button>
+      </div>
+      <div class="tabs" role="group" aria-label="Framing" id="framing-switch">
+        <button data-framing="all_time" aria-pressed="true">All-time total</button>
+        <button data-framing="runrate" aria-pressed="false">This year’s run-rate</button>
+        <button data-framing="household" aria-pressed="false">Per household / year</button>
+        <button data-framing="per_mwh" aria-pressed="false">Per MWh delivered</button>
+      </div>
+    </div>
+
+    <p class="hero-figure">
+      <span class="hero-value money num" id="hero-value">&nbsp;</span><sup class="hero-fn" title="Estimated between official updates: the counter advances at each scheme’s most recent published run-rate.">†</sup>
+    </p>
+    <p class="hero-unit num" id="hero-unit"></p>
+    <p class="hero-sub" id="hero-sub"></p>
+    <p class="hero-footnote">† estimated between official updates</p>
+
+    <p class="since-opened">Since you opened this page: <span class="money num" id="since-opened">£0.00</span></p>
+
+    <!-- ============ Timeframe strip (run-rate estimates) ============ -->
+    <div class="strip" id="strip" aria-label="Run-rate estimates over different timeframes">
+      <div class="strip-cell"><span class="strip-label">Now</span><span class="strip-value money num" id="strip-now"></span><span class="strip-sub">per second</span></div>
+      <div class="strip-cell"><span class="strip-label">Today so far</span><span class="strip-value money num" id="strip-today"></span><span class="strip-sub">since midnight</span></div>
+      <div class="strip-cell"><span class="strip-label">This week</span><span class="strip-value money num" id="strip-week"></span><span class="strip-sub">since Monday</span></div>
+      <div class="strip-cell"><span class="strip-label">This year</span><span class="strip-value money num" id="strip-year"></span><span class="strip-sub">since 1 January</span></div>
+      <div class="strip-cell"><span class="strip-label">All-time</span><span class="strip-value money num" id="strip-alltime"></span><span class="strip-sub" id="strip-alltime-since"></span></div>
+    </div>
+    <p class="strip-caption">Timeframe figures are run-rate estimates: the current per-second rate applied to elapsed time.</p>
+
+    <!-- ============ Equivalences ============ -->
+    <ul class="equivalences" id="equivalences"></ul>
+  </section>
+
+  <!-- ====================== PAID TO SWITCH OFF ====================== -->
+  <section class="card" id="switch-off" aria-labelledby="switch-off-h">
+    <h2 id="switch-off-h">Paid to switch off</h2>
+    <p class="card-intro">Constraint payments to wind farms instructed to reduce output when the grid cannot carry their electricity.</p>
+    <div class="stat-row">
+      <div class="stat"><span class="stat-value money num" id="con-cumulative"></span><span class="stat-label">cumulative since 2010</span></div>
+      <div class="stat"><span class="stat-value money num" id="con-runrate"></span><span class="stat-label">per year at current run-rate</span></div>
+      <div class="stat"><span class="stat-value num" id="con-curtailed"></span><span class="stat-label" id="con-curtailed-label">MWh paid for and not generated</span></div>
+    </div>
+    <h3>Largest recipients <span class="h-note" id="con-window"></span></h3>
+    <table class="data-table" id="con-table">
+      <thead><tr><th>Lead party</th><th class="num-col">Paid</th><th class="num-col">MWh curtailed</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <!-- ====================== SCHEMES + TECHNOLOGY ====================== -->
+  <div class="card-pair">
+    <section class="card" aria-labelledby="schemes-h">
+      <h2 id="schemes-h">By scheme</h2>
+      <p class="card-intro">Cumulative cost of each support scheme, <span id="schemes-perspective-note"></span>.</p>
+      <div class="bars" id="scheme-bars"></div>
+    </section>
+
+    <section class="card" aria-labelledby="tech-h">
+      <h2 id="tech-h">By technology <span class="h-note">CfD schemes only</span></h2>
+      <p class="card-intro">Net Contracts for Difference payments by technology. Negative values are net paybacks: market prices exceeded the strike price.</p>
+      <div class="bars" id="tech-bars"></div>
+    </section>
+  </div>
+
+  <!-- ====================== RECIPIENTS ====================== -->
+  <section class="card" aria-labelledby="recipients-h">
+    <h2 id="recipients-h">Largest recipients</h2>
+    <p class="card-intro">Ranked by cumulative payment, merging CfD per-unit payments and constraint payments by lead party.</p>
+    <table class="data-table" id="recipients-table">
+      <thead><tr><th class="rank-col">#</th><th>Recipient</th><th>Technology</th><th>Scheme</th><th class="num-col">Cumulative</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <p class="table-note">Constraint-payment recipients reflect the bottom-up settlement window shown in the “Paid to switch off” section; earlier constraint history is held at annual totals only.</p>
+  </section>
+
+  <!-- ====================== TREND ====================== -->
+  <section class="card" aria-labelledby="trend-h">
+    <h2 id="trend-h">Cost per year, by scheme</h2>
+    <p class="card-intro" id="trend-note"></p>
+    <div class="chart" id="trend-chart"></div>
+    <div class="legend" id="trend-legend"></div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p class="num" id="generated-at"></p>
+    <div class="freshness" id="freshness"></div>
+    <div class="footer-actions">
+      <button id="copy-figure" type="button">Copy figure</button>
+      <a href="methodology.html">Methodology &amp; sources</a>
+    </div>
+    <p class="footer-small">Every figure on this page traces to an official source: LCCC, Ofgem, Elexon and REF. Caveats and formulas are on the <a href="methodology.html">methodology page</a>.</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

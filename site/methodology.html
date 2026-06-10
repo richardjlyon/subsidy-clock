@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Methodology &amp; sources — The Subsidy Counter</title>
+<meta name="description" content="How every figure on The Subsidy Counter is computed: sources, formulas, cadences, caveats and reconciliation against official totals.">
+<meta property="og:title" content="The Subsidy Counter — methodology">
+<meta property="og:description" content="How every figure is computed: sources, formulas, cadences, caveats and reconciliation against official totals.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Subsidy Counter">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container masthead-inner">
+    <p class="brand"><a href="index.html" style="text-decoration:none;color:inherit">The Subsidy Counter</a></p>
+    <nav><a href="index.html">← Back to the counter</a></nav>
+  </div>
+</header>
+
+<main class="container prose">
+  <h1>Methodology &amp; sources</h1>
+  <p class="lede">Every figure on the counter traces to an official source. This page sets out, scheme by scheme, where the data comes from, how the numbers are computed, how often they update, and what the known limitations are.</p>
+
+  <h2>Contracts for Difference (CfD)</h2>
+  <p class="scheme-meta">Source: <a href="https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions">LCCC, Actual CfD Generation and Avoided GHG Emissions</a> · cadence: daily · shown as two entries: CfD&nbsp;– renewables, and CfD&nbsp;– nuclear &amp; biomass</p>
+  <p><strong>Formula in words:</strong> the Low Carbon Contracts Company publishes the daily payment made under each individual CfD contract. We sum these per-contract daily payments. When the market reference price exceeds a contract’s strike price the daily payment is negative — the generator pays back — and these negative payments are <em>netted</em> against positive ones. Both figures are computed: the <strong>gross</strong> total (positive payments only) and the <strong>net</strong> total (after paybacks). The counter and all headline figures use the net total, which is the lower of the two.</p>
+  <p class="caveat">Technology and per-unit (recipient) splits shown on the dashboard cover the CfD schemes only, because the per-generator detail published by LCCC is at this level; the other schemes are held as totals in version 1.</p>
+
+  <h2>Constraint payments (paid to switch off)</h2>
+  <p class="scheme-meta">Source: <a href="https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid">Elexon BMRS, balancing settlement bid stacks</a> · cadence: daily · history: <a id="ref-history-link" href="https://www.ref.org.uk/constraints/index.php?tab=yr">REF published annual totals</a></p>
+  <p><strong>Formula in words:</strong> for each settlement period, the accepted balancing-mechanism bids of wind units are summed: the cost is the bid volume multiplied by the bid price, and the curtailed volume is the energy the unit was instructed not to generate.</p>
+  <blockquote>All accepted bids from wind BM units are counted, regardless of soFlag, consistent with REF’s published curtailment methodology. The soFlag governs imbalance-price tagging, not whether the unit is paid.</blockquote>
+  <p>History before the bottom-up settlement window comes from the Renewable Energy Foundation’s <a href="https://www.ref.org.uk/constraints/index.php?tab=yr">published annual constraint totals</a>. Bilateral trades agreed outside the balancing mechanism are <em>excluded</em>, so the constraint figures are a <strong>lower bound</strong> on what is actually paid for curtailment.</p>
+
+  <h2>Renewables Obligation (RO)</h2>
+  <p class="scheme-meta" id="ro-meta"></p>
+  <p><strong>Formula in words:</strong> annual official scheme values from Ofgem’s Renewables Obligation annual reports — the number of ROCs presented multiplied by the worth of a ROC, or the headline scheme value where Ofgem states it directly. These are official annual totals pending per-generator reconstruction.</p>
+  <p class="src-quote" id="ro-source"></p>
+
+  <h2>Feed-in Tariffs (FIT)</h2>
+  <p class="scheme-meta" id="fit-meta"></p>
+  <p><strong>Formula in words:</strong> annual official scheme values from Ofgem’s Feed-in Tariffs annual reports. These are official annual totals pending per-generator reconstruction.</p>
+  <p class="src-quote" id="fit-source"></p>
+
+  <h2>Capacity Market</h2>
+  <p class="scheme-meta">Source: <a href="https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction">LCCC, capacity obligation by auction</a> · cadence: monthly</p>
+  <p>Capacity Market payments are not payments to renewable or low-carbon generators specifically, so they are shown <strong>only in the “All levy” perspective</strong>. They are excluded from the “Renewables only” and “All low-carbon” totals.</p>
+
+  <h2>Reconciliation against official totals</h2>
+  <p>The bottom-up CfD series (per-contract daily payments) is checked against the LCCC’s official In-period Tracking daily totals, summed over settlement dates present in both series. The most recent days are excluded to allow for the settlement lag.</p>
+  <p id="recon-summary"></p>
+  <table class="data-table" id="recon-table">
+    <thead><tr><th>Month</th><th class="num-col">Days compared</th><th class="num-col">Bottom-up</th><th class="num-col">Official</th><th class="num-col">Divergence</th><th class="num-col">%</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <p class="caveat" id="recon-notes"></p>
+
+  <h2>What is <em>not</em> included</h2>
+  <p>The totals deliberately exclude several support mechanisms, so they are <strong>conservative</strong>:</p>
+  <ul>
+    <li>Smart Export Guarantee payments</li>
+    <li>REGO certificate costs</li>
+    <li>Heat schemes: the Renewable Heat Incentive (RHI) and Boiler Upgrade Scheme (BUS)</li>
+    <li>Transport: the Renewable Transport Fuel Obligation (RTFO)</li>
+    <li>Energy-efficiency obligations (ECO)</li>
+  </ul>
+
+  <h2>Run-rate semantics</h2>
+  <p>The per-second rates that drive the live counter are derived from each scheme’s recent run-rate: the trailing 365 days for daily schemes (CfD and constraints), the last 12 months for the Capacity Market, and the latest completed scheme year for RO and FIT. Values shown between official data updates are therefore <strong>estimates</strong>, and are replaced by official figures as they are published.</p>
+
+  <h2>Restatements</h2>
+  <p>Source datasets are revised by their publishers. When a source revises history, the change is logged as a restatement; figures are never silently overwritten.</p>
+
+  <p class="caveat">Figures computed <span id="generated-at" class="num"></span>. Questions about the data should start with the source links above.</p>
+</main>
+
+<script>
+'use strict';
+(async function () {
+  var bd, recon;
+  try {
+    var res = await Promise.all([
+      fetch('data/breakdown.json'), fetch('data/reconciliation.json')
+    ]);
+    bd = await res[0].json();
+    recon = await res[1].json();
+  } catch (e) { return; }
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function gbp(v) {
+    var sign = v < 0 ? '−' : '';
+    return sign + '£' + Math.abs(Math.round(v)).toLocaleString('en-GB');
+  }
+  function fmtDate(iso) {
+    return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  var byId = {};
+  bd.schemes.forEach(function (s) { byId[s.id] = s; });
+
+  ['ro', 'fit'].forEach(function (id) {
+    var s = byId[id];
+    if (!s) return;
+    document.getElementById(id + '-meta').innerHTML =
+      'Source: <a href="' + esc(s.source_url) + '">Ofgem annual reports</a> · cadence: ' + esc(s.cadence) +
+      ' · data to ' + fmtDate(s.data_to) +
+      (s.verified ? ' · <span class="tick-ok">✓ verified against the published reports</span>' : ' · not yet verified');
+    document.getElementById(id + '-source').textContent = 'Source detail: ' + s.source;
+  });
+
+  // reconciliation
+  var o = recon.overall;
+  document.getElementById('recon-summary').innerHTML =
+    'Across <strong class="num">' + recon.matched_days + '</strong> matched days (' +
+    recon.excluded_recent_days + ' recent days excluded for the ' + recon.settlement_lag_days +
+    '-day settlement lag), the bottom-up total is <strong class="num">' + gbp(o.bottom_up_gbp) +
+    '</strong> against an official <strong class="num">' + gbp(o.official_gbp) +
+    '</strong> — an overall divergence of <strong class="num">' + o.divergence_pct.toFixed(2) +
+    '%</strong>. The tolerance is ±' + recon.tolerance_pct + '%, and the overall result is <strong>' +
+    (recon.within_tolerance ? 'within tolerance' : 'outside tolerance') + '</strong>.';
+
+  document.querySelector('#recon-table tbody').innerHTML = recon.months.map(function (m) {
+    var out = Math.abs(m.divergence_pct) > recon.tolerance_pct;
+    return '<tr' + (out ? ' class="out-of-tolerance"' : '') + '>' +
+      '<td class="num">' + esc(m.month) + '</td>' +
+      '<td class="num-col">' + m.days_compared + '</td>' +
+      '<td class="num-col">' + gbp(m.bottom_up_gbp) + '</td>' +
+      '<td class="num-col">' + gbp(m.official_gbp) + '</td>' +
+      '<td class="num-col">' + gbp(m.abs_divergence_gbp) + '</td>' +
+      '<td class="num-col">' + m.divergence_pct.toFixed(2) + '%</td>' +
+    '</tr>';
+  }).join('');
+
+  document.getElementById('recon-notes').textContent =
+    'Months where the monthly divergence exceeds the ±' + recon.tolerance_pct +
+    '% tolerance are shown in red; the overall comparison is what is held to tolerance. ' +
+    recon.bottom_up_only_months.length + ' earlier months (' +
+    recon.bottom_up_only_months[0] + ' to ' +
+    recon.bottom_up_only_months[recon.bottom_up_only_months.length - 1] +
+    ') exist only in the bottom-up series, before the official daily comparator begins; ' +
+    (recon.official_only_months.length === 0
+      ? 'no months exist only in the official series.'
+      : recon.official_only_months.length + ' months exist only in the official series.');
+
+  document.getElementById('generated-at').textContent =
+    new Date(bd.generated_at).toLocaleString('en-GB', {
+      day: 'numeric', month: 'long', year: 'numeric',
+      hour: '2-digit', minute: '2-digit', timeZone: 'UTC', timeZoneName: 'short'
+    });
+})();
+</script>
+</body>
+</html>
