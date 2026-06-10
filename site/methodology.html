@@ -93,7 +93,11 @@
     ]);
     bd = await res[0].json();
     recon = await res[1].json();
-  } catch (e) { return; }
+  } catch (e) {
+    document.getElementById('recon-summary').textContent =
+      'Live reconciliation data could not be loaded — figures remain available in the repository.';
+    return;
+  }
 
   function esc(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

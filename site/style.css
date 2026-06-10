@@ -28,6 +28,14 @@
 
 * { box-sizing: border-box; }
 
+:focus-visible { outline: 2px solid var(--money); outline-offset: 2px; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
 html { -webkit-text-size-adjust: 100%; }
 
 body {
@@ -102,7 +110,7 @@ a:hover { color: var(--money); }
 .hero-fn { font-size: 0.4em; color: var(--faint); margin-left: 0.25em; cursor: help; }
 .hero-unit { margin: 6px 0 0; font-size: 1.05rem; color: var(--money-deep); min-height: 1.2em; }
 .hero-sub { margin: 14px auto 0; max-width: 34em; font-size: 1.02rem; color: var(--muted); }
-.hero-footnote { margin: 10px 0 0; font-size: 0.74rem; color: var(--faint); }
+.hero-footnote { margin: 10px 0 0; font-size: 0.74rem; color: var(--muted); }
 
 .since-opened {
   margin: 30px auto 0; display: inline-block;
@@ -124,10 +132,10 @@ a:hover { color: var(--money); }
   padding: 16px 12px; border-left: 1px solid var(--line-soft);
 }
 .strip-cell:first-child { border-left: 0; }
-.strip-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint); }
+.strip-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
 .strip-value { font-weight: 600; font-size: 1.06rem; white-space: nowrap; }
-.strip-sub { font-size: 0.72rem; color: var(--faint); }
-.strip-caption { margin: 8px 2px 0; font-size: 0.74rem; color: var(--faint); text-align: left; }
+.strip-sub { font-size: 0.72rem; color: var(--muted); }
+.strip-caption { margin: 8px 2px 0; font-size: 0.74rem; color: var(--muted); text-align: left; }
 
 /* ---------- equivalences ---------- */
 .equivalences {
@@ -172,7 +180,7 @@ main > .card-pair { margin: 26px 0; }
 .bar-amount { font-weight: 600; margin-left: auto; white-space: nowrap; }
 .badge {
   font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.07em;
-  color: var(--faint); border: 1px solid var(--line); border-radius: 4px;
+  color: var(--muted); border: 1px solid var(--line); border-radius: 4px;
   padding: 1px 6px; white-space: nowrap;
 }
 .badge-stale { color: var(--stale); border-color: var(--stale); background: var(--stale-bg); font-weight: 600; }
@@ -184,7 +192,7 @@ main > .card-pair { margin: 26px 0; }
 .data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
 .data-table th {
   text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--faint); font-weight: 600; padding: 6px 10px 6px 0;
+  color: var(--muted); font-weight: 600; padding: 6px 10px 6px 0;
   border-bottom: 1px solid var(--line);
 }
 .data-table td { padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line-soft); vertical-align: baseline; }
@@ -194,11 +202,11 @@ main > .card-pair { margin: 26px 0; }
 .data-table .rank-col { width: 2em; color: var(--faint); }
 .data-table .money { font-weight: 600; }
 .data-table .cell-dim { color: var(--muted); }
-.table-note { margin: 12px 0 0; font-size: 0.76rem; color: var(--faint); max-width: 50em; }
+.table-note { margin: 12px 0 0; font-size: 0.76rem; color: var(--muted); max-width: 50em; }
 
 /* ---------- chart ---------- */
 .chart svg { width: 100%; height: auto; display: block; }
-.chart .axis-label { font: 11px var(--sans); fill: var(--faint); }
+.chart .axis-label { font: 11px var(--sans); fill: var(--muted); }
 .chart .gridline { stroke: var(--line-soft); stroke-width: 1; }
 .chart .zeroline { stroke: var(--line); stroke-width: 1; }
 .chart rect.partial { opacity: 0.5; }
@@ -216,7 +224,7 @@ main > .card-pair { margin: 26px 0; }
   border: 0; border-radius: 8px; padding: 8px 16px; cursor: pointer;
 }
 .footer-actions button:hover { background: var(--money-deep); }
-.footer-small { font-size: 0.78rem; color: var(--faint); max-width: 52em; }
+.footer-small { font-size: 0.78rem; color: var(--muted); max-width: 52em; }
 
 /* ---------- methodology page ---------- */
 .prose { max-width: 760px; padding-top: 36px; padding-bottom: 30px; }

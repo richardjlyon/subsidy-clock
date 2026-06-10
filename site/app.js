@@ -52,6 +52,8 @@
   }
 
   // ---------- state ----------
+  var motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var rafId;
   var state = { perspective: 'renewables', framing: 'all_time' };
 
   var PERSPECTIVE_TEXT = {
@@ -138,7 +140,11 @@
     els.week.textContent = fmtFull(rate * (t - startOfWeek(d)) / 1000);
     els.year.textContent = fmtCompact(rate * (t - startOfYear(d)) / 1000);
     els.alltime.textContent = fmtCompact(liveCumulative(t));
-    requestAnimationFrame(tick);
+    if (motionOK) {
+      rafId = requestAnimationFrame(tick);
+    } else {
+      rafId = setTimeout(tick, 1000);
+    }
   }
 
   // ---------- equivalences ----------
@@ -180,9 +186,11 @@
     document.getElementById('con-runrate').textContent = fmtCompact(c.runrate_gbp_per_year);
     document.getElementById('con-curtailed').textContent = fmtInt(c.curtailed_mwh);
     document.getElementById('con-curtailed-label').textContent =
-      'MWh paid for and not generated, ' + fmtDate(c.bottom_up_from) + ' – ' + fmtDate(c.bottom_up_to);
+      c.bottom_up_from
+        ? 'MWh paid for and not generated, ' + fmtDate(c.bottom_up_from) + ' – ' + fmtDate(c.bottom_up_to)
+        : 'MWh paid for and not generated';
     document.getElementById('con-window').textContent =
-      fmtDate(c.bottom_up_from) + ' – ' + fmtDate(c.bottom_up_to);
+      c.bottom_up_from ? fmtDate(c.bottom_up_from) + ' – ' + fmtDate(c.bottom_up_to) : '';
     var rows = (c.by_recipient || []).slice(0, 8).map(function (r) {
       return '<tr><td>' + esc(r.lead_party) + '</td>' +
         '<td class="num-col money">' + fmtCompact(r.cost_gbp) + '</td>' +
@@ -332,11 +340,11 @@
     });
 
     // nice tick step: 1/2/5 × 10^n giving 4–7 gridlines
-    var rawStep = maxStack / 5;
+    var rawStep = maxStack > 0 ? maxStack / 5 : 1;
     var mag = Math.pow(10, Math.floor(Math.log10(rawStep)));
     var step = [1, 2, 5, 10].map(function (m) { return m * mag; })
       .filter(function (s) { return s >= rawStep; })[0] || 10 * mag;
-    var yMax = Math.ceil(maxStack / step) * step;
+    var yMax = maxStack > 0 ? Math.ceil(maxStack / step) * step : step;
     var yMin = minStack < 0 ? -Math.ceil(-minStack / step * 4) * step / 4 : 0;
 
     var W = 940, H = 360, mL = 52, mR = 8, mT = 12, mB = 30;
@@ -462,6 +470,6 @@
   renderTechBars();
   renderRecipients();
   renderFooter();
-  requestAnimationFrame(tick);
+  rafId = requestAnimationFrame(tick);
 
 })();
