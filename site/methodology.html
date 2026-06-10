@@ -195,8 +195,10 @@
   ['capacity_market', 'ccl', 'ets', 'tnuos', 'bsuos'].forEach(function (id) {
     var s = byId[id];
     if (!s) return;
+    var srcLabel = esc(INDIRECT_SOURCE_NAMES[id] || s.source_url || id);
+    var srcHtml = s.source_url ? '<a href="' + esc(s.source_url) + '">' + srcLabel + '</a>' : srcLabel;
     document.getElementById('im-' + id).innerHTML =
-      'Source: <a href="' + esc(s.source_url) + '">' + esc(INDIRECT_SOURCE_NAMES[id] || s.source_url) + '</a>' +
+      'Source: ' + srcHtml +
       ' · cadence: ' + esc(s.cadence) + ' · data to ' + fmtDate(s.data_to) +
       ' · attribution confidence: ' + esc(s.attribution_confidence) +
       (s.verified ? ' · <span class="tick-ok">✓ verified against the published source</span>' : '');

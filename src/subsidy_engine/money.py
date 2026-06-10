@@ -293,6 +293,8 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
             cumulative_gbp=cumulative(monthly),
             runrate_gbp_per_year=float(last12["cost_gbp"].sum()),
             data_to=monthly["date"].max(),
+            extras={"source": "LCCC data portal, capacity market payments",
+                    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction"},
         ))
 
     # --- Annual reference schemes (RO, FIT)
