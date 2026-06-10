@@ -1,0 +1,62 @@
+{
+ "generated_at": "2026-06-10T03:37:06.642572+00:00",
+ "freshness": {
+  "cfd": {
+   "retrieved_at": "2026-06-10T03:29:06.102484+00:00",
+   "source_date": null,
+   "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
+   "row_count": 107956
+  },
+  "constraints": {
+   "retrieved_at": "2026-06-10T03:36:54.438153+00:00",
+   "source_date": "2026-06-08",
+   "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
+   "row_count": 46
+  },
+  "capacity_market": {
+   "retrieved_at": "2026-06-10T03:29:10.744316+00:00",
+   "source_date": null,
+   "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
+   "row_count": 732
+  }
+ },
+ "context": {
+  "households": {
+   "value": 28400000,
+   "description": "UK households",
+   "source": "ONS, Families and households in the UK, 2023 bulletin (May 2024)",
+   "source_url": "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/families/bulletins/familiesandhouseholds/2023",
+   "as_of": 2023
+  },
+  "population": {
+   "value": 68300000,
+   "description": "UK mid-year population estimate",
+   "source": "ONS, Population estimates for the UK, mid-2023 (October 2024)",
+   "source_url": "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2023",
+   "as_of": 2023
+  },
+  "annual_demand_twh": {
+   "value": 273.8,
+   "description": "UK electricity final consumption by end users (TWh/year), used for the per-MWh-delivered framing. Total demand including losses was 320.2 TWh in 2025; the lower final-consumption figure is used so the per-MWh framing is not overstated by network losses.",
+   "source": "DESNZ Energy Trends, March 2026 statistical release (2025 annual data, section 5 / table 5.2)",
+   "source_url": "https://www.gov.uk/government/statistics/electricity-section-5-energy-trends",
+   "as_of": 2025
+  },
+  "equivalences": {
+   "nurse_salary_gbp": {
+    "value": 37796,
+    "description": "NHS Band 5 nurse annual salary, top of band (Agenda for Change, England, 2025-26). Top of band is used so nurse-equivalent counts are conservative.",
+    "source": "NHS Employers, Agenda for Change pay scales 2025/26",
+    "source_url": "https://www.nhsemployers.org/articles/pay-scales-202526",
+    "as_of": 2025
+   },
+   "ghost_hospital_gbp": {
+    "value": 500000000,
+    "description": "Indicative cost of building a new, average mid-sized hospital, per NAO reporting on the New Hospital Programme.",
+    "source": "National Audit Office, Progress with the New Hospital Programme (July 2023)",
+    "source_url": "https://www.nao.org.uk/reports/progress-with-the-new-hospital-programme/",
+    "as_of": 2023
+   }
+  }
+ }
+}
