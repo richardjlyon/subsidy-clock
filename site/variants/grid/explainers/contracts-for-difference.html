@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en-gb">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contracts for Difference — The Subsidy Counter</title>
+  <meta name="description" content="What the Contracts for Difference scheme is, why it exists, and what it has cost UK billpayers.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../grid.css">
+</head>
+<body data-scheme-id="cfd_renewable" data-scheme-slug="contracts-for-difference">
+<div class="xwrap">
+  <p class="crumb"><a href="../index.html">← All subsidies</a> · The Subsidy Counter</p>
+  <div class="xhead">
+    <span class="chip" style="background:var(--c-cfdr)"></span>
+    <h1>Contracts for Difference</h1>
+    <span class="badge">direct · on your bill</span>
+  </div>
+
+  <div class="xstrip">
+    <div class="m"><div class="k">Total since 2016</div><div class="v num" id="x-total">&nbsp;</div></div>
+    <div class="m"><div class="k">Right now</div><div class="v num" id="x-rate">&nbsp;</div></div>
+    <div class="m"><div class="k">Your household</div><div class="v num" id="x-household">&nbsp;</div></div>
+  </div>
+
+  <div class="xbody">
+    <h2>What is it?</h2>
+    <p>Contracts for Difference are the current scheme for large renewable projects, mainly offshore
+    wind. Since 2014, projects win contracts at auction guaranteeing them a fixed 'strike price' for
+    every unit of electricity for 15 years. When the market price is below the strike price,
+    billpayers pay the difference. When it is above — as in the 2022 gas crisis — generators pay
+    money back. Both directions flow through your bill.</p>
+
+    <h2>Why does it exist?</h2>
+    <p>The Renewables Obligation paid a subsidy on top of whatever the market price was, which made
+    generators' income — and billpayers' costs — unpredictable. CfDs replaced it with a fixed
+    guaranteed price, set by competitive auction, intended to make large projects cheaper to
+    finance.</p>
+
+    <h2>What has it cost?</h2>
+    <div class="spark" id="x-spark" style="--spark-c: var(--c-cfdr)"></div>
+    <p><span data-live="cumulative"></span> since 2016, currently growing at about
+    <span data-live="runrate"></span> a year — <span data-live="rate"></span> every second.
+    Spread across Britain's households, that is about <span data-live="household"></span>
+    per household per year, paid through electricity bills.
+    In years of very high market prices the scheme can briefly run in billpayers' favour; over its
+    life so far it has been a net cost.</p>
+
+    <h2>Where it hides on your bill</h2>
+    <div class="bill">
+      <div class="ln"><span>Unit rate (per kWh)</span><span class="num">26p</span></div>
+      <div class="ln hi"><span>&nbsp;&nbsp;↳ inside it: the CfD supplier levy</span><span class="num">≈ 1p</span></div>
+      <div class="ln"><span>Standing charge (per day)</span><span class="num">57p</span></div>
+    </div>
+    <p>Illustrative bill, not your tariff. The Low Carbon Contracts Company collects the levy from
+    suppliers day by day; suppliers price it into the unit rate.</p>
+
+    <h2>Sources</h2>
+    <p class="src">Daily payment data from the Low Carbon Contracts Company (LCCC), the public body
+    that manages the contracts — see the <a href="../../../methodology.html">methodology</a>.
+    Unit rate and standing charge from
+    <a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026">Ofgem Q3 2026 price cap announcement</a>.</p>
+  </div>
+
+  <footer class="vfoot">
+    <span>Anonymous view counting by GoatCounter — no cookies, no personal data</span>
+    <span><a href="../index.html">← back to the counter</a></span>
+  </footer>
+</div>
+<script src="../common.js"></script>
+<script src="../explainer.js"></script>
+</body>
+</html>
