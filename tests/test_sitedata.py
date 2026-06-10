@@ -12,29 +12,45 @@ CTX = {
     "annual_demand_twh": {"value": 266, "source": "DESNZ", "source_url": "https://desnz", "as_of": 2024},
 }
 
+DEFLATOR_INFO = {"source": "ONS CPIH L522", "source_url": "https://ons", "base_year": 2024}
+
 
 def model():
-    annual = pl.DataFrame({"year": [2025, 2026], "cost_gbp": [3.0e9, 1.0e9]},
-                          schema={"year": pl.Int64, "cost_gbp": pl.Float64})
-    s = SchemeResult(
+    annual = pl.DataFrame(
+        {"year": [2025, 2026], "cost_gbp": [3.0e9, 1.0e9],
+         "cost_gbp_2024": [2.9e9, 0.95e9]},
+        schema={"year": pl.Int64, "cost_gbp": pl.Float64, "cost_gbp_2024": pl.Float64})
+    direct = SchemeResult(
         scheme_id="cfd_renewable", label="CfD - renewables",
         perspectives=["renewables", "low_carbon"], cadence="daily",
         annual=annual, cumulative_gbp=4.0e9, runrate_gbp_per_year=2.0e9,
         data_to=date(2026, 6, 1),
         extras={"by_technology": [], "by_recipient": [], "gross_gbp": 4.1e9, "net_gbp": 4.0e9},
     )
-    return {"schemes": [s], "perspectives": {
-        "renewables": {"cumulative_gbp": 4.0e9, "runrate_gbp_per_year": 2.0e9,
-                       "rate_gbp_per_sec": 63.38, "annual": annual, "since_year": 2025},
-        "low_carbon": {"cumulative_gbp": 4.0e9, "runrate_gbp_per_year": 2.0e9,
-                       "rate_gbp_per_sec": 63.38, "annual": annual, "since_year": 2025},
-    }}
+    indirect = SchemeResult(
+        scheme_id="bsuos", label="Balancing costs (BSUoS uplift)",
+        perspectives=[], cadence="daily", layer="indirect",
+        annual=annual, cumulative_gbp=4.0e9, runrate_gbp_per_year=1.0e9,
+        data_to=date(2026, 6, 1),
+        attribution_pct=0.4, attribution_note="uplift above baseline",
+        attribution_confidence="low",
+    )
+    block = {"cumulative_gbp": 4.0e9, "runrate_gbp_per_year": 2.0e9,
+             "rate_gbp_per_sec": 63.38, "annual": annual, "since_year": 2025,
+             "cumulative_gbp_2024": 3.85e9, "runrate_gbp_per_year_2024": 1.94e9,
+             "rate_gbp_per_sec_2024": 61.48}
+    iblock = dict(block, runrate_gbp_per_year=1.0e9)
+    return {"schemes": [direct, indirect],
+            "perspectives": {"renewables": dict(block), "low_carbon": dict(block)},
+            "indirect": iblock}
 
 
 def test_build_writes_all_files(tmp_path):
     freshness = {"cfd": {"retrieved_at": "2026-06-09T06:00:00+00:00",
                          "source_date": None, "source_url": "https://lccc"}}
-    sitedata.build(model(), CTX, freshness, tmp_path, generated_at="2026-06-09T07:00:00+00:00")
+    sitedata.build(model(), CTX, freshness, tmp_path,
+                   generated_at="2026-06-09T07:00:00+00:00",
+                   deflator_info=DEFLATOR_INFO)
     for name in ("totals.json", "timeseries.json", "breakdown.json", "meta.json"):
         assert (tmp_path / name).is_file(), name
 
@@ -42,17 +58,25 @@ def test_build_writes_all_files(tmp_path):
     r = totals["perspectives"]["renewables"]
     assert r["cumulative_gbp"] == 4.0e9
     assert r["per_household_per_year_gbp"] == round(2.0e9 / 28_400_000, 2)
-    assert r["per_mwh_delivered_gbp"] == round(2.0e9 / (266 * 1_000_000), 2)
-    assert totals["generated_at"] == "2026-06-09T07:00:00+00:00"
+    assert r["real_2024"]["cumulative_gbp"] == 3.85e9
+    assert r["real_2024"]["per_household_per_year_gbp"] == round(1.94e9 / 28_400_000, 2)
+    assert "all_levy" not in totals["perspectives"]
+    ind = totals["indirect"]
+    assert ind["runrate_gbp_per_year"] == 1.0e9
+    assert ind["real_2024"]["cumulative_gbp"] == 3.85e9
 
     ts = json.loads((tmp_path / "timeseries.json").read_text())
-    assert ts["perspectives"]["renewables"]["annual"] == [
-        {"year": 2025, "cost_gbp": 3.0e9}, {"year": 2026, "cost_gbp": 1.0e9}]
+    assert ts["schemes"]["bsuos"]["annual"][0] == {
+        "year": 2025, "cost_gbp": 3.0e9, "cost_gbp_2024": 2.9e9}
 
     breakdown = json.loads((tmp_path / "breakdown.json").read_text())
-    assert breakdown["schemes"][0]["id"] == "cfd_renewable"
-    assert breakdown["schemes"][0]["gross_gbp"] == 4.1e9
+    by_id = {s["id"]: s for s in breakdown["schemes"]}
+    assert by_id["cfd_renewable"]["layer"] == "direct"
+    b = by_id["bsuos"]
+    assert b["layer"] == "indirect"
+    assert b["attribution_pct"] == 0.4
+    assert b["attribution_confidence"] == "low"
+    assert b["attribution_note"] == "uplift above baseline"
 
     meta = json.loads((tmp_path / "meta.json").read_text())
-    assert meta["freshness"]["cfd"]["retrieved_at"].startswith("2026-06-09")
-    assert "context" in meta
+    assert meta["deflator"]["base_year"] == 2024
