@@ -92,6 +92,7 @@
 
   <h3>Cross-check against REF</h3>
   <p id="crosscheck-summary"></p>
+  <p class="caveat">Note: our component figures are calendar-year 2023 values, while REF's are fiscal-year 2023/24; small divergences partly reflect that basis difference.</p>
   <table class="data-table" id="crosscheck-table">
     <thead><tr><th>Component</th><th class="num-col">Ours</th><th class="num-col">REF’s</th><th class="num-col">Divergence</th><th>Note</th></tr></thead>
     <tbody></tbody>
@@ -201,7 +202,8 @@
       'Source: ' + srcHtml +
       ' · cadence: ' + esc(s.cadence) + ' · data to ' + fmtDate(s.data_to) +
       ' · attribution confidence: ' + esc(s.attribution_confidence) +
-      (s.verified ? ' · <span class="tick-ok">✓ verified against the published source</span>' : '');
+      (s.verified === true ? ' · <span class="tick-ok">✓ verified against the published source</span>' : '') +
+      (s.verified === false ? ' · not yet fully verified — see source notes' : '');
     document.getElementById('attr-' + id).textContent = s.attribution_note;
   });
 

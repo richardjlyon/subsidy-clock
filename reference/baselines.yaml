@@ -7,11 +7,13 @@ bsuos:
   description: Mean annual GB balancing (BSUoS) cost 2002/03-2004/05, nominal (£0.4bn/yr per REF Table 2)
   source: REF April 2025 study, Table 2 (citing NESO/National Grid historic balancing cost reporting)
   source_url: https://www.ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day
-  verified: true
+  verified: false
+  note: "Corroborated against REF (April 2025, Table 2) only; primary NESO/Elexon confirmation pending."
 tnuos:
   value: 900000000
   period: "2002-2005"
   description: Mean annual TNUoS revenue 2002/03-2004/05, nominal (£0.9bn/yr per REF Table 2)
   source: REF April 2025 study, Table 2 (citing NESO/National Grid charging statements)
   source_url: https://www.ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day
-  verified: true
+  verified: false
+  note: "Corroborated against REF (April 2025, Table 2) only; primary NESO/Elexon confirmation pending."
