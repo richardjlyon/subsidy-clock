@@ -33,7 +33,10 @@
       <div class="seg" role="group" aria-label="Perspective" id="perspective-switch">
         <button data-perspective="renewables" aria-pressed="true">Renewables only</button>
         <button data-perspective="low_carbon" aria-pressed="false">All low-carbon <span class="seg-note">incl. nuclear &amp; biomass</span></button>
-        <button data-perspective="all_levy" aria-pressed="false">All levy <span class="seg-note">incl. Capacity Market</span></button>
+      </div>
+      <div class="seg seg-mini" role="group" aria-label="Price basis" id="real-switch">
+        <button data-basis="nominal" aria-pressed="true">nominal £</button>
+        <button data-basis="real" aria-pressed="false">2024 £</button>
       </div>
       <div class="tabs" role="group" aria-label="Framing" id="framing-switch">
         <button data-framing="all_time" aria-pressed="true">All-time total</button>
@@ -43,10 +46,15 @@
       </div>
     </div>
 
+    <p class="real-tag num" id="real-tag" hidden>2024 prices</p>
     <p class="hero-figure">
       <span class="hero-value money num" id="hero-value">&nbsp;</span><sup class="hero-fn" title="Estimated between official updates: the counter advances at each scheme’s most recent published run-rate.">†</sup>
     </p>
     <p class="hero-unit num" id="hero-unit"></p>
+    <p class="hero-combined" id="hero-combined">
+      <span class="hero-combined-label">with estimated indirect costs:</span>
+      <span class="hero-combined-figure"><span class="hero-combined-value num" id="hero-combined-value">&nbsp;</span><sup class="hero-combined-fn"><a href="methodology.html#indirect" title="Indirect costs are attributed estimates — see the methodology page for each attribution rule.">estimated</a></sup></span>
+    </p>
     <p class="hero-sub" id="hero-sub"></p>
     <p class="hero-footnote">† estimated between official updates</p>
 
@@ -75,11 +83,18 @@
       <div class="stat"><span class="stat-value money num" id="con-runrate"></span><span class="stat-label">per year at current run-rate</span></div>
       <div class="stat"><span class="stat-value num" id="con-curtailed"></span><span class="stat-label" id="con-curtailed-label">MWh paid for and not generated</span></div>
     </div>
-    <h3>Largest recipients <span class="h-note" id="con-window"></span></h3>
+    <h3>Largest recipients <span class="h-note" id="con-window"></span><span class="badge badge-nominal nominal-tag" hidden>nominal £</span></h3>
     <table class="data-table" id="con-table">
       <thead><tr><th>Lead party</th><th class="num-col">Paid</th><th class="num-col">MWh curtailed</th></tr></thead>
       <tbody></tbody>
     </table>
+  </section>
+
+  <!-- ====================== THE INDIRECT BILL ====================== -->
+  <section class="card card-indirect" id="indirect-bill" aria-labelledby="indirect-h">
+    <h2 id="indirect-h">The indirect bill <span class="h-note">estimated</span></h2>
+    <p class="card-intro">Costs that reach bill-payers and taxpayers through network charges, balancing costs, carbon pricing and the capacity levy rather than as direct subsidy payments. The amounts are measured from official sources; the share attributed to renewables is an estimate, stated per component below. <a href="methodology.html#indirect">How each attribution works</a>.</p>
+    <div class="bars" id="indirect-bars"></div>
   </section>
 
   <!-- ====================== SCHEMES + TECHNOLOGY ====================== -->
@@ -91,7 +106,7 @@
     </section>
 
     <section class="card" aria-labelledby="tech-h">
-      <h2 id="tech-h">By technology <span class="h-note">CfD schemes only</span></h2>
+      <h2 id="tech-h">By technology <span class="h-note">CfD schemes only</span><span class="badge badge-nominal nominal-tag" hidden>nominal £</span></h2>
       <p class="card-intro">Net Contracts for Difference payments by technology. Negative values are net paybacks: market prices exceeded the strike price.</p>
       <div class="bars" id="tech-bars"></div>
     </section>
@@ -99,7 +114,7 @@
 
   <!-- ====================== RECIPIENTS ====================== -->
   <section class="card" aria-labelledby="recipients-h">
-    <h2 id="recipients-h">Largest recipients</h2>
+    <h2 id="recipients-h">Largest recipients <span class="badge badge-nominal nominal-tag" hidden>nominal £</span></h2>
     <p class="card-intro">Ranked by cumulative payment, merging CfD per-unit payments and constraint payments by lead party.</p>
     <table class="data-table" id="recipients-table">
       <thead><tr><th class="rank-col">#</th><th>Recipient</th><th>Technology</th><th>Scheme</th><th class="num-col">Cumulative</th></tr></thead>
@@ -126,7 +141,7 @@
       <button id="copy-figure" type="button">Copy figure</button>
       <a href="methodology.html">Methodology &amp; sources</a>
     </div>
-    <p class="footer-small">Every figure on this page traces to an official source: LCCC, Ofgem, Elexon and REF. Caveats and formulas are on the <a href="methodology.html">methodology page</a>.</p>
+    <p class="footer-small">Every figure on this page traces to an official source: LCCC, Ofgem, Elexon, NESO, HMRC and REF. Caveats and formulas are on the <a href="methodology.html">methodology page</a>.</p>
   </div>
 </footer>
 

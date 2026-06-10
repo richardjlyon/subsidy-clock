@@ -49,9 +49,56 @@
   <p><strong>Formula in words:</strong> annual official scheme values from Ofgem’s Feed-in Tariffs annual reports. These are official annual totals pending per-generator reconstruction.</p>
   <p class="src-quote" id="fit-source"></p>
 
-  <h2>Capacity Market</h2>
-  <p class="scheme-meta">Source: <a href="https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction">LCCC, capacity obligation by auction</a> · cadence: monthly</p>
-  <p>Capacity Market payments are not payments to renewable or low-carbon generators specifically, so they are shown <strong>only in the “All levy” perspective</strong>. They are excluded from the “Renewables only” and “All low-carbon” totals.</p>
+  <h2 id="indirect">Indirect subsidies (estimated)</h2>
+  <p>Beyond the direct schemes above, renewable generation imposes costs that reach bill-payers and taxpayers through network charges, balancing costs, carbon pricing and the capacity levy. The dashboard shows these as “the indirect bill”, always marked <strong>estimated</strong>: each component’s <em>amount</em> is measured from an official source (amount confidence: high for all five), but the share <em>attributable</em> to renewables is a stated judgement. The attribution rule for each component is quoted verbatim below.</p>
+
+  <h3>Capacity Market</h3>
+  <p class="scheme-meta" id="im-capacity_market"></p>
+  <blockquote id="attr-capacity_market"></blockquote>
+  <p>Availability payments procure firm backup capacity for a system with a growing share of intermittent generation. The full levy is counted; attribution confidence is <strong>medium</strong> because some capacity would be procured in any system. This component was previously shown in the dashboard’s “All levy” total, which has been removed.</p>
+
+  <h3>Climate Change Levy and Carbon Price Support</h3>
+  <p class="scheme-meta" id="im-ccl"></p>
+  <blockquote id="attr-ccl"></blockquote>
+  <p>Conservative direction: only electricity’s share of main-rate CCL declarations is counted — gas and solid-fuel CCL is excluded — plus Carbon Price Support, which falls wholly on electricity generation. The figure errs <strong>low</strong>.</p>
+
+  <h3>Emissions trading (UK and EU ETS)</h3>
+  <p class="scheme-meta" id="im-ets"></p>
+  <blockquote id="attr-ets"></blockquote>
+  <p>Conservative direction: only <em>auctioned</em> allowance revenue is counted, scaled by the power sector’s share of verified covered emissions. Power generation receives no free allocation, so it buys a larger share of auctioned allowances than its emissions share — the figure is a <strong>lower bound</strong>.</p>
+
+  <h3>Transmission charges (TNUoS)</h3>
+  <p class="scheme-meta" id="im-tnuos"></p>
+  <blockquote id="attr-tnuos"></blockquote>
+  <p id="raw-tnuos"></p>
+  <p>Conservative direction: only the growth in transmission revenue above the inflation-indexed pre-renewables baseline is attributed, and the uplift is floored at zero in any year where revenue falls below the baseline.</p>
+
+  <h3>Balancing costs (BSUoS)</h3>
+  <p class="scheme-meta" id="im-bsuos"></p>
+  <blockquote id="attr-bsuos"></blockquote>
+  <p id="raw-bsuos"></p>
+  <p>Conservative direction: as for TNUoS, only the uplift above the inflation-indexed baseline is attributed, floored at zero.</p>
+
+  <h3>The double-counting guard</h3>
+  <p>Constraint payments to wind farms are counted in the <strong>direct</strong> layer (“paid to switch off”). Those same payments are recovered from bill-payers through BSUoS, so the BSUoS series is <strong>netted of direct constraint payments before attribution</strong> — the same pound is never counted twice across the direct and indirect layers.</p>
+
+  <h3>Indirect costs <em>not</em> counted</h3>
+  <ul>
+    <li>Free ETS allowance allocations (a transfer forgone, not a cash flow counted here)</li>
+    <li>SECR reporting and corporate PPA effects on power prices</li>
+    <li>Smart Export Guarantee (SEG) payments</li>
+    <li>Offtaker of Last Resort (OLR) arrangements</li>
+  </ul>
+
+  <h3>Cross-check against REF</h3>
+  <p id="crosscheck-summary"></p>
+  <table class="data-table" id="crosscheck-table">
+    <thead><tr><th>Component</th><th class="num-col">Ours</th><th class="num-col">REF’s</th><th class="num-col">Divergence</th><th>Note</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <h3 id="real-terms">Real terms (2024 £)</h3>
+  <p id="deflator-note"></p>
 
   <h2>Reconciliation against official totals</h2>
   <p>The bottom-up CfD series (per-contract daily payments) is checked against the LCCC’s official In-period Tracking daily totals, summed over settlement dates present in both series. The most recent days are excluded to allow for the settlement lag.</p>
@@ -76,7 +123,7 @@
   <p>The per-second rates that drive the live counter are derived from each scheme’s recent run-rate: the trailing 365 days for daily schemes (CfD and constraints), the last 12 months for the Capacity Market, and the latest completed scheme year for RO and FIT. Values shown between official data updates are therefore <strong>estimates</strong>, and are replaced by official figures as they are published.</p>
 
   <h2>Data freshness</h2>
-  <p>Each scheme on the dashboard carries a badge showing its update cadence and the latest date its data covers. Every source publishes in arrears — LCCC releases daily CfD data weekly, and Capacity Market monthly data follows the settlement calendar — so a publication lag is normal and is not flagged. A scheme is marked <strong>stale</strong> only when its latest data is older than that scheme’s normal publication lag: 21 days for CfD, 3 days for constraints, 75 days after the end of the latest data month for the Capacity Market, and 2 years for RO and FIT annual reports.</p>
+  <p>Each scheme on the dashboard carries a badge showing its update cadence and the latest date its data covers. Every source publishes in arrears — LCCC releases daily CfD data weekly, NESO publishes daily balancing costs with a few days’ lag, and Capacity Market monthly data follows the settlement calendar — so a publication lag is normal and is not flagged. A scheme is marked <strong>stale</strong> only when its latest data is older than that scheme’s normal publication lag: 21 days for CfD, 3 days for constraints, 7 days for BSUoS, 75 days after the end of the latest data month for the Capacity Market, and 2 years for RO and FIT annual reports.</p>
 
   <h2>Restatements</h2>
   <p>Source datasets are revised by their publishers. When a source revises history, the change is logged as a restatement; figures are never silently overwritten.</p>
@@ -87,13 +134,16 @@
 <script>
 'use strict';
 (async function () {
-  var bd, recon;
+  var bd, recon, meta, xcheck;
   try {
     var res = await Promise.all([
-      fetch('data/breakdown.json'), fetch('data/reconciliation.json')
+      fetch('data/breakdown.json'), fetch('data/reconciliation.json'),
+      fetch('data/meta.json'), fetch('data/indirect_crosscheck.json')
     ]);
     bd = await res[0].json();
     recon = await res[1].json();
+    meta = await res[2].json();
+    xcheck = await res[3].json();
   } catch (e) {
     document.getElementById('recon-summary').textContent =
       'Live reconciliation data could not be loaded — figures remain available in the repository.';
@@ -133,6 +183,67 @@
       (s.verified ? ' · <span class="tick-ok">✓ verified against the published reports</span>' : ' · not yet verified');
     document.getElementById(id + '-source').textContent = 'Source detail: ' + s.source;
   });
+
+  // indirect components: source line + verbatim attribution rule
+  var INDIRECT_SOURCE_NAMES = {
+    capacity_market: 'LCCC, capacity obligation by auction',
+    ccl: 'HMRC Environmental Taxes Bulletin',
+    ets: 'BEIS/DESNZ Annual Report and Accounts Trust Statements; EC UK auction platform reports',
+    tnuos: 'NESO Final TNUoS Tariffs publications',
+    bsuos: 'NESO daily balancing costs (BSUoS); NAO Electricity Balancing Services'
+  };
+  ['capacity_market', 'ccl', 'ets', 'tnuos', 'bsuos'].forEach(function (id) {
+    var s = byId[id];
+    if (!s) return;
+    document.getElementById('im-' + id).innerHTML =
+      'Source: <a href="' + esc(s.source_url) + '">' + esc(INDIRECT_SOURCE_NAMES[id] || s.source_url) + '</a>' +
+      ' · cadence: ' + esc(s.cadence) + ' · data to ' + fmtDate(s.data_to) +
+      ' · attribution confidence: ' + esc(s.attribution_confidence) +
+      (s.verified ? ' · <span class="tick-ok">✓ verified against the published source</span>' : '');
+    document.getElementById('attr-' + id).textContent = s.attribution_note;
+  });
+
+  // raw vs attributed cumulative for the uplift-attributed components
+  ['tnuos', 'bsuos'].forEach(function (id) {
+    var s = byId[id];
+    if (!s || !s.raw_annual) return;
+    var raw = 0;
+    s.raw_annual.forEach(function (a) { raw += a.cost_gbp; });
+    var firstYr = s.raw_annual[0].year, lastYr = s.raw_annual[s.raw_annual.length - 1].year;
+    document.getElementById('raw-' + id).innerHTML =
+      'Raw ' + (id === 'tnuos' ? 'TNUoS revenue' : 'BSUoS cost') + ' ' + firstYr + '–' + lastYr +
+      ' totals <strong class="num">' + gbp(raw) + '</strong>; <strong class="num">' + gbp(s.cumulative_gbp) +
+      '</strong> (<span class="num">' + (s.attribution_pct * 100).toFixed(1) + '%</span>) is attributed.';
+  });
+
+  // REF cross-check table
+  var XCHECK_LABELS = {
+    capacity_market: 'Capacity Market', ccl: 'CCL + CPS', ets: 'ETS (power-sector share)',
+    tnuos: 'TNUoS', bsuos: 'BSUoS (net of constraints)'
+  };
+  document.getElementById('crosscheck-summary').innerHTML =
+    'Each component’s ' + esc(xcheck.comparison_year) + ' value is compared against <a href="' +
+    esc(xcheck.ref_source_url) + '">' + esc(xcheck.ref_source) + '</a>. ' +
+    'A divergence beyond ±' + xcheck.bound_pct + '% must be explained; ' +
+    (xcheck.unexplained_count === 0
+      ? 'all divergences are explained.'
+      : xcheck.unexplained_count + ' divergence(s) are currently unexplained.');
+  document.querySelector('#crosscheck-table tbody').innerHTML = xcheck.components.map(function (c) {
+    return '<tr>' +
+      '<td>' + esc(XCHECK_LABELS[c.component] || c.component) + '</td>' +
+      '<td class="num-col">' + gbp(c.ours_gbp) + '</td>' +
+      '<td class="num-col">' + gbp(c.ref_gbp) + '</td>' +
+      '<td class="num-col">' + (c.divergence_pct != null ? c.divergence_pct.toFixed(1) + '%' : 'n/a') + '</td>' +
+      '<td class="cell-dim">' + (c.note ? esc(c.note) : '—') + '</td>' +
+    '</tr>';
+  }).join('');
+
+  // real-terms deflator
+  document.getElementById('deflator-note').innerHTML =
+    'The dashboard’s “2024 £” toggle restates every nominal figure in ' + esc(meta.deflator.base_year) +
+    ' prices using annual averages of <a href="' + esc(meta.deflator.source_url) + '">' +
+    esc(meta.deflator.source) + '</a>.' +
+    (meta.deflator.verified ? ' <span class="tick-ok">✓ verified against the published series</span>' : '');
 
   // reconciliation
   var o = recon.overall;

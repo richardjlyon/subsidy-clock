@@ -14,19 +14,27 @@
   --stale: #8a6d1f;
   --stale-bg: #f4ead0;
 
-  /* monochrome claret ramp for the stacked chart */
+  /* monochrome claret ramp for the stacked chart (direct layer) */
   --c-ro: #6f2014;
   --c-fit: #99412c;
   --c-cfdr: #bb6647;
   --c-cfdl: #d48f6b;
   --c-con: #e7b896;
+
+  /* olive-umber ramp for the indirect (estimated) layer — hatched in the chart */
   --c-cm: #8d8675;
+  --c-ccl: #595440;
+  --c-ets: #757056;
+  --c-tnuos: #9a9272;
+  --c-bsuos: #b8af8e;
 
   --serif: "Fraunces", Georgia, "Times New Roman", serif;
   --sans: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
 }
 
 * { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
 
 :focus-visible { outline: 2px solid var(--money); outline-offset: 2px; }
 
@@ -109,6 +117,37 @@ a:hover { color: var(--money); }
 }
 .hero-fn { font-size: 0.4em; color: var(--faint); margin-left: 0.25em; cursor: help; }
 .hero-unit { margin: 6px 0 0; font-size: 1.05rem; color: var(--money-deep); min-height: 1.2em; }
+
+/* combined direct + indirect line: ghost (outlined) numerals, never solid claret */
+.hero-combined {
+  margin: 14px 0 0; line-height: 1.15;
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px 12px;
+}
+.hero-combined-label { font-size: 0.95rem; color: var(--muted); }
+.hero-combined-figure { white-space: nowrap; }
+.hero-combined-value {
+  font-weight: 600;
+  font-size: clamp(1.3rem, 4.6vw, 2.5rem);
+  letter-spacing: -0.01em;
+  color: transparent;
+  -webkit-text-stroke: 1.2px var(--money);
+}
+@supports not (-webkit-text-stroke: 1px black) {
+  .hero-combined-value { color: var(--money); opacity: 0.55; }
+}
+.hero-combined-fn { font-size: 0.68rem; margin-left: 0.4em; }
+.hero-combined-fn a { color: var(--faint); text-decoration-style: dotted; }
+.hero-combined-fn a:hover { color: var(--money-deep); }
+
+/* price-basis state */
+.seg-mini { padding: 2px; }
+.seg-mini button { padding: 4px 12px; font-size: 0.76rem; }
+.real-tag {
+  margin: 0 auto 10px; display: table;
+  font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--money-deep); border: 1px solid var(--money); border-radius: 4px;
+  background: var(--card); padding: 2px 8px;
+}
 .hero-sub { margin: 14px auto 0; max-width: 34em; font-size: 1.02rem; color: var(--muted); }
 .hero-footnote { margin: 10px 0 0; font-size: 0.74rem; color: var(--muted); }
 
@@ -184,9 +223,22 @@ main > .card-pair { margin: 26px 0; }
   padding: 1px 6px; white-space: nowrap;
 }
 .badge-stale { color: var(--stale); border-color: var(--stale); background: var(--stale-bg); font-weight: 600; }
+.badge-nominal { color: var(--faint); border-style: dashed; margin-left: 8px; vertical-align: 2px; }
+.badge-conf-high { color: #3c6e47; border-color: #3c6e47; }
+.badge-conf-medium { color: var(--stale); border-color: var(--stale); }
+.badge-conf-low { color: var(--money-deep); border-color: var(--money); }
 .bar-track { height: 12px; border-radius: 6px; background: var(--line-soft); overflow: hidden; position: relative; }
 .bar-fill { height: 100%; border-radius: 6px; background: var(--money); min-width: 2px; }
 .bar-fill.neg { background: var(--c-cm); }
+
+/* indirect bill: hatched fills echo the chart's estimated layer */
+.bar-fill-indirect {
+  background: var(--card);
+  background-image: repeating-linear-gradient(45deg, var(--money) 0, var(--money) 2.5px, transparent 2.5px, transparent 6.5px);
+  border: 1px solid var(--money);
+}
+.attr-note { margin: 2px 0 0; font-size: 0.78rem; color: var(--muted); max-width: 56em; }
+.attr-note .num { font-weight: 600; color: var(--money); }
 
 /* ---------- tables ---------- */
 .data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
@@ -210,8 +262,14 @@ main > .card-pair { margin: 26px 0; }
 .chart .gridline { stroke: var(--line-soft); stroke-width: 1; }
 .chart .zeroline { stroke: var(--line); stroke-width: 1; }
 .chart rect.partial { opacity: 0.5; }
-.legend { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 14px; font-size: 0.78rem; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 20px; margin-top: 14px; font-size: 0.78rem; color: var(--muted); }
 .legend span.swatch { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.legend .swatch-hatch { background-color: var(--card); border: 1px solid; }
+.legend .legend-group {
+  font-size: 0.66rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--faint);
+}
+.legend .legend-group:not(:first-child) { margin-left: 14px; }
 
 /* ---------- footer ---------- */
 .footer { border-top: 1px solid var(--line); margin-top: 48px; padding: 30px 0 44px; font-size: 0.84rem; color: var(--muted); }
@@ -239,6 +297,7 @@ main > .card-pair { margin: 26px 0; }
   background: var(--card); border-radius: 0 10px 10px 0; font-size: 0.92rem;
 }
 .prose table { margin: 14px 0; }
+#crosscheck-table th.num-col, #crosscheck-table td.num-col { padding-right: 16px; }
 .prose .src-quote { font-size: 0.84rem; color: var(--muted); }
 .tick-ok { color: #3c6e47; font-weight: 600; }
 tr.out-of-tolerance td { color: var(--money-deep); font-weight: 500; }
@@ -266,5 +325,6 @@ tr.out-of-tolerance td { color: var(--money-deep); font-weight: 500; }
 
 @media (max-width: 400px) {
   .hero-value { font-size: clamp(1.7rem, 8.4vw, 2.1rem); }
+  .hero-combined-value { font-size: clamp(1.05rem, 5.4vw, 1.3rem); -webkit-text-stroke-width: 1px; }
   .seg button { padding: 6px 11px; font-size: 0.78rem; }
 }
