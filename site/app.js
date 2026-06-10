@@ -572,8 +572,11 @@
     function yPos(v) { return mT + plotH * (1 - v / yMax); }
     var bandW = plotW / rows.length, barW = bandW * 0.72;
 
+    var lowCarbon = state.perspective === 'low_carbon';
+    var subsidyLabel = lowCarbon ? 'Low-carbon energy' : 'Renewable-energy';
+
     var DIRECT = 'var(--c-ro)', HATCH = 'var(--c-cfdr)', OTHER = 'var(--c-other)';
-    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Renewable subsidy as a share of the total electricity bill, ' + firstYear + ' to ' + lastYear + '">';
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + (lowCarbon ? 'Low-carbon energy' : 'Renewable') + ' subsidy as a share of the total electricity bill, ' + firstYear + ' to ' + lastYear + '">';
     svg += '<defs><pattern id="share-hatch" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">' +
       '<line x1="0" y1="0" x2="0" y2="5" stroke="' + HATCH + '" stroke-width="1.8"/></pattern></defs>';
 
@@ -612,11 +615,11 @@
     var last = rows[rows.length - 1];
     var share = last.bill > 0 ? Math.round(100 * (last.direct + last.indirect) / last.bill) : 0;
     document.getElementById('share-caption').textContent =
-      last.year + ': renewable-energy subsidies were about ' + share +
+      last.year + ': ' + subsidyLabel.toLowerCase() + ' subsidies were about ' + share +
       '% of the total UK electricity bill' + (state.real ? ' (2024 prices).' : '.');
 
     document.getElementById('share-note').textContent =
-      'Renewable-energy subsidy as a share of total UK electricity consumer expenditure (DUKES 1.3), ' +
+      subsidyLabel + ' subsidy as a share of total UK electricity consumer expenditure (DUKES 1.3), ' +
       firstYear + '–' + lastYear + '. The subsidy is a conservative lower bound, so the share is too. ' +
       (state.real ? 'Figures in 2024 prices. ' : '') +
       'High-price years (the 2022–23 energy spike) raise the denominator and lower the share even as subsidy rises.';
