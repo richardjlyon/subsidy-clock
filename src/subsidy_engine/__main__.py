@@ -69,8 +69,10 @@ def cmd_build_site(args: argparse.Namespace) -> int:
         report = reconcile.cfd_monthly(bottom_up, trk)
         (out_dir / "reconciliation.json").write_text(json.dumps(report, indent=1, allow_nan=False))
         flag = "OK" if report["within_tolerance"] else "DIVERGENT"
-        print(f"[reconciliation] {flag}: max divergence "
-              f"{report['max_abs_divergence_pct']}% over {len(report['months'])} months")
+        pct = report["overall"]["divergence_pct"]
+        print(f"[reconciliation] {flag}: overall divergence {pct}% over "
+              f"{report['matched_days']} matched days "
+              f"({report['excluded_recent_days']} recent days excluded)")
     print(f"[ok] site data written to {out_dir}")
     return 0
 
