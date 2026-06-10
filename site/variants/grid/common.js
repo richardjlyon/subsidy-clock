@@ -6,6 +6,16 @@ var SC = (function () {
   // ---- GoatCounter. Set to your code (e.g. "subsidycounter") to enable; "" = silent no-op.
   var GOATCOUNTER_CODE = '';
 
+  // ---- data root resolved from this script's URL, so pages at any depth share it
+  var DATA_BASE = (function () {
+    var script = document.currentScript;
+    if (!script) {
+      var ss = document.getElementsByTagName('script');
+      script = ss[ss.length - 1];
+    }
+    return script.src.replace(/[^\/]*$/, '') + '../../data/';
+  })();
+
   function fmtFull(v) { // £186,212,345,678 — no decimals
     return '£' + Math.floor(v).toLocaleString('en-GB');
   }
@@ -26,7 +36,7 @@ var SC = (function () {
   function loadData() { // resolves {totals, breakdown, timeseries}
     return Promise.all(
       ['totals', 'breakdown', 'timeseries'].map(function (n) {
-        return fetch('../../data/' + n + '.json').then(function (r) {
+        return fetch(DATA_BASE + n + '.json').then(function (r) {
           if (!r.ok) throw new Error(n + ': HTTP ' + r.status);
           return r.json();
         });
