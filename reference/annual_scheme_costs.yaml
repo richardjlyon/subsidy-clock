@@ -1,0 +1,126 @@
+# Versioned reference inputs (spec F-6) for schemes whose official costs are
+# published annually rather than via an API. Values are nominal GBP for the
+# obligation/scheme year STARTING in the keyed calendar year (RO/FIT years run
+# 1 Apr - 31 Mar; constraints_history is calendar-year). Refresh annually;
+# cite the exact source consulted.
+schemes:
+  ro:
+    label: Renewables Obligation
+    perspectives: [renewables, low_carbon, all_levy]
+    cadence: annual
+    source: >-
+      Ofgem Renewables Obligation Annual Reports. 2024 (SY23): Annual Report
+      2024-25 headline scheme value (PDF, RO_24-25_SY23_Annual_Report,
+      Mar 2026). 2010-2023 (SY9-SY22): scheme value = total ROCs presented x
+      notional worth of a ROC, Figure A4.1 of the SY22 Annual Report
+      (2023-24, PDF, Mar 2025), cross-checked against headline values stated
+      in the SY22/SY23 report text (SY1 GBP 0.25bn, SY18 GBP 6.31bn, SY19
+      GBP 5.73bn, SY22 GBP 6.75bn, SY23 GBP 7.70bn). 2002-2009 (SY1-SY8):
+      ROCs presented x worth of a ROC from the compliance tables of Ofgem's
+      second annual report (2003-04, Feb 2005), the RO Annual Report
+      2004-2005 (Feb 2006), the RO Annual Report 2008-09 (Feb 2010) and the
+      RO Annual Report 2010-11 (Mar 2012).
+    source_url: https://www.ofgem.gov.uk/publications/renewables-obligation-ro-annual-report-scheme-year-22-april-2023-march-2024
+    verified: true
+    note: >-
+      Scheme value = ROCs presented for compliance x notional worth of a ROC
+      (buy-out price + recycle value), Ofgem's own definition of the annual
+      value of the scheme. Where Ofgem states a headline value it is used
+      directly; otherwise values are computed from Ofgem's published ROC and
+      worth figures and rounded down to the nearest GBP 10m (never
+      overstated). 2025 (SY24, 2025-26) is omitted: compliance completes
+      autumn 2026 and no official outturn or forecast of scheme value has
+      been published yet.
+    annual:
+      2002: 250000000
+      2003: 400000000
+      2004: 490000000
+      2005: 580000000
+      2006: 720000000
+      2007: 870000000
+      2008: 1030000000
+      2009: 1110000000
+      2010: 1280000000
+      2011: 1450000000
+      2012: 1980000000
+      2013: 2590000000
+      2014: 3110000000
+      2015: 3740000000
+      2016: 4490000000
+      2017: 5300000000
+      2018: 5920000000
+      2019: 6310000000
+      2020: 5730000000
+      2021: 6360000000
+      2022: 6430000000
+      2023: 6750000000
+      2024: 7700000000
+  fit:
+    label: Feed-in Tariffs
+    perspectives: [renewables, low_carbon, all_levy]
+    cadence: annual
+    source: >-
+      Ofgem Feed-in Tariffs Annual Report Scheme Year 15 (April 2024 to
+      March 2025), Figure 3.3 "FIT scheme value, SY1-15" (PDF,
+      feed_in_tariff_annual_report_sy15, Dec 2025). The report states the
+      series grew every year from SY1 to SY11 (GBP 1,764m), fell for the
+      first time in SY12 (GBP 1,575m), peaked at GBP 1,858m in SY14, and was
+      GBP 1,844m in SY15, which fixes the year order of the charted values.
+    source_url: https://www.ofgem.gov.uk/transparency-document/feed-tariffs-annual-report-scheme-year-15-april-2024-march-2025
+    verified: true
+    note: >-
+      FIT scheme value per Ofgem: generation payments + export payments +
+      qualifying FIT costs (the SY15 value of GBP 1,844m comprises
+      GBP 1.73bn generation, GBP 94m export, plus qualifying costs). Values
+      are Ofgem's own GBP-million figures, not rounded further. 2025 (SY16,
+      2025-26) is omitted: the SY16 annual report has not yet been
+      published.
+    annual:
+      2010: 15000000
+      2011: 155000000
+      2012: 525000000
+      2013: 718000000
+      2014: 895000000
+      2015: 1151000000
+      2016: 1375000000
+      2017: 1491000000
+      2018: 1529000000
+      2019: 1732000000
+      2020: 1764000000
+      2021: 1575000000
+      2022: 1606000000
+      2023: 1858000000
+      2024: 1844000000
+  constraints_history:
+    label: Wind constraint payments (pre-backfill history)
+    perspectives: [renewables, low_carbon, all_levy]
+    cadence: annual
+    source: >-
+      Renewable Energy Foundation (REF) online database of wind farm
+      constraint payments, "Year" view (Elexon Balancing Mechanism bid
+      acceptance data), retrieved 9 June 2026.
+    source_url: https://www.ref.org.uk/constraints/index.php?tab=yr
+    verified: true
+    note: >-
+      Calendar-year wind curtailment cost for years before the bottom-up
+      Elexon backfill window. The money model uses these only for years not
+      covered bottom-up. Figures are Balancing Mechanism trades only; REF
+      notes confidential bilateral constraint trades (e.g. ~GBP 12.7m in
+      2011) are excluded, so these values are conservative (lower bound).
+    annual:
+      2010: 174128
+      2011: 12826756
+      2012: 5924231
+      2013: 32707351
+      2014: 53261058
+      2015: 90738134
+      2016: 81861075
+      2017: 108247860
+      2018: 124649106
+      2019: 138992769
+      2020: 274161002
+      2021: 143342294
+      2022: 227183472
+      2023: 310482753
+      2024: 394302243
+      2025: 382108509
