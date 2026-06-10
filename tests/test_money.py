@@ -86,6 +86,42 @@ def test_gross_and_net_cfd():
     assert (gross, net) == (100.0, 70.0)
 
 
+def deflators():
+    return pl.DataFrame({"year": [2002, 2003, 2004, 2005, 2023, 2024, 2025],
+                         "index": [70.0, 71.0, 72.0, 73.0, 128.0, 132.0, 136.0]},
+                        schema={"year": pl.Int64, "index": pl.Float64})
+
+
+def test_add_real_restates_to_2024_prices():
+    annual = pl.DataFrame({"year": [2002, 2024], "cost_gbp": [70.0, 132.0]},
+                          schema={"year": pl.Int64, "cost_gbp": pl.Float64})
+    out = money.add_real(annual, deflators())
+    rows = {r["year"]: r["cost_gbp_2024"] for r in out.to_dicts()}
+    assert rows[2002] == 132.0   # 70 * 132/70
+    assert rows[2024] == 132.0   # unchanged in base year
+
+
+def test_add_real_uses_latest_index_for_unknown_years():
+    annual = pl.DataFrame({"year": [2026], "cost_gbp": [136.0]},
+                          schema={"year": pl.Int64, "cost_gbp": pl.Float64})
+    out = money.add_real(annual, deflators())
+    assert out.to_dicts()[0]["cost_gbp_2024"] == 132.0  # 136 * 132/136
+
+
+def test_baseline_uplift_floors_at_zero_and_nets_subtraction():
+    raw = pl.DataFrame({"year": [2003, 2023], "cost_gbp": [60.0, 1000.0]},
+                       schema={"year": pl.Int64, "cost_gbp": pl.Float64})
+    constraints = pl.DataFrame({"year": [2023], "cost_gbp": [100.0]},
+                               schema={"year": pl.Int64, "cost_gbp": pl.Float64})
+    out = money.baseline_uplift(raw, 100.0, deflators(), subtract=constraints)
+    rows = {r["year"]: r["cost_gbp"] for r in out.to_dicts()}
+    # baseline index = mean(70,71,72,73) = 71.5
+    # 2003: 60 - 100*(71/71.5) = negative -> floored to 0
+    assert rows[2003] == 0.0
+    # 2023: 1000 - 100*(128/71.5) - 100 = 1000 - 179.02... - 100
+    assert abs(rows[2023] - (1000.0 - 100.0 * 128.0 / 71.5 - 100.0)) < 1e-9
+
+
 def test_build_integration(tmp_path):
     from subsidy_engine.reference import ReferenceScheme
     from subsidy_engine.store import SnapshotStore

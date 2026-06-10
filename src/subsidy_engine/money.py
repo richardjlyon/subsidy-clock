@@ -75,6 +75,65 @@ def merge_annual(reference: pl.DataFrame, bottom_up: pl.DataFrame) -> pl.DataFra
     return pl.concat([keep, bottom_up]).sort("year")
 
 
+REAL_BASE_YEAR = 2024
+BASELINE_YEARS = (2002, 2005)  # inclusive window for uplift baselines
+
+
+def _base_index(deflators: pl.DataFrame) -> float:
+    return float(deflators.filter(
+        pl.col("year") == REAL_BASE_YEAR)["index"][0])
+
+
+def _latest_index(deflators: pl.DataFrame) -> float:
+    return float(deflators.sort("year")["index"][-1])
+
+
+def add_real(annual: pl.DataFrame, deflators: pl.DataFrame) -> pl.DataFrame:
+    """Add cost_gbp_2024 restated in REAL_BASE_YEAR prices; years beyond the
+    deflator series use the latest index (recent money ~ current prices)."""
+    base = _base_index(deflators)
+    latest = _latest_index(deflators)
+    return (
+        annual.join(deflators, on="year", how="left")
+        .with_columns((pl.col("cost_gbp") * base / pl.col("index").fill_null(latest))
+                      .alias("cost_gbp_2024"))
+        .drop("index")
+    )
+
+
+def latest_real_factor(deflators: pl.DataFrame) -> float:
+    """Factor converting current-year money to REAL_BASE_YEAR prices."""
+    return _base_index(deflators) / _latest_index(deflators)
+
+
+def baseline_uplift(
+    raw_annual: pl.DataFrame,
+    baseline_gbp: float,
+    deflators: pl.DataFrame,
+    *,
+    subtract: pl.DataFrame | None = None,
+) -> pl.DataFrame:
+    """Conservative attribution: cost above the CPIH-indexed 2002-05 baseline,
+    optionally net of costs already counted elsewhere, floored at zero."""
+    lo, hi = BASELINE_YEARS
+    base_idx = float(deflators.filter(
+        pl.col("year").is_between(lo, hi))["index"].mean())
+    latest = _latest_index(deflators)
+    df = raw_annual.join(deflators, on="year", how="left").with_columns(
+        (baseline_gbp * pl.col("index").fill_null(latest) / base_idx).alias("baseline"))
+    if subtract is not None:
+        df = (df.join(subtract.rename({"cost_gbp": "sub"}).select("year", "sub"),
+                      on="year", how="left")
+              .with_columns(pl.col("sub").fill_null(0.0)))
+    else:
+        df = df.with_columns(pl.lit(0.0).alias("sub"))
+    return (df.with_columns(
+                pl.max_horizontal(pl.lit(0.0),
+                                  pl.col("cost_gbp") - pl.col("baseline") - pl.col("sub"))
+                .alias("cost_gbp"))
+            .select("year", "cost_gbp"))
+
+
 def annual_to_result(scheme_id: str, ref: ReferenceScheme) -> SchemeResult:
     annual = ref.annual
     latest_year = int(annual["year"].max())

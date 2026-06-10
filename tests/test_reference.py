@@ -27,3 +27,22 @@ def test_load_context():
     assert 20_000_000 < ctx["households"]["value"] < 40_000_000
     assert "source_url" in ctx["households"]
     assert 100 < ctx["annual_demand_twh"]["value"] < 500
+
+
+def test_load_deflators():
+    df = reference.load_deflators(REF_DIR / "deflators.yaml")
+    assert df.columns == ["year", "index"]
+    years = df["year"].to_list()
+    assert years[0] == 2002 and years == sorted(years)
+    # CPIH roughly doubles 2002 -> 2024
+    i2002 = df.filter(df["year"] == 2002)["index"][0]
+    i2024 = df.filter(df["year"] == 2024)["index"][0]
+    assert 1.4 < i2024 / i2002 < 2.2
+
+
+def test_load_baselines():
+    b = reference.load_baselines(REF_DIR / "baselines.yaml")
+    for key in ("bsuos", "tnuos"):
+        assert b[key]["value"] > 0
+        assert b[key]["source_url"].startswith("https://")
+        assert b[key]["period"] == "2002-2005"

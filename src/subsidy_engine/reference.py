@@ -47,3 +47,17 @@ def load_annual_costs(path: Path) -> dict[str, ReferenceScheme]:
 
 def load_context(path: Path) -> dict:
     return yaml.safe_load(Path(path).read_text())
+
+
+def load_deflators(path: Path) -> pl.DataFrame:
+    """ONS CPIH annual index as (year, index), sorted."""
+    raw = yaml.safe_load(Path(path).read_text())
+    return pl.DataFrame(
+        {"year": list(raw["index"].keys()),
+         "index": [float(v) for v in raw["index"].values()]},
+        schema={"year": pl.Int64, "index": pl.Float64},
+    ).sort("year")
+
+
+def load_baselines(path: Path) -> dict:
+    return yaml.safe_load(Path(path).read_text())
