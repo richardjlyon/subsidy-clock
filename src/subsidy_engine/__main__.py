@@ -6,11 +6,12 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import yaml
 from datetime import date, datetime, timezone
 from pathlib import Path
 
 from subsidy_engine import money, reconcile, reference, sitedata
-from subsidy_engine.schemes import capacity_market, cfd, constraints
+from subsidy_engine.schemes import bsuos, capacity_market, cfd, constraints
 from subsidy_engine.store import SnapshotStore
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -27,6 +28,7 @@ def cmd_update(args: argparse.Namespace) -> int:
         "cfd": lambda: cfd.update(store),
         "constraints": lambda: constraints.update(store),
         "cm": lambda: capacity_market.update(store),
+        "bsuos": lambda: bsuos.update(store),
     }
     chosen = targets if args.scheme == "all" else {args.scheme: targets[args.scheme]}
     for name, fn in chosen.items():
@@ -46,25 +48,35 @@ def cmd_backfill_constraints(args: argparse.Namespace) -> int:
 
 
 def cmd_build_site(args: argparse.Namespace) -> int:
+    import polars as pl
+
     store = make_store(args.root)
     refs = reference.load_annual_costs(args.root / "reference" / "annual_scheme_costs.yaml")
+    refs.update(reference.load_annual_costs(args.root / "reference" / "indirect_annual.yaml"))
     ctx = reference.load_context(args.root / "reference" / "context.yaml")
-    model = money.build(store, refs)
+    deflators = reference.load_deflators(args.root / "reference" / "deflators.yaml")
+    baselines = reference.load_baselines(args.root / "reference" / "baselines.yaml")
+    model = money.build(store, refs, deflators=deflators, baselines=baselines)
     freshness = {}
     for scheme_id, table in [("cfd", "generation"), ("constraints", "daily"),
-                             ("capacity_market", "payments")]:
+                              ("capacity_market", "payments"), ("bsuos", "daily")]:
         f = store.freshness(scheme_id, table)
         if f:
             freshness[scheme_id] = {k: f.get(k) for k in
                                     ("retrieved_at", "source_date", "source_url", "row_count")}
     out_dir = args.root / "site" / "data"
+    deflator_yaml = yaml.safe_load((args.root / "reference" / "deflators.yaml").read_text())
+    deflator_info = {"source": deflator_yaml["source"],
+                     "source_url": deflator_yaml["source_url"],
+                     "base_year": deflator_yaml["base_year"],
+                     "verified": deflator_yaml.get("verified", False)}
     sitedata.build(model, ctx, freshness, out_dir,
-                   generated_at=datetime.now(timezone.utc).isoformat())
+                   generated_at=datetime.now(timezone.utc).isoformat(),
+                   deflator_info=deflator_info)
 
     gen = store.latest("cfd", "generation")
     trk = store.latest("cfd", "tracking")
     if gen is not None and trk is not None:
-        import polars as pl
         bottom_up = gen.group_by("date").agg(pl.col("payment_gbp").sum().alias("cost_gbp"))
         report = reconcile.cfd_monthly(bottom_up, trk)
         (out_dir / "reconciliation.json").write_text(json.dumps(report, indent=1, allow_nan=False))
@@ -73,6 +85,22 @@ def cmd_build_site(args: argparse.Namespace) -> int:
         print(f"[reconciliation] {flag}: overall divergence {pct}% over "
               f"{report['matched_days']} matched days "
               f"({report['excluded_recent_days']} recent days excluded)")
+
+    crosscheck_path = args.root / "reference" / "ref_crosscheck.yaml"
+    if crosscheck_path.is_file():
+        ref_cc = reference.load_ref_crosscheck(crosscheck_path)
+        cc_year = int(ref_cc["year"][:4])
+        ours = {}
+        for s in model["schemes"]:
+            if s.layer == "indirect":
+                row = s.annual.filter(pl.col("year") == cc_year)
+                ours[s.scheme_id] = float(row["cost_gbp"][0]) if row.height else 0.0
+        cc = reconcile.indirect_crosscheck(ours, ref_cc)
+        (out_dir / "indirect_crosscheck.json").write_text(
+            json.dumps(cc, indent=1, allow_nan=False))
+        print(f"[crosscheck] {len(cc['components'])} components vs REF {cc['comparison_year']}; "
+              f"{cc['unexplained_count']} unexplained beyond ±{cc['bound_pct']}%")
+
     print(f"[ok] site data written to {out_dir}")
     return 0
 
@@ -84,7 +112,7 @@ def main(argv: list[str] | None = None) -> int:
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_update = sub.add_parser("update", help="fetch latest data for scheme(s)")
-    p_update.add_argument("scheme", choices=["all", "cfd", "constraints", "cm"],
+    p_update.add_argument("scheme", choices=["all", "cfd", "constraints", "cm", "bsuos"],
                           nargs="?", default="all")
     p_update.set_defaults(fn=cmd_update)
 

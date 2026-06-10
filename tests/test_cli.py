@@ -10,3 +10,8 @@ def test_cli_help():
     assert out.returncode == 0
     for cmd in ("update", "backfill-constraints", "build-site"):
         assert cmd in out.stdout
+
+    update_help = subprocess.run(
+        [sys.executable, "-m", "subsidy_engine", "update", "--help"],
+        capture_output=True, text=True)
+    assert "bsuos" in update_help.stdout
