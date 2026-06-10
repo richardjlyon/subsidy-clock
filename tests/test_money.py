@@ -43,29 +43,50 @@ def test_merge_history_prefers_bottom_up_years():
     ]
 
 
-def test_perspective_totals_are_nested():
+def test_perspective_totals_are_nested_and_direct_only():
     schemes = [
         money.SchemeResult(
-            scheme_id="a", label="A", perspectives=["renewables", "low_carbon", "all_levy"],
+            scheme_id="a", label="A", perspectives=["renewables", "low_carbon"],
             cadence="daily", annual=pl.DataFrame({"year": [2026], "cost_gbp": [10.0]}),
             cumulative_gbp=10.0, runrate_gbp_per_year=10.0, data_to=date(2026, 6, 1),
         ),
         money.SchemeResult(
-            scheme_id="b", label="B", perspectives=["low_carbon", "all_levy"],
+            scheme_id="b", label="B", perspectives=["low_carbon"],
             cadence="daily", annual=pl.DataFrame({"year": [2026], "cost_gbp": [5.0]}),
             cumulative_gbp=5.0, runrate_gbp_per_year=5.0, data_to=date(2026, 6, 1),
         ),
-        money.SchemeResult(
-            scheme_id="c", label="C", perspectives=["all_levy"],
+        money.SchemeResult(   # indirect scheme must NOT appear in any perspective
+            scheme_id="c", label="C", perspectives=[], layer="indirect",
             cadence="monthly", annual=pl.DataFrame({"year": [2026], "cost_gbp": [2.0]}),
             cumulative_gbp=2.0, runrate_gbp_per_year=2.0, data_to=date(2026, 6, 1),
         ),
     ]
     totals = money.perspective_totals(schemes)
+    assert set(totals) == {"renewables", "low_carbon"}
     assert totals["renewables"]["cumulative_gbp"] == 10.0
     assert totals["low_carbon"]["cumulative_gbp"] == 15.0
-    assert totals["all_levy"]["cumulative_gbp"] == 17.0
-    assert totals["renewables"]["runrate_gbp_per_year"] == 10.0
+    indirect = money.layer_total(schemes, "indirect")
+    assert indirect["cumulative_gbp"] == 2.0
+
+
+def test_no_indirect_leakage_into_direct_totals():
+    direct = money.SchemeResult(
+        scheme_id="d", label="D", perspectives=["renewables", "low_carbon"],
+        cadence="daily", annual=pl.DataFrame({"year": [2026], "cost_gbp": [7.0]}),
+        cumulative_gbp=7.0, runrate_gbp_per_year=7.0, data_to=date(2026, 6, 1),
+    )
+    indirect = money.SchemeResult(
+        scheme_id="i", label="I", perspectives=[], layer="indirect",
+        cadence="annual", annual=pl.DataFrame({"year": [2026], "cost_gbp": [99.0]}),
+        cumulative_gbp=99.0, runrate_gbp_per_year=99.0, data_to=date(2026, 6, 1),
+    )
+    with_ind = money.perspective_totals([direct, indirect])
+    without = money.perspective_totals([direct])
+    # polars DataFrames don't support == for dict equality; compare separately
+    for p in with_ind:
+        assert {k: v for k, v in with_ind[p].items() if k != "annual"} == \
+               {k: v for k, v in without[p].items() if k != "annual"}
+        assert with_ind[p]["annual"].equals(without[p]["annual"])
 
 
 def test_trailing_runrate_short_coverage_not_understated():
@@ -148,15 +169,15 @@ def test_build_integration(tmp_path):
     refs = {
         "constraints_history": ReferenceScheme(
             "constraints_history", "Wind constraints history",
-            ["renewables", "low_carbon", "all_levy"], "annual", "s", "https://s",
+            ["renewables", "low_carbon"], "annual", "s", "https://s",
             True, hist),
         "ro": ReferenceScheme("ro", "Renewables Obligation",
-                              ["renewables", "low_carbon", "all_levy"], "annual",
+                              ["renewables", "low_carbon"], "annual",
                               "s", "https://s", True,
                               pl.DataFrame({"year": [2024], "cost_gbp": [7.0e9]},
                                            schema={"year": pl.Int64, "cost_gbp": pl.Float64})),
         "fit": ReferenceScheme("fit", "Feed-in Tariffs",
-                               ["renewables", "low_carbon", "all_levy"], "annual",
+                               ["renewables", "low_carbon"], "annual",
                                "s", "https://s", True,
                                pl.DataFrame({"year": [2024], "cost_gbp": [1.8e9]},
                                             schema={"year": pl.Int64, "cost_gbp": pl.Float64})),
@@ -172,8 +193,8 @@ def test_build_integration(tmp_path):
     assert {"year": 2026, "cost_gbp": 600.0} in con_annual
     assert by_id["constraints"].cumulative_gbp == 390e6 + 382e6 + 600.0
     assert by_id["constraints"].extras["bottom_up_from"] == "2026-04-10"
-    # perspective nesting: renewables excludes nuclear CfD, all include constraints+ro+fit
+    # perspective nesting: renewables excludes nuclear CfD, low_carbon includes it
     p = model["perspectives"]
+    assert set(p) == {"renewables", "low_carbon"}
     assert p["renewables"]["cumulative_gbp"] == 5000.0 + (390e6 + 382e6 + 600.0) + 7.0e9 + 1.8e9
     assert p["low_carbon"]["cumulative_gbp"] == p["renewables"]["cumulative_gbp"] + 7000.0
-    assert p["all_levy"]["cumulative_gbp"] == p["low_carbon"]["cumulative_gbp"]  # no CM data written

@@ -18,7 +18,7 @@ def model():
                           schema={"year": pl.Int64, "cost_gbp": pl.Float64})
     s = SchemeResult(
         scheme_id="cfd_renewable", label="CfD - renewables",
-        perspectives=["renewables", "low_carbon", "all_levy"], cadence="daily",
+        perspectives=["renewables", "low_carbon"], cadence="daily",
         annual=annual, cumulative_gbp=4.0e9, runrate_gbp_per_year=2.0e9,
         data_to=date(2026, 6, 1),
         extras={"by_technology": [], "by_recipient": [], "gross_gbp": 4.1e9, "net_gbp": 4.0e9},
@@ -28,8 +28,6 @@ def model():
                        "rate_gbp_per_sec": 63.38, "annual": annual, "since_year": 2025},
         "low_carbon": {"cumulative_gbp": 4.0e9, "runrate_gbp_per_year": 2.0e9,
                        "rate_gbp_per_sec": 63.38, "annual": annual, "since_year": 2025},
-        "all_levy": {"cumulative_gbp": 4.0e9, "runrate_gbp_per_year": 2.0e9,
-                     "rate_gbp_per_sec": 63.38, "annual": annual, "since_year": 2025},
     }}
 
 

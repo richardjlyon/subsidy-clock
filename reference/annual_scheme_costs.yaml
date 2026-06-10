@@ -6,7 +6,7 @@
 schemes:
   ro:
     label: Renewables Obligation
-    perspectives: [renewables, low_carbon, all_levy]
+    perspectives: [renewables, low_carbon]
     cadence: annual
     source: >-
       Ofgem Renewables Obligation Annual Reports. 2024 (SY23): Annual Report
@@ -57,7 +57,7 @@ schemes:
       2024: 7700000000
   fit:
     label: Feed-in Tariffs
-    perspectives: [renewables, low_carbon, all_levy]
+    perspectives: [renewables, low_carbon]
     cadence: annual
     source: >-
       Ofgem Feed-in Tariffs Annual Report Scheme Year 15 (April 2024 to
@@ -93,7 +93,7 @@ schemes:
       2024: 1844000000
   constraints_history:
     label: Wind constraint payments (pre-backfill history)
-    perspectives: [renewables, low_carbon, all_levy]
+    perspectives: [renewables, low_carbon]
     cadence: annual
     source: >-
       Renewable Energy Foundation (REF) online database of wind farm

@@ -12,7 +12,7 @@ from subsidy_engine.reference import ReferenceScheme
 from subsidy_engine.store import SnapshotStore
 
 SECONDS_PER_YEAR = 365.25 * 86400  # 31_557_600
-PERSPECTIVES = ["renewables", "low_carbon", "all_levy"]
+PERSPECTIVES = ["renewables", "low_carbon"]
 
 
 @dataclass
@@ -21,10 +21,14 @@ class SchemeResult:
     label: str
     perspectives: list[str]
     cadence: str
-    annual: pl.DataFrame                  # year, cost_gbp
+    annual: pl.DataFrame                  # year, cost_gbp[, cost_gbp_2024]
     cumulative_gbp: float
     runrate_gbp_per_year: float
     data_to: date | None
+    layer: str = "direct"
+    attribution_pct: float = 1.0
+    attribution_note: str = ""
+    attribution_confidence: str = ""
     extras: dict = field(default_factory=dict)
 
 
@@ -153,24 +157,36 @@ def annual_to_result(scheme_id: str, ref: ReferenceScheme) -> SchemeResult:
     )
 
 
+def _aggregate(members: list[SchemeResult]) -> dict:
+    has_real = members and all("cost_gbp_2024" in s.annual.columns for s in members)
+    agg_cols = [pl.col("cost_gbp").sum()] + (
+        [pl.col("cost_gbp_2024").sum()] if has_real else [])
+    annual = (
+        pl.concat([s.annual for s in members])
+        .group_by("year").agg(agg_cols).sort("year")
+        if members else pl.DataFrame({"year": [], "cost_gbp": []})
+    )
+    runrate = sum(s.runrate_gbp_per_year for s in members)
+    out = {
+        "cumulative_gbp": sum(s.cumulative_gbp for s in members),
+        "runrate_gbp_per_year": runrate,
+        "rate_gbp_per_sec": rate_per_second(runrate),
+        "annual": annual,
+        "since_year": int(annual["year"].min()) if annual.height else None,
+    }
+    if has_real:
+        out["cumulative_gbp_2024"] = float(annual["cost_gbp_2024"].sum())
+    return out
+
+
 def perspective_totals(schemes: list[SchemeResult]) -> dict:
-    totals: dict = {}
-    for p in PERSPECTIVES:
-        members = [s for s in schemes if p in s.perspectives]
-        annual = (
-            pl.concat([s.annual for s in members])
-            .group_by("year").agg(pl.col("cost_gbp").sum()).sort("year")
-            if members else pl.DataFrame({"year": [], "cost_gbp": []})
-        )
-        runrate = sum(s.runrate_gbp_per_year for s in members)
-        totals[p] = {
-            "cumulative_gbp": sum(s.cumulative_gbp for s in members),
-            "runrate_gbp_per_year": runrate,
-            "rate_gbp_per_sec": rate_per_second(runrate),
-            "annual": annual,
-            "since_year": int(annual["year"].min()) if annual.height else None,
-        }
-    return totals
+    direct = [s for s in schemes if s.layer == "direct"]
+    return {p: _aggregate([s for s in direct if p in s.perspectives])
+            for p in PERSPECTIVES}
+
+
+def layer_total(schemes: list[SchemeResult], layer: str) -> dict:
+    return _aggregate([s for s in schemes if s.layer == layer])
 
 
 def build(store: SnapshotStore, refs: dict[str, ReferenceScheme]) -> dict:
@@ -182,7 +198,7 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme]) -> dict:
     if gen is not None and gen.height:
         for part, flag, perspectives, label in [
             ("cfd_renewable", True, PERSPECTIVES, "CfD - renewables"),
-            ("cfd_low_carbon", False, ["low_carbon", "all_levy"],
+            ("cfd_low_carbon", False, ["low_carbon"],
              "CfD - nuclear & biomass"),
         ]:
             sub = gen.filter(pl.col("is_renewable") == flag)
@@ -262,7 +278,11 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme]) -> dict:
         last12 = monthly.filter(pl.col("date") > cutoff)
         schemes.append(SchemeResult(
             scheme_id="capacity_market", label="Capacity Market",
-            perspectives=["all_levy"], cadence="monthly",
+            perspectives=[], cadence="monthly",
+            layer="indirect",
+            attribution_note=("Capacity Market levy counted in full: availability "
+                              "payments procure backup for intermittent generation"),
+            attribution_confidence="medium",
             annual=annualise_daily(monthly),
             cumulative_gbp=cumulative(monthly),
             runrate_gbp_per_year=float(last12["cost_gbp"].sum()),
