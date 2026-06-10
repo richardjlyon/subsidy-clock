@@ -1,10 +1,11 @@
-"""Client for the LCCC data portal (CKAN datastore API)."""
+"""Client for CKAN data portals (LCCC and NESO both run CKAN)."""
 
 from __future__ import annotations
 
 import httpx
 
-BASE_URL = "https://dp.lowcarboncontracts.uk/api/3/action/datastore_search"
+LCCC_API = "https://dp.lowcarboncontracts.uk/api/3/action"
+NESO_API = "https://api.neso.energy/api/3/action"
 
 
 def fetch_all_records(
@@ -12,6 +13,7 @@ def fetch_all_records(
     *,
     client: httpx.Client | None = None,
     page_size: int = 10_000,
+    api_base: str = LCCC_API,
 ) -> list[dict]:
     own_client = client is None
     client = client or httpx.Client(timeout=120)
@@ -19,7 +21,7 @@ def fetch_all_records(
         records: list[dict] = []
         offset = 0
         while True:
-            resp = client.get(BASE_URL, params={
+            resp = client.get(f"{api_base}/datastore_search", params={
                 "resource_id": resource_id, "limit": page_size, "offset": offset,
             })
             resp.raise_for_status()
@@ -35,6 +37,24 @@ def fetch_all_records(
                     f"datastore_search returned {len(records)} of {total} "
                     f"records for {resource_id}"
                 )
+    finally:
+        if own_client:
+            client.close()
+
+
+def dataset_resources(
+    dataset_id: str,
+    *,
+    client: httpx.Client | None = None,
+    api_base: str = LCCC_API,
+) -> list[dict]:
+    """The resources (id, name, format, ...) of a CKAN dataset."""
+    own_client = client is None
+    client = client or httpx.Client(timeout=120)
+    try:
+        resp = client.get(f"{api_base}/package_show", params={"id": dataset_id})
+        resp.raise_for_status()
+        return resp.json()["result"]["resources"]
     finally:
         if own_client:
             client.close()
