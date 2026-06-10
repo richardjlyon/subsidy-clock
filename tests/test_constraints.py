@@ -70,6 +70,13 @@ def test_wind_bmu_map_filters_fuel_type():
     assert wind_bmu_map(client) == {"T_ABRBO-1": "Aberdeen Offshore Wind Farm"}
 
 
+def test_parse_stack_skips_rows_missing_price():
+    row = dict(STACK_ROWS[0])
+    del row["originalPrice"]
+    df = constraints.parse_stack([row], WIND)
+    assert df.height == 0
+
+
 def test_fetch_day_collects_all_periods():
     def handler(request: httpx.Request) -> httpx.Response:
         period = int(request.url.path.rsplit("/", 1)[-1])
@@ -80,4 +87,5 @@ def test_fetch_day_collects_all_periods():
     client = httpx.Client(transport=httpx.MockTransport(handler))
     df = constraints.fetch_day(date(2026, 6, 1), WIND, client)
     assert df.height == 1
+    assert df.to_dicts()[0]["bmu"] == "T_ABRBO-1"  # battery row filtered out
     assert df.to_dicts()[0]["cost_gbp"] == 600.0

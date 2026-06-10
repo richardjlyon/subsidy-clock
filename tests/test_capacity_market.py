@@ -34,3 +34,8 @@ def test_parse_monthly_payments():
 def test_parse_skips_blank_payments():
     record = dict(RECORDS[0], Capacity_Payment_GBP="")
     assert cm.parse_payments([record]).height == 0
+
+
+def test_parse_skips_unknown_month_names():
+    record = dict(RECORDS[0], Calendar_Month="Mystery")
+    assert cm.parse_payments([record]).height == 0

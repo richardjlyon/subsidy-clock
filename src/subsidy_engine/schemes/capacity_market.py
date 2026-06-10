@@ -25,12 +25,13 @@ def parse_payments(records: list[dict]) -> pl.DataFrame:
         df.select(
             pl.date(
                 pl.col("Calendar_Year").cast(pl.Int32),
-                pl.col("Calendar_Month").replace_strict(_MONTHS, return_dtype=pl.Int8),
+                pl.col("Calendar_Month").replace_strict(_MONTHS, default=None, return_dtype=pl.Int8),
                 1,
             ).alias("date"),
             pl.col("Auction_Identifier").alias("auction"),
             pl.col("Capacity_Payment_GBP").cast(pl.Float64, strict=False).alias("payment_gbp"),
         )
+        .drop_nulls("date")
         .drop_nulls("payment_gbp")
         .sort("date", "auction")
     )

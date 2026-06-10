@@ -1,9 +1,17 @@
 """Wind constraint (curtailment) payments (spec 3.2): accepted Balancing
-Mechanism bids from wind units — money paid to NOT generate."""
+Mechanism bids from wind units — money paid to NOT generate.
+
+Methodology: ALL accepted bids from wind BM units are counted, regardless of
+soFlag, consistent with REF's published curtailment methodology. The soFlag
+governs imbalance-price tagging, not whether the unit is paid; wind units bid
+in the BM almost exclusively when being constrained off. Known limitations:
+a failed day aborts the remainder of a backfill run (the missing day is
+retried on the next run because its partition was never written), and a day
+stored with zero rows is treated as complete by skip_existing."""
 
 from __future__ import annotations
 
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 import httpx
 import polars as pl
@@ -36,7 +44,10 @@ def parse_stack(rows: list[dict], wind: dict[str, str]) -> pl.DataFrame:
             "cost_gbp": float(r["volume"]) * float(r["originalPrice"]),
         }
         for r in rows
-        if r.get("id") in wind and float(r.get("volume") or 0) < 0
+        if r.get("id") in wind
+        and float(r.get("volume") or 0) < 0
+        and r.get("originalPrice") is not None
+        and r.get("settlementDate") and r.get("settlementPeriod") is not None
     ]
     return pl.DataFrame(out, schema=SCHEMA)
 
@@ -94,5 +105,5 @@ def backfill(
 
 def update(store: SnapshotStore, *, days: int = 3, client: httpx.Client | None = None) -> None:
     """Refetch the last `days` complete days (settlement data firms up)."""
-    end = date.today() - timedelta(days=1)
+    end = datetime.now(timezone.utc).date() - timedelta(days=1)
     backfill(store, end - timedelta(days=days - 1), end, client=client, skip_existing=False)
