@@ -1,0 +1,49 @@
+{
+ "comparison_year": "2023/2024",
+ "ref_source": "REF, \"UK Renewable Electricity Subsidy Totals 2002 to the Present Day\", April 2025, Table 2 (and Capacity column)",
+ "ref_source_url": "https://www.ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day",
+ "bound_pct": 25.0,
+ "components": [
+  {
+   "component": "capacity_market",
+   "ours_gbp": 898210217.37,
+   "ref_gbp": 1000000000.0,
+   "divergence_pct": -10.179,
+   "note": "",
+   "explained": true
+  },
+  {
+   "component": "ccl",
+   "ours_gbp": 1465000000.0,
+   "ref_gbp": 1900000000.0,
+   "divergence_pct": -22.8947,
+   "note": "REF counts total CCL receipts (OBR series, all fuels); we count electricity's share of main-rate receipts plus Carbon Price Support. Our figure is expected to be lower.",
+   "explained": true
+  },
+  {
+   "component": "ets",
+   "ours_gbp": 1305800000.0,
+   "ref_gbp": 6100000000.0,
+   "divergence_pct": -78.5934,
+   "note": "REF counts total ETS receipts (OBR series, all sectors); we count only the power-sector share of auctioned allowance revenue. Our figure is expected to be much lower.",
+   "explained": true
+  },
+  {
+   "component": "bsuos",
+   "ours_gbp": 981488223.89,
+   "ref_gbp": 2200000000.0,
+   "divergence_pct": -55.3869,
+   "note": "REF does not net off direct constraint payments; we do. Our figure is expected to be lower.",
+   "explained": true
+  },
+  {
+   "component": "tnuos",
+   "ours_gbp": 2918651162.79,
+   "ref_gbp": 2900000000.0,
+   "divergence_pct": 0.6431,
+   "note": "",
+   "explained": true
+  }
+ ],
+ "unexplained_count": 0
+}

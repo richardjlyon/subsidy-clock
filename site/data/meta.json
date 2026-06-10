@@ -1,23 +1,29 @@
 {
- "generated_at": "2026-06-10T03:41:47.357308+00:00",
+ "generated_at": "2026-06-10T06:31:07.509113+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-06-10T03:29:06.102484+00:00",
+   "retrieved_at": "2026-06-10T06:30:39.024285+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
    "row_count": 107956
   },
   "constraints": {
-   "retrieved_at": "2026-06-10T03:36:54.438153+00:00",
-   "source_date": "2026-06-08",
+   "retrieved_at": "2026-06-10T06:31:02.087576+00:00",
+   "source_date": "2026-06-09",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 46
+   "row_count": 43
   },
   "capacity_market": {
-   "retrieved_at": "2026-06-10T03:29:10.744316+00:00",
+   "retrieved_at": "2026-06-10T06:31:02.872343+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 732
+  },
+  "bsuos": {
+   "retrieved_at": "2026-06-10T06:31:04.650394+00:00",
+   "source_date": "2026-2027",
+   "source_url": "https://www.neso.energy/data-portal/daily-balancing-costs-balancing-services-use-of-system",
+   "row_count": 67
   }
  },
  "context": {
@@ -58,5 +64,11 @@
     "as_of": 2023
    }
   }
+ },
+ "deflator": {
+  "source": "ONS, CPIH Index 00 All Items 2015=100, annual averages (series L522)",
+  "source_url": "https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/l522/mm23",
+  "base_year": 2024,
+  "verified": true
  }
 }

@@ -1,15 +1,18 @@
 {
- "generated_at": "2026-06-10T03:41:47.357308+00:00",
+ "generated_at": "2026-06-10T06:31:07.509113+00:00",
  "schemes": [
   {
    "id": "cfd_renewable",
    "label": "CfD - renewables",
    "perspectives": [
     "renewables",
-    "low_carbon",
-    "all_levy"
+    "low_carbon"
    ],
    "cadence": "daily",
+   "layer": "direct",
+   "attribution_pct": 1.0,
+   "attribution_note": "",
+   "attribution_confidence": "",
    "cumulative_gbp": 10189907647.66,
    "runrate_gbp_per_year": 2382894654.381288,
    "data_to": "2026-05-31",
@@ -25,12 +28,12 @@
     {
      "technology": "Onshore Wind",
      "cost_gbp": 216801697.9099999,
-     "generation_mwh": 11019745.186000003
+     "generation_mwh": 11019745.186000004
     },
     {
      "technology": "Solar PV",
      "cost_gbp": -3735785.490000002,
-     "generation_mwh": 884264.4639999999
+     "generation_mwh": 884264.4639999998
     }
    ],
    "by_recipient": [
@@ -165,10 +168,13 @@
    "id": "cfd_low_carbon",
    "label": "CfD - nuclear & biomass",
    "perspectives": [
-    "low_carbon",
-    "all_levy"
+    "low_carbon"
    ],
    "cadence": "daily",
+   "layer": "direct",
+   "attribution_pct": 1.0,
+   "attribution_note": "",
+   "attribution_confidence": "",
    "cumulative_gbp": 3148187394.73,
    "runrate_gbp_per_year": 586663020.1929041,
    "data_to": "2026-05-31",
@@ -178,8 +184,8 @@
    "by_technology": [
     {
      "technology": "Biomass Conversion",
-     "cost_gbp": 2896401141.6400003,
-     "generation_mwh": 52723755.04900002
+     "cost_gbp": 2896401141.640001,
+     "generation_mwh": 52723755.04899998
     },
     {
      "technology": "Dedicated Biomass",
@@ -193,8 +199,8 @@
     },
     {
      "technology": "Energy from Waste",
-     "cost_gbp": -10445697.729999997,
-     "generation_mwh": 757535.7049999998
+     "cost_gbp": -10445697.730000006,
+     "generation_mwh": 757535.7050000002
     }
    ],
    "by_recipient": [
@@ -221,7 +227,7 @@
     {
      "unit_name": "K3 CHP Facility",
      "technology": "Energy from Waste",
-     "cost_gbp": -10445697.729999997
+     "cost_gbp": -10445697.730000004
     }
    ]
   },
@@ -230,38 +236,41 @@
    "label": "Constraint payments (paid to switch off)",
    "perspectives": [
     "renewables",
-    "low_carbon",
-    "all_levy"
+    "low_carbon"
    ],
    "cadence": "daily",
-   "cumulative_gbp": 2421768869.484017,
-   "runrate_gbp_per_year": 248407307.14645156,
-   "data_to": "2026-06-08",
+   "layer": "direct",
+   "attribution_pct": 1.0,
+   "attribution_note": "",
+   "attribution_confidence": "",
+   "cumulative_gbp": 2421943037.4017763,
+   "runrate_gbp_per_year": 245377922.30735767,
+   "data_to": "2026-06-09",
    "by_recipient": [
     {
      "lead_party": "Moray Offshore Wind West Ltd",
-     "cost_gbp": 6585384.697743487,
-     "volume_mwh": -240373.78989075642
+     "cost_gbp": 6594331.0843268195,
+     "volume_mwh": -240669.8815574231
     },
     {
      "lead_party": "Moray Offshore Wind East Ltd",
-     "cost_gbp": 5667584.217121737,
-     "volume_mwh": -305872.13981948356
+     "cost_gbp": 5683528.739788404,
+     "volume_mwh": -306280.23148615024
     },
     {
      "lead_party": "Seagreen Wind Energy Limited",
-     "cost_gbp": 5138346.9767980855,
-     "volume_mwh": -365031.72263219446
+     "cost_gbp": 5152166.621798086,
+     "volume_mwh": -366011.8392988611
     },
     {
      "lead_party": "SP Renewables (UK) Limited",
-     "cost_gbp": 3101708.9667449193,
-     "volume_mwh": -54324.654689305564
+     "cost_gbp": 3102215.8345490526,
+     "volume_mwh": -54370.77421263889
     },
     {
      "lead_party": "Viking Energy Wind Farm LLP",
      "cost_gbp": 2386097.8312494806,
-     "volume_mwh": -163580.65256509255
+     "volume_mwh": -163580.65256509258
     },
     {
      "lead_party": "Stronelairg Windfarm Limited",
@@ -270,78 +279,83 @@
     },
     {
      "lead_party": "Statkraft Markets Gmbh",
-     "cost_gbp": 1614423.7469951652,
-     "volume_mwh": -21708.380783244564
+     "cost_gbp": 1614734.3719951655,
+     "volume_mwh": -21712.522449911226
     },
     {
      "lead_party": "SSE Generation Ltd",
-     "cost_gbp": 1326907.8980891858,
-     "volume_mwh": -24526.01792111111
+     "cost_gbp": 1327041.1097558525,
+     "volume_mwh": -24534.584587777783
     },
     {
      "lead_party": "Dorenell Windfarm Limited",
-     "cost_gbp": 1030684.0000049842,
-     "volume_mwh": -33174.74789829087
+     "cost_gbp": 1032377.144493873,
+     "volume_mwh": -33207.89150940199
     },
     {
      "lead_party": "Eneco Energy Trade",
-     "cost_gbp": 912486.4878472986,
+     "cost_gbp": 912486.4878472985,
      "volume_mwh": -10389.416953680557
     },
     {
      "lead_party": "North Kyle Wind farm Ltd",
-     "cost_gbp": 783837.8083333332,
-     "volume_mwh": -28503.19303030303
+     "cost_gbp": 786955.9187500001,
+     "volume_mwh": -28616.578863636365
     },
     {
      "lead_party": "South Kyle Wind Farm Limited",
-     "cost_gbp": 731188.8254555556,
-     "volume_mwh": -18279.720636388887
+     "cost_gbp": 736452.8254555556,
+     "volume_mwh": -18411.32063638889
     },
     {
      "lead_party": "EDF Energy Customers Limited",
-     "cost_gbp": 675943.379,
-     "volume_mwh": -13086.719166666668
+     "cost_gbp": 677916.2623333334,
+     "volume_mwh": -13126.727499999999
     },
     {
      "lead_party": "Limekiln Extension Ltd",
-     "cost_gbp": 667208.578030303,
-     "volume_mwh": -22240.285934343436
+     "cost_gbp": 669903.5280303028,
+     "volume_mwh": -22330.117601010104
     },
     {
      "lead_party": "Neart Na Gaoithe Offshore Wind",
-     "cost_gbp": 528249.1750166666,
-     "volume_mwh": -6218.646944444446
+     "cost_gbp": 528249.1750166668,
+     "volume_mwh": -6218.646944444445
     },
     {
      "lead_party": "Creag Riabhach Wind Farm Ltd",
-     "cost_gbp": 523097.923123674,
-     "volume_mwh": -8985.586740294513
+     "cost_gbp": 523503.1820125628,
+     "volume_mwh": -8992.573962516733
     },
     {
      "lead_party": "Strathy Wind Farm Limited",
-     "cost_gbp": 447465.3901666666,
-     "volume_mwh": -5325.225000000001
+     "cost_gbp": 447465.39016666665,
+     "volume_mwh": -5325.225
     },
     {
      "lead_party": "AIK2A Sustainable Energy Ltd",
-     "cost_gbp": 421107.9534234206,
-     "volume_mwh": -6477.956613894841
+     "cost_gbp": 422225.006506754,
+     "volume_mwh": -6500.342447228176
     },
     {
      "lead_party": "Sonningmay Wind Limited",
-     "cost_gbp": 363418.481776249,
-     "volume_mwh": -8328.905887996032
+     "cost_gbp": 379285.687051249,
+     "volume_mwh": -9223.987554662697
     },
     {
      "lead_party": "Clyde Windfarm (Scotland) Ltd",
      "cost_gbp": 346503.5506833333,
-     "volume_mwh": -3638.7918124999997
+     "volume_mwh": -3638.7918125
     },
     {
      "lead_party": "Dunmaglass Wind Farm Limited",
-     "cost_gbp": 343837.2902962963,
+     "cost_gbp": 343837.29029629624,
      "volume_mwh": -3796.093518518518
+    },
+    {
+     "lead_party": "Breesea Limited",
+     "cost_gbp": 341126.3808587613,
+     "volume_mwh": -7890.38543871875
     },
     {
      "lead_party": "Fallago Rig Wind Farm Limited",
@@ -349,14 +363,9 @@
      "volume_mwh": -3996.7258333333334
     },
     {
-     "lead_party": "Breesea Limited",
-     "cost_gbp": 327213.1778837613,
-     "volume_mwh": -6959.484049829862
-    },
-    {
      "lead_party": "Erova Energy Limited",
-     "cost_gbp": 313012.3580361111,
-     "volume_mwh": -8348.24722222222
+     "cost_gbp": 313795.01508611115,
+     "volume_mwh": -8373.58861111111
     },
     {
      "lead_party": "Griffin Wind Farm Ltd",
@@ -364,18 +373,20 @@
      "volume_mwh": -3109.9
     }
    ],
-   "curtailed_mwh": 1466431.607150994,
+   "curtailed_mwh": 1472292.2259196977,
    "history_source_url": "https://www.ref.org.uk/constraints/index.php?tab=yr",
    "bottom_up_from": "2026-04-10",
-   "bottom_up_to": "2026-06-08"
+   "bottom_up_to": "2026-06-09"
   },
   {
    "id": "capacity_market",
    "label": "Capacity Market",
-   "perspectives": [
-    "all_levy"
-   ],
+   "perspectives": [],
    "cadence": "monthly",
+   "layer": "indirect",
+   "attribution_pct": 1.0,
+   "attribution_note": "Capacity Market levy counted in full: availability payments procure backup for intermittent generation",
+   "attribution_confidence": "medium",
    "cumulative_gbp": 8470082116.66,
    "runrate_gbp_per_year": 1614869466.31,
    "data_to": "2026-03-01"
@@ -385,10 +396,13 @@
    "label": "Renewables Obligation",
    "perspectives": [
     "renewables",
-    "low_carbon",
-    "all_levy"
+    "low_carbon"
    ],
    "cadence": "annual",
+   "layer": "direct",
+   "attribution_pct": 1.0,
+   "attribution_note": "",
+   "attribution_confidence": "",
    "cumulative_gbp": 74590000000.0,
    "runrate_gbp_per_year": 7700000000.0,
    "data_to": "2025-03-31",
@@ -401,16 +415,279 @@
    "label": "Feed-in Tariffs",
    "perspectives": [
     "renewables",
-    "low_carbon",
-    "all_levy"
+    "low_carbon"
    ],
    "cadence": "annual",
+   "layer": "direct",
+   "attribution_pct": 1.0,
+   "attribution_note": "",
+   "attribution_confidence": "",
    "cumulative_gbp": 18233000000.0,
    "runrate_gbp_per_year": 1844000000.0,
    "data_to": "2025-03-31",
    "source": "Ofgem Feed-in Tariffs Annual Report Scheme Year 15 (April 2024 to March 2025), Figure 3.3 \"FIT scheme value, SY1-15\" (PDF, feed_in_tariff_annual_report_sy15, Dec 2025). The report states the series grew every year from SY1 to SY11 (GBP 1,764m), fell for the first time in SY12 (GBP 1,575m), peaked at GBP 1,858m in SY14, and was GBP 1,844m in SY15, which fixes the year order of the charted values.",
    "source_url": "https://www.ofgem.gov.uk/transparency-document/feed-tariffs-annual-report-scheme-year-15-april-2024-march-2025",
    "verified": true
+  },
+  {
+   "id": "ccl",
+   "label": "Climate Change Levy (electricity share) + Carbon Price Support",
+   "perspectives": [],
+   "cadence": "annual",
+   "layer": "indirect",
+   "attribution_pct": 1.0,
+   "attribution_note": "Electricity's share of CCL main-rate liabilities (HMRC's published commodity split of declarations) plus Carbon Price Support receipts, which fall wholly on electricity generation. Gas/solid-fuel main-rate CCL is excluded.",
+   "attribution_confidence": "medium",
+   "cumulative_gbp": 22848100000.0,
+   "runrate_gbp_per_year": 1253000000.0,
+   "data_to": "2025-03-31",
+   "source": "HMRC Environmental Taxes Bulletin (formerly Climate Change Levy and Carbon Price Floor Bulletin), March 2026 edition, tables ODS (2026_March_env_tabs_test.ods), Table 1b \"CCL and CPF receipts and clearances data by calendar year\". Value = electricity main-rate declared liabilities (the only commodity split HMRC publishes) plus estimated CPF receipts (CPS applies solely to fossil fuels used for electricity generation, so it is wholly electricity-attributable). Sums rounded down to the nearest GBP 0.1m.",
+   "source_url": "https://www.gov.uk/government/statistics/climate-change-levy-and-carbon-price-floor-bulletin",
+   "verified": true
+  },
+  {
+   "id": "ets",
+   "label": "Emissions trading (power-sector share of UK auction revenue)",
+   "perspectives": [],
+   "cadence": "annual",
+   "layer": "indirect",
+   "attribution_pct": 1.0,
+   "attribution_note": "Power-sector share of AUCTIONED allowance revenue only; free allocation excluded. Share taken as electricity generation's share of total verified covered emissions - a lower bound, since power receives no free allocation and so buys a larger share of auctioned allowances than its emissions share.",
+   "attribution_confidence": "medium",
+   "cumulative_gbp": 10579000000.0,
+   "runrate_gbp_per_year": 895600000.0,
+   "data_to": "2025-03-31",
+   "source": "Auction revenue: 2012-2018 calendar-year sums of UK EUA auction results from the European Commission's UK Phase III Auction Platform Reports nos. 57 and 58 (ICE Futures Europe auctions on behalf of BEIS/DECC), converted from EUR at Bank of England annual average rates; 2019-2020 \"EU ETS auction income\" from the BEIS Annual Report and Accounts 2020-21 Trust Statement (FY2019-20 GBP 201.4m, FY2020-21 GBP 2,213.1m); 2021-2024 \"UK ETS auction income\" from the BEIS/DESNZ Annual Report and Accounts Trust Statements (FY2021-22 GBP 5,753.6m, FY2022-23 GBP 6,049.0m, FY2023-24 GBP 3,407.1m, FY2024-25 GBP 2,521.9m). Power-sector share: 2021-2024 from published UK ETS verified emissions (electricity generation / total covered: 47.3/107.9, 48.2/110.0, 37.1/96.8, 30.4/85.6 MtCO2e); 2009-2020 a flat 0.5 estimate.",
+   "source_url": "https://www.gov.uk/government/publications/desnz-annual-report-and-accounts-2023-to-2024/trust-statement",
+   "verified": false
+  },
+  {
+   "id": "tnuos",
+   "label": "Transmission Network Use of System (raw total revenue)",
+   "perspectives": [],
+   "cadence": "annual",
+   "layer": "indirect",
+   "attribution_pct": 0.4759134794894291,
+   "attribution_note": "Raw totals stored; attribution happens in the money model. Only the increase above the CPIH-indexed 2002-05 baseline (GBP 0.9bn/yr) is attributed to renewables, floored at zero.",
+   "attribution_confidence": "low",
+   "cumulative_gbp": 23698825581.395355,
+   "runrate_gbp_per_year": 2643151162.790698,
+   "data_to": "2025-03-31",
+   "source": "2023 and 2024: NESO \"Final TNUoS Tariffs for 2023/24\" (Jan 2023, total TNUoS revenue GBP 4,416.4m; implies 2022/23 total GBP 3,594m via the stated GBP 822m increase) and \"Final TNUoS Tariffs for 2024/25\" (Jan 2024, MAR Total Revenue GBP 4,188.5m; states a GBP 225.5m decrease from 2023/24, implying GBP 4,414m - the lower of the two 2023/24 figures is used). 2002-2004: GBP 0.9bn/yr per the verified 2002-05 baseline (reference/baselines.yaml). Intermediate years 2005-2021: REF April 2025 study Table 2 total-charge column (in parentheses), itself compiled from NESO/Ofgem charging statements - pending primary confirmation.",
+   "source_url": "https://www.neso.energy/document/301741/download",
+   "verified": false,
+   "raw_annual": [
+    {
+     "year": 2002,
+     "cost_gbp": 900000000.0
+    },
+    {
+     "year": 2003,
+     "cost_gbp": 900000000.0
+    },
+    {
+     "year": 2004,
+     "cost_gbp": 900000000.0
+    },
+    {
+     "year": 2005,
+     "cost_gbp": 900000000.0
+    },
+    {
+     "year": 2006,
+     "cost_gbp": 1000000000.0
+    },
+    {
+     "year": 2007,
+     "cost_gbp": 1000000000.0
+    },
+    {
+     "year": 2008,
+     "cost_gbp": 1400000000.0
+    },
+    {
+     "year": 2009,
+     "cost_gbp": 1600000000.0
+    },
+    {
+     "year": 2010,
+     "cost_gbp": 1600000000.0
+    },
+    {
+     "year": 2011,
+     "cost_gbp": 1600000000.0
+    },
+    {
+     "year": 2012,
+     "cost_gbp": 1600000000.0
+    },
+    {
+     "year": 2013,
+     "cost_gbp": 2200000000.0
+    },
+    {
+     "year": 2014,
+     "cost_gbp": 2500000000.0
+    },
+    {
+     "year": 2015,
+     "cost_gbp": 2600000000.0
+    },
+    {
+     "year": 2016,
+     "cost_gbp": 2700000000.0
+    },
+    {
+     "year": 2017,
+     "cost_gbp": 2600000000.0
+    },
+    {
+     "year": 2018,
+     "cost_gbp": 2700000000.0
+    },
+    {
+     "year": 2019,
+     "cost_gbp": 2800000000.0
+    },
+    {
+     "year": 2020,
+     "cost_gbp": 2800000000.0
+    },
+    {
+     "year": 2021,
+     "cost_gbp": 3300000000.0
+    },
+    {
+     "year": 2022,
+     "cost_gbp": 3594000000.0
+    },
+    {
+     "year": 2023,
+     "cost_gbp": 4414000000.0
+    },
+    {
+     "year": 2024,
+     "cost_gbp": 4188500000.0
+    }
+   ]
+  },
+  {
+   "id": "bsuos",
+   "label": "Balancing costs (BSUoS uplift)",
+   "perspectives": [],
+   "cadence": "daily",
+   "layer": "indirect",
+   "attribution_pct": 0.44223494178552636,
+   "attribution_note": "Raw totals stored; attribution happens in the money model. Only the increase above the CPIH-indexed 2002-05 baseline (GBP 0.4bn/yr) is attributed, NET of wind constraint payments already counted in the direct layer, floored at zero.",
+   "attribution_confidence": "low",
+   "cumulative_gbp": 12067641944.63574,
+   "runrate_gbp_per_year": 1615874286.3539233,
+   "data_to": "2026-06-06",
+   "raw_annual": [
+    {
+     "year": 2002,
+     "cost_gbp": 400000000.0
+    },
+    {
+     "year": 2003,
+     "cost_gbp": 400000000.0
+    },
+    {
+     "year": 2004,
+     "cost_gbp": 400000000.0
+    },
+    {
+     "year": 2005,
+     "cost_gbp": 642000000.0
+    },
+    {
+     "year": 2006,
+     "cost_gbp": 700000000.0
+    },
+    {
+     "year": 2007,
+     "cost_gbp": 700000000.0
+    },
+    {
+     "year": 2008,
+     "cost_gbp": 1000000000.0
+    },
+    {
+     "year": 2009,
+     "cost_gbp": 800000000.0
+    },
+    {
+     "year": 2010,
+     "cost_gbp": 700000000.0
+    },
+    {
+     "year": 2011,
+     "cost_gbp": 861500000.0
+    },
+    {
+     "year": 2012,
+     "cost_gbp": 861500000.0
+    },
+    {
+     "year": 2013,
+     "cost_gbp": 1002000000.0
+    },
+    {
+     "year": 2014,
+     "cost_gbp": 1000000000.0
+    },
+    {
+     "year": 2015,
+     "cost_gbp": 1100000000.0
+    },
+    {
+     "year": 2016,
+     "cost_gbp": 1200000000.0
+    },
+    {
+     "year": 2017,
+     "cost_gbp": 439072991.09526646
+    },
+    {
+     "year": 2018,
+     "cost_gbp": 639636899.8407503
+    },
+    {
+     "year": 2019,
+     "cost_gbp": 781023103.1715331
+    },
+    {
+     "year": 2020,
+     "cost_gbp": 1307362890.4642303
+    },
+    {
+     "year": 2021,
+     "cost_gbp": 1992074741.9405096
+    },
+    {
+     "year": 2022,
+     "cost_gbp": 2999526758.667
+    },
+    {
+     "year": 2023,
+     "cost_gbp": 1956570460.092
+    },
+    {
+     "year": 2024,
+     "cost_gbp": 1947327274.334
+    },
+    {
+     "year": 2025,
+     "cost_gbp": 2290829575.288
+    },
+    {
+     "year": 2026,
+     "cost_gbp": 1167427992.442
+    }
+   ],
+   "source": "2005, 2011-2013: NAO \"Electricity Balancing Services\" (May 2014, HC 41, from Ofgem/National Grid data): total balancing costs recovered through BSUoS GBP 642m in 2005-06 rising to GBP 1,002m in 2013-14; 2011-12 plus 2012-13 expenditure totalled GBP 1,723m (split evenly here, the lower of NAO and REF figures). 2002-2004: GBP 0.4bn/yr per the verified 2002-05 baseline (reference/baselines.yaml). 2006-2010 and 2014-2016: REF April 2025 study Table 2 total-charge column, pending confirmation against National Grid Monthly Balancing Services Summary archives.",
+   "source_url": "https://www.nao.org.uk/wp-content/uploads/2014/05/Electricity-Balancing-Services.pdf",
+   "verified": false
   }
  ]
 }
