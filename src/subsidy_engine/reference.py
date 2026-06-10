@@ -20,6 +20,8 @@ class ReferenceScheme:
     verified: bool
     annual: pl.DataFrame  # columns: year (Int64), cost_gbp (Float64)
     note: str = ""
+    attribution_rule: str = ""
+    attribution_confidence: str = ""
 
 
 def load_annual_costs(path: Path) -> dict[str, ReferenceScheme]:
@@ -31,18 +33,25 @@ def load_annual_costs(path: Path) -> dict[str, ReferenceScheme]:
              "cost_gbp": [float(v) for v in s["annual"].values()]},
             schema={"year": pl.Int64, "cost_gbp": pl.Float64},
         ).sort("year")
+        attribution = s.get("attribution", {})
         out[scheme_id] = ReferenceScheme(
             scheme_id=scheme_id,
             label=s["label"],
-            perspectives=list(s["perspectives"]),
+            perspectives=list(s.get("perspectives", [])),
             cadence=s["cadence"],
             source=s["source"],
             source_url=s["source_url"],
             verified=bool(s.get("verified", False)),
             annual=annual,
             note=s.get("note", ""),
+            attribution_rule=attribution.get("rule", ""),
+            attribution_confidence=attribution.get("confidence", ""),
         )
     return out
+
+
+def load_ref_crosscheck(path: Path) -> dict:
+    return yaml.safe_load(Path(path).read_text())
 
 
 def load_context(path: Path) -> dict:

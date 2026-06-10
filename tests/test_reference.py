@@ -40,6 +40,24 @@ def test_load_deflators():
     assert 1.4 < i2024 / i2002 < 2.2
 
 
+def test_load_indirect_annual():
+    schemes = reference.load_annual_costs(REF_DIR / "indirect_annual.yaml")
+    assert set(schemes) >= {"ccl", "ets", "tnuos", "bsuos_history"}
+    ccl = schemes["ccl"]
+    assert ccl.attribution_rule != ""
+    assert ccl.attribution_confidence in ("high", "medium", "low")
+    assert ccl.perspectives == []           # indirect: not perspective-split
+    years = ccl.annual["year"].to_list()
+    assert years == sorted(years)
+
+
+def test_load_ref_crosscheck():
+    rc = reference.load_ref_crosscheck(REF_DIR / "ref_crosscheck.yaml")
+    assert rc["source_url"].startswith("https://www.ref.org.uk")
+    assert set(rc["components"]) == {"capacity_market", "ccl", "ets", "bsuos", "tnuos"}
+    assert all(v > 0 for v in rc["components"].values())
+
+
 def test_load_baselines():
     b = reference.load_baselines(REF_DIR / "baselines.yaml")
     for key in ("bsuos", "tnuos"):

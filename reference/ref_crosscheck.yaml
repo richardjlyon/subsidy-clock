@@ -1,0 +1,18 @@
+# REF's April 2025 study figures - the cross-check for our indirect layer
+# (the role LCCC In-period Tracking plays for CfD). NOT a data source.
+# Values read directly from REF Table 2 (and Capacity column), 2023/2024 row,
+# £bn nominal: ETS 6.1, CCL 1.9, Capacity 1.0, BSUoS 2.2 (2.9 total),
+# TNUoS 2.9 (4.4 total). BSUoS/TNUoS are REF's renewables-attributed figures.
+source: REF, "UK Renewable Electricity Subsidy Totals 2002 to the Present Day", April 2025, Table 2 (and Capacity column)
+source_url: https://www.ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day
+year: "2023/2024"
+components:        # nominal GBP for 2023/24, exactly as published in REF Table 2
+  capacity_market: 1000000000
+  ccl: 1900000000
+  ets: 6100000000
+  bsuos: 2200000000   # REF's renewables-attributed BSUoS figure (total charge 2.9bn)
+  tnuos: 2900000000   # REF's renewables-attributed TNUoS figure (total charge 4.4bn)
+notes:
+  bsuos: REF does not net off direct constraint payments; we do. Our figure is expected to be lower.
+  ets: REF counts total ETS receipts (OBR series, all sectors); we count only the power-sector share of auctioned allowance revenue. Our figure is expected to be much lower.
+  ccl: REF counts total CCL receipts (OBR series, all fuels); we count electricity's share of main-rate receipts plus Carbon Price Support. Our figure is expected to be lower.
