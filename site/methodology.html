@@ -30,6 +30,7 @@
   <h2>Contracts for Difference (CfD)</h2>
   <p class="scheme-meta">Source: <a href="https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions">LCCC, Actual CfD Generation and Avoided GHG Emissions</a> · cadence: daily · shown as two entries: CfD&nbsp;– renewables, and CfD&nbsp;– nuclear &amp; biomass</p>
   <p><strong>Formula in words:</strong> the Low Carbon Contracts Company publishes the daily payment made under each individual CfD contract. We sum these per-contract daily payments. When the market reference price exceeds a contract’s strike price the daily payment is negative — the generator pays back — and these negative payments are <em>netted</em> against positive ones. Both figures are computed: the <strong>gross</strong> total (positive payments only) and the <strong>net</strong> total (after paybacks). The counter and all headline figures use the net total, which is the lower of the two.</p>
+  <p id="cfd-gross-net"></p>
   <p class="caveat">Technology and per-unit (recipient) splits shown on the dashboard cover the CfD schemes only, because the per-generator detail published by LCCC is at this level; the other schemes are held as totals in version 1.</p>
 
   <h2>Constraint payments (paid to switch off)</h2>
@@ -113,6 +114,16 @@
   var byId = {};
   bd.schemes.forEach(function (s) { byId[s.id] = s; });
 
+  // CfD gross vs net summary
+  var cfdIds = ['cfd_renewable', 'cfd_low_carbon'];
+  var grossSum = 0, netSum = 0, cfdOk = true;
+  cfdIds.forEach(function (id) { var s = byId[id]; if (s && s.gross_gbp != null && s.net_gbp != null) { grossSum += s.gross_gbp; netSum += s.net_gbp; } else { cfdOk = false; } });
+  if (cfdOk) {
+    var tobn = function (v) { return (v / 1e9).toFixed(2); };
+    document.getElementById('cfd-gross-net').textContent =
+      'Across the scheme to date: gross payments £' + tobn(grossSum) + 'bn; net of generator paybacks £' + tobn(netSum) + 'bn.';
+  }
+
   ['ro', 'fit'].forEach(function (id) {
     var s = byId[id];
     if (!s) return;
@@ -130,7 +141,7 @@
     recon.excluded_recent_days + ' recent days excluded for the ' + recon.settlement_lag_days +
     '-day settlement lag), the bottom-up total is <strong class="num">' + gbp(o.bottom_up_gbp) +
     '</strong> against an official <strong class="num">' + gbp(o.official_gbp) +
-    '</strong> — an overall divergence of <strong class="num">' + o.divergence_pct.toFixed(2) +
+    '</strong> — an overall divergence of <strong class="num">' + (o.divergence_pct != null ? o.divergence_pct.toFixed(2) : 'n/a') +
     '%</strong>. The tolerance is ±' + recon.tolerance_pct + '%, and the overall result is <strong>' +
     (recon.within_tolerance ? 'within tolerance' : 'outside tolerance') + '</strong>.';
 
@@ -142,7 +153,7 @@
       '<td class="num-col">' + gbp(m.bottom_up_gbp) + '</td>' +
       '<td class="num-col">' + gbp(m.official_gbp) + '</td>' +
       '<td class="num-col">' + gbp(m.abs_divergence_gbp) + '</td>' +
-      '<td class="num-col">' + m.divergence_pct.toFixed(2) + '%</td>' +
+      '<td class="num-col">' + (m.divergence_pct != null ? m.divergence_pct.toFixed(2) + '%' : 'n/a') + '</td>' +
     '</tr>';
   }).join('');
 

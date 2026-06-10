@@ -22,14 +22,14 @@ data/raw/{scheme}/{table}/{partition}/{retrieved-at}/data.parquet
 data/raw/{scheme}/{table}/{partition}/{retrieved-at}/manifest.json
 ```
 
-`manifest.json` records: `source_url`, `retrieved_at`, `sha256` (content hash of the parquet file), and `row_count`. When a source revises history, the change is appended to `restatements.jsonl` alongside the old and new manifests. Nothing is ever deleted.
+`manifest.json` records: `source_url`, `retrieved_at`, `sha256` (content hash of the table (canonical CSV serialisation)), and `row_count`. When a source revises history, the change is appended to `restatements.jsonl` alongside the old and new manifests. Nothing is ever deleted.
 
 ## Schemes
 
 | Scheme | Source | Cadence | Method |
 |---|---|---|---|
 | CfD | LCCC data portal | Daily | Bottom-up: per-contract generation × (strike price − reference price) |
-| Wind constraints | Elexon BMRS | Daily | Bottom-up from settlement stack; pre-2024 history from REF annual totals |
+| Wind constraints | Elexon BMRS | Daily | Bottom-up from settlement stack; history before the bottom-up backfill window from REF annual totals |
 | Capacity Market | LCCC data portal | Monthly | Bottom-up: obligation volumes × auction clearing prices |
 | Renewables Obligation | Ofgem annual reports | Annual | Official annual totals (ROCs presented × worth of a ROC) |
 | Feed-in Tariffs | Ofgem annual reports | Annual | Official annual totals from FIT annual reports |
