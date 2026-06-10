@@ -1,0 +1,33 @@
+name: Update data and site
+
+on:
+  schedule:
+    - cron: "30 5 * * *"   # daily 05:30 UTC - after Elexon/LCCC publish
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync
+      - name: Update all schemes (a failing scheme does not block the others)
+        run: uv run python -m subsidy_engine update all || echo "::warning::one or more schemes failed - stale data will be flagged on the site"
+      - name: Extend constraints history backwards (one week per run)
+        run: |
+          EARLIEST=$(ls data/raw/constraints/daily | sort | head -1)
+          START=$(date -u -d "$EARLIEST - 7 days" +%Y-%m-%d)
+          END=$(date -u -d "$EARLIEST - 1 day" +%Y-%m-%d)
+          uv run python -m subsidy_engine backfill-constraints --start "$START" --end "$END"
+      - run: uv run python -m subsidy_engine build-site
+      - name: Commit updated data
+        run: |
+          git config user.name "subsidy-counter-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data site/data
+          git diff --cached --quiet || git commit -m "data: scheduled update $(date -u +%F)"
+          git push
