@@ -138,7 +138,8 @@ def baseline_uplift(
             .select("year", "cost_gbp"))
 
 
-def annual_to_result(scheme_id: str, ref: ReferenceScheme) -> SchemeResult:
+def annual_to_result(scheme_id: str, ref: ReferenceScheme, *,
+                     layer: str = "direct") -> SchemeResult:
     annual = ref.annual
     latest_year = int(annual["year"].max())
     return SchemeResult(
@@ -152,13 +153,16 @@ def annual_to_result(scheme_id: str, ref: ReferenceScheme) -> SchemeResult:
             annual.filter(pl.col("year") == latest_year)["cost_gbp"][0]
         ),
         data_to=date(latest_year + 1, 3, 31),  # obligation/scheme year ends 31 March of the following year
+        layer=layer,
+        attribution_note=ref.attribution_rule,
+        attribution_confidence=ref.attribution_confidence,
         extras={"source": ref.source, "source_url": ref.source_url,
                 "verified": ref.verified},
     )
 
 
 def _aggregate(members: list[SchemeResult]) -> dict:
-    has_real = members and all("cost_gbp_2024" in s.annual.columns for s in members)
+    has_real = bool(members and all("cost_gbp_2024" in s.annual.columns for s in members))
     agg_cols = [pl.col("cost_gbp").sum()] + (
         [pl.col("cost_gbp_2024").sum()] if has_real else [])
     annual = (
@@ -189,8 +193,9 @@ def layer_total(schemes: list[SchemeResult], layer: str) -> dict:
     return _aggregate([s for s in schemes if s.layer == layer])
 
 
-def build(store: SnapshotStore, refs: dict[str, ReferenceScheme]) -> dict:
-    """Assemble every scheme result plus the three perspective totals."""
+def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
+          *, deflators: pl.DataFrame, baselines: dict | None = None) -> dict:
+    """Assemble every scheme result plus perspective totals and the indirect layer total."""
     schemes: list[SchemeResult] = []
 
     # --- CfD: bottom-up, split renewable / non-renewable by technology (M-7)
@@ -255,6 +260,7 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme]) -> dict:
         by_recipient, curtailed_mwh = [], 0.0
         bottom_up_from = None
         bottom_up_to = None
+    constraints_annual = annual.select("year", "cost_gbp")
     schemes.append(SchemeResult(
         scheme_id="constraints", label="Constraint payments (paid to switch off)",
         perspectives=PERSPECTIVES, cadence="daily",
@@ -293,4 +299,82 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme]) -> dict:
     for scheme_id in ("ro", "fit"):
         schemes.append(annual_to_result(scheme_id, refs[scheme_id]))
 
-    return {"schemes": schemes, "perspectives": perspective_totals(schemes)}
+    # --- Indirect layer (phase 2): CCL, ETS as stored; TNUoS, BSUoS by uplift
+    baselines = baselines or {}
+    for scheme_id in ("ccl", "ets"):
+        if scheme_id in refs:
+            schemes.append(annual_to_result(scheme_id, refs[scheme_id],
+                                            layer="indirect"))
+
+    if "tnuos" in refs and "tnuos" in baselines:
+        ref = refs["tnuos"]
+        attributed = baseline_uplift(ref.annual, float(baselines["tnuos"]["value"]),
+                                     deflators)
+        raw_total = float(ref.annual["cost_gbp"].sum())
+        result = annual_to_result("tnuos", ref, layer="indirect")
+        result.annual = attributed
+        result.cumulative_gbp = float(attributed["cost_gbp"].sum())
+        latest = int(attributed["year"].max())
+        result.runrate_gbp_per_year = float(
+            attributed.filter(pl.col("year") == latest)["cost_gbp"][0])
+        result.attribution_pct = (result.cumulative_gbp / raw_total) if raw_total else 0.0
+        result.extras["raw_annual"] = ref.annual.to_dicts()
+        schemes.append(result)
+
+    if "bsuos_history" in refs and "bsuos" in baselines:
+        hist = refs["bsuos_history"]
+        bs_daily = store.read_all_partitions("bsuos", "daily")
+        if bs_daily is not None and bs_daily.height:
+            daily = bs_daily.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date")
+            bottom_up = annualise_daily(daily)
+            first_full = int(daily["date"].min().year) + (
+                0 if daily["date"].min().month == 1 and daily["date"].min().day == 1
+                else 1)
+            last_hist = int(hist.annual["year"].max())
+            usable = bottom_up.filter((pl.col("year") >= first_full)
+                                      | (pl.col("year") > last_hist))
+            raw_annual = merge_annual(hist.annual, usable)
+            raw_runrate = trailing_runrate(daily)
+            data_to = daily["date"].max()
+        else:
+            raw_annual = hist.annual
+            raw_runrate = float(raw_annual["cost_gbp"][-1])
+            data_to = date(int(raw_annual["year"].max()), 12, 31)
+        attributed = baseline_uplift(raw_annual, float(baselines["bsuos"]["value"]),
+                                     deflators, subtract=constraints_annual)
+        latest_baseline = (float(baselines["bsuos"]["value"])
+                           * _latest_index(deflators)
+                           / float(deflators.filter(
+                               pl.col("year").is_between(*BASELINE_YEARS))["index"].mean()))
+        constraints_runrate = next(
+            s.runrate_gbp_per_year for s in schemes if s.scheme_id == "constraints")
+        runrate = max(0.0, raw_runrate - latest_baseline - constraints_runrate)
+        raw_total = float(raw_annual["cost_gbp"].sum())
+        cum = float(attributed["cost_gbp"].sum())
+        schemes.append(SchemeResult(
+            scheme_id="bsuos", label="Balancing costs (BSUoS uplift)",
+            perspectives=[], cadence="daily", layer="indirect",
+            annual=attributed,
+            cumulative_gbp=cum,
+            runrate_gbp_per_year=runrate,
+            data_to=data_to,
+            attribution_pct=(cum / raw_total) if raw_total else 0.0,
+            attribution_note=hist.attribution_rule,
+            attribution_confidence=hist.attribution_confidence or "low",
+            extras={"raw_annual": raw_annual.to_dicts(),
+                    "source": hist.source, "source_url": hist.source_url,
+                    "verified": hist.verified},
+        ))
+
+    # --- Real-terms columns on every scheme, then totals
+    for s in schemes:
+        s.annual = add_real(s.annual, deflators)
+
+    out_perspectives = perspective_totals(schemes)
+    out_indirect = layer_total(schemes, "indirect")
+    factor = latest_real_factor(deflators)
+    for block in [*out_perspectives.values(), out_indirect]:
+        block["runrate_gbp_per_year_2024"] = block["runrate_gbp_per_year"] * factor
+        block["rate_gbp_per_sec_2024"] = block["rate_gbp_per_sec"] * factor
+    return {"schemes": schemes, "perspectives": out_perspectives,
+            "indirect": out_indirect}
