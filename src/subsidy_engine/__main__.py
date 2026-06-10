@@ -65,6 +65,7 @@ def cmd_build_site(args: argparse.Namespace) -> int:
             freshness[scheme_id] = {k: f.get(k) for k in
                                     ("retrieved_at", "source_date", "source_url", "row_count")}
     out_dir = args.root / "site" / "data"
+    # provenance only - load_deflators already parsed the index above
     deflator_yaml = yaml.safe_load((args.root / "reference" / "deflators.yaml").read_text())
     deflator_info = {"source": deflator_yaml["source"],
                      "source_url": deflator_yaml["source_url"],

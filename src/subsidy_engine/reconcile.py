@@ -97,7 +97,8 @@ def indirect_crosscheck(ours: dict[str, float], ref: dict,
         pct = (round((our_value - ref_value) / ref_value * 100, 4)
                if ref_value else None)
         note = (ref.get("notes") or {}).get(name, "")
-        beyond = pct is not None and abs(pct) > bound_pct
+        beyond = (pct is not None and abs(pct) > bound_pct) or (
+            pct is None and our_value != 0.0)
         explained = bool(note) if beyond else True
         if not explained:
             unexplained += 1

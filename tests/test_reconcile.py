@@ -80,3 +80,12 @@ def test_indirect_crosscheck_divergence_and_notes():
     # beyond the bound with NO note -> flagged for the methodology page
     assert by["tnuos"]["explained"] is False
     assert out["unexplained_count"] == 1
+
+
+def test_indirect_crosscheck_zero_ref_value_needs_note():
+    ref = {"year": "2023/2024", "source": "s", "source_url": "https://s",
+           "components": {"ccl": 0.0}, "notes": {}}
+    out = reconcile.indirect_crosscheck({"ccl": 1.0e9}, ref)
+    assert out["components"][0]["divergence_pct"] is None
+    assert out["components"][0]["explained"] is False
+    assert out["unexplained_count"] == 1
