@@ -1,7 +1,6 @@
 from datetime import date
 
 import httpx
-import polars as pl
 
 from subsidy_engine.schemes import bsuos
 from subsidy_engine.store import SnapshotStore
