@@ -23,6 +23,7 @@ var SC = (function () {
     return '£' + v.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
   function fmtCompact(v) { // £12.3bn / £31.5m / £487
+    if (v < 0) return '−' + fmtCompact(-v);
     var a = Math.abs(v);
     if (a >= 1e9) return '£' + (v / 1e9).toFixed(1) + 'bn';
     if (a >= 1e6) return '£' + (v / 1e6).toFixed(1) + 'm';

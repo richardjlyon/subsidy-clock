@@ -44,5 +44,7 @@
 
     SC.track('explainer-view/' + (SC.storedArm() || 'unassigned') + '/' +
       document.body.getAttribute('data-scheme-slug'));
+  }).catch(function (err) {
+    document.getElementById('x-total').textContent = '—';
   });
 })();

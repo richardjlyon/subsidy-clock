@@ -77,7 +77,7 @@
   function schemesByLayer(layer) {
     return data.breakdown.schemes
       .filter(function (s) { return s.layer === layer && SCHEMES[s.id]; })
-      .sort(function (a, b) { return b.cumulative_gbp - a.cumulative_gbp; });
+      .sort(function (a, b) { return schemeCumulative(b) - schemeCumulative(a); });
   }
   function grandTotal() {
     return direct().cumulative_gbp + indirect().cumulative_gbp;
