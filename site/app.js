@@ -528,6 +528,106 @@
       '<span class="legend-group">Indirect (estimated)</span>' + indirectIds.map(legendItem).join('');
   }
 
+  // ---------- share-of-bill chart (subsidy stacked under "all other costs") ----------
+  function renderShareChart() {
+    var section = document.getElementById('share-of-bill');
+    var bill = timeseries.electricity_bill;
+    if (!bill || !bill.annual || !bill.annual.length || !timeseries.indirect) {
+      section.hidden = true;
+      return;
+    }
+    section.hidden = false;
+
+    function billCost(a) { return state.real ? a.total_bill_gbp_2024 : a.total_bill_gbp; }
+    var billByYear = {}, directByYear = {}, indirectByYear = {};
+    bill.annual.forEach(function (a) { billByYear[a.year] = billCost(a); });
+    timeseries.perspectives[state.perspective].annual.forEach(function (a) {
+      directByYear[a.year] = annualCost(a);
+    });
+    timeseries.indirect.annual.forEach(function (a) { indirectByYear[a.year] = annualCost(a); });
+
+    // complete years: present in the bill series (the denominator gates coverage)
+    var years = bill.annual.map(function (a) { return a.year; })
+      .filter(function (y) { return billByYear[y] > 0; })
+      .sort(function (a, b) { return a - b; });
+    var firstYear = years[0], lastYear = years[years.length - 1];
+
+    var rows = years.map(function (y) {
+      var direct = Math.max(0, directByYear[y] || 0);
+      var indirect = Math.max(0, indirectByYear[y] || 0);
+      var billV = billByYear[y] || 0;
+      return { year: y, direct: direct, indirect: indirect,
+               other: Math.max(0, billV - direct - indirect), bill: billV };
+    });
+
+    var maxBill = rows.reduce(function (m, r) { return r.bill > m ? r.bill : m; }, 0);
+    var rawStep = maxBill > 0 ? maxBill / 5 : 1;
+    var mag = Math.pow(10, Math.floor(Math.log10(rawStep)));
+    var step = [1, 2, 5, 10].map(function (m) { return m * mag; })
+      .filter(function (s) { return s >= rawStep; })[0] || 10 * mag;
+    var yMax = maxBill > 0 ? Math.ceil(maxBill / step) * step : step;
+
+    var W = 940, H = 360, mL = 52, mR = 8, mT = 12, mB = 30;
+    var plotW = W - mL - mR, plotH = H - mT - mB;
+    function yPos(v) { return mT + plotH * (1 - v / yMax); }
+    var bandW = plotW / rows.length, barW = bandW * 0.72;
+
+    var DIRECT = 'var(--c-ro)', HATCH = 'var(--c-cfdr)', OTHER = 'var(--c-other)';
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Renewable subsidy as a share of the total electricity bill, ' + firstYear + ' to ' + lastYear + '">';
+    svg += '<defs><pattern id="share-hatch" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">' +
+      '<line x1="0" y1="0" x2="0" y2="5" stroke="' + HATCH + '" stroke-width="1.8"/></pattern></defs>';
+
+    for (var g = 0; g <= yMax; g += step) {
+      var gy = yPos(g);
+      svg += '<line class="gridline" x1="' + mL + '" y1="' + gy.toFixed(1) + '" x2="' + (W - mR) + '" y2="' + gy.toFixed(1) + '"/>';
+      svg += '<text class="axis-label" x="' + (mL - 8) + '" y="' + (gy + 3.5).toFixed(1) +
+        '" text-anchor="end">' + (g === 0 ? '£0' : '£' + (g / 1e9) + 'bn') + '</text>';
+    }
+
+    rows.forEach(function (r, i) {
+      var x = mL + bandW * i + (bandW - barW) / 2;
+      var acc = 0;
+      [['direct', DIRECT, ' direct subsidy'],
+       ['indirect', 'url(#share-hatch)', ' indirect subsidy (estimated)'],
+       ['other', OTHER, ' all other costs']].forEach(function (seg) {
+        var v = r[seg[0]];
+        if (v <= 0) return;
+        var y0 = yPos(acc + v), h = yPos(acc) - y0;
+        acc += v;
+        if (h < 0.1) return;
+        var stroke = seg[0] === 'indirect' ? ' stroke="' + HATCH + '" stroke-width="0.7"' : '';
+        var pct = r.bill > 0 ? Math.round(100 * v / r.bill) : 0;
+        svg += '<rect x="' + x.toFixed(1) + '" y="' + y0.toFixed(1) + '" width="' + barW.toFixed(1) +
+          '" height="' + h.toFixed(1) + '" fill="' + seg[1] + '"' + stroke + '>' +
+          '<title>' + r.year + seg[2] + ': ' + fmtCompact(v) + ' (' + pct + '% of bill)</title></rect>';
+      });
+      if (r.year % 4 === 2 || r.year === lastYear) {
+        svg += '<text class="axis-label" x="' + (mL + bandW * i + bandW / 2).toFixed(1) +
+          '" y="' + (H - 10) + '" text-anchor="middle">' + r.year + '</text>';
+      }
+    });
+    svg += '</svg>';
+    document.getElementById('share-chart').innerHTML = svg;
+
+    var last = rows[rows.length - 1];
+    var share = last.bill > 0 ? Math.round(100 * (last.direct + last.indirect) / last.bill) : 0;
+    document.getElementById('share-caption').textContent =
+      last.year + ': renewable-energy subsidies were about ' + share +
+      '% of the total UK electricity bill' + (state.real ? ' (2024 prices).' : '.');
+
+    document.getElementById('share-note').textContent =
+      'Renewable-energy subsidy as a share of total UK electricity consumer expenditure (DUKES 1.3), ' +
+      firstYear + '–' + lastYear + '. The subsidy is a conservative lower bound, so the share is too. ' +
+      (state.real ? 'Figures in 2024 prices. ' : '') +
+      'High-price years (the 2022–23 energy spike) raise the denominator and lower the share even as subsidy rises.';
+
+    document.getElementById('share-legend').innerHTML =
+      '<span><span class="swatch" style="background:' + DIRECT + '"></span>Direct subsidy</span>' +
+      '<span><span class="swatch swatch-hatch" style="background-image:repeating-linear-gradient(45deg,' +
+        HATCH + ' 0,' + HATCH + ' 1.5px,transparent 1.5px,transparent 4px);border-color:' + HATCH + '"></span>Indirect subsidy (estimated)</span>' +
+      '<span><span class="swatch" style="background:' + OTHER + '"></span>All other costs</span>';
+  }
+
   // ---------- footer ----------
   function renderFooter() {
     var d = new Date(generatedAt);
@@ -573,6 +673,7 @@
     renderEquivalences();
     renderSchemeBars();
     renderChart();
+    renderShareChart();
   }
 
   function renderBasis() {

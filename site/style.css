@@ -28,6 +28,9 @@
   --c-tnuos: #9a9272;
   --c-bsuos: #b8af8e;
 
+  /* warm grey — "all other costs" in the share-of-bill chart */
+  --c-other: #bdb6a8;
+
   --serif: "Fraunces", Georgia, "Times New Roman", serif;
   --sans: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
 }
@@ -270,6 +273,12 @@ main > .card-pair { margin: 26px 0; }
   color: var(--faint);
 }
 .legend .legend-group:not(:first-child) { margin-left: 14px; }
+.share-caption {
+  margin: 0.6rem 0 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
 
 /* ---------- footer ---------- */
 .footer { border-top: 1px solid var(--line); margin-top: 48px; padding: 30px 0 44px; font-size: 0.84rem; color: var(--muted); }
