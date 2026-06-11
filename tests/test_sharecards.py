@@ -1,4 +1,5 @@
 import json
+import struct
 
 import pytest
 
@@ -119,3 +120,23 @@ def test_write_stubs(data_dir, tmp_path):
     # crawler/JS-off fallback carries the dated figure and a link
     assert "£2,510,000,000" in html
     assert "11 June 2026" in html
+
+
+def _png_size(path):
+    data = path.read_bytes()
+    assert data[:8] == b"\x89PNG\r\n\x1a\n"
+    return struct.unpack(">II", data[16:24])
+
+
+def test_render_produces_1200x630_pngs(data_dir, tmp_path):
+    pytest.importorskip("playwright.sync_api")
+    facts, asof, _ = sharecards.load_facts(data_dir)
+    only_total = [f for f in facts if f["slug"] == "total"]
+    out = tmp_path / "share"
+    try:
+        sharecards.render(only_total, asof, out)
+    except Exception as exc:  # chromium not installed on this machine
+        if "playwright install" in str(exc).lower() or "executable" in str(exc).lower():
+            pytest.skip(f"chromium unavailable: {exc}")
+        raise
+    assert _png_size(out / "total.png") == (1200, 630)

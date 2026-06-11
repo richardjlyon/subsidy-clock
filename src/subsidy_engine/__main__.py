@@ -113,6 +113,18 @@ def cmd_build_site(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_build_cards(args: argparse.Namespace) -> int:
+    from subsidy_engine import sharecards
+
+    site = args.root / "site"
+    facts, asof, datestr = sharecards.load_facts(site / "data")
+    sharecards.render(facts, asof, site / "share")
+    sharecards.write_stubs(facts, site / "s", asof, datestr)
+    n_stubs = sum(1 for f in facts if f.get("stub"))
+    print(f"[ok] {len(facts)} share cards and {n_stubs} share stubs written (as of {asof})")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="subsidy_engine",
                                      description="UK Subsidy Counter data engine")
@@ -132,6 +144,9 @@ def main(argv: list[str] | None = None) -> int:
 
     p_site = sub.add_parser("build-site", help="build dashboard JSON site data")
     p_site.set_defaults(fn=cmd_build_site)
+
+    p_cards = sub.add_parser("build-cards", help="render OG share-card PNGs and share stubs")
+    p_cards.set_defaults(fn=cmd_build_cards)
 
     args = parser.parse_args(argv)
     return args.fn(args)
