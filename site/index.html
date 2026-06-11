@@ -74,6 +74,21 @@
     <ul class="equivalences" id="equivalences"></ul>
   </section>
 
+  <!-- ====================== DIRECT / INDIRECT CARDS ====================== -->
+  <div class="card-pair">
+    <section class="card" aria-labelledby="direct-card-h">
+      <h2 id="direct-card-h">The direct bill</h2>
+      <p class="khead"><span class="kfigure money num" id="direct-card-total"></span> <span class="ksub" id="direct-card-sub"></span></p>
+      <div id="direct-card-rows"></div>
+    </section>
+    <section class="card" aria-labelledby="indirect-card-h">
+      <h2 id="indirect-card-h">The indirect bill <span class="h-note">estimated</span></h2>
+      <p class="khead"><span class="kfigure money num" id="indirect-card-total"></span> <span class="ksub" id="indirect-card-sub"></span></p>
+      <div id="indirect-card-rows"></div>
+      <p class="card-foot">Amounts are measured from official sources; the share attributed to renewables is an estimate. <a href="methodology.html#indirect">How each attribution works</a>.</p>
+    </section>
+  </div>
+
   <!-- ====================== PAID TO SWITCH OFF ====================== -->
   <section class="card" id="switch-off" aria-labelledby="switch-off-h">
     <h2 id="switch-off-h">Paid to switch off</h2>
@@ -88,13 +103,6 @@
       <thead><tr><th>Lead party</th><th class="num-col">Paid</th><th class="num-col">MWh curtailed</th></tr></thead>
       <tbody></tbody>
     </table>
-  </section>
-
-  <!-- ====================== THE INDIRECT BILL ====================== -->
-  <section class="card card-indirect" id="indirect-bill" aria-labelledby="indirect-h">
-    <h2 id="indirect-h">The indirect bill <span class="h-note">estimated</span></h2>
-    <p class="card-intro">Costs that reach bill-payers and taxpayers through network charges, balancing costs, carbon pricing and the capacity levy rather than as direct subsidy payments. The amounts are measured from official sources; the share attributed to renewables is an estimate, stated per component below. <a href="methodology.html#indirect">How each attribution works</a>.</p>
-    <div class="bars" id="indirect-bars"></div>
   </section>
 
   <!-- ====================== SCHEMES + TECHNOLOGY ====================== -->

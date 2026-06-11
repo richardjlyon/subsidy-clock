@@ -83,6 +83,20 @@
     }
   };
 
+  // display names, explainer slugs and chart colours for the category cards
+  var SCHEME_META = {
+    ro:              { slug: 'renewables-obligation',    name: 'Renewables Obligation',                color: 'var(--c-ro)' },
+    fit:             { slug: 'feed-in-tariffs',          name: 'Feed-in Tariffs',                      color: 'var(--c-fit)' },
+    cfd_renewable:   { slug: 'contracts-for-difference', name: 'Contracts for Difference',             color: 'var(--c-cfdr)' },
+    cfd_low_carbon:  { slug: 'cfd-nuclear-biomass',      name: 'CfD — nuclear & biomass',              color: 'var(--c-cfdl)' },
+    constraints:     { slug: 'constraints',              name: 'Paid to switch off (constraints)',     color: 'var(--c-con)' },
+    tnuos:           { slug: 'tnuos',                    name: 'Grid upgrades for renewables (TNUoS)', color: 'var(--c-tnuos)' },
+    ccl:             { slug: 'climate-change-levy',      name: 'Climate Change Levy',                  color: 'var(--c-ccl)' },
+    bsuos:           { slug: 'bsuos',                    name: 'Balancing the grid (BSUoS)',           color: 'var(--c-bsuos)' },
+    ets:             { slug: 'emissions-trading',        name: 'Emissions trading',                    color: 'var(--c-ets)' },
+    capacity_market: { slug: 'capacity-market',          name: 'Capacity Market',                      color: 'var(--c-cm)' }
+  };
+
   function persp() { return totals.perspectives[state.perspective]; }
   function pv() { // perspective values on the selected price basis
     var p = persp();
@@ -298,49 +312,39 @@
     }).join('');
   }
 
-  // ---------- the indirect bill ----------
-  var INDIRECT_EXTRA_NOTE = {
-    capacity_market: 'Previously shown in this dashboard’s all-levy total.'
-  };
+  // ---------- direct / indirect category cards ----------
+  function renderCategoryCards() {
+    var bySize = function (a, b) { return schemeCumulative(b) - schemeCumulative(a); };
+    var direct = breakdown.schemes.filter(function (s) {
+      return s.layer === 'direct' && s.perspectives.indexOf(state.perspective) !== -1 && SCHEME_META[s.id];
+    }).sort(bySize);
+    var indirect = breakdown.schemes.filter(function (s) {
+      return s.layer === 'indirect' && SCHEME_META[s.id];
+    }).sort(bySize);
 
-  function renderIndirectBars() {
-    var comps = breakdown.schemes
-      .filter(function (s) { return s.layer === 'indirect'; })
-      .slice()
-      .sort(function (a, b) { return schemeCumulative(b) - schemeCumulative(a); });
-    var section = document.getElementById('indirect-bill');
-    if (!comps.length) { section.hidden = true; return; }
-    section.hidden = false;
-    var max = Math.max.apply(null, comps.map(function (s) { return Math.abs(schemeCumulative(s)); }));
-    document.getElementById('indirect-bars').innerHTML = comps.map(function (s) {
-      var stale = isStale(s);
+    var ind = iv();
+    var grand = pv().cumulative_gbp + (ind ? ind.cumulative_gbp : 0);
+    function rowHtml(s) {
+      var m = SCHEME_META[s.id];
       var v = schemeCumulative(s);
-      var w = Math.max(0.4, 100 * Math.abs(v) / max);
-      // The stored note's leading housekeeping sentence is methodology detail;
-      // the dashboard shows the factual attribution rule.
-      var note = String(s.attribution_note || '')
-        .replace(/^Raw totals stored; attribution happens in the money model\.\s*/, '');
-      if (s.attribution_pct < 1) {
-        note = Math.round(s.attribution_pct * 100) + '% of the raw cost attributed. ' + note;
-      }
-      if (INDIRECT_EXTRA_NOTE[s.id]) {
-        if (note && !/[.!?]$/.test(note)) note += '.';
-        note += ' ' + INDIRECT_EXTRA_NOTE[s.id];
-      }
-      var conf = String(s.attribution_confidence || 'low');
-      return '<div class="bar-row">' +
-        '<div class="bar-head">' +
-          '<span class="bar-name">' + esc(s.label) + '</span>' +
-          '<span class="badge" title="Update cadence and latest data date">' + esc(s.cadence) + ' · to ' + fmtDate(s.data_to) + '</span>' +
-          (stale ? '<span class="badge badge-stale" title="Latest data is older than this scheme’s normal publication lag">stale</span>' : '') +
-          '<span class="badge badge-conf-high" title="How well the underlying amount is measured">amount: high</span>' +
-          '<span class="badge badge-conf-' + esc(conf) + '" title="How firmly this cost is attributable to renewables">attribution: ' + esc(conf) + '</span>' +
-          '<span class="bar-amount money num">' + fmtCompact(v) + '</span>' +
-        '</div>' +
-        '<div class="bar-track"><div class="bar-fill bar-fill-indirect" style="width:' + w.toFixed(2) + '%"></div></div>' +
-        '<p class="attr-note"><span class="num">' + fmtCompact(schemeRunrate(s)) + '</span> per year at the current run-rate. ' + esc(note) + '</p>' +
-      '</div>';
-    }).join('');
+      var pct = grand > 0 ? Math.round(100 * v / grand) : 0;
+      return '<a class="krow" href="explainers/' + m.slug + '.html">' +
+        '<span class="dot" style="background:' + m.color + '"></span>' +
+        '<span class="nm">' + esc(m.name) + '</span>' +
+        '<span class="amt money num">' + fmtCompact(v) + '</span>' +
+        '<span class="pct num">' + pct + '%</span></a>';
+    }
+
+    document.getElementById('direct-card-total').textContent = fmtCompact(pv().cumulative_gbp);
+    document.getElementById('direct-card-sub').textContent =
+      'paid through electricity bills since ' + persp().since_year +
+      ' · adding ' + fmtPence(pv().rate_gbp_per_sec) + ' a second';
+    document.getElementById('direct-card-rows').innerHTML = direct.map(rowHtml).join('');
+
+    document.getElementById('indirect-card-total').textContent = ind ? fmtCompact(ind.cumulative_gbp) : '—';
+    document.getElementById('indirect-card-sub').textContent = ind ?
+      'adding ' + fmtPence(ind.rate_gbp_per_sec) + ' a second at the current run-rate' : '';
+    document.getElementById('indirect-card-rows').innerHTML = indirect.map(rowHtml).join('');
   }
 
   // ---------- technology breakdown (CfD only) ----------
@@ -677,12 +681,12 @@
     renderSchemeBars();
     renderChart();
     renderShareChart();
+    renderCategoryCards();
   }
 
   function renderBasis() {
     document.querySelectorAll('.nominal-tag').forEach(function (el) { el.hidden = !state.real; });
     renderPerspective();
-    renderIndirectBars();
     renderSwitchOff();
   }
 
@@ -722,7 +726,6 @@
 
   // ---------- first paint ----------
   renderPerspective();
-  renderIndirectBars();
   renderSwitchOff();
   renderTechBars();
   renderRecipients();
