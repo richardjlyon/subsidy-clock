@@ -439,13 +439,7 @@
 
     var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Annual subsidy cost by scheme, direct and estimated indirect, ' + firstYear + ' to ' + currentYear + '">';
 
-    // hatched fills for the indirect (estimated) layer
     var indirectIds = memberIds.filter(isIndirectScheme);
-    svg += '<defs>' + indirectIds.map(function (id) {
-      return '<pattern id="hatch-' + id + '" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">' +
-        '<line x1="0" y1="0" x2="0" y2="5" stroke="' + SCHEME_COLOURS[id] + '" stroke-width="1.8"/>' +
-      '</pattern>';
-    }).join('') + '</defs>';
 
     for (var g = 0; g <= yMax; g += step) {
       var gy = yPos(g);
@@ -468,11 +462,9 @@
         else { y0 = yPos(negAcc); h = yPos(negAcc + v) - y0; negAcc += v; }
         if (h < 0.1) return;
         var indirect = isIndirectScheme(id);
-        var fill = indirect ? 'url(#hatch-' + id + ')' : SCHEME_COLOURS[id];
-        var stroke = indirect ? ' stroke="' + SCHEME_COLOURS[id] + '" stroke-width="0.7"' : '';
         svg += '<rect' + partial + ' x="' + x.toFixed(1) + '" y="' + y0.toFixed(1) +
           '" width="' + barW.toFixed(1) + '" height="' + h.toFixed(1) +
-          '" fill="' + fill + '"' + stroke + '>' +
+          '" fill="' + SCHEME_COLOURS[id] + '">' +
           '<title>' + esc(schemesById[id].label) + (indirect ? ' (indirect, estimated)' : '') +
           ', ' + yr + (yr === currentYear ? ' (partial)' : '') +
           ': ' + fmtCompact(v) + '</title></rect>';
@@ -487,15 +479,12 @@
     document.getElementById('trend-chart').innerHTML = svg;
     document.getElementById('trend-note').textContent =
       'Annual cost by scheme, ' + firstYear + '–' + currentYear +
-      '. Warm solid bars are measured direct subsidies; cool hatched bars are estimated indirect costs.' +
+      '. Warm bars are measured direct subsidies; cool blue bars are estimated indirect costs.' +
       ' *' + currentYear + ' is a partial year (data to date).';
     var directIds = memberIds.filter(function (id) { return !isIndirectScheme(id); });
     function legendItem(id) {
-      var col = SCHEME_COLOURS[id];
-      var swatch = isIndirectScheme(id)
-        ? '<span class="swatch swatch-hatch" style="background-image:repeating-linear-gradient(45deg,' + col + ' 0,' + col + ' 1.5px,transparent 1.5px,transparent 4px);border-color:' + col + '"></span>'
-        : '<span class="swatch" style="background:' + col + '"></span>';
-      return '<span>' + swatch + esc(schemesById[id].label) + '</span>';
+      return '<span><span class="swatch" style="background:' + SCHEME_COLOURS[id] + '"></span>' +
+        esc(schemesById[id].label) + '</span>';
     }
     document.getElementById('trend-legend').innerHTML =
       '<span class="legend-group">Direct (measured)</span>' + directIds.map(legendItem).join('') +
