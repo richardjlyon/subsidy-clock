@@ -2,5 +2,25 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "outputDirectory": "site",
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "subsidyclock.uk" }],
+      "destination": "https://subsidyclock.co.uk/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "www.subsidyclock.uk" }],
+      "destination": "https://subsidyclock.co.uk/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "www.subsidyclock.co.uk" }],
+      "destination": "https://subsidyclock.co.uk/:path",
+      "permanent": true
+    }
+  ]
 }
