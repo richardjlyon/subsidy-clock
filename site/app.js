@@ -120,6 +120,19 @@
         'Under the same schemes, nuclear and biomass received a further <span class="money num">' +
         fmtCompact(delta) + '</span> \u2014 <a href="methodology.html#perspectives">see the methodology page</a>.';
     }
+    // F8: the combined total must register - floored to the nearest \u00a310bn
+    // STRICTLY BELOW the combined figure (a floor, never a midpoint), so the
+    // sentence understates by construction. No second ticking numeral.
+    if (indirectTotals) {
+      var combined = totals.perspectives.renewables.cumulative_gbp + indirectTotals.cumulative_gbp;
+      var flooredBn = Math.floor(combined / 1e10) * 1e10;
+      if (flooredBn === combined) flooredBn -= 1e10; // exact boundary: step down
+      document.getElementById('hero-direct-note').innerHTML =
+        '<strong>This is the direct bill alone.</strong> Adding estimated indirect costs ' +
+        '\u2014 backup, balancing and the grid \u2014 takes the true total above ' +
+        '<span class="money num">\u00a3' + (flooredBn / 1e9) + ' billion</span>. ' +
+        '<a href="#indirect-bill">The indirect bill \u2193</a>';
+    }
     document.getElementById('strip-alltime-since').textContent = 'since ' + sinceYear;
   }
 
