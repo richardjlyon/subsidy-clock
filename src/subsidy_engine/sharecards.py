@@ -173,7 +173,7 @@ def render(facts: list[dict], asof: str, out_dir: Path | str) -> None:
             for fact in facts:
                 src = tmp / f"{fact['slug']}.html"
                 src.write_text(compose(template, fact, asof))
-                page.goto(src.as_uri())
+                page.goto(src.as_uri(), wait_until="networkidle")
                 page.evaluate("() => document.fonts.ready")
                 page.screenshot(path=str(out / f"{fact['slug']}.png"))
             browser.close()
