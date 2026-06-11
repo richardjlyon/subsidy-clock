@@ -140,6 +140,10 @@ var SCShare = (function () {
   function closePop() {
     if (!openPop) return;
     openPop.hidden = true;
+    var citeBox = openPop.querySelector('.share-cite');
+    if (citeBox) citeBox.hidden = true;
+    var citeBtn = openPop.querySelector('[data-act="cite"]');
+    if (citeBtn) citeBtn.setAttribute('aria-expanded', 'false');
     openPop.previousSibling.setAttribute('aria-expanded', 'false');
     openPop = null;
   }
@@ -191,7 +195,7 @@ var SCShare = (function () {
       var act = e.target.getAttribute && e.target.getAttribute('data-act');
       if (!act) return;
       if (act === 'copy-link') {
-        copyText(fact.url || (SITE + '/#' + fact.anchor), function () { flash(e.target, 'Copied'); });
+        copyText(fact.url || (fact.anchor ? SITE + '/#' + fact.anchor : SITE + '/'), function () { flash(e.target, 'Copied'); });
       } else if (act === 'copy-figure') {
         copyText(copyFigureText(fact, asof), function () { flash(e.target, 'Copied'); });
       } else if (act === 'cite') {
