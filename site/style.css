@@ -1,4 +1,4 @@
-/* The Subsidy Counter — ledger aesthetic.
+/* The Subsidy Clock — ledger aesthetic.
    Warm paper, ink text, one claret accent for money. */
 
 :root {
@@ -68,20 +68,46 @@ a:hover { color: var(--money); }
 .num { font-variant-numeric: tabular-nums lining-nums; font-feature-settings: "tnum" 1, "lnum" 1; }
 .money { color: var(--money); }
 
-/* ---------- masthead ---------- */
-.masthead { border-bottom: 1px solid var(--line); background: var(--paper); }
+/* ---------- masthead: deep-claret band, cream type, ticking clock mark ---------- */
+.masthead {
+  background: var(--money-deep);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0) 40%);
+  border-bottom: 1px solid var(--c-ro);
+  /* hairline cream rule inset above the bottom edge — double-rule ledger finish */
+  box-shadow: inset 0 -6px 0 -5px rgba(247, 244, 238, 0.3);
+}
 .masthead-inner {
-  display: flex; justify-content: space-between; align-items: baseline;
-  padding-top: 18px; padding-bottom: 14px;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 8px 24px; flex-wrap: wrap;
+  padding-top: 18px; padding-bottom: 16px;
 }
 .brand {
   margin: 0;
   font-family: var(--serif);
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: 1.45rem;
   letter-spacing: 0.01em;
+  color: var(--paper);
 }
-.masthead nav a { font-size: 0.85rem; color: var(--muted); }
+.brand a { color: inherit; text-decoration: none; }
+.brand-tick {
+  display: inline-block; width: 10px; height: 10px; border-radius: 2px;
+  background: var(--c-con); margin-right: 11px;
+  animation: brand-tick 2s steps(1) infinite;
+}
+@keyframes brand-tick { 0% { opacity: 1; } 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) { .brand-tick { animation: none; } }
+.brand-tag {
+  margin: 0 0 0 21px; font-size: 0.7rem; color: rgba(247, 244, 238, 0.65);
+  text-transform: uppercase; letter-spacing: 0.15em;
+}
+.masthead nav { display: flex; gap: 20px; flex-wrap: wrap; }
+.masthead nav a {
+  font-size: 0.85rem; color: rgba(247, 244, 238, 0.85); text-decoration: none;
+  border-bottom: 1px solid rgba(247, 244, 238, 0.3); padding-bottom: 1px;
+}
+.masthead nav a:hover { color: #fff; border-bottom-color: rgba(247, 244, 238, 0.8); }
+.masthead :focus-visible { outline-color: var(--c-con); }
 
 /* ---------- hero ---------- */
 .hero { padding: 44px 0 8px; text-align: center; }

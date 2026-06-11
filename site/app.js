@@ -1,4 +1,4 @@
-/* The Subsidy Counter — dashboard logic. No dependencies. */
+/* The Subsidy Clock — dashboard logic. No dependencies. */
 'use strict';
 
 (async function () {
