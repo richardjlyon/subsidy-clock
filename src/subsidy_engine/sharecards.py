@@ -6,6 +6,7 @@ says otherwise."""
 
 from __future__ import annotations
 
+import html as _html
 import json
 import math
 from datetime import datetime
@@ -101,6 +102,8 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
     return facts, asof, datestr
 
 
+# NOTE: substituted with str.format() - any literal braces added later
+# (e.g. a <style> block) must be escaped as {{ and }}.
 STUB_TEMPLATE = """<!DOCTYPE html>
 <html lang="en-GB">
 <head>
@@ -136,15 +139,15 @@ def write_stubs(facts: list[dict], out_dir: Path | str, asof: str, datestr: str)
             continue
         target = f"{SITE_URL}/#{fact['anchor']}"
         html = STUB_TEMPLATE.format(
-            title=f"{fact['figure']} {fact['label']}",
-            description=f"As of {asof}. Every figure traces to an official source.",
+            title=_html.escape(f"{fact['figure']} {fact['label']}"),
+            description=_html.escape(f"As of {asof}. Every figure traces to an official source."),
             stub_url=f"{SITE_URL}/s/{fact['slug']}",
             image_url=f"{SITE_URL}/share/{fact['slug']}.png?d={datestr}",
             site_url=SITE_URL,
             target=target,
             target_js=json.dumps(target),
             figure=fact["figure"],
-            label=fact["label"],
+            label=_html.escape(fact["label"]),
             asof=asof,
         )
         (out / f"{fact['slug']}.html").write_text(html)
