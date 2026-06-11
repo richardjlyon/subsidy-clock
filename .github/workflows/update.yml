@@ -24,11 +24,21 @@ jobs:
           END=$(date -u -d "$EARLIEST - 1 day" +%Y-%m-%d)
           uv run python -m subsidy_engine backfill-constraints --start "$START" --end "$END"
       - run: uv run python -m subsidy_engine build-site
+      - name: Cache Playwright Chromium
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ hashFiles('uv.lock') }}
+      - name: Install Chromium for share cards
+        run: uv run playwright install --with-deps chromium
+      - name: Rebuild share cards
+        # a render failure never blocks the data update - yesterday's dated cards remain live
+        run: uv run python -m subsidy_engine build-cards || echo "::warning::share cards failed - previous cards remain"
       - name: Commit updated data
         run: |
           git config user.name "subsidy-counter-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data site/data
+          git add data site/data site/share site/s
           git diff --cached --quiet || git commit -m "data: scheduled update $(date -u +%F)"
           git push
       - name: Deploy to Vercel
