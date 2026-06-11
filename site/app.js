@@ -68,20 +68,7 @@
   // ---------- state ----------
   var motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var rafId;
-  var state = { perspective: 'renewables', framing: 'all_time', real: false };
-
-  var PERSPECTIVE_TEXT = {
-    renewables: {
-      subtitle: function (y) { return 'paid to renewable electricity generators by Great Britain’s bill-payers since ' + y; },
-      copyNoun: 'UK renewable-energy subsidies',
-      schemesNote: 'renewables perspective'
-    },
-    low_carbon: {
-      subtitle: function (y) { return 'paid to low-carbon electricity generators (including nuclear and biomass) by Great Britain’s bill-payers since ' + y; },
-      copyNoun: 'UK low-carbon electricity subsidies',
-      schemesNote: 'low-carbon perspective'
-    }
-  };
+  var state = { perspective: 'renewables', real: false };
 
   // display names, explainer slugs and chart colours for the category cards
   var SCHEME_META = {
@@ -110,11 +97,6 @@
     var p = pv();
     return p.cumulative_gbp + p.rate_gbp_per_sec * (t - generatedAt) / 1000;
   }
-  function liveIndirect(t) {
-    var v = iv();
-    if (!v) return null;
-    return v.cumulative_gbp + v.rate_gbp_per_sec * (t - generatedAt) / 1000;
-  }
   function schemeCumulative(s) {
     return state.real && realCumById[s.id] != null ? realCumById[s.id] : s.cumulative_gbp;
   }
@@ -127,45 +109,17 @@
 
   // ---------- hero (static parts) ----------
   function renderHeroStatic() {
-    var p = pv();
-    var ind = iv();
     var sinceYear = persp().since_year;
-    var unitEl = document.getElementById('hero-unit');
-    var valEl = document.getElementById('hero-value');
-    var combVal = document.getElementById('hero-combined-value');
-    var fnEl = document.querySelector('.hero-fn');
-    var footEl = document.querySelector('.hero-footnote');
-    var isLive = state.framing === 'all_time';
-    fnEl.style.visibility = isLive ? 'visible' : 'hidden';
-    footEl.style.visibility = isLive ? 'visible' : 'hidden';
-    if (state.framing === 'all_time') {
-      valEl.textContent = fmtFull(liveCumulative(Date.now()));
-      unitEl.textContent = '';
-    } else if (state.framing === 'runrate') {
-      valEl.textContent = fmtFull(p.runrate_gbp_per_year);
-      unitEl.textContent = 'per year at the current run-rate';
-    } else if (state.framing === 'household') {
-      valEl.textContent = fmtPence(p.per_household_per_year_gbp);
-      unitEl.textContent = 'per household per year';
-    } else {
-      valEl.textContent = fmtPence(p.per_mwh_delivered_gbp);
-      unitEl.textContent = 'per MWh of electricity delivered';
-    }
-    document.getElementById('hero-combined').hidden = !ind;
-    if (ind) {
-      if (state.framing === 'all_time') {
-        combVal.textContent = fmtFull(liveCumulative(Date.now()) + liveIndirect(Date.now()));
-      } else if (state.framing === 'runrate') {
-        combVal.textContent = fmtFull(p.runrate_gbp_per_year + ind.runrate_gbp_per_year);
-      } else if (state.framing === 'household') {
-        combVal.textContent = fmtPence(p.per_household_per_year_gbp + ind.per_household_per_year_gbp);
-      } else {
-        combVal.textContent = fmtPence(p.per_mwh_delivered_gbp + ind.per_mwh_delivered_gbp);
-      }
-    }
-    document.getElementById('real-tag').hidden = !state.real;
+    document.getElementById('hero-value').textContent = fmtFull(liveCumulative(Date.now()));
     document.getElementById('hero-sub').textContent =
-      PERSPECTIVE_TEXT[state.perspective].subtitle(sinceYear);
+      'paid to renewable electricity generators by Great Britain\u2019s bill-payers since ' + sinceYear;
+    var lc = totals.perspectives.low_carbon;
+    if (lc) {
+      var delta = lc.cumulative_gbp - totals.perspectives.renewables.cumulative_gbp;
+      document.getElementById('hero-delta').innerHTML =
+        'Under the same schemes, nuclear and biomass received a further <span class="money num">' +
+        fmtCompact(delta) + '</span> \u2014 <a href="methodology.html#perspectives">see the methodology page</a>.';
+    }
     document.getElementById('strip-alltime-since').textContent = 'since ' + sinceYear;
   }
 
@@ -179,7 +133,6 @@
 
   var els = {
     heroValue: document.getElementById('hero-value'),
-    heroCombined: document.getElementById('hero-combined-value'),
     sinceOpened: document.getElementById('since-opened'),
     now: document.getElementById('strip-now'),
     today: document.getElementById('strip-today'),
@@ -192,13 +145,7 @@
     var t = Date.now();
     var d = new Date(t);
     var rate = pv().rate_gbp_per_sec;
-    if (state.framing === 'all_time') {
-      els.heroValue.textContent = fmtFull(liveCumulative(t));
-      var indLive = liveIndirect(t);
-      if (indLive != null) {
-        els.heroCombined.textContent = fmtFull(liveCumulative(t) + indLive);
-      }
-    }
+    els.heroValue.textContent = fmtFull(liveCumulative(t));
     els.sinceOpened.textContent = fmtPence(rate * (t - openedAt) / 1000);
     els.now.textContent = fmtPence(rate);
     els.today.textContent = fmtFull(rate * (t - startOfToday(d)) / 1000);
@@ -233,6 +180,10 @@
         '<span class="eq-src" title="' + esc(eq.ghost_hospital_gbp.source + ' — ' + eq.ghost_hospital_gbp.description) + '">new mid-sized hospitals</span> each year'
       );
     }
+    items.push(
+      'That is <span class="money num">' + fmtPence(p.per_mwh_delivered_gbp) +
+      '</span> on every MWh of electricity delivered'
+    );
     if (pop) {
       items.push(
         'Per person, it is <span class="money num">' + fmtPence(p.per_person_per_year_gbp) + '</span> a year ' +
@@ -294,8 +245,6 @@
       .slice()
       .sort(function (a, b) { return schemeCumulative(b) - schemeCumulative(a); });
     var max = Math.max.apply(null, schemes.map(function (s) { return Math.abs(schemeCumulative(s)); }));
-    document.getElementById('schemes-perspective-note').textContent =
-      PERSPECTIVE_TEXT[state.perspective].schemesNote;
     document.getElementById('scheme-bars').innerHTML = schemes.map(function (s) {
       var stale = isStale(s);
       var v = schemeCumulative(s);
@@ -347,30 +296,25 @@
     document.getElementById('indirect-card-rows').innerHTML = indirect.map(rowHtml).join('');
   }
 
-  // ---------- strip extras: household & share-of-bill chips ----------
+  // ---------- strip extras: household & share-of-bill chips (direct schemes only) ----------
   function renderStripExtras() {
-    var ind = iv();
     document.getElementById('strip-household').textContent =
-      fmtPence(pv().per_household_per_year_gbp + (ind ? ind.per_household_per_year_gbp : 0));
+      fmtPence(pv().per_household_per_year_gbp);
 
     var bill = timeseries.electricity_bill;
     var share = null, year = null;
-    if (bill && bill.annual && bill.annual.length && timeseries.indirect) {
-      var directBy = {}, indirectBy = {};
+    if (bill && bill.annual && bill.annual.length) {
+      var directBy = {};
       timeseries.perspectives[state.perspective].annual.forEach(function (a) { directBy[a.year] = annualCost(a); });
-      timeseries.indirect.annual.forEach(function (a) { indirectBy[a.year] = annualCost(a); });
-      // same complete-year rule and arithmetic as renderShareChart
-      var complete = bill.annual.filter(function (a) {
-        return (state.real ? a.total_bill_gbp_2024 : a.total_bill_gbp) > 0;
-      });
+      // same complete-year rule as renderShareChart; direct subsidy only
+      var complete = bill.annual.filter(function (a) { return a.total_bill_gbp > 0; });
       var last = complete[complete.length - 1];
       if (last) {
         year = last.year;
-        var billV = state.real ? last.total_bill_gbp_2024 : last.total_bill_gbp;
-        share = (Math.max(0, directBy[year] || 0) + Math.max(0, indirectBy[year] || 0)) / billV;
+        share = Math.max(0, directBy[year] || 0) / last.total_bill_gbp;
       }
     }
-    document.getElementById('strip-share').textContent = share != null ? Math.round(100 * share) + '%' : '—';
+    document.getElementById('strip-share').textContent = share != null ? Math.round(100 * share) + '%' : '\u2014';
     document.getElementById('strip-share-sub').textContent = year != null ? 'of ' + year + ' electricity spend' : '';
   }
 
@@ -542,9 +486,8 @@
 
     document.getElementById('trend-chart').innerHTML = svg;
     document.getElementById('trend-note').textContent =
-      'Annual cost by scheme for the selected perspective, ' + firstYear + '–' + currentYear +
-      '. Solid bars are direct subsidies; hatched bars are estimated indirect costs.' +
-      (state.real ? ' Figures in 2024 prices.' : '') +
+      'Annual cost by scheme, ' + firstYear + '–' + currentYear +
+      '. Warm solid bars are measured direct subsidies; cool hatched bars are estimated indirect costs.' +
       ' *' + currentYear + ' is a partial year (data to date).';
     var directIds = memberIds.filter(function (id) { return !isIndirectScheme(id); });
     function legendItem(id) {
@@ -555,7 +498,7 @@
       return '<span>' + swatch + esc(schemesById[id].label) + '</span>';
     }
     document.getElementById('trend-legend').innerHTML =
-      '<span class="legend-group">Direct</span>' + directIds.map(legendItem).join('') +
+      '<span class="legend-group">Direct (measured)</span>' + directIds.map(legendItem).join('') +
       '<span class="legend-group">Indirect (estimated)</span>' + indirectIds.map(legendItem).join('');
   }
 
@@ -606,7 +549,7 @@
     var lowCarbon = state.perspective === 'low_carbon';
     var subsidyLabel = lowCarbon ? 'Low-carbon energy' : 'Renewable-energy';
 
-    var DIRECT = 'var(--c-ro)', HATCH = 'var(--c-cfdr)', OTHER = 'var(--c-other)';
+    var DIRECT = 'var(--c-ro)', HATCH = 'var(--c-cm)', OTHER = 'var(--c-other)';
     var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + (lowCarbon ? 'Low-carbon energy' : 'Renewable') + ' subsidy as a share of the total electricity bill, ' + firstYear + ' to ' + lastYear + '">';
     svg += '<defs><pattern id="share-hatch" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">' +
       '<line x1="0" y1="0" x2="0" y2="5" stroke="' + HATCH + '" stroke-width="1.8"/></pattern></defs>';
@@ -670,25 +613,19 @@
         day: 'numeric', month: 'long', year: 'numeric',
         hour: '2-digit', minute: '2-digit', timeZone: 'UTC', timeZoneName: 'short'
       }) + '.';
-    var labels = { cfd: 'CfD (LCCC)', constraints: 'Constraints (Elexon)', capacity_market: 'Capacity Market (LCCC)', bsuos: 'BSUoS (NESO)' };
-    document.getElementById('freshness').innerHTML =
-      Object.keys(meta.freshness).map(function (k) {
-        var f = meta.freshness[k];
-        return '<span><a href="' + esc(f.source_url) + '">' + esc(labels[k] || k) + '</a>' +
-          ' retrieved ' + fmtDate(f.retrieved_at) +
-          ' · <span class="num">' + fmtInt(f.row_count) + '</span> rows</span>';
-      }).join('');
+    // a warning that is always visible is furniture: only speak when something is stale
+    var stale = breakdown.schemes.filter(isStale);
+    document.getElementById('freshness').innerHTML = stale.length
+      ? '<span class="stale-warning">Data for ' + stale.map(function (s) { return esc(s.label); }).join(', ') +
+        ' is older than its normal publication lag \u2014 details on the <a href="methodology.html#freshness">methodology page</a>.</span>'
+      : '';
   }
 
   // ---------- copy figure ----------
   function copyFigure() {
     var t = Date.now();
-    var indLive = liveIndirect(t);
-    var text = fmtFull(liveCumulative(t)) + ' paid in ' +
-      PERSPECTIVE_TEXT[state.perspective].copyNoun + ' since ' + persp().since_year +
-      (state.real ? ' (2024 prices)' : '') +
-      (indLive != null ? ', plus an estimated ' + fmtFull(indLive) + ' in indirect costs' : '') +
-      ' — sources: LCCC, Ofgem, Elexon, NESO, HMRC, REF';
+    var text = fmtFull(liveCumulative(t)) + ' paid in UK renewable-energy subsidies since ' +
+      persp().since_year + ' \u2014 sources: LCCC, Ofgem, Elexon, NESO, HMRC, REF \u00b7 subsidyclock.co.uk';
     var btn = document.getElementById('copy-figure');
     function done() {
       btn.textContent = 'Copied';
@@ -702,7 +639,7 @@
   }
 
   // ---------- wiring ----------
-  function renderPerspective() {
+  function renderAll() {
     renderHeroStatic();
     renderEquivalences();
     renderSchemeBars();
@@ -712,48 +649,10 @@
     renderStripExtras();
   }
 
-  function renderBasis() {
-    document.querySelectorAll('.nominal-tag').forEach(function (el) { el.hidden = !state.real; });
-    renderPerspective();
-    renderSwitchOff();
-  }
-
-  document.getElementById('perspective-switch').addEventListener('click', function (e) {
-    var btn = e.target.closest('button[data-perspective]');
-    if (!btn || btn.dataset.perspective === state.perspective) return;
-    state.perspective = btn.dataset.perspective;
-    this.querySelectorAll('button').forEach(function (b) {
-      b.setAttribute('aria-pressed', String(b === btn));
-    });
-    renderPerspective();
-  });
-
-  document.getElementById('real-switch').addEventListener('click', function (e) {
-    var btn = e.target.closest('button[data-basis]');
-    if (!btn) return;
-    var real = btn.dataset.basis === 'real';
-    if (real === state.real) return;
-    state.real = real;
-    this.querySelectorAll('button').forEach(function (b) {
-      b.setAttribute('aria-pressed', String(b === btn));
-    });
-    renderBasis();
-  });
-
-  document.getElementById('framing-switch').addEventListener('click', function (e) {
-    var btn = e.target.closest('button[data-framing]');
-    if (!btn || btn.dataset.framing === state.framing) return;
-    state.framing = btn.dataset.framing;
-    this.querySelectorAll('button').forEach(function (b) {
-      b.setAttribute('aria-pressed', String(b === btn));
-    });
-    renderHeroStatic();
-  });
-
   document.getElementById('copy-figure').addEventListener('click', copyFigure);
 
   // ---------- first paint ----------
-  renderPerspective();
+  renderAll();
   renderSwitchOff();
   renderTechBars();
   renderRecipients();

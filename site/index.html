@@ -22,9 +22,9 @@
   <div class="container masthead-inner">
     <div class="brand-block">
       <p class="brand"><span class="brand-tick" aria-hidden="true"></span>The Subsidy Clock</p>
-      <p class="brand-tag">What UK energy subsidies cost</p>
+      <p class="brand-tag">What UK energy subsidies cost, counted live</p>
     </div>
-    <nav><a href="about.html">About this site</a><a href="methodology.html">Methodology &amp; sources</a></nav>
+    <nav><a href="methodology.html">Methodology &amp; sources</a><a href="about.html">About this site</a></nav>
   </div>
 </header>
 
@@ -34,36 +34,14 @@
   <!-- ====================== HERO ====================== -->
   <section class="hero" aria-label="Headline counter">
 
-    <div class="controls">
-      <div class="seg" role="group" aria-label="Perspective" id="perspective-switch">
-        <button data-perspective="renewables" aria-pressed="true">Renewables only</button>
-        <button data-perspective="low_carbon" aria-pressed="false">All low-carbon <span class="seg-note">incl. nuclear &amp; biomass</span></button>
-      </div>
-      <div class="seg seg-mini" role="group" aria-label="Price basis" id="real-switch">
-        <button data-basis="nominal" aria-pressed="true">nominal £</button>
-        <button data-basis="real" aria-pressed="false">2024 £</button>
-      </div>
-      <div class="tabs" role="group" aria-label="Framing" id="framing-switch">
-        <button data-framing="all_time" aria-pressed="true">All-time total</button>
-        <button data-framing="runrate" aria-pressed="false">This year’s run-rate</button>
-        <button data-framing="household" aria-pressed="false">Per household / year</button>
-        <button data-framing="per_mwh" aria-pressed="false">Per MWh delivered</button>
-      </div>
-    </div>
-
-    <p class="real-tag num" id="real-tag" hidden>2024 prices</p>
     <p class="hero-figure">
       <span class="hero-value money num" id="hero-value">&nbsp;</span><sup class="hero-fn" title="Estimated between official updates: the counter advances at each scheme’s most recent published run-rate.">†</sup>
     </p>
-    <p class="hero-unit num" id="hero-unit"></p>
-    <p class="hero-combined" id="hero-combined">
-      <span class="hero-combined-label">with estimated indirect costs:</span>
-      <span class="hero-combined-figure"><span class="hero-combined-value num" id="hero-combined-value">&nbsp;</span><sup class="hero-combined-fn"><a href="methodology.html#indirect" title="Indirect costs are attributed estimates — see the methodology page for each attribution rule.">estimated</a></sup></span>
-    </p>
     <p class="hero-sub" id="hero-sub"></p>
+    <p class="hero-delta" id="hero-delta"></p>
     <p class="hero-footnote">† estimated between official updates</p>
 
-    <p class="since-opened">Since you opened this page: <span class="money num" id="since-opened">£0.00</span></p>
+    <p class="since-opened">Since you opened this page: <span class="money num" id="since-opened">£0.00</span> · <button id="copy-figure" type="button" class="copy-figure">Copy figure</button></p>
 
     <!-- ============ Timeframe strip (run-rate estimates) ============ -->
     <div class="strip" id="strip" aria-label="Run-rate estimates over different timeframes">
@@ -72,10 +50,10 @@
       <div class="strip-cell"><span class="strip-label">This week</span><span class="strip-value money num" id="strip-week"></span><span class="strip-sub">since Monday</span></div>
       <div class="strip-cell"><span class="strip-label">This year</span><span class="strip-value money num" id="strip-year"></span><span class="strip-sub">since 1 January</span></div>
       <div class="strip-cell"><span class="strip-label">All-time</span><span class="strip-value money num" id="strip-alltime"></span><span class="strip-sub" id="strip-alltime-since"></span></div>
-      <div class="strip-cell"><span class="strip-label">Your household</span><span class="strip-value money num" id="strip-household"></span><span class="strip-sub">per year, incl. indirect</span></div>
+      <div class="strip-cell"><span class="strip-label">Your household</span><span class="strip-value money num" id="strip-household"></span><span class="strip-sub">per year, direct schemes</span></div>
       <div class="strip-cell"><span class="strip-label">Share of bill</span><span class="strip-value num" id="strip-share"></span><span class="strip-sub" id="strip-share-sub"></span></div>
     </div>
-    <p class="strip-caption">Timeframe figures are run-rate estimates: the current per-second rate applied to elapsed time. The household figure includes estimated indirect costs; the bill share is for the latest complete year.</p>
+    <p class="strip-caption">Timeframe figures are run-rate estimates: the current per-second rate applied to elapsed time. The household figure and bill share count direct subsidies only, for the latest complete year where dated.</p>
 
     <!-- ============ Equivalences ============ -->
     <ul class="equivalences" id="equivalences"></ul>
@@ -105,7 +83,7 @@
       <div class="stat"><span class="stat-value money num" id="con-runrate"></span><span class="stat-label">per year at current run-rate</span></div>
       <div class="stat"><span class="stat-value num" id="con-curtailed"></span><span class="stat-label" id="con-curtailed-label">MWh paid for and not generated</span></div>
     </div>
-    <h3>Largest recipients <span class="h-note" id="con-window"></span><span class="badge badge-nominal nominal-tag" hidden>nominal £</span></h3>
+    <h3>Largest recipients <span class="h-note" id="con-window"></span></h3>
     <table class="data-table" id="con-table">
       <thead><tr><th>Lead party</th><th class="num-col">Paid</th><th class="num-col">MWh curtailed</th></tr></thead>
       <tbody></tbody>
@@ -116,12 +94,12 @@
   <div class="card-pair">
     <section class="card" aria-labelledby="schemes-h">
       <h2 id="schemes-h">By scheme</h2>
-      <p class="card-intro">Cumulative cost of each support scheme, <span id="schemes-perspective-note"></span>.</p>
+      <p class="card-intro">Cumulative cost of each direct support scheme.</p>
       <div class="bars" id="scheme-bars"></div>
     </section>
 
     <section class="card" aria-labelledby="tech-h">
-      <h2 id="tech-h">By technology <span class="h-note">CfD schemes only</span><span class="badge badge-nominal nominal-tag" hidden>nominal £</span></h2>
+      <h2 id="tech-h">By technology <span class="h-note">CfD schemes only</span></h2>
       <p class="card-intro">Net Contracts for Difference payments by technology. Negative values are net paybacks: market prices exceeded the strike price.</p>
       <div class="bars" id="tech-bars"></div>
     </section>
@@ -129,7 +107,7 @@
 
   <!-- ====================== RECIPIENTS ====================== -->
   <section class="card" aria-labelledby="recipients-h">
-    <h2 id="recipients-h">Largest recipients <span class="badge badge-nominal nominal-tag" hidden>nominal £</span></h2>
+    <h2 id="recipients-h">Largest recipients </h2>
     <p class="card-intro">Ranked by cumulative payment, merging CfD per-unit payments and constraint payments by lead party.</p>
     <table class="data-table" id="recipients-table">
       <thead><tr><th class="rank-col">#</th><th>Recipient</th><th>Technology</th><th>Scheme</th><th class="num-col">Cumulative</th></tr></thead>
@@ -159,14 +137,9 @@
 
 <footer class="footer">
   <div class="container">
-    <p class="num" id="generated-at"></p>
     <div class="freshness" id="freshness"></div>
-    <div class="footer-actions">
-      <button id="copy-figure" type="button">Copy figure</button>
-      <a href="about.html">About this site</a>
-      <a href="methodology.html">Methodology &amp; sources</a>
-    </div>
-    <p class="footer-small">Every figure on this page traces to an official source: LCCC, Ofgem, Elexon, NESO, HMRC and REF. Caveats and formulas are on the <a href="methodology.html">methodology page</a>.</p>
+    <p class="footer-links">Made by <a href="https://theenergytrap.org">Richard Lyon</a> · <a href="methodology.html">Methodology &amp; sources</a> · <a href="about.html">About this site</a></p>
+    <p class="footer-small"><span class="num" id="generated-at"></span> Every figure traces to an official source.</p>
   </div>
 </footer>
 

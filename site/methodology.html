@@ -54,6 +54,9 @@
   <p><strong>Formula in words:</strong> annual official scheme values from Ofgem’s Feed-in Tariffs annual reports. These are official annual totals pending per-generator reconstruction.</p>
   <p class="src-quote" id="fit-source"></p>
 
+  <h2 id="perspectives">Perspectives: renewables only, and all low-carbon</h2>
+  <p>The dashboard's headline counts <strong>renewable generators only</strong> — the most conservative reading. The same schemes also pay nuclear and biomass generators under the CfD: counting those, the all-low-carbon total is <span class="num" id="persp-lowcarbon"></span> against the renewables-only <span class="num" id="persp-renewables"></span> — a difference of <span class="num" id="persp-delta"></span>, almost all of it <a href="explainers/cfd-nuclear-biomass.html">CfD payments to nuclear and biomass</a>. Indirect costs (network, balancing, carbon pricing, capacity) are tracked separately and always marked estimated; they are never folded into the headline.</p>
+
   <h2 id="indirect">Indirect subsidies (estimated)</h2>
   <p>Beyond the direct schemes above, renewable generation imposes costs that reach bill-payers and taxpayers through network charges, balancing costs, carbon pricing and the capacity levy. The dashboard shows these as “the indirect bill”, always marked <strong>estimated</strong>: each component’s <em>amount</em> is measured from an official source (amount confidence: high for all five), but the share <em>attributable</em> to renewables is a stated judgement. The attribution rule for each component is quoted verbatim below.</p>
 
@@ -145,7 +148,16 @@
   <h2>Run-rate semantics</h2>
   <p>The per-second rates that drive the live counter are derived from each scheme’s recent run-rate: the trailing 365 days for daily schemes (CfD and constraints), the last 12 months for the Capacity Market, and the latest completed scheme year for RO and FIT. Values shown between official data updates are therefore <strong>estimates</strong>, and are replaced by official figures as they are published.</p>
 
-  <h2>Data freshness</h2>
+  <h2 id="prices">Nominal pounds, and 2024 prices</h2>
+  <p>The dashboard counts <strong>nominal pounds</strong>: money summed as it was actually paid, the debt-clock convention. The objection that 2002 pounds are not 2026 pounds is fair, so the same annual series is shown here deflated to 2024 prices (HMT GDP deflator). The real-terms total is <em>larger</em> than the nominal one — early-years subsidy was worth more in today's money — which is why nominal is the conservative choice for the headline.</p>
+  <table class="data-table" id="prices-table">
+    <thead><tr><th>Year</th><th class="num-col">Nominal</th><th class="num-col">2024 prices</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <p class="caveat" id="prices-note"></p>
+
+  <h2 id="freshness">Data freshness</h2>
+  <p class="scheme-meta" id="freshness-detail"></p>
   <p>Each scheme on the dashboard carries a badge showing its update cadence and the latest date its data covers. Every source publishes in arrears — LCCC releases daily CfD data weekly, NESO publishes daily balancing costs with a few days’ lag, and Capacity Market monthly data follows the settlement calendar — so a publication lag is normal and is not flagged. A scheme is marked <strong>stale</strong> only when its latest data is older than that scheme’s normal publication lag: 21 days for CfD, 3 days for constraints, 7 days for BSUoS, 75 days after the end of the latest data month for the Capacity Market, and 2 years for RO and FIT annual reports.</p>
 
   <h2>Restatements</h2>
@@ -157,16 +169,19 @@
 <script>
 'use strict';
 (async function () {
-  var bd, recon, meta, xcheck;
+  var bd, recon, meta, xcheck, totals, timeseries;
   try {
     var res = await Promise.all([
       fetch('data/breakdown.json'), fetch('data/reconciliation.json'),
-      fetch('data/meta.json'), fetch('data/indirect_crosscheck.json')
+      fetch('data/meta.json'), fetch('data/indirect_crosscheck.json'),
+      fetch('data/totals.json'), fetch('data/timeseries.json')
     ]);
     bd = await res[0].json();
     recon = await res[1].json();
     meta = await res[2].json();
     xcheck = await res[3].json();
+    totals = await res[4].json();
+    timeseries = await res[5].json();
   } catch (e) {
     document.getElementById('recon-summary').textContent =
       'Live reconciliation data could not be loaded — figures remain available in the repository.';
@@ -176,6 +191,48 @@
   function esc(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
+
+  function fmtBn(v) {
+    return '\u00a3' + (v / 1e9).toFixed(1) + 'bn';
+  }
+
+  // perspectives: live renewables vs all-low-carbon totals
+  (function () {
+    var r = totals.perspectives.renewables, lc = totals.perspectives.low_carbon;
+    if (!lc) return;
+    document.getElementById('persp-renewables').textContent = fmtBn(r.cumulative_gbp);
+    document.getElementById('persp-lowcarbon').textContent = fmtBn(lc.cumulative_gbp);
+    document.getElementById('persp-delta').textContent = fmtBn(lc.cumulative_gbp - r.cumulative_gbp);
+  })();
+
+  // nominal vs 2024-price annual series (renewables perspective, direct schemes)
+  (function () {
+    var annual = (timeseries.perspectives.renewables || {}).annual || [];
+    var totN = 0, totR = 0;
+    document.querySelector('#prices-table tbody').innerHTML = annual.map(function (a) {
+      totN += a.cost_gbp; totR += a.cost_gbp_2024;
+      return '<tr><td class="num">' + a.year + '</td>' +
+        '<td class="num-col num">' + fmtBn(a.cost_gbp) + '</td>' +
+        '<td class="num-col num">' + fmtBn(a.cost_gbp_2024) + '</td></tr>';
+    }).join('') +
+      '<tr><td><strong>Total</strong></td>' +
+      '<td class="num-col num"><strong>' + fmtBn(totN) + '</strong></td>' +
+      '<td class="num-col num"><strong>' + fmtBn(totR) + '</strong></td></tr>';
+    document.getElementById('prices-note').textContent =
+      'Renewables-only direct schemes; the final year is partial. Deflated with the HM Treasury GDP deflator (see reference inputs in the repository).';
+  })();
+
+  // per-scheme retrieval detail (moved here from the dashboard footer)
+  (function () {
+    var labels = { cfd: 'CfD (LCCC)', constraints: 'Constraints (Elexon)', capacity_market: 'Capacity Market (LCCC)', bsuos: 'BSUoS (NESO)' };
+    document.getElementById('freshness-detail').innerHTML =
+      Object.keys(meta.freshness).map(function (k) {
+        var f = meta.freshness[k];
+        var d = new Date(f.retrieved_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+        return '<a href="' + esc(f.source_url) + '">' + esc(labels[k] || k) + '</a> retrieved ' + d +
+          ' \u00b7 <span class="num">' + Math.round(f.row_count).toLocaleString('en-GB') + '</span> rows';
+      }).join(' &nbsp;\u00b7&nbsp; ');
+  })();
   function gbp(v) {
     var sign = v < 0 ? '−' : '';
     return sign + '£' + Math.abs(Math.round(v)).toLocaleString('en-GB');
