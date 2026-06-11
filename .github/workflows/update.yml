@@ -31,3 +31,7 @@ jobs:
           git add data site/data
           git diff --cached --quiet || git commit -m "data: scheduled update $(date -u +%F)"
           git push
+      - name: Deploy to Vercel
+        # explicit deploy hook: push-triggered auto-deploys have proven unreliable,
+        # and a stale live clock is a silent failure
+        run: curl -fsS -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}" > /dev/null
