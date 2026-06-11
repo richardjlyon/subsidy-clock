@@ -623,21 +623,88 @@
       : '';
   }
 
-  // ---------- copy figure ----------
+  // ---------- share/cite (distribution F2): the facts registry ----------
+  // Anchors are the public citation contract - never rename without redirect.
+  // url: /s/ stubs exist for the four headline facts (per-fact OG preview);
+  // other cards share the canonical anchor URL (homepage card preview).
+  var SITE_URL = 'https://subsidyclock.co.uk';
+  var asofShort = fmtDate(totals.generated_at);
+  function stub(slug) { return SITE_URL + '/s/' + slug; }
+  function anchorUrl(a) { return SITE_URL + '/#' + a; }
+
+  function shareFacts() {
+    var sinceYear = totals.perspectives.renewables.since_year;
+    var con = schemesById.constraints;
+    var facts = [
+      { id: 'total', title: 'The Subsidy Clock', anchor: 'total', url: stub('total'),
+        png: 'share/total.png', csv: 'data/combined-annual.csv',
+        label: 'paid to renewable electricity generators by Great Britain’s bill-payers since ' + sinceYear,
+        figure: function () { return fmtFull(liveCumulative(Date.now())); },
+        container: document.querySelector('#total .since-opened') },
+      { id: 'direct-bill', title: 'The direct bill', anchor: 'direct-bill',
+        url: anchorUrl('direct-bill'), png: null, csv: 'data/combined-annual.csv',
+        label: 'direct renewable-energy subsidy since ' + sinceYear,
+        figure: function () { return fmtCompact(pv().cumulative_gbp); },
+        container: document.getElementById('direct-bill') },
+      { id: 'indirect-bill', title: 'The indirect bill (estimated)', anchor: 'indirect-bill',
+        url: anchorUrl('indirect-bill'), png: null, csv: 'data/combined-annual.csv',
+        label: 'estimated indirect costs of renewables — backup, balancing and the grid',
+        figure: function () { var i = iv(); return i ? fmtCompact(i.cumulative_gbp) : '—'; },
+        container: document.getElementById('indirect-bill') },
+      { id: 'by-scheme', title: 'By scheme', anchor: 'by-scheme',
+        url: anchorUrl('by-scheme'), png: null, csv: 'data/combined-annual.csv',
+        label: 'cumulative cost of each direct support scheme',
+        figure: function () { return fmtCompact(pv().cumulative_gbp); },
+        container: document.getElementById('by-scheme') },
+      { id: 'by-technology', title: 'By technology (CfD schemes)', anchor: 'by-technology',
+        url: anchorUrl('by-technology'), png: null, csv: 'data/cfd.csv',
+        label: 'net Contracts for Difference payments by technology',
+        figure: function () { var s = schemesById.cfd_renewable; return s ? fmtCompact(schemeCumulative(s)) : '—'; },
+        container: document.getElementById('by-technology') },
+      { id: 'recipients', title: 'Largest recipients', anchor: 'recipients',
+        url: anchorUrl('recipients'), png: null, csv: null,
+        label: 'largest recipients of CfD and constraint payments',
+        figure: function () { return fmtCompact(pv().cumulative_gbp); },
+        container: document.getElementById('recipients') },
+      { id: 'cost-per-year', title: 'Cost per year, by scheme', anchor: 'cost-per-year',
+        url: anchorUrl('cost-per-year'), png: null, csv: 'data/combined-annual.csv',
+        label: 'annual subsidy cost by scheme since 2002',
+        figure: function () { return fmtCompact(pv().cumulative_gbp); },
+        container: document.getElementById('cost-per-year') },
+      { id: 'share-of-bill', title: 'Subsidy as a share of the electricity bill',
+        anchor: 'share-of-bill', url: anchorUrl('share-of-bill'), png: null, csv: null,
+        label: 'renewable subsidy as a share of total UK electricity expenditure',
+        figure: function () { return document.getElementById('strip-share').textContent; },
+        container: document.getElementById('share-of-bill') }
+    ];
+    if (con) {
+      facts.push({ id: 'switch-off', title: 'Paid to switch off', anchor: 'switch-off',
+        url: stub('switch-off'), png: 'share/switch-off.png', csv: 'data/constraints.csv',
+        label: 'paid to wind farms to reduce output when the grid could not carry their electricity',
+        figure: function () { return fmtCompact(schemeCumulative(con)); },
+        container: document.getElementById('switch-off') });
+    }
+    return facts;
+  }
+
+  function initShare() {
+    SCShare.initTracking();
+    shareFacts().forEach(function (f) {
+      if (f.container) SCShare.attach(f.container, f, asofShort);
+    });
+  }
+
+  // ---------- copy figure (hero instance of the share component) ----------
   function copyFigure() {
-    var t = Date.now();
-    var text = fmtFull(liveCumulative(t)) + ' paid in UK renewable-energy subsidies since ' +
-      persp().since_year + ' \u2014 sources: LCCC, Ofgem, Elexon, NESO, HMRC, REF \u00b7 subsidyclock.co.uk';
+    var text = fmtFull(liveCumulative(Date.now())) +
+      ' paid in UK renewable-energy subsidies since ' + persp().since_year +
+      ' \u2014 sources: LCCC, Ofgem, Elexon, NESO, HMRC, REF \u00b7 subsidyclock.co.uk';
     var btn = document.getElementById('copy-figure');
-    function done() {
+    SCShare.copyText(text, function () {
       btn.textContent = 'Copied';
       setTimeout(function () { btn.textContent = 'Copy figure'; }, 1600);
-    }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done, function () { window.prompt('Copy this figure:', text); });
-    } else {
-      window.prompt('Copy this figure:', text);
-    }
+    });
+    SCShare.track('share:total:copy-figure');
   }
 
   // ---------- wiring ----------
@@ -659,6 +726,7 @@
   renderTechBars();
   renderRecipients();
   renderFooter();
+  initShare();
   rafId = requestAnimationFrame(tick);
 
 })();
