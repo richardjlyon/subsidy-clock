@@ -347,6 +347,33 @@
     document.getElementById('indirect-card-rows').innerHTML = indirect.map(rowHtml).join('');
   }
 
+  // ---------- strip extras: household & share-of-bill chips ----------
+  function renderStripExtras() {
+    var ind = iv();
+    document.getElementById('strip-household').textContent =
+      fmtPence(pv().per_household_per_year_gbp + (ind ? ind.per_household_per_year_gbp : 0));
+
+    var bill = timeseries.electricity_bill;
+    var share = null, year = null;
+    if (bill && bill.annual && bill.annual.length && timeseries.indirect) {
+      var directBy = {}, indirectBy = {};
+      timeseries.perspectives[state.perspective].annual.forEach(function (a) { directBy[a.year] = annualCost(a); });
+      timeseries.indirect.annual.forEach(function (a) { indirectBy[a.year] = annualCost(a); });
+      // same complete-year rule and arithmetic as renderShareChart
+      var complete = bill.annual.filter(function (a) {
+        return (state.real ? a.total_bill_gbp_2024 : a.total_bill_gbp) > 0;
+      });
+      var last = complete[complete.length - 1];
+      if (last) {
+        year = last.year;
+        var billV = state.real ? last.total_bill_gbp_2024 : last.total_bill_gbp;
+        share = (Math.max(0, directBy[year] || 0) + Math.max(0, indirectBy[year] || 0)) / billV;
+      }
+    }
+    document.getElementById('strip-share').textContent = share != null ? Math.round(100 * share) + '%' : '—';
+    document.getElementById('strip-share-sub').textContent = year != null ? 'of ' + year + ' electricity spend' : '';
+  }
+
   // ---------- technology breakdown (CfD only) ----------
   function renderTechBars() {
     var combined = {};
@@ -682,6 +709,7 @@
     renderChart();
     renderShareChart();
     renderCategoryCards();
+    renderStripExtras();
   }
 
   function renderBasis() {

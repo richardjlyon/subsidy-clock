@@ -165,7 +165,7 @@ a:hover { color: var(--money); }
 /* ---------- timeframe strip ---------- */
 .strip {
   margin: 40px 0 0;
-  display: grid; grid-template-columns: repeat(5, 1fr);
+  display: grid; grid-template-columns: repeat(7, 1fr);
   border: 1px solid var(--line); border-radius: 14px;
   background: var(--card); overflow: hidden;
 }
@@ -331,6 +331,10 @@ tr.out-of-tolerance td { color: var(--money-deep); font-weight: 500; }
 @media (max-width: 900px) {
   .card-pair { grid-template-columns: 1fr; }
   .card-pair .card { margin: 0; }
+  .strip { grid-template-columns: repeat(4, 1fr); }
+  .strip-cell { border-top: 1px solid var(--line-soft); }
+  .strip-cell:nth-child(4n+1) { border-left: 0; }
+  .strip-cell:nth-child(-n+4) { border-top: 0; }
 }
 
 @media (max-width: 680px) {
