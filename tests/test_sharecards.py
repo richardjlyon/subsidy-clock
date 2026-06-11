@@ -98,3 +98,24 @@ def test_compose_rejects_unfilled_tokens():
                            {"slug": "x", "figure": "£1", "label": "y",
                             "anchor": None, "stub": False},
                            "11 June 2026")
+
+
+def test_write_stubs(data_dir, tmp_path):
+    facts, asof, datestr = sharecards.load_facts(data_dir)
+    out = tmp_path / "s"
+    sharecards.write_stubs(facts, out, asof, datestr)
+    # one stub per stub-flagged fact, none for explainer/site cards
+    assert sorted(p.name for p in out.glob("*.html")) == [
+        "household.html", "run-rate.html", "switch-off.html", "total.html"]
+    html = (out / "switch-off.html").read_text()
+    # per-fact OG tags with a dated image URL (defeats platform preview caching)
+    assert 'property="og:image" content="https://subsidyclock.co.uk/share/switch-off.png?d=2026-06-11"' in html
+    assert 'name="twitter:card" content="summary_large_image"' in html
+    assert 'property="og:url" content="https://subsidyclock.co.uk/s/switch-off"' in html
+    # redirect shim: noindex, meta refresh and JS bounce to the dashboard anchor
+    assert 'name="robots" content="noindex"' in html
+    assert 'url=https://subsidyclock.co.uk/#switch-off' in html
+    assert 'location.replace("https://subsidyclock.co.uk/#switch-off")' in html
+    # crawler/JS-off fallback carries the dated figure and a link
+    assert "£2,510,000,000" in html
+    assert "11 June 2026" in html

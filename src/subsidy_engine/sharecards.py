@@ -101,6 +101,55 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
     return facts, asof, datestr
 
 
+STUB_TEMPLATE = """<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>{title} — The Subsidy Clock</title>
+<meta name="description" content="{description}">
+<meta property="og:title" content="{title}">
+<meta property="og:description" content="{description}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Subsidy Clock">
+<meta property="og:url" content="{stub_url}">
+<meta property="og:image" content="{image_url}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="{site_url}/">
+<meta http-equiv="refresh" content="0;url={target}">
+</head>
+<body>
+<p>{figure} {label} (as of {asof}) — <a href="{target}">The Subsidy Clock</a>.</p>
+<script>location.replace({target_js});</script>
+</body>
+</html>
+"""
+
+
+def write_stubs(facts: list[dict], out_dir: Path | str, asof: str, datestr: str) -> None:
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    for fact in facts:
+        if not fact.get("stub"):
+            continue
+        target = f"{SITE_URL}/#{fact['anchor']}"
+        html = STUB_TEMPLATE.format(
+            title=f"{fact['figure']} {fact['label']}",
+            description=f"As of {asof}. Every figure traces to an official source.",
+            stub_url=f"{SITE_URL}/s/{fact['slug']}",
+            image_url=f"{SITE_URL}/share/{fact['slug']}.png?d={datestr}",
+            site_url=SITE_URL,
+            target=target,
+            target_js=json.dumps(target),
+            figure=fact["figure"],
+            label=fact["label"],
+            asof=asof,
+        )
+        (out / f"{fact['slug']}.html").write_text(html)
+
+
 def compose(template: str, fact: dict, asof: str) -> str:
     html = (template
             .replace("{{FIGURE}}", fact["figure"])
