@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About this site — The Subsidy Counter</title>
+<meta name="description" content="Who built The Subsidy Counter, why, and how it is funded. A citizen's audit of the levies on Britain's electricity bills.">
+<meta property="og:title" content="The Subsidy Counter — about">
+<meta property="og:description" content="Who built The Subsidy Counter, why, and how it is funded.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Subsidy Counter">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container masthead-inner">
+    <p class="brand"><a href="index.html" style="text-decoration:none;color:inherit">The Subsidy Counter</a></p>
+    <nav><a href="index.html">← Back to the counter</a></nav>
+  </div>
+</header>
+
+<main class="container prose">
+  <h1>About this site</h1>
+
+  <p>Renewables are cheap. That is <a href="https://www.gov.uk/government/news/government-secures-record-pipeline-of-clean-cheap-energy-projects">the official story</a>, told by ministers, regulators and the industry. The subsidy bill tells a different one: more than £100&nbsp;billion paid to renewable and low-carbon generators since 2002 — collected from you three ways: on your electricity bill, in your taxes, and in the prices charged by every business paying the same levies.</p>
+
+  <p>Nobody publishes that running total. The figures are public — LCCC, Elexon and Ofgem publish them all — but in separate places, in industry units, and no official body adds them up.</p>
+
+  <p>This site does. Official records, converted to pounds at the official prices, updated daily. Every figure traces to its source; the full method is on the <a href="methodology.html">methodology page</a>. The ticking counter is a labelled estimate between data releases. The totals beneath it are not.</p>
+
+  <p>The British government audits its money: the Office for Budget Responsibility checks every Budget against reality. The government does not audit the levies on your electricity bill. Until it does, this is a citizen’s version of that bookkeeping.</p>
+
+  <p>Built and self-funded by Richard Lyon, author of <a href="https://theenergytrap.org"><em>The Energy Trap</em></a> (Swift Press, 2026). No advertising, no sponsors. Contact: <span id="contact-email">turn on JavaScript for the email address</span>.</p>
+</main>
+
+<script>
+(function () {
+  // assembled at runtime so the address never appears in the page source
+  var u = 'richlyon';
+  var d = ['fastmail', 'com'].join('.');
+  var addr = u + '@' + d;
+  var a = document.createElement('a');
+  a.href = 'mailto:' + addr;
+  a.textContent = addr;
+  var slot = document.getElementById('contact-email');
+  slot.textContent = '';
+  slot.appendChild(a);
+})();
+</script>
+</body>
+</html>
