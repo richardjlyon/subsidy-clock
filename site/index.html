@@ -36,7 +36,7 @@
   <h1 class="visually-hidden">The Subsidy Clock</h1>
 
   <!-- ====================== HERO ====================== -->
-  <section class="hero" aria-label="Headline counter">
+  <section class="hero" id="total" aria-label="Headline counter">
 
     <p class="hero-figure">
       <span class="hero-value money num" id="hero-value">&nbsp;</span><sup class="hero-fn" title="Estimated between official updates: the counter advances at each scheme’s most recent published run-rate.">†</sup>
@@ -65,12 +65,12 @@
 
   <!-- ====================== DIRECT / INDIRECT CARDS ====================== -->
   <div class="card-pair">
-    <section class="card" aria-labelledby="direct-card-h">
+    <section class="card" id="direct-bill" aria-labelledby="direct-card-h">
       <h2 id="direct-card-h">The direct bill</h2>
       <p class="khead"><span class="kfigure money num" id="direct-card-total"></span> <span class="ksub" id="direct-card-sub"></span></p>
       <div id="direct-card-rows"></div>
     </section>
-    <section class="card" aria-labelledby="indirect-card-h">
+    <section class="card" id="indirect-bill" aria-labelledby="indirect-card-h">
       <h2 id="indirect-card-h">The indirect bill <span class="h-note">estimated</span></h2>
       <p class="khead"><span class="kfigure money num" id="indirect-card-total"></span> <span class="ksub" id="indirect-card-sub"></span></p>
       <div id="indirect-card-rows"></div>
@@ -96,13 +96,13 @@
 
   <!-- ====================== SCHEMES + TECHNOLOGY ====================== -->
   <div class="card-pair">
-    <section class="card" aria-labelledby="schemes-h">
+    <section class="card" id="by-scheme" aria-labelledby="schemes-h">
       <h2 id="schemes-h">By scheme</h2>
       <p class="card-intro">Cumulative cost of each direct support scheme.</p>
       <div class="bars" id="scheme-bars"></div>
     </section>
 
-    <section class="card" aria-labelledby="tech-h">
+    <section class="card" id="by-technology" aria-labelledby="tech-h">
       <h2 id="tech-h">By technology <span class="h-note">CfD schemes only</span></h2>
       <p class="card-intro">Net Contracts for Difference payments by technology. Negative values are net paybacks: market prices exceeded the strike price.</p>
       <div class="bars" id="tech-bars"></div>
@@ -110,7 +110,7 @@
   </div>
 
   <!-- ====================== RECIPIENTS ====================== -->
-  <section class="card" aria-labelledby="recipients-h">
+  <section class="card" id="recipients" aria-labelledby="recipients-h">
     <h2 id="recipients-h">Largest recipients </h2>
     <p class="card-intro">Ranked by cumulative payment, merging CfD per-unit payments and constraint payments by lead party.</p>
     <table class="data-table" id="recipients-table">
@@ -121,7 +121,7 @@
   </section>
 
   <!-- ====================== TREND ====================== -->
-  <section class="card" aria-labelledby="trend-h">
+  <section class="card" id="cost-per-year" aria-labelledby="trend-h">
     <h2 id="trend-h">Cost per year, by scheme</h2>
     <p class="card-intro" id="trend-note"></p>
     <div class="chart" id="trend-chart"></div>
