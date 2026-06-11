@@ -13,7 +13,7 @@ var SC = (function () {
       var ss = document.getElementsByTagName('script');
       script = ss[ss.length - 1];
     }
-    return script.src.replace(/[^\/]*$/, '') + '../../data/';
+    return script.src.replace(/[^\/]*$/, '') + '../data/';
   })();
 
   function fmtFull(v) { // £186,212,345,678 — no decimals
@@ -66,14 +66,6 @@ var SC = (function () {
     loop();
   }
 
-  // ---- arm storage
-  function storedArm() {
-    try { return localStorage.getItem('sc-grid-arm'); } catch (e) { return null; }
-  }
-  function storeArm(arm) {
-    try { localStorage.setItem('sc-grid-arm', arm); } catch (e) { /* private mode: per-load arm */ }
-  }
-
   // ---- tracking: GoatCounter custom events, guarded no-op when unset/blocked
   function initTracking() {
     if (!GOATCOUNTER_CODE) return;
@@ -94,7 +86,6 @@ var SC = (function () {
   return {
     fmtFull: fmtFull, fmtPence: fmtPence, fmtCompact: fmtCompact, fmtRate: fmtRate,
     loadData: loadData, derive: derive, startTicker: startTicker,
-    storedArm: storedArm, storeArm: storeArm,
     initTracking: initTracking, track: track
   };
 })();

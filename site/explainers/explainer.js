@@ -42,8 +42,7 @@
         SC.fmtFull(s.cumulative_gbp + rate * (t - anchor) / 1000);
     });
 
-    SC.track('explainer-view/' + (SC.storedArm() || 'unassigned') + '/' +
-      document.body.getAttribute('data-scheme-slug'));
+    SC.track('explainer-view/' + document.body.getAttribute('data-scheme-slug'));
   }).catch(function (err) {
     document.getElementById('x-total').textContent = '—';
   });
