@@ -80,6 +80,7 @@ def test_load_facts_headline_set(data_dir):
     assert "estimated" in by_slug["bsuos"]["label"]
     # generic brand card for non-dashboard pages
     assert by_slug["site"]["figure"] == by_slug["total"]["figure"]
+    assert not by_slug["site"]["stub"]
     # constraints explainer reuses switch-off.png: no separate 'constraints' card
     assert "constraints" not in by_slug
 

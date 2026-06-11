@@ -7,6 +7,7 @@ says otherwise."""
 from __future__ import annotations
 
 import json
+import math
 from datetime import datetime
 from pathlib import Path
 
@@ -29,7 +30,7 @@ EXPLAINERS = {
 
 
 def fmt_full(v: float) -> str:
-    return f"£{int(v):,}"
+    return f"£{math.floor(v):,}"
 
 
 def fmt_pence(v: float) -> str:
