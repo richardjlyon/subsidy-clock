@@ -101,6 +101,9 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
         facts.append({"slug": slug, "figure": fmt_full(s["cumulative_gbp"]),
                       "label": f"{name} — cumulative cost{since}{estimated}",
                       "anchor": None, "stub": False})
+    # Factoid figures are pre-composed by sitedata.py (floored divisions,
+    # deflation) and published in meta.json - reading them here keeps card,
+    # stub and dashboard wording identical without re-running the maths.
     meta_path = data / "meta.json"
     if meta_path.is_file():
         meta = json.loads(meta_path.read_text())
