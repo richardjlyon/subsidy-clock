@@ -10,9 +10,18 @@ CTX = {
     "households": {"value": 28_400_000, "source": "ONS", "source_url": "https://ons", "as_of": 2023},
     "population": {"value": 68_300_000, "source": "ONS", "source_url": "https://ons", "as_of": 2023},
     "annual_demand_twh": {"value": 266, "source": "DESNZ", "source_url": "https://desnz", "as_of": 2024},
+    "equivalences": {
+        "nurse_salary_gbp": {"value": 39043, "source": "NHS Employers", "source_url": "https://nhse", "as_of": 2026},
+        "social_home_gbp": {"value": 393000, "source": "Cebr/Shelter/NHF", "source_url": "https://shelter", "as_of": 2024},
+        "hinkley_point_c_gbp": {"value": 35_000_000_000, "price_base": 2015,
+                                "source": "EDF", "source_url": "https://edf", "as_of": 2026},
+    },
 }
 
 DEFLATOR_INFO = {"source": "ONS CPIH L522", "source_url": "https://ons", "base_year": 2024}
+
+DEFLATORS = pl.DataFrame({"year": [2015, 2024], "index": [100.0, 132.9]},
+                         schema={"year": pl.Int64, "index": pl.Float64})
 
 
 def model():
@@ -43,6 +52,71 @@ def model():
     return {"schemes": [direct, indirect],
             "perspectives": {"renewables": dict(block), "low_carbon": dict(block)},
             "indirect": iblock}
+
+
+def big_model():
+    """Model with realistic magnitudes so the £10bn floor is exercised."""
+    m = model()
+    for p in m["perspectives"].values():
+        p["cumulative_gbp_2024"] = 128.0e9
+        p["runrate_gbp_per_year"] = 12.2e9
+    m["indirect"]["cumulative_gbp_2024"] = 95.35e9   # combined real = 223.35e9
+    return m
+
+
+def test_factoids_floored_figures_and_sentences(tmp_path):
+    sitedata.build(big_model(), CTX, {}, tmp_path,
+                   generated_at="2026-06-12T07:00:00+00:00",
+                   deflator_info=DEFLATOR_INFO, deflators=DEFLATORS)
+    meta = json.loads((tmp_path / "meta.json").read_text())
+    by_slug = {f["slug"]: f for f in meta["factoids"]}
+    assert list(by_slug) == ["nurses", "homes", "hinkley", "per-mwh", "per-person"]
+
+    # nurses: 12.2e9 / 39043 = 312,475.6 -> floored to 1,000 -> 312,000
+    assert by_slug["nurses"]["figure"] == "312,000"
+    assert "312,000 NHS nurses" in by_slug["nurses"]["sentence"]
+
+    # combined real 223.35e9 -> £10bn floor strictly below -> 220
+    # homes: 223.35e9 / 393000 = 568,320.6 -> 568,000
+    assert by_slug["homes"]["figure"] == "568,000"
+    assert "£220bn+" in by_slug["homes"]["sentence"]
+    assert "in today" in by_slug["homes"]["sentence"]  # 'in today’s money' label
+
+    # hinkley: 35e9 * 132.9/100 = 46.515e9; 223.35 / 46.515 = 4.80 -> 4
+    assert by_slug["hinkley"]["figure"] == "4"
+    assert "4 Hinkley Point C" in by_slug["hinkley"]["sentence"]
+
+    # per-mwh: 12.2e9 / 266e6 = 45.864... -> floored to 2dp -> £45.86
+    assert by_slug["per-mwh"]["figure"] == "£45.86"
+    # per-person: 12.2e9 / 68.3e6 = 178.624 -> £178.62
+    assert by_slug["per-person"]["figure"] == "£178.62"
+
+    for f in meta["factoids"]:
+        assert f["source_url"], f["slug"]
+        assert f["label"], f["slug"]
+        assert f["display_html"], f["slug"]
+
+
+def test_factoids_exact_floor_steps_down(tmp_path):
+    m = big_model()
+    # combined real exactly 230e9: the floor must step DOWN to 220 (never sit on the boundary)
+    m["perspectives"]["renewables"]["cumulative_gbp_2024"] = 130.0e9
+    m["indirect"]["cumulative_gbp_2024"] = 100.0e9
+    sitedata.build(m, CTX, {}, tmp_path,
+                   generated_at="2026-06-12T07:00:00+00:00",
+                   deflator_info=DEFLATOR_INFO, deflators=DEFLATORS)
+    meta = json.loads((tmp_path / "meta.json").read_text())
+    homes = next(f for f in meta["factoids"] if f["slug"] == "homes")
+    assert "£220bn+" in homes["sentence"]
+
+
+def test_factoids_absent_without_equivalences(tmp_path):
+    ctx = {k: v for k, v in CTX.items() if k != "equivalences"}
+    sitedata.build(big_model(), ctx, {}, tmp_path,
+                   generated_at="2026-06-12T07:00:00+00:00",
+                   deflator_info=DEFLATOR_INFO, deflators=DEFLATORS)
+    meta = json.loads((tmp_path / "meta.json").read_text())
+    assert meta["factoids"] == []
 
 
 def test_build_writes_all_files(tmp_path):

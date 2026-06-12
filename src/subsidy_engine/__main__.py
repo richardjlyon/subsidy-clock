@@ -81,7 +81,7 @@ def cmd_build_site(args: argparse.Namespace) -> int:
     sitedata.build(model, ctx, freshness, out_dir,
                    generated_at=generated_at,
                    deflator_info=deflator_info,
-                   bill_annual=bill, bill_info=bill_info)
+                   bill_annual=bill, bill_info=bill_info, deflators=deflators)
     sitedata.write_csvs(model, out_dir, restatements=store.all_restatements(),
                         generated=generated_at)
 

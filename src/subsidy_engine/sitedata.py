@@ -3,7 +3,9 @@ phase-2 spec section 5). This module is the engine<->dashboard contract."""
 
 from __future__ import annotations
 
+import html
 import json
+import math
 from datetime import datetime
 from pathlib import Path
 
@@ -43,10 +45,116 @@ def _money_block(p: dict, households: int, population: int, demand_mwh: float) -
     return block
 
 
+def _floor_to(v: float, step: float) -> float:
+    return math.floor(v / step) * step
+
+
+def _floor_step_below(v: float, step: float) -> float:
+    """Floor to the nearest step STRICTLY below v (the F8/I1 rule: a floor,
+    never a midpoint, so every sentence quoting it understates)."""
+    f = _floor_to(v, step)
+    return f - step if f == v else f
+
+
+def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[dict]:
+    """The equivalence factoids (impact I4/I5), composed once here so the
+    dashboard, the share-card PNGs and the /s/ stubs can never disagree.
+    Integrity rules: every division floors; the combined figure is the
+    real-2024 £10bn floor and carries 'in today's money' wherever it appears.
+    app.js renders display_html verbatim; sharecards.py uses figure+label."""
+    eq = ctx.get("equivalences") or {}
+    if not eq:
+        return []
+    r = model["perspectives"]["renewables"]
+    runrate = r["runrate_gbp_per_year"]
+    out: list[dict] = []
+
+    def src(entry: dict, text: str) -> str:
+        return (f'<a class="eq-src" href="{html.escape(entry["source_url"])}" '
+                f'title="{html.escape(entry["source"])}">{text}</a>')
+
+    nurse = eq.get("nurse_salary_gbp")
+    if nurse:
+        fig = f"{int(_floor_to(runrate / nurse['value'], 1000)):,}"
+        out.append({
+            "slug": "nurses", "figure": fig,
+            "sentence": f"A year of UK renewable subsidy pays the salaries of {fig} NHS nurses.",
+            "display_html": ('A year of this pays the salaries of '
+                             f'<span class="money num">{fig}</span> {src(nurse, "NHS nurses")}'),
+            "label": "NHS nurses' annual salaries paid by one year of direct renewable subsidy",
+            "source_name": nurse["source"], "source_url": nurse["source_url"],
+        })
+
+    combined_real = None
+    if "cumulative_gbp_2024" in r and "indirect" in model \
+            and "cumulative_gbp_2024" in model["indirect"]:
+        combined_real = r["cumulative_gbp_2024"] + model["indirect"]["cumulative_gbp_2024"]
+    if combined_real is not None:
+        floored_bn = int(_floor_step_below(combined_real, 1e10) / 1e9)
+        full = f"£{floored_bn}bn+"
+        home = eq.get("social_home_gbp")
+        if home:
+            fig = f"{int(_floor_to(combined_real / home['value'], 1000)):,}"
+            out.append({
+                "slug": "homes", "figure": fig,
+                "sentence": (f"The {full} full cost of supporting renewables would have built "
+                             f"{fig} social homes — land included — in today’s money."),
+                "display_html": (f'The {full} full cost would have built '
+                                 f'<span class="money num">{fig}</span> {src(home, "social homes")}, '
+                                 'land included'),
+                "label": (f"social homes (land included) the {full} full renewables cost "
+                          "would have built, in today's money"),
+                "source_name": home["source"], "source_url": home["source_url"],
+            })
+        hpc = eq.get("hinkley_point_c_gbp")
+        if hpc and deflators is not None:
+            idx = dict(deflators.iter_rows())
+            base = hpc.get("price_base")
+            unit = hpc["value"] * (idx[2024] / idx[base]) if base else hpc["value"]
+            n = int(combined_real // unit)
+            out.append({
+                "slug": "hinkley", "figure": str(n),
+                "sentence": (f"The {full} full cost of supporting renewables would have built "
+                             f"{n} Hinkley Point C-scale nuclear stations, in today’s money."),
+                "display_html": (f'— or <span class="money num">{n}</span> '
+                                 f'{src(hpc, "Hinkley Point C")}-scale nuclear stations'),
+                "label": (f"Hinkley Point C-scale nuclear stations the {full} full renewables "
+                          "cost would have built, in today's money"),
+                "source_name": hpc["source"], "source_url": hpc["source_url"],
+            })
+
+    demand = ctx.get("annual_demand_twh")
+    if demand:
+        per_mwh = math.floor(runrate / (demand["value"] * 1_000_000) * 100) / 100
+        fig = f"£{per_mwh:,.2f}"
+        out.append({
+            "slug": "per-mwh", "figure": fig,
+            "sentence": f"Direct renewable subsidy adds {fig} to every MWh of electricity delivered in the UK.",
+            "display_html": (f'That is <span class="money num">{fig}</span> on every '
+                             f'{src(demand, "MWh of electricity delivered")}'),
+            "label": "added to every MWh of electricity delivered in the UK by direct renewable subsidy",
+            "source_name": demand["source"], "source_url": demand["source_url"],
+        })
+    pop = ctx.get("population")
+    if pop:
+        per_person = math.floor(runrate / pop["value"] * 100) / 100
+        fig = f"£{per_person:,.2f}"
+        out.append({
+            "slug": "per-person", "figure": fig,
+            "sentence": f"Direct renewable subsidy costs every UK person {fig} a year.",
+            "display_html": (f'Per person, it is <span class="money num">{fig}</span> a year '
+                             f'{src(pop, "(UK population)")}'),
+            "label": "per person per year — the direct cost of renewable subsidy to every UK resident",
+            "source_name": pop["source"], "source_url": pop["source_url"],
+        })
+    return out
+
+
 def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
           *, generated_at: str, deflator_info: dict | None = None,
           bill_annual: pl.DataFrame | None = None,
-          bill_info: dict | None = None) -> None:
+          bill_info: dict | None = None,
+          deflators: pl.DataFrame | None = None) -> None:
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     households = ctx["households"]["value"]
@@ -113,6 +221,7 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
         "context": ctx,
         "deflator": deflator_info,
         "bill": bill_info,
+        "factoids": _factoids(model, ctx, deflators),
     }, indent=1, allow_nan=False))
 
 
