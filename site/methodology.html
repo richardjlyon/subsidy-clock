@@ -114,8 +114,9 @@
   <p>The <a href="https://www.ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day">Renewable
   Energy Foundation's April 2025 study</a> independently reconstructs the same bill:
   <strong>£185&nbsp;billion nominal — £223&nbsp;billion in 2024 prices — for 2002 to
-  FY&nbsp;2023/24</strong>. The Clock's combined total reaches REF's figure despite
-  deliberately stricter attributions, because it includes the years since.
+  FY&nbsp;2023/24</strong>. In 2024 prices the Clock's combined total, counted to today,
+  reaches REF's figure despite deliberately stricter attributions, because it includes
+  the years since.
   Compared like-for-like over the same period, component by component:</p>
   <table class="data-table" id="ref-recon-table">
     <thead><tr><th>Component</th><th class="num-col">The Clock</th><th class="num-col">REF</th><th class="num-col">Divergence</th><th>Note</th></tr></thead>
@@ -171,7 +172,7 @@
   <p>The per-second rates that drive the live counter are derived from each scheme’s recent run-rate: the trailing 365 days for daily schemes (CfD and constraints), the last 12 months for the Capacity Market, and the latest completed scheme year for RO and FIT. Values shown between official data updates are therefore <strong>estimates</strong>, and are replaced by official figures as they are published.</p>
 
   <h2 id="prices">Nominal pounds, and 2024 prices</h2>
-  <p>The dashboard counts <strong>nominal pounds</strong>: money summed as it was actually paid, the debt-clock convention. The objection that 2002 pounds are not 2026 pounds is fair, so the same annual series is shown here deflated to 2024 prices (HMT GDP deflator). The real-terms total is <em>larger</em> than the nominal one — early-years subsidy was worth more in today's money — which is why nominal is the conservative choice for the headline.</p>
+  <p>The dashboard counts <strong>nominal pounds</strong>: money summed as it was actually paid, the debt-clock convention. The objection that 2002 pounds are not 2026 pounds is fair, so the same annual series is shown here deflated to 2024 prices (ONS CPIH). The real-terms total is <em>larger</em> than the nominal one — early-years subsidy was worth more in today's money — which is why nominal is the conservative choice for the headline.</p>
   <table class="data-table" id="prices-table">
     <thead><tr><th>Year</th><th class="num-col">Nominal</th><th class="num-col">2024 prices</th></tr></thead>
     <tbody></tbody>
@@ -392,13 +393,16 @@
       '<td class="num-col money">' + refBn(refRecon.ref_real_2024_gbp) + '</td>' +
       '<td class="num-col"></td>' +
       '<td class="cell-dim">REF’s real total spans its full window and uses REF’s own deflation; ours is CPIH</td></tr>';
+    var coverage = refRecon.stricter_gap_gbp >= refRecon.gap_gbp
+      ? ', more than the whole ' + refBn(refRecon.gap_gbp) + ' gap'
+      : ' of the ' + refBn(refRecon.gap_gbp) + ' gap';
     document.getElementById('ref-recon-summary').innerHTML =
       'Like-for-like, the Clock lands <strong>' + Math.abs(totalPct).toFixed(0) +
       (totalPct < 0 ? '% below' : '% above') + ' REF’s total</strong>. The components its attributions deliberately count more ' +
       'strictly — the power-sector-only ETS and CCL shares, BSUoS with constraint payments ' +
       'netted off — or decline to count at all (REGO) remove ' + refBn(refRecon.stricter_gap_gbp) +
-      ', more than the whole ' + refBn(refRecon.gap_gbp) + ' gap; everywhere else the two ' +
-      'reconstructions agree within a few per cent.';
+      coverage + '; everywhere else the two ' +
+      'reconstructions agree within ten per cent.';
   }
 
   // real-terms deflator

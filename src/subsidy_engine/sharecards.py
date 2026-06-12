@@ -40,12 +40,18 @@ EXPLAINERS = {
 }
 
 
-def cumulative_svg(timeseries: dict, width: int = 1072, height: int = 400) -> str:
+def cumulative_svg(timeseries: dict, member_ids: list[str],
+                   width: int = 1072, height: int = 400) -> str:
     """Stacked cumulative bars (the dashboard chart's default view) as a
     static SVG for the chart share card - a deliberate small
-    re-implementation of renderChart's cumulative view in site/app.js."""
+    re-implementation of renderChart's cumulative view in site/app.js.
+    member_ids restricts the stack to the schemes the dashboard chart
+    shows under the renewables perspective (the caller computes it from
+    breakdown.json), so the card can never stack schemes the figure it
+    accompanies excludes."""
     schemes = timeseries["schemes"]
-    member = [(sid, col) for sid, col in CHART_STACK if sid in schemes]
+    member = [(sid, col) for sid, col in CHART_STACK
+              if sid in member_ids and sid in schemes]
     years = sorted({a["year"] for sid, _ in member for a in schemes[sid]["annual"]})
     cum: dict[str, dict[int, float]] = {}
     for sid, _ in member:
@@ -277,8 +283,10 @@ def compose(template: str, fact: dict, asof: str) -> str:
     return html
 
 
-def render_chart_card(timeseries: dict, fact: dict, asof: str, out_dir: Path | str) -> None:
-    """Screenshot the cumulative-bars chart card (the dashboard's default view)."""
+def render_chart_card(timeseries: dict, member_ids: list[str], fact: dict,
+                      asof: str, out_dir: Path | str) -> None:
+    """Screenshot the cumulative-bars chart card (the dashboard's default
+    view); member_ids is passed through to cumulative_svg."""
     import shutil
     import tempfile
 
@@ -289,7 +297,7 @@ def render_chart_card(timeseries: dict, fact: dict, asof: str, out_dir: Path | s
     template = (TEMPLATES / "sharecard-chart.html").read_text()
     html = (template
             .replace("{{TITLE}}", "The bill since 2002")
-            .replace("{{SVG}}", cumulative_svg(timeseries))
+            .replace("{{SVG}}", cumulative_svg(timeseries, member_ids))
             .replace("{{ASOF}}", asof))
     if "{{" in html:
         raise ValueError("unfilled template token in chart card HTML")

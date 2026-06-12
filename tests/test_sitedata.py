@@ -77,12 +77,12 @@ def test_factoids_floored_figures_and_sentences(tmp_path):
     assert "312,000 NHS nurses" in by_slug["nurses"]["sentence"]
 
     # combined real 223.35e9 -> £10bn floor strictly below -> 220
-    # homes: 223.35e9 / 393000 = 568,320.6 -> 568,000
-    assert by_slug["homes"]["figure"] == "568,000"
+    # counts divide the quoted floor: homes = 220e9 / 393000 = 559,796.4 -> 559,000
+    assert by_slug["homes"]["figure"] == "559,000"
     assert "£220bn+" in by_slug["homes"]["sentence"]
     assert "in today" in by_slug["homes"]["sentence"]  # 'in today’s money' label
 
-    # hinkley: 35e9 * 132.9/100 = 46.515e9; 223.35 / 46.515 = 4.80 -> 4
+    # hinkley: 35e9 * 132.9/100 = 46.515e9; 220 / 46.515 = 4.73 -> 4
     assert by_slug["hinkley"]["figure"] == "4"
     assert "4 Hinkley Point C" in by_slug["hinkley"]["sentence"]
 

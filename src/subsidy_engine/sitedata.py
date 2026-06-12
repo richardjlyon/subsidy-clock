@@ -91,11 +91,15 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
             and "cumulative_gbp_2024" in model["indirect"]:
         combined_real = r["cumulative_gbp_2024"] + model["indirect"]["cumulative_gbp_2024"]
     if combined_real is not None:
-        floored_bn = int(_floor_step_below(combined_real, 1e10) / 1e9)
+        # counts divide the quoted £10bn floor, not the raw total, so a
+        # reader checking the sentence's own arithmetic can only get MORE
+        # than we claim — self-consistent and stricter
+        combined_floor = _floor_step_below(combined_real, 1e10)
+        floored_bn = int(combined_floor / 1e9)
         full = f"£{floored_bn}bn+"
         home = eq.get("social_home_gbp")
         if home:
-            fig = f"{int(_floor_to(combined_real / home['value'], 1000)):,}"
+            fig = f"{int(_floor_to(combined_floor / home['value'], 1000)):,}"
             out.append({
                 "slug": "homes", "figure": fig,
                 "sentence": (f"The {full} full cost of supporting renewables would have built "
@@ -112,7 +116,7 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
             idx = dict(deflators.iter_rows())
             base = hpc.get("price_base")
             unit = hpc["value"] * (idx[2024] / idx[base]) if base else hpc["value"]
-            n = int(combined_real // unit)
+            n = int(combined_floor // unit)
             out.append({
                 "slug": "hinkley", "figure": str(n),
                 "sentence": (f"The {full} full cost of supporting renewables would have built "

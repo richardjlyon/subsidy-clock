@@ -161,12 +161,22 @@ def test_cumulative_svg_stacks_and_is_monotonic():
         "ro": {"annual": [{"year": 2002, "cost_gbp": 1.0e9}, {"year": 2003, "cost_gbp": 2.0e9}]},
         "bsuos": {"annual": [{"year": 2003, "cost_gbp": 0.5e9}]},
     }}
-    svg = sharecards.cumulative_svg(timeseries)
+    svg = sharecards.cumulative_svg(timeseries, ["ro", "bsuos"])
     assert svg.startswith("<svg")
     # 2002: one segment (ro=1bn); 2003: ro=3bn cumulative + bsuos=0.5bn
     assert svg.count("<rect") == 3
     assert "#6f2014" in svg     # ro colour
     assert "#b3c8d8" in svg     # bsuos colour
+
+
+def test_cumulative_svg_excludes_non_member_schemes():
+    timeseries = {"schemes": {
+        "ro": {"annual": [{"year": 2002, "cost_gbp": 1.0e9}]},
+        "cfd_low_carbon": {"annual": [{"year": 2002, "cost_gbp": 9.0e9}]},
+    }}
+    svg = sharecards.cumulative_svg(timeseries, ["ro"])
+    assert svg.count("<rect") == 1
+    assert "#d48f6b" not in svg   # cfd_low_carbon colour absent
 
 
 def test_load_facts_includes_the_bill_chart_fact(data_dir):
@@ -184,7 +194,7 @@ def test_render_chart_card_produces_1200x630_png(tmp_path):
         "ro": {"annual": [{"year": 2002, "cost_gbp": 1.0e9}, {"year": 2003, "cost_gbp": 2.0e9}]},
     }}
     fact = {"slug": "the-bill", "chart": True}
-    sharecards.render_chart_card(timeseries, fact, "12 June 2026", tmp_path)
+    sharecards.render_chart_card(timeseries, ["ro"], fact, "12 June 2026", tmp_path)
     try:
         assert _png_size(tmp_path / "the-bill.png") == (1200, 630)
     except Exception as exc:
