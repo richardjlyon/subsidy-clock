@@ -132,7 +132,7 @@
       document.getElementById('hero-leadin').innerHTML =
         'Supporting renewables has cost Great Britain over ' +
         '<a href="methodology.html#ref-reconciliation"><strong class="money num">£' +
-        (combinedRealFlooredGbp() / 1e9) + ' billion</strong></a> in today\u2019s money. ' +
+        (combinedRealFlooredGbp() / 1e9) + '&nbsp;billion</strong></a> in today\u2019s money. ' +
         'This much is measured to the penny:';
     }
     document.getElementById('hero-sub').innerHTML =

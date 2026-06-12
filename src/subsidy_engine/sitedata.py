@@ -51,7 +51,8 @@ def _floor_to(v: float, step: float) -> float:
 
 def _floor_step_below(v: float, step: float) -> float:
     """Floor to the nearest step STRICTLY below v (the F8/I1 rule: a floor,
-    never a midpoint, so every sentence quoting it understates)."""
+    never a midpoint, so every sentence quoting it understates).
+    app.js's combinedRealFlooredGbp() applies the same rule - keep them in step."""
     f = _floor_to(v, step)
     return f - step if f == v else f
 
