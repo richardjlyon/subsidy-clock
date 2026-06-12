@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-06-12T01:33:42.525509+00:00",
+ "generated_at": "2026-06-12T01:42:43.657059+00:00",
  "schemes": [
   {
    "id": "cfd_renewable",
@@ -23,7 +23,7 @@
     {
      "technology": "Offshore Wind",
      "cost_gbp": 9979846480.959991,
-     "generation_mwh": 133465291.73900005
+     "generation_mwh": 133465291.73900007
     },
     {
      "technology": "Onshore Wind",
@@ -32,7 +32,7 @@
     },
     {
      "technology": "Solar PV",
-     "cost_gbp": -3864524.140000002,
+     "cost_gbp": -3864524.1400000025,
      "generation_mwh": 888309.2609999997
     }
    ],
@@ -184,13 +184,13 @@
    "by_technology": [
     {
      "technology": "Biomass Conversion",
-     "cost_gbp": 2897166222.5700016,
-     "generation_mwh": 52733494.60700001
+     "cost_gbp": 2897166222.570001,
+     "generation_mwh": 52733494.60699998
     },
     {
      "technology": "Dedicated Biomass",
-     "cost_gbp": 262230779.73000002,
-     "generation_mwh": 3022499.0130000003
+     "cost_gbp": 262230779.73,
+     "generation_mwh": 3022499.0130000007
     },
     {
      "technology": "Advanced Conversion Technology",
@@ -199,25 +199,25 @@
     },
     {
      "technology": "Energy from Waste",
-     "cost_gbp": -10423689.389999997,
-     "generation_mwh": 758050.2649999999
+     "cost_gbp": -10423689.389999999,
+     "generation_mwh": 758050.2650000001
     }
    ],
    "by_recipient": [
     {
      "unit_name": "Drax 3rd conversion unit (unit 1)",
      "technology": "Biomass Conversion",
-     "cost_gbp": 1978101846.4300005
+     "cost_gbp": 1978101846.4300003
     },
     {
      "unit_name": "Lynemouth Power Station",
      "technology": "Biomass Conversion",
-     "cost_gbp": 919064376.1399996
+     "cost_gbp": 919064376.1399997
     },
     {
      "unit_name": "Teesside Renewable Energy Project",
      "technology": "Dedicated Biomass",
-     "cost_gbp": 262230779.73
+     "cost_gbp": 262230779.73000002
     },
     {
      "unit_name": "Energy Works (Hull)",
@@ -227,7 +227,7 @@
     {
      "unit_name": "K3 CHP Facility",
      "technology": "Energy from Waste",
-     "cost_gbp": -10423689.389999999
+     "cost_gbp": -10423689.390000002
     }
    ]
   },
