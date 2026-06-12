@@ -86,7 +86,7 @@ def test_factoids_floored_figures_and_sentences(tmp_path):
 
     # hinkley: 35e9 * 132.9/100 = 46.515e9; 220 / 46.515 = 4.73 -> 4
     assert by_slug["hinkley"]["figure"] == "4"
-    assert "4 Hinkley Point C" in by_slug["hinkley"]["sentence"]
+    assert "4 Hinkley Point C-scale nuclear stations in the UK" in by_slug["hinkley"]["sentence"]
 
     # per-mwh: 12.2e9 / 266e6 = 45.864... -> floored to 2dp -> £45.86
     assert by_slug["per-mwh"]["figure"] == "£45.86"

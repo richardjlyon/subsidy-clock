@@ -120,7 +120,7 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
             out.append({
                 "slug": "hinkley", "figure": str(n),
                 "sentence": (f"The {full} full cost of subsidising renewables would have built "
-                             f"{n} Hinkley Point C-scale nuclear stations, in today’s money."),
+                             f"{n} Hinkley Point C-scale nuclear stations in the UK, in today’s money."),
                 "display_html": (f'— or <span class="money num">{n}</span> '
                                  f'{src(hpc, "Hinkley Point C")}-scale nuclear stations'),
                 "label": (f"Hinkley Point C-scale nuclear stations the {full} full renewables "
