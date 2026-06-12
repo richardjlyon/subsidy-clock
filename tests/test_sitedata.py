@@ -82,11 +82,15 @@ def test_factoids_floored_figures_and_sentences(tmp_path):
     # counts divide the quoted floor: homes = 220e9 / 393000 = 559,796.4 -> 559,000
     assert by_slug["homes"]["figure"] == "559,000"
     assert "£220bn+" in by_slug["homes"]["sentence"]
+    assert "subsidising UK renewables" in by_slug["homes"]["sentence"]
+    assert "UK renewables" in by_slug["homes"]["label"]
     assert "in today" in by_slug["homes"]["sentence"]  # 'in today’s money' label
 
     # hinkley: 35e9 * 132.9/100 = 46.515e9; 220 / 46.515 = 4.73 -> 4
     assert by_slug["hinkley"]["figure"] == "4"
+    assert "subsidising UK renewables" in by_slug["hinkley"]["sentence"]
     assert "4 Hinkley Point C-scale nuclear stations in the UK" in by_slug["hinkley"]["sentence"]
+    assert "UK renewables" in by_slug["hinkley"]["label"]
 
     # per-mwh: 12.2e9 / 266e6 = 45.864... -> floored to 2dp -> £45.86
     assert by_slug["per-mwh"]["figure"] == "£45.86"

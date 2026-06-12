@@ -102,12 +102,12 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
             fig = f"{int(_floor_to(combined_floor / home['value'], 1000)):,}"
             out.append({
                 "slug": "homes", "figure": fig,
-                "sentence": (f"The {full} full cost of subsidising renewables would have built "
+                "sentence": (f"The {full} full cost of subsidising UK renewables would have built "
                              f"{fig} social homes — land included — in today’s money."),
                 "display_html": (f'The {full} full cost would have built '
                                  f'<span class="money num">{fig}</span> {src(home, "social homes")}, '
                                  'land included — in today’s money'),
-                "label": (f"social homes (land included) the {full} full renewables cost "
+                "label": (f"social homes (land included) the {full} full UK renewables cost "
                           "would have built, in today's money"),
                 "source_name": home["source"], "source_url": home["source_url"],
             })
@@ -119,11 +119,11 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
             n = int(combined_floor // unit)
             out.append({
                 "slug": "hinkley", "figure": str(n),
-                "sentence": (f"The {full} full cost of subsidising renewables would have built "
+                "sentence": (f"The {full} full cost of subsidising UK renewables would have built "
                              f"{n} Hinkley Point C-scale nuclear stations in the UK, in today’s money."),
                 "display_html": (f'— or <span class="money num">{n}</span> '
                                  f'{src(hpc, "Hinkley Point C")}-scale nuclear stations'),
-                "label": (f"Hinkley Point C-scale nuclear stations the {full} full renewables "
+                "label": (f"Hinkley Point C-scale nuclear stations the {full} full UK renewables "
                           "cost would have built, in today's money"),
                 "source_name": hpc["source"], "source_url": hpc["source_url"],
             })
