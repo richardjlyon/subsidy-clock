@@ -108,6 +108,16 @@
   }
 
   // ---------- hero (static parts) ----------
+  // F8 floor: the combined direct+indirect total, floored to the nearest
+  // £10bn STRICTLY BELOW it (a floor, never a midpoint), so every sentence
+  // quoting it understates by construction. One source for the hero note
+  // and the share text - they must never disagree.
+  function combinedFlooredGbp() {
+    var combined = totals.perspectives.renewables.cumulative_gbp + indirectTotals.cumulative_gbp;
+    var floored = Math.floor(combined / 1e10) * 1e10;
+    return floored === combined ? floored - 1e10 : floored; // exact boundary: step down
+  }
+
   function renderHeroStatic() {
     var sinceYear = persp().since_year;
     document.getElementById('hero-value').textContent = fmtFull(liveCumulative(Date.now()));
@@ -120,13 +130,9 @@
         'Under the same schemes, nuclear and biomass received a further <span class="money num">' +
         fmtCompact(delta) + '</span> \u2014 <a href="methodology.html#perspectives">see the methodology page</a>.';
     }
-    // F8: the combined total must register - floored to the nearest \u00a310bn
-    // STRICTLY BELOW the combined figure (a floor, never a midpoint), so the
-    // sentence understates by construction. No second ticking numeral.
+    // F8: the combined total must register. No second ticking numeral.
     if (indirectTotals) {
-      var combined = totals.perspectives.renewables.cumulative_gbp + indirectTotals.cumulative_gbp;
-      var flooredBn = Math.floor(combined / 1e10) * 1e10;
-      if (flooredBn === combined) flooredBn -= 1e10; // exact boundary: step down
+      var flooredBn = combinedFlooredGbp();
       document.getElementById('hero-direct-note').innerHTML =
         '<strong>This is the direct bill alone.</strong> Adding estimated indirect costs ' +
         '\u2014 backup, balancing and the grid \u2014 takes the true total above ' +
@@ -645,9 +651,13 @@
 
   function shareText() {
     // floored to £0.1bn: "more than" stays strictly true, and the text can
-    // never visibly disagree with the daily card's full-precision snapshot
+    // never visibly disagree with the daily card's full-precision snapshot.
+    // The bracketed combined figure is the same F8 floor the hero quotes.
     var bn = Math.floor(liveCumulative(Date.now()) / 1e8) / 10;
-    return 'More than £' + bn.toFixed(1) + ' billion' +
+    var combined = indirectTotals
+      ? ' (£' + (combinedFlooredGbp() / 1e9) + ' billion with indirect costs)'
+      : '';
+    return 'More than £' + bn.toFixed(1) + ' billion' + combined +
       ' — paid to renewable electricity generators by Great Britain’s bill-payers since ' +
       totals.perspectives.renewables.since_year;
   }
