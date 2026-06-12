@@ -3,8 +3,6 @@
 var SC = (function () {
   'use strict';
 
-  // ---- GoatCounter. Set to your code (e.g. "subsidycounter") to enable; "" = silent no-op.
-  var GOATCOUNTER_CODE = '';
 
   // ---- data root resolved from this script's URL, so pages at any depth share it
   var DATA_BASE = (function () {
@@ -66,21 +64,12 @@ var SC = (function () {
     loop();
   }
 
-  // ---- tracking: GoatCounter custom events, guarded no-op when unset/blocked
+  // ---- tracking: delegated to the shared share.js component (single GC owner)
   function initTracking() {
-    if (!GOATCOUNTER_CODE) return;
-    window.goatcounter = { no_onload: true };
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://gc.zgo.at/count.js';
-    s.setAttribute('data-goatcounter', 'https://' + GOATCOUNTER_CODE + '.goatcounter.com/count');
-    document.head.appendChild(s);
+    if (window.SCShare) SCShare.initTracking();
   }
   function track(eventPath) {
-    if (!GOATCOUNTER_CODE) return;
-    if (window.goatcounter && window.goatcounter.count) {
-      window.goatcounter.count({ path: eventPath, event: true });
-    }
+    if (window.SCShare) SCShare.track(eventPath);
   }
 
   return {
