@@ -625,7 +625,8 @@
 
   // ---------- share (hero row): the one share mechanism ----------
   // The viral unit is fact + picture + link. Intents carry the live figure
-  // and the /s/total stub; platforms render the daily card from its OG tags.
+  // (floored to £0.1bn) and the /s/total stub; platforms render the daily
+  // card from its OG tags.
   // share.js still owns GoatCounter and the copy/track helpers; its attach()
   // per-card component is deliberately unwired (share-UX rework, 2026-06-12).
   var SITE_URL = 'https://subsidyclock.co.uk';
@@ -643,7 +644,10 @@
   };
 
   function shareText() {
-    return fmtFull(liveCumulative(Date.now())) +
+    // floored to £0.1bn: "more than" stays strictly true, and the text can
+    // never visibly disagree with the daily card's full-precision snapshot
+    var bn = Math.floor(liveCumulative(Date.now()) / 1e8) / 10;
+    return 'More than £' + bn.toFixed(1) + ' billion' +
       ' — paid to renewable electricity generators by Great Britain’s bill-payers since ' +
       totals.perspectives.renewables.since_year;
   }
