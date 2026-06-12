@@ -146,9 +146,6 @@
       'advances at each scheme\u2019s most recent published run-rate.">†</sup></span>';
     document.getElementById('strip-alltime-since').textContent =
       'since ' + sinceYear + ', direct (full cost, 2024 prices)';
-    document.getElementById('strip-fullcost').textContent = hasCombinedReal()
-      ? '£' + (combinedRealFlooredGbp() / 1e9) + 'bn+'
-      : '—';
   }
 
   // ---------- ticking ----------

@@ -150,7 +150,7 @@ a:hover { color: var(--money); }
 /* ---------- timeframe strip ---------- */
 .strip {
   margin: 40px 0 0;
-  display: grid; grid-template-columns: repeat(7, 1fr);
+  display: grid; grid-template-columns: repeat(6, 1fr);
   border: 1px solid var(--line); border-radius: 14px;
   background: var(--card); overflow: hidden;
 }
