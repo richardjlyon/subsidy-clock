@@ -188,6 +188,8 @@
     ul.innerHTML = '';
     (meta.factoids || []).forEach(function (f) {
       var li = document.createElement('li');
+      // display_html is engine-authored (sitedata.py escapes attrs with
+      // html.escape) - the only innerHTML the page takes from data.
       li.innerHTML = f.display_html + ' ';
       SCShare.attachFactoid(li, {
         slug: f.slug,

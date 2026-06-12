@@ -186,6 +186,8 @@ var SCShare = (function () {
       return '<a class="share-item" data-act="share-' + i.name.toLowerCase() + '" href="' +
         esc(i.href) + '" target="_blank" rel="noopener">' + i.name + '</a>';
     }).join('') + '</div>';
+    // deliberately compact (X / WhatsApp / Copy link) - the full intent
+    // set lives in buildPop for per-card menus.
     pop.innerHTML = html;
 
     var cites = citations(fact);
