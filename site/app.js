@@ -144,7 +144,8 @@
       'paid directly to renewable generators <span class="nowrap">since ' + sinceYear +
       '<sup class="hero-fn" title="Estimated between official updates: the counter ' +
       'advances at each scheme\u2019s most recent published run-rate.">†</sup></span>';
-    document.getElementById('strip-alltime-since').textContent = 'direct, since ' + sinceYear;
+    document.getElementById('strip-alltime-since').textContent =
+      'since ' + sinceYear + ', direct (with estimated indirect)';
     document.getElementById('strip-fullcost').textContent = hasCombinedReal()
       ? '£' + (combinedRealFlooredGbp() / 1e9) + 'bn+'
       : '—';
@@ -163,6 +164,14 @@
     alltime: document.getElementById('strip-alltime')
   };
 
+  // The all-time bracket (combined direct+indirect, nominal) is computed
+  // once: the tick stays on the measured direct figure only - no ticking
+  // estimate, ever - and at 0.1bn display precision it is stable all day.
+  var alltimeSuffix = indirectTotals
+    ? ' (' + fmtCompact(totals.perspectives.renewables.cumulative_gbp +
+                        indirectTotals.cumulative_gbp) + ')'
+    : '';
+
   function tick() {
     var t = Date.now();
     var d = new Date(t);
@@ -172,7 +181,7 @@
     els.hour.textContent = fmtCompact(rate * 3600);
     els.today.textContent = fmtFull(rate * (t - startOfToday(d)) / 1000);
     els.year.textContent = fmtCompact(rate * (t - startOfYear(d)) / 1000);
-    els.alltime.textContent = fmtCompact(liveCumulative(t));
+    els.alltime.textContent = fmtCompact(liveCumulative(t)) + alltimeSuffix;
     if (motionOK) {
       rafId = requestAnimationFrame(tick);
     } else {
