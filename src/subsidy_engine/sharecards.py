@@ -62,18 +62,20 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
 
     total_figure = fmt_full(r["cumulative_gbp"])
     facts = [
+        # headline facts carry no anchor: their stubs bounce to the page top
+        # so first-time visitors arrive with the masthead visible
         {"slug": "total", "figure": total_figure,
          "label": "paid to renewable electricity generators by Great Britain's "
                   f"bill-payers since {r['since_year']}",
-         "anchor": "total", "stub": True},
+         "anchor": None, "stub": True},
         {"slug": "run-rate", "figure": fmt_full(r["runrate_gbp_per_year"]),
          "label": "a year — the current run-rate of direct subsidy "
                   "to renewable electricity generators",
-         "anchor": "total", "stub": True},
+         "anchor": None, "stub": True},
         {"slug": "household", "figure": fmt_pence(r["per_household_per_year_gbp"]),
          "label": "per household per year in direct subsidy "
                   "to renewable electricity generators",
-         "anchor": "total", "stub": True},
+         "anchor": None, "stub": True},
         {"slug": "site", "figure": total_figure,
          "label": "the running total of direct UK renewable-energy subsidy "
                   f"since {r['since_year']}, counted live",
@@ -137,7 +139,7 @@ def write_stubs(facts: list[dict], out_dir: Path | str, asof: str, datestr: str)
     for fact in facts:
         if not fact.get("stub"):
             continue
-        target = f"{SITE_URL}/#{fact['anchor']}"
+        target = f"{SITE_URL}/#{fact['anchor']}" if fact["anchor"] else f"{SITE_URL}/"
         html = STUB_TEMPLATE.format(
             title=_html.escape(f"{fact['figure']} {fact['label']}"),
             description=_html.escape(f"As of {asof}. Every figure traces to an official source."),

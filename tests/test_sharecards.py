@@ -69,7 +69,9 @@ def test_load_facts_headline_set(data_dir):
     for slug in ("total", "run-rate", "household", "switch-off"):
         assert by_slug[slug]["stub"], slug
     assert by_slug["total"]["figure"] == "£108,634,210,556"
-    assert by_slug["total"]["anchor"] == "total"
+    # headline facts land on the page top (masthead visible), not a #total anchor
+    for slug in ("total", "run-rate", "household"):
+        assert by_slug[slug]["anchor"] is None, slug
     assert "since 2002" in by_slug["total"]["label"]
     assert by_slug["household"]["figure"] == "£428.60"
     assert by_slug["switch-off"]["anchor"] == "switch-off"
@@ -120,6 +122,10 @@ def test_write_stubs(data_dir, tmp_path):
     # crawler/JS-off fallback carries the dated figure and a link
     assert "£2,510,000,000" in html
     assert "11 June 2026" in html
+    # anchorless facts bounce to the bare page so the masthead stays visible
+    total = (out / "total.html").read_text()
+    assert 'url=https://subsidyclock.co.uk/"' in total
+    assert 'location.replace("https://subsidyclock.co.uk/")' in total
 
 
 def _png_size(path):
