@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Embed the Clock — The Subsidy Clock</title>
+<meta name="description" content="Put the live subsidy counter on your own site with one line of HTML. It updates itself, every day, from official sources.">
+<meta property="og:title" content="Put the Clock on your site">
+<meta property="og:description" content="A live, self-updating counter of UK renewable-energy subsidies. One line of HTML.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Subsidy Clock">
+<meta property="og:url" content="https://subsidyclock.co.uk/embed">
+<meta property="og:image" content="https://subsidyclock.co.uk/share/site.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://subsidyclock.co.uk/embed">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .embed-demo { border: 1px solid var(--line); border-radius: 6px; background: var(--card); }
+  .embed-block { margin: 1.2rem 0 2rem; }
+  .embed-block pre { background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+    padding: .7rem .9rem; font-size: .78rem; overflow-x: auto; white-space: pre-wrap; }
+  .copy-snippet { font: inherit; font-size: .78rem; cursor: pointer;
+    border: 1px solid var(--line); border-radius: 4px; background: none; padding: .15rem .55rem; }
+  .copy-snippet:hover { color: var(--money-deep); border-color: var(--money-deep); }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container masthead-inner">
+    <div class="brand-block">
+      <p class="brand"><a href="index.html"><span class="brand-tick" aria-hidden="true"></span>The Subsidy Clock</a></p>
+      <p class="brand-tag">What UK energy subsidies cost</p>
+    </div>
+    <nav><a href="index.html">← Back to the clock</a><a href="data.html">Data</a><a href="methodology.html">Methodology</a></nav>
+  </div>
+</header>
+
+<main class="container prose">
+  <h1>Put the Clock on your site. It updates itself.</h1>
+
+  <p>One line of HTML embeds the live counter. The figure refreshes from the Clock's
+  published data, so an embed placed today is correct forever. It sets no cookies and
+  makes no requests from your page beyond the iframe itself. Attribution and the as-of
+  date are part of the widget.</p>
+
+  <h2>Banner — 728 × 90</h2>
+  <div class="embed-block">
+    <iframe class="embed-demo" src="embed/widget.html?size=banner" width="728" height="90"
+      title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy"></iframe>
+    <pre><code>&lt;iframe src="https://subsidyclock.co.uk/embed/widget?size=banner" width="728" height="90" title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy" style="border:0"&gt;&lt;/iframe&gt;</code></pre>
+    <button class="copy-snippet" type="button">Copy snippet</button>
+  </div>
+
+  <h2>Card — 300 × 250</h2>
+  <div class="embed-block">
+    <iframe class="embed-demo" src="embed/widget.html?size=card" width="300" height="250"
+      title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy"></iframe>
+    <pre><code>&lt;iframe src="https://subsidyclock.co.uk/embed/widget?size=card" width="300" height="250" title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy" style="border:0"&gt;&lt;/iframe&gt;</code></pre>
+    <button class="copy-snippet" type="button">Copy snippet</button>
+  </div>
+
+  <h2>Strip — full width</h2>
+  <div class="embed-block">
+    <iframe class="embed-demo" src="embed/widget.html?size=strip" width="100%" height="56"
+      title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy"></iframe>
+    <pre><code>&lt;iframe src="https://subsidyclock.co.uk/embed/widget?size=strip" width="100%" height="56" title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy" style="border:0"&gt;&lt;/iframe&gt;</code></pre>
+    <button class="copy-snippet" type="button">Copy snippet</button>
+  </div>
+
+  <p>Add <code>&amp;theme=dark</code> to the URL for the dark variant. If JavaScript is
+  blocked, the widget shows the figure stamped at the most recent daily build, with its
+  date.</p>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p class="footer-links">Made by <a href="https://theenergytrap.org">Richard Lyon</a> · <a href="data.html">Data</a> · <a href="methodology.html">Methodology &amp; sources</a> · <a href="about.html">About this site</a></p>
+  </div>
+</footer>
+
+<script src="share.js"></script>
+<script>
+  Array.prototype.forEach.call(document.querySelectorAll('.copy-snippet'), function (btn) {
+    btn.addEventListener('click', function () {
+      var code = btn.parentNode.querySelector('code').textContent;
+      SCShare.copyText(code, function () {
+        btn.textContent = 'Copied';
+        setTimeout(function () { btn.textContent = 'Copy snippet'; }, 1400);
+      });
+      SCShare.track('share:embed:copy-snippet');
+    });
+  });
+</script>
+</body>
+</html>
