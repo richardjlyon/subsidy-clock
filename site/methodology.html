@@ -167,6 +167,19 @@
   <h2>Restatements</h2>
   <p>Source datasets are revised by their publishers. When a source revises history, the change is logged as a restatement; figures are never silently overwritten.</p>
 
+  <h2 id="citing">Citing this site</h2>
+  <p>Every dashboard card has a stable anchor (e.g. <code>subsidyclock.co.uk/#switch-off</code>)
+  and a Cite option in its share menu with these formats filled in. To cite the site as a
+  whole:</p>
+  <ul id="cite-formats">
+    <li><strong>Plain:</strong> <span class="cite-plain"></span></li>
+    <li><strong>Harvard:</strong> <span class="cite-harvard"></span></li>
+    <li><strong>APA:</strong> <span class="cite-apa"></span></li>
+    <li><strong>BibTeX:</strong> <code class="cite-bibtex" style="white-space:pre-wrap"></code></li>
+  </ul>
+  <p>Anchors are a public contract: they will not be renamed. Data downloads and their
+  licence are on the <a href="data.html">data page</a>.</p>
+
   <p class="caveat">Figures computed <span id="generated-at" class="num"></span>. Questions about the data should start with the source links above.</p>
 </main>
 
@@ -372,6 +385,23 @@
       hour: '2-digit', minute: '2-digit', timeZone: 'UTC', timeZoneName: 'short'
     });
 })();
+</script>
+<script>
+  // citing this site (distribution F3): site-wide citation, today's date
+  (function () {
+    var y = new Date().getFullYear();
+    var accessed = new Date().toLocaleDateString('en-GB',
+      { day: 'numeric', month: 'long', year: 'numeric' });
+    var url = 'https://subsidyclock.co.uk/';
+    document.querySelector('.cite-plain').textContent =
+      'The Subsidy Clock (' + y + '), subsidyclock.co.uk, data from LCCC/Ofgem/Elexon/NESO, retrieved ' + accessed + '.';
+    document.querySelector('.cite-harvard').textContent =
+      'The Subsidy Clock (' + y + '). Available at: ' + url + ' (Accessed: ' + accessed + ').';
+    document.querySelector('.cite-apa').textContent =
+      'The Subsidy Clock. (' + y + '). Retrieved ' + accessed + ', from ' + url;
+    document.querySelector('.cite-bibtex').textContent =
+      '@misc{subsidyclock' + y + ',\n  title = {The Subsidy Clock},\n  author = {{The Subsidy Clock}},\n  year = {' + y + '},\n  howpublished = {\\url{' + url + '}},\n  note = {Data from LCCC/Ofgem/Elexon/NESO; retrieved ' + accessed + '}\n}';
+  })();
 </script>
 </body>
 </html>
