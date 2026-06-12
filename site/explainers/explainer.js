@@ -43,29 +43,6 @@
     });
 
     SC.track('explainer-view/' + document.body.getAttribute('data-scheme-slug'));
-
-    // share/cite control — lives under the identity strip
-    var slug = document.body.getAttribute('data-scheme-slug');
-    var CSV_BY_ID = {
-      cfd_renewable: 'cfd.csv', cfd_low_carbon: 'cfd-nuclear-biomass.csv',
-      ro: 'renewables-obligation.csv', fit: 'feed-in-tariffs.csv',
-      constraints: 'constraints.csv', capacity_market: 'capacity-market.csv',
-      ccl: 'climate-change-levy.csv', ets: 'emissions-trading.csv',
-      tnuos: 'tnuos.csv', bsuos: 'bsuos.csv'
-    };
-    var pngSlug = slug === 'constraints' ? 'switch-off' : slug;
-    var asofShort = new Date(data.totals.generated_at).toLocaleDateString('en-GB',
-      { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
-    SCShare.attach(document.querySelector('.xstrip'), {
-      id: slug,
-      title: document.querySelector('h1').textContent,
-      anchor: null,
-      url: 'https://subsidyclock.co.uk/explainers/' + slug,
-      png: '../share/' + pngSlug + '.png',
-      csv: CSV_BY_ID[id] ? '../data/' + CSV_BY_ID[id] : null,
-      label: document.querySelector('h1').textContent + ' — cumulative cost',
-      figure: function () { return document.getElementById('x-total').textContent; }
-    }, asofShort);
   }).catch(function (err) {
     document.getElementById('x-total').textContent = '—';
   });

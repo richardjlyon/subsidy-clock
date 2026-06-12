@@ -1,4 +1,8 @@
 /* The Subsidy Clock — share/cite component (distribution F2+F3).
+   NOTE (share-UX rework, 2026-06-12): attach() is currently unwired - the
+   per-card menus were removed in favour of the hero share row. The module
+   still owns GoatCounter and the copy/track helpers; re-attach per card
+   with SCShare.attach(container, fact, asof) if a card needs a menu again.
    Self-contained: injects its own styles; owns GoatCounter tracking.
    A "fact" is {id, title, anchor, url, png, csv, label, figure()}:
      id     stable card id (event taxonomy share:{id}:{action})
