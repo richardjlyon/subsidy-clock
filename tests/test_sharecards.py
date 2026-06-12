@@ -160,8 +160,9 @@ def test_load_facts_includes_factoids(data_dir, tmp_path):
 
 def test_cumulative_svg_stacks_and_is_monotonic():
     timeseries = {"schemes": {
-        "ro": {"annual": [{"year": 2002, "cost_gbp": 1.0e9}, {"year": 2003, "cost_gbp": 2.0e9}]},
-        "bsuos": {"annual": [{"year": 2003, "cost_gbp": 0.5e9}]},
+        "ro": {"annual": [{"year": 2002, "cost_gbp": 0.8e9, "cost_gbp_2024": 1.0e9},
+                          {"year": 2003, "cost_gbp": 1.7e9, "cost_gbp_2024": 2.0e9}]},
+        "bsuos": {"annual": [{"year": 2003, "cost_gbp": 0.4e9, "cost_gbp_2024": 0.5e9}]},
     }}
     svg = sharecards.cumulative_svg(timeseries, ["ro", "bsuos"])
     assert svg.startswith("<svg")
@@ -171,10 +172,20 @@ def test_cumulative_svg_stacks_and_is_monotonic():
     assert "#b3c8d8" in svg     # bsuos colour
 
 
+def test_cumulative_svg_uses_real_2024_series():
+    # nominal kept tiny: if the svg stacked cost_gbp the £40bn gridline
+    # could not exist
+    timeseries = {"schemes": {
+        "ro": {"annual": [{"year": 2002, "cost_gbp": 1.0e9, "cost_gbp_2024": 60.0e9}]},
+    }}
+    svg = sharecards.cumulative_svg(timeseries, ["ro"])
+    assert "£40bn" in svg
+
+
 def test_cumulative_svg_excludes_non_member_schemes():
     timeseries = {"schemes": {
-        "ro": {"annual": [{"year": 2002, "cost_gbp": 1.0e9}]},
-        "cfd_low_carbon": {"annual": [{"year": 2002, "cost_gbp": 9.0e9}]},
+        "ro": {"annual": [{"year": 2002, "cost_gbp": 1.0e9, "cost_gbp_2024": 1.1e9}]},
+        "cfd_low_carbon": {"annual": [{"year": 2002, "cost_gbp": 9.0e9, "cost_gbp_2024": 9.9e9}]},
     }}
     svg = sharecards.cumulative_svg(timeseries, ["ro"])
     assert svg.count("<rect") == 1
@@ -195,7 +206,8 @@ def test_load_facts_includes_the_bill_chart_fact(data_dir):
 def test_render_chart_card_produces_1200x630_png(tmp_path):
     pytest.importorskip("playwright.sync_api")
     timeseries = {"schemes": {
-        "ro": {"annual": [{"year": 2002, "cost_gbp": 1.0e9}, {"year": 2003, "cost_gbp": 2.0e9}]},
+        "ro": {"annual": [{"year": 2002, "cost_gbp": 1.0e9, "cost_gbp_2024": 1.2e9},
+                          {"year": 2003, "cost_gbp": 2.0e9, "cost_gbp_2024": 2.3e9}]},
     }}
     fact = {"slug": "the-bill", "chart": True}
     sharecards.render_chart_card(timeseries, ["ro"], fact, "12 June 2026", tmp_path)

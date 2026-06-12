@@ -48,14 +48,15 @@ def cumulative_svg(timeseries: dict, member_ids: list[str],
     member_ids restricts the stack to the schemes the dashboard chart
     shows under the renewables perspective (the caller computes it from
     breakdown.json), so the card can never stack schemes the figure it
-    accompanies excludes."""
+    accompanies excludes. Stacks the real-2024 series so the terminus
+    matches the combined-real hero lead-in."""
     schemes = timeseries["schemes"]
     member = [(sid, col) for sid, col in CHART_STACK
               if sid in member_ids and sid in schemes]
     years = sorted({a["year"] for sid, _ in member for a in schemes[sid]["annual"]})
     cum: dict[str, dict[int, float]] = {}
     for sid, _ in member:
-        by_year = {a["year"]: a["cost_gbp"] for a in schemes[sid]["annual"]}
+        by_year = {a["year"]: a["cost_gbp_2024"] for a in schemes[sid]["annual"]}
         run, series = 0.0, {}
         for y in years:
             run += by_year.get(y, 0.0)
@@ -302,7 +303,7 @@ def render_chart_card(timeseries: dict, member_ids: list[str], fact: dict,
     out.mkdir(parents=True, exist_ok=True)
     template = (TEMPLATES / "sharecard-chart.html").read_text()
     html = (template
-            .replace("{{TITLE}}", "The bill since 2002")
+            .replace("{{TITLE}}", "The bill since 2002, in today’s money")
             .replace("{{SVG}}", cumulative_svg(timeseries, member_ids))
             .replace("{{ASOF}}", asof))
     if "{{" in html:
