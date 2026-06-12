@@ -111,3 +111,46 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
         "deflator": deflator_info,
         "bill": bill_info,
     }, indent=1, allow_nan=False))
+
+
+# public CSV filename per scheme id - part of the published URL contract (/data/*.csv)
+CSV_NAMES = {
+    "cfd_renewable":   "cfd",
+    "cfd_low_carbon":  "cfd-nuclear-biomass",
+    "ro":              "renewables-obligation",
+    "fit":             "feed-in-tariffs",
+    "constraints":     "constraints",
+    "capacity_market": "capacity-market",
+    "ccl":             "climate-change-levy",
+    "ets":             "emissions-trading",
+    "tnuos":           "tnuos",
+    "bsuos":           "bsuos",
+}
+
+RESTATEMENT_COLS = ["scheme", "table", "detected_at", "partition",
+                    "previous_version", "new_version"]
+
+
+def write_csvs(model: dict, out_dir: Path | str,
+               *, restatements: list[dict]) -> None:
+    """Per-scheme annual CSVs, one combined wide table, and the restatement
+    log (distribution F4). Values are written from the same model that feeds
+    the JSON, so CSVs can never disagree with the dashboard."""
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+
+    combined = None
+    for s in model["schemes"]:
+        name = CSV_NAMES.get(s.scheme_id, s.scheme_id)
+        df = s.annual.sort("year")
+        df.write_csv(out / f"{name}.csv")
+        col = df.select(pl.col("year"),
+                        pl.col("cost_gbp").alias(f"{s.scheme_id}_gbp"))
+        combined = col if combined is None else combined.join(
+            col, on="year", how="full", coalesce=True)
+    if combined is not None:
+        combined.sort("year").write_csv(out / "combined-annual.csv")
+
+    rows = [{k: str(r.get(k, "")) for k in RESTATEMENT_COLS} for r in restatements]
+    pl.DataFrame(rows, schema={k: pl.String for k in RESTATEMENT_COLS}) \
+        .write_csv(out / "restatements.csv")

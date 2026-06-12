@@ -107,3 +107,39 @@ def test_build_without_bill_omits_electricity_bill_block(tmp_path):
                    generated_at="2026-06-09T07:00:00+00:00")
     ts = json.loads((tmp_path / "timeseries.json").read_text())
     assert "electricity_bill" not in ts
+
+
+def test_write_csvs(tmp_path):
+    sitedata.write_csvs(model(), tmp_path, restatements=[
+        {"scheme": "bsuos", "table": "daily",
+         "detected_at": "2026-06-10T06:31:04+00:00", "partition": "2026-2027",
+         "previous_version": "20260610T063012", "new_version": "20260610T063104"}])
+    # per-scheme files named by their public slug
+    cfd = (tmp_path / "cfd.csv").read_text().splitlines()
+    assert cfd[0] == "year,cost_gbp,cost_gbp_2024"
+    assert cfd[1] == "2025,3.0e9,2.9e9" or cfd[1].startswith("2025,3000000000")
+    assert (tmp_path / "bsuos.csv").is_file()
+    # combined annual: one row per year, one column per scheme
+    combined = (tmp_path / "combined-annual.csv").read_text().splitlines()
+    assert combined[0] == "year,cfd_renewable_gbp,bsuos_gbp"
+    assert combined[1].startswith("2025,")
+    # restatements published alongside
+    rst = (tmp_path / "restatements.csv").read_text().splitlines()
+    assert rst[0] == "scheme,table,detected_at,partition,previous_version,new_version"
+    assert rst[1].startswith("bsuos,daily,")
+
+
+def test_write_csvs_pennies_match_store(tmp_path):
+    """The published CSV must sum to the scheme's cumulative figure - to the penny."""
+    m = model()
+    sitedata.write_csvs(m, tmp_path, restatements=[])
+    total = 0.0
+    for line in (tmp_path / "cfd.csv").read_text().splitlines()[1:]:
+        total += float(line.split(",")[1])
+    assert abs(total - m["schemes"][0].cumulative_gbp) < 0.01
+
+
+def test_write_csvs_no_restatements_writes_header_only(tmp_path):
+    sitedata.write_csvs(model(), tmp_path, restatements=[])
+    rst = (tmp_path / "restatements.csv").read_text().splitlines()
+    assert rst == ["scheme,table,detected_at,partition,previous_version,new_version"]

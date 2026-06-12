@@ -81,6 +81,7 @@ def cmd_build_site(args: argparse.Namespace) -> int:
                    generated_at=datetime.now(timezone.utc).isoformat(),
                    deflator_info=deflator_info,
                    bill_annual=bill, bill_info=bill_info)
+    sitedata.write_csvs(model, out_dir, restatements=store.all_restatements())
 
     gen = store.latest("cfd", "generation")
     trk = store.latest("cfd", "tracking")

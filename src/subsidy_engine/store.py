@@ -101,6 +101,15 @@ class SnapshotStore:
             return []
         return [json.loads(line) for line in log.read_text().splitlines() if line.strip()]
 
+    def all_restatements(self) -> list[dict]:
+        """Every restatement across every scheme/table, oldest path first."""
+        rows = []
+        for log in sorted((self.root / "raw").glob("*/*/restatements.jsonl")):
+            scheme, table = log.parent.parent.name, log.parent.name
+            for rec in self.restatements(scheme, table):
+                rows.append(dict(rec, scheme=scheme, table=table))
+        return rows
+
     def latest(self, scheme: str, table: str, partition: str = "full") -> pl.DataFrame | None:
         versions = self._versions(scheme, table, partition)
         if not versions:

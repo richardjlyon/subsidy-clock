@@ -85,3 +85,16 @@ def test_latest_missing_table_returns_none(tmp_path):
     store = SnapshotStore(tmp_path)
     assert store.latest("nope", "nothing") is None
     assert store.freshness("nope", "nothing") is None
+
+
+def test_all_restatements_walks_every_scheme_table(tmp_path):
+    import json as _json
+    from subsidy_engine.store import SnapshotStore
+    store = SnapshotStore(tmp_path)
+    log = tmp_path / "raw" / "bsuos" / "daily"
+    log.mkdir(parents=True)
+    rec = {"detected_at": "2026-06-10T06:31:04+00:00", "partition": "2026-2027",
+           "previous_version": "a", "new_version": "b"}
+    (log / "restatements.jsonl").write_text(_json.dumps(rec) + "\n")
+    rows = store.all_restatements()
+    assert rows == [dict(rec, scheme="bsuos", table="daily")]
