@@ -766,6 +766,32 @@
       });
   }
 
+  // ---------- report an error (corrections C2) ----------
+  // Quiet per-card marks, below the fold only - the hero, strip and
+  // equivalences carry none. valueEl is the card's headline figure; cards
+  // that are all chart/table send '(chart/table)' as the displayed value.
+  var REPORTS = [
+    { id: 'direct-bill',   label: 'The direct bill',               valueEl: 'direct-card-total' },
+    { id: 'indirect-bill', label: 'The indirect bill (estimated)', valueEl: 'indirect-card-total' },
+    { id: 'switch-off',    label: 'Paid to switch off',            valueEl: 'con-cumulative' },
+    { id: 'by-scheme',     label: 'By scheme',                     valueEl: null },
+    { id: 'by-technology', label: 'By technology (CfD)',           valueEl: null },
+    { id: 'recipients',    label: 'Largest recipients',            valueEl: null },
+    { id: 'cost-per-year', label: 'The bill since 2002',           valueEl: null },
+    { id: 'share-of-bill', label: 'Share of the electricity bill', valueEl: 'strip-share' }
+  ];
+  function initReports() {
+    REPORTS.forEach(function (r) {
+      var section = document.getElementById(r.id);
+      if (!section) return;
+      var h = section.querySelector('h2');
+      if (!h) return;
+      SCShare.attachReport(h, {
+        id: r.id, label: r.label, valueEl: r.valueEl, version: totals.generated_at
+      });
+    });
+  }
+
   // ---------- wiring ----------
   function renderAll() {
     renderHeroStatic();
@@ -797,6 +823,7 @@
   renderRecipients();
   renderFooter();
   initHeroShare();
+  initReports();
   rafId = requestAnimationFrame(tick);
 
 })();
