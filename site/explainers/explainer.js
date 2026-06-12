@@ -13,7 +13,7 @@
     var rate = s.runrate_gbp_per_year / D.secsPerYear;
     var perHousehold = s.runrate_gbp_per_year / D.households;
 
-    document.getElementById('x-rate').textContent = '+' + SC.fmtPence(rate) + '/sec';
+    document.getElementById('x-rate').textContent = '+' + SC.fmtCompact(rate * 86400) + '/day';
     document.getElementById('x-household').textContent = '≈ ' + SC.fmtPence(perHousehold) + '/yr';
 
     // live prose slots: <span data-live="cumulative|runrate|household|rate"></span>
