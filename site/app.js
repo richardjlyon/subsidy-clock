@@ -324,26 +324,42 @@
     }
   }
 
-  // ---------- strip extras: household & share-of-bill chips (direct schemes only) ----------
+  // ---------- strip extras: household & share-of-bill chips ----------
+  // Direct figure first; the combined direct+indirect follows in brackets,
+  // and the sub names the brackets so the estimate stays labelled.
   function renderStripExtras() {
-    document.getElementById('strip-household').textContent =
-      fmtPence(pv().per_household_per_year_gbp);
+    var hh = fmtPence(pv().per_household_per_year_gbp);
+    var ind = iv();
+    if (ind) {
+      hh += ' (' + fmtPence(pv().per_household_per_year_gbp + ind.per_household_per_year_gbp) + ')';
+    }
+    document.getElementById('strip-household').textContent = hh;
 
     var bill = timeseries.electricity_bill;
-    var share = null, year = null;
+    var share = null, combinedShare = null, year = null;
     if (bill && bill.annual && bill.annual.length) {
-      var directBy = {};
+      var directBy = {}, indirectBy = {};
       timeseries.perspectives[state.perspective].annual.forEach(function (a) { directBy[a.year] = annualCost(a); });
-      // same complete-year rule as renderShareChart; direct subsidy only
+      if (timeseries.indirect) {
+        timeseries.indirect.annual.forEach(function (a) { indirectBy[a.year] = annualCost(a); });
+      }
+      // same complete-year rule as renderShareChart
       var complete = bill.annual.filter(function (a) { return a.total_bill_gbp > 0; });
       var last = complete[complete.length - 1];
       if (last) {
         year = last.year;
         share = Math.max(0, directBy[year] || 0) / last.total_bill_gbp;
+        if (timeseries.indirect) {
+          combinedShare = share + Math.max(0, indirectBy[year] || 0) / last.total_bill_gbp;
+        }
       }
     }
-    document.getElementById('strip-share').textContent = share != null ? Math.round(100 * share) + '%' : '\u2014';
-    document.getElementById('strip-share-sub').textContent = year != null ? 'of ' + year + ' electricity spend' : '';
+    document.getElementById('strip-share').textContent = share != null
+      ? Math.round(100 * share) + '%' +
+        (combinedShare != null ? ' (' + Math.round(100 * combinedShare) + '%)' : '')
+      : '\u2014';
+    document.getElementById('strip-share-sub').textContent =
+      year != null ? 'of ' + year + ' spend, direct (with estimated indirect)' : '';
   }
 
   // ---------- technology breakdown (CfD only) ----------
