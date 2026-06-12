@@ -129,9 +129,21 @@ var SCShare = (function () {
       'margin-top:.3rem;padding-top:.3rem}' +
     '.share-to a.share-item{width:auto;display:inline-block}' +
     '.fact-share-wrap{position:relative;display:inline-block;margin-left:.3rem;vertical-align:baseline}' +
-    '.fact-share-btn{background:none;border:0;padding:1px 3px;cursor:pointer;' +
-      'color:var(--ink,#23211c);opacity:.5;line-height:1}' +
+    // padding/negative margin pair: ~28x26px tap target, unchanged visual footprint
+    '.fact-share-btn{background:none;border:0;padding:7px 8px;margin:-6px -5px;cursor:pointer;' +
+      'color:var(--ink,#23211c);opacity:.5;line-height:1;position:relative}' +
     '.fact-share-btn:hover,.fact-share-btn:active{opacity:1;color:var(--money-deep,#7a2419)}' +
+    // discoverability: the glyph lifts when the reader hovers its line or heading
+    'li:hover .fact-share-btn,h2:hover .fact-share-btn{opacity:1}' +
+    // instant on-brand tooltip from data-tip, on hover and keyboard focus;
+    // hidden while the popover is open (it would sit in the same spot)
+    '.fact-share-btn::after{content:attr(data-tip);position:absolute;top:50%;' +
+      'left:calc(100% + 2px);transform:translateY(-50%);background:var(--ink,#23211c);' +
+      'color:var(--paper,#f7f4ee);font-size:.68rem;font-weight:400;padding:.2rem .5rem;' +
+      'border-radius:4px;white-space:nowrap;opacity:0;pointer-events:none;' +
+      'transition:opacity .12s .15s;z-index:25}' +
+    '.fact-share-btn:hover::after,.fact-share-btn:focus-visible::after{opacity:1}' +
+    '.fact-share-btn[aria-expanded="true"]::after{opacity:0}' +
     '.report-pop{min-width:14rem}' +
     '.report-note{margin:.15rem .6rem .35rem;color:var(--muted,#6e6a5f);font-size:.78rem}';
   var styleDone = false;
@@ -268,6 +280,7 @@ var SCShare = (function () {
     btn.type = 'button';
     btn.className = 'fact-share-btn';
     btn.setAttribute('aria-label', 'Share this fact');
+    btn.setAttribute('data-tip', 'Share this fact');
     btn.innerHTML = GLYPH;
     wrap.appendChild(btn);
     if (canShareFiles()) {
@@ -366,6 +379,7 @@ var SCShare = (function () {
     btn.type = 'button';
     btn.className = 'fact-share-btn report-btn';
     btn.setAttribute('aria-label', 'Report an error in this figure');
+    btn.setAttribute('data-tip', 'Report an error');
     btn.setAttribute('aria-haspopup', 'true');
     btn.setAttribute('aria-expanded', 'false');
     btn.innerHTML = REPORT_GLYPH;
