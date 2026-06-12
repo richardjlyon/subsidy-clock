@@ -56,6 +56,10 @@
 
   <h2>The log</h2>
 
+  <table class="data-table" id="corrections-table" hidden>
+    <thead><tr><th>Date</th><th>Figure</th><th>What was shown</th><th>What it now shows</th><th>Cause</th><th>Found by</th></tr></thead>
+    <tbody></tbody>
+  </table>
   <p id="corrections-empty">No corrections yet. The invitation stands.</p>
 </main>
 
@@ -75,6 +79,36 @@
     .then(function (r) { return r.json(); })
     .then(function (m) { a.href = SCShare.reportMailto({ version: m.generated_at }); })
     .catch(function () {});
+})();
+</script>
+<script>
+(function () {
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function fmtDate(iso) {
+    return new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB',
+      { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+  }
+  fetch('data/corrections.json')
+    .then(function (r) { if (!r.ok) throw new Error('' + r.status); return r.json(); })
+    .then(function (data) {
+      var entries = data.corrections || [];
+      if (!entries.length) return; // the static empty state stands
+      entries.sort(function (a, b) { return a.date < b.date ? 1 : -1; }); // newest first
+      document.querySelector('#corrections-table tbody').innerHTML =
+        entries.map(function (c) {
+          return '<tr><td class="num">' + esc(fmtDate(c.date)) + '</td>' +
+            '<td>' + esc(c.figure_label) + '</td>' +
+            '<td class="num-col money">' + esc(c.was) + '</td>' +
+            '<td class="num-col money">' + esc(c.now) + '</td>' +
+            '<td>' + esc(c.cause) + '</td>' +
+            '<td>' + esc(c.credit || '—') + '</td></tr>';
+        }).join('');
+      document.getElementById('corrections-table').hidden = false;
+      document.getElementById('corrections-empty').hidden = true;
+    })
+    .catch(function () {}); // page never breaks: the empty state is the fallback
 })();
 </script>
 </body>
