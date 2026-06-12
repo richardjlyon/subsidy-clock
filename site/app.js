@@ -393,6 +393,9 @@
   }
 
   // ---------- trend chart (stacked annual bars, inline SVG) ----------
+  // Hex values behind these CSS vars and this stack order are mirrored in
+  // CHART_STACK in src/subsidy_engine/sharecards.py (the chart share card) -
+  // keep them in step.
   var SCHEME_COLOURS = {
     ro: 'var(--c-ro)', fit: 'var(--c-fit)', cfd_renewable: 'var(--c-cfdr)',
     cfd_low_carbon: 'var(--c-cfdl)', constraints: 'var(--c-con)',

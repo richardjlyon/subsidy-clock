@@ -178,6 +178,21 @@ def test_load_facts_includes_the_bill_chart_fact(data_dir):
     assert bill["figure"].startswith("£")
 
 
+def test_render_chart_card_produces_1200x630_png(tmp_path):
+    pytest.importorskip("playwright.sync_api")
+    timeseries = {"schemes": {
+        "ro": {"annual": [{"year": 2002, "cost_gbp": 1.0e9}, {"year": 2003, "cost_gbp": 2.0e9}]},
+    }}
+    fact = {"slug": "the-bill", "chart": True}
+    sharecards.render_chart_card(timeseries, fact, "12 June 2026", tmp_path)
+    try:
+        assert _png_size(tmp_path / "the-bill.png") == (1200, 630)
+    except Exception as exc:
+        if "playwright install" in str(exc).lower() or "executable" in str(exc).lower():
+            pytest.skip(f"chromium unavailable: {exc}")
+        raise
+
+
 def test_render_produces_1200x630_pngs(data_dir, tmp_path):
     pytest.importorskip("playwright.sync_api")
     facts, asof, _ = sharecards.load_facts(data_dir)
