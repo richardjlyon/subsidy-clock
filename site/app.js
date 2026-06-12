@@ -129,16 +129,18 @@
     var sinceYear = persp().since_year;
     document.getElementById('hero-value').textContent = fmtFull(liveCumulative(Date.now()));
     if (hasCombinedReal()) {
-      document.getElementById('hero-leadin').innerHTML =
+      var leadin = document.getElementById('hero-leadin');
+      leadin.innerHTML =
         'Supporting renewables has cost Great Britain over ' +
         '<a href="methodology.html#ref-reconciliation"><strong class="money num">£' +
         (combinedRealFlooredGbp() / 1e9) + '&nbsp;billion</strong></a> in today\u2019s money. ' +
         'This much is measured to the penny:';
+      leadin.hidden = false;
     }
     document.getElementById('hero-sub').innerHTML =
       'paid directly to renewable generators <span class="nowrap">since ' + sinceYear +
-      '</span><sup class="hero-fn" title="Estimated between official updates: the counter ' +
-      'advances at each scheme\u2019s most recent published run-rate.">†</sup>';
+      '<sup class="hero-fn" title="Estimated between official updates: the counter ' +
+      'advances at each scheme\u2019s most recent published run-rate.">†</sup></span>';
     document.getElementById('strip-alltime-since').textContent = 'since ' + sinceYear;
   }
 
