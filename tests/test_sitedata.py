@@ -240,6 +240,27 @@ def test_write_csvs_no_restatements_writes_header_only(tmp_path):
     assert len(rst) == 4
 
 
+def test_factoid_divisions_floor_not_round(tmp_path):
+    """Every equivalence division must FLOOR - rounding to nearest would
+    overstate, which the conservative-number rule forbids."""
+    m = big_model()
+    # nurses: 12.4e9 / 39043 = 317,598.5... -> floor 317,000 (round would give 318,000)
+    # per-mwh: 12.4e9 / 266e6 = 46.616... -> floor £46.61 (round would give £46.62)
+    # per-person: 12.4e9 / 68.3e6 = 181.552... -> floor £181.55 (round same here)
+    for p in m["perspectives"].values():
+        p["runrate_gbp_per_year"] = 12.4e9
+    sitedata.build(m, CTX, {}, tmp_path,
+                   generated_at="2026-06-12T07:00:00+00:00",
+                   deflator_info=DEFLATOR_INFO, deflators=DEFLATORS)
+    meta = json.loads((tmp_path / "meta.json").read_text())
+    by_slug = {f["slug"]: f for f in meta["factoids"]}
+    # floor-vs-round distinguishing: fraction >= 0.5 at floored precision
+    assert by_slug["nurses"]["figure"] == "317,000"    # round would give 318,000
+    assert by_slug["per-mwh"]["figure"] == "£46.61"    # round would give £46.62
+    # correct floor value (fraction < 0.5 so floor == round here)
+    assert by_slug["per-person"]["figure"] == "£181.55"
+
+
 def test_write_widget_stamps_figure_and_rate(tmp_path):
     totals = {
         "generated_at": "2026-06-11T05:45:00+00:00",
