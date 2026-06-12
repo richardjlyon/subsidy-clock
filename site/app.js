@@ -68,7 +68,7 @@
   // ---------- state ----------
   var motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var rafId;
-  var state = { perspective: 'renewables', real: false };
+  var state = { perspective: 'renewables', real: false, trendView: 'cumulative' };
   // SITE_URL/SHARE_URL live with the state - renderEquivalences needs them at first paint.
   var SITE_URL = 'https://subsidyclock.co.uk';
   var SHARE_URL = SITE_URL + '/';
@@ -421,10 +421,16 @@
     var years = [];
     for (var y = firstYear; y <= currentYear; y++) years.push(y);
 
+    var cumulative = state.trendView === 'cumulative';
     var valueBySchemeYear = {};
     memberIds.forEach(function (id) {
       var m = {};
       timeseries.schemes[id].annual.forEach(function (a) { m[a.year] = annualCost(a); });
+      if (cumulative) {
+        var run = 0, c = {};
+        years.forEach(function (yr) { run += m[yr] || 0; c[yr] = run; });
+        m = c;
+      }
       valueBySchemeYear[id] = m;
     });
 
@@ -453,7 +459,8 @@
     var bandW = plotW / years.length;
     var barW = bandW * 0.72;
 
-    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Annual subsidy cost by scheme, direct and estimated indirect, ' + firstYear + ' to ' + currentYear + '">';
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' +
+      (cumulative ? 'Cumulative' : 'Annual') + ' subsidy cost by scheme, direct and estimated indirect, ' + firstYear + ' to ' + currentYear + '">';
 
     var indirectIds = memberIds.filter(isIndirectScheme);
 
@@ -469,7 +476,7 @@
     years.forEach(function (yr, i) {
       var x = mL + bandW * i + (bandW - barW) / 2;
       var posAcc = 0, negAcc = 0;
-      var partial = yr === currentYear ? ' class="partial"' : '';
+      var partial = (!cumulative && yr === currentYear) ? ' class="partial"' : '';
       memberIds.forEach(function (id) {
         var v = valueBySchemeYear[id][yr] || 0;
         if (v === 0) return;
@@ -482,7 +489,8 @@
           '" width="' + barW.toFixed(1) + '" height="' + h.toFixed(1) +
           '" fill="' + SCHEME_COLOURS[id] + '">' +
           '<title>' + esc(schemesById[id].label) + (indirect ? ' (indirect, estimated)' : '') +
-          ', ' + yr + (yr === currentYear ? ' (partial)' : '') +
+          (cumulative ? ', to ' + yr + (yr === currentYear ? ' (incl. partial year)' : '')
+                      : ', ' + yr + (yr === currentYear ? ' (partial)' : '')) +
           ': ' + fmtCompact(v) + '</title></rect>';
       });
       if (yr % 4 === 2 || yr === currentYear) {
@@ -493,10 +501,15 @@
     svg += '</svg>';
 
     document.getElementById('trend-chart').innerHTML = svg;
-    document.getElementById('trend-note').textContent =
-      'Annual cost by scheme, ' + firstYear + '–' + currentYear +
-      '. Warm bars are measured direct subsidies; cool blue bars are estimated indirect costs.' +
-      ' *' + currentYear + ' is a partial year (data to date).';
+    document.getElementById('trend-h').textContent =
+      cumulative ? 'The bill since 2002' : 'Cost per year, by scheme';
+    document.getElementById('trend-note').textContent = cumulative
+      ? 'Cumulative cost by scheme since ' + firstYear + '. It never comes back down: ' +
+        'warm bars are measured direct subsidies; cool blue bars are estimated indirect costs. ' +
+        'The ' + currentYear + ' bar includes the year to date.'
+      : 'Annual cost by scheme, ' + firstYear + '–' + currentYear +
+        '. Warm bars are measured direct subsidies; cool blue bars are estimated indirect costs.' +
+        ' *' + currentYear + ' is a partial year (data to date).';
     var directIds = memberIds.filter(function (id) { return !isIndirectScheme(id); });
     function legendItem(id) {
       return '<span><span class="swatch" style="background:' + SCHEME_COLOURS[id] + '"></span>' +
@@ -728,6 +741,19 @@
     renderCategoryCards();
     renderStripExtras();
   }
+
+  // ---------- trend toggle ----------
+  document.querySelectorAll('#trend-toggle button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var v = b.getAttribute('data-view');
+      if (state.trendView === v) return;
+      state.trendView = v;
+      document.querySelectorAll('#trend-toggle button').forEach(function (x) {
+        x.setAttribute('aria-pressed', String(x === b));
+      });
+      renderChart();
+    });
+  });
 
   // ---------- first paint ----------
   renderAll();

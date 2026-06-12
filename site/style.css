@@ -259,6 +259,14 @@ main > .card-pair { margin: 26px 0; }
 .data-table .cell-dim { color: var(--muted); }
 .table-note { margin: 12px 0 0; font-size: 0.76rem; color: var(--muted); max-width: 50em; }
 
+/* ---------- card head row + view toggle ---------- */
+.card-head-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.card-head-row h2 { margin: 0; }
+.view-toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 5px; overflow: hidden; }
+.view-toggle button { background: none; border: 0; font: inherit; font-family: var(--sans); font-size: 0.74rem; padding: 0.22rem 0.7rem; color: var(--muted); cursor: pointer; }
+.view-toggle button + button { border-left: 1px solid var(--line); }
+.view-toggle button[aria-pressed="true"] { background: var(--money-deep); color: #f7f4ee; }
+
 /* ---------- chart ---------- */
 .chart svg { width: 100%; height: auto; display: block; }
 .chart .axis-label { font: 11.5px var(--sans); fill: var(--ink); fill-opacity: 0.75; }

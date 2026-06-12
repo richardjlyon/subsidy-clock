@@ -126,7 +126,13 @@
 
   <!-- ====================== TREND ====================== -->
   <section class="card" id="cost-per-year" aria-labelledby="trend-h">
-    <h2 id="trend-h">Cost per year, by scheme</h2>
+    <div class="card-head-row">
+      <h2 id="trend-h">The bill since 2002</h2>
+      <div class="view-toggle" id="trend-toggle" role="group" aria-label="Chart view">
+        <button type="button" data-view="cumulative" aria-pressed="true">Cumulative</button>
+        <button type="button" data-view="annual" aria-pressed="false">By year</button>
+      </div>
+    </div>
     <p class="card-intro" id="trend-note"></p>
     <div class="chart" id="trend-chart"></div>
     <div class="legend" id="trend-legend"></div>
