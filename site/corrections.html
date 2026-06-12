@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corrections — The Subsidy Clock</title>
+<meta name="description" content="Confirmed errors in The Subsidy Clock's published figures, corrected and logged in public, with credit to the finder.">
+<meta property="og:title" content="The Subsidy Clock — corrections">
+<meta property="og:description" content="Confirmed errors, corrected and logged in public, with credit to the finder.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Subsidy Clock">
+<meta property="og:url" content="https://subsidyclock.co.uk/corrections">
+<meta property="og:image" content="https://subsidyclock.co.uk/share/site.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://subsidyclock.co.uk/corrections">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container masthead-inner">
+    <div class="brand-block">
+      <p class="brand"><a href="index.html"><span class="brand-tick" aria-hidden="true"></span>The Subsidy Clock</a></p>
+      <p class="brand-tag">What UK energy subsidies cost</p>
+    </div>
+    <nav><a href="index.html">← Back to the clock</a><a href="data.html">Data</a><a href="methodology.html">Methodology</a></nav>
+  </div>
+</header>
+
+<main class="container prose">
+  <h1>Corrections</h1>
+
+  <p>This site reconstructs official data, and reconstruction can contain errors. If you
+  find one, I want to know. Confirmed errors are corrected and logged below, with credit
+  to the finder if they wish.</p>
+
+  <h2>Reporting an error</h2>
+
+  <p><a id="report-link" href="about.html">Report an error</a> — the email opens with the
+  page's details attached; you supply only what you believe is wrong and, if you wish,
+  your evidence and a name for credit. Every figure on
+  <a href="index.html">the dashboard</a> also carries its own report mark, which attaches
+  that figure's details automatically.</p>
+
+  <p>Three things can be true of a disputed number. If the figure is wrong, it is fixed
+  and logged here. If the figure is right under the stated method and the disagreement is
+  with the method, that is answered on the
+  <a href="methodology.html">methodology page</a> — a definitional dispute is not an
+  error. And if a source has revised its own history, that is logged automatically in the
+  <a href="data.html">restatements file</a>.</p>
+
+  <h2>The log</h2>
+
+  <p id="corrections-empty">No corrections yet. The invitation stands.</p>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p class="footer-links">Made by <a href="https://theenergytrap.org">Richard Lyon</a> · <a href="data.html">Data</a> · <a href="methodology.html">Methodology &amp; sources</a> · <a href="about.html">About this site</a></p>
+  </div>
+</footer>
+
+<script src="share.js"></script>
+<script>
+(function () {
+  // page-level context now; data version added once meta.json arrives
+  var a = document.getElementById('report-link');
+  a.href = SCShare.reportMailto({});
+  fetch('data/meta.json')
+    .then(function (r) { return r.json(); })
+    .then(function (m) { a.href = SCShare.reportMailto({ version: m.generated_at }); })
+    .catch(function () {});
+})();
+</script>
+</body>
+</html>
