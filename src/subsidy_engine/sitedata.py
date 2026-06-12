@@ -101,7 +101,7 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
                              f"{fig} social homes — land included — in today’s money."),
                 "display_html": (f'The {full} full cost would have built '
                                  f'<span class="money num">{fig}</span> {src(home, "social homes")}, '
-                                 'land included'),
+                                 'land included — in today’s money'),
                 "label": (f"social homes (land included) the {full} full renewables cost "
                           "would have built, in today's money"),
                 "source_name": home["source"], "source_url": home["source_url"],
