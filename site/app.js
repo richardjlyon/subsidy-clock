@@ -142,10 +142,9 @@
       '<sup class="hero-fn" title="Estimated between official updates: the counter ' +
       'advances at each scheme\u2019s most recent published run-rate.">†</sup></span>';
     document.getElementById('strip-alltime-since').textContent = 'direct, since ' + sinceYear;
-    if (hasCombinedReal()) {
-      document.getElementById('strip-fullcost').textContent =
-        '£' + (combinedRealFlooredGbp() / 1e9) + 'bn+';
-    }
+    document.getElementById('strip-fullcost').textContent = hasCombinedReal()
+      ? '£' + (combinedRealFlooredGbp() / 1e9) + 'bn+'
+      : '—';
   }
 
   // ---------- ticking ----------
