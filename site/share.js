@@ -18,7 +18,7 @@ var SCShare = (function () {
   'use strict';
 
   // ---- GoatCounter. Set to your code (e.g. "subsidyclock") to enable; "" = silent no-op.
-  var GOATCOUNTER_CODE = '';
+  var GOATCOUNTER_CODE = 'richlyon';
   var SITE = 'https://subsidyclock.co.uk';
 
   function initTracking() {
