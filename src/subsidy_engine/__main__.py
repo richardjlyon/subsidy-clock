@@ -115,6 +115,27 @@ def cmd_build_site(args: argparse.Namespace) -> int:
         print(f"[crosscheck] {len(cc['components'])} components vs REF {cc['comparison_year']}; "
               f"{cc['unexplained_count']} unexplained beyond ±{cc['bound_pct']}%")
 
+    ref_totals_path = args.root / "reference" / "ref_totals.yaml"
+    if ref_totals_path.is_file():
+        ref_t = reference.load_ref_totals(ref_totals_path)
+        thru = int(ref_t["ours_through_year"])
+        comp: dict[str, float] = {}
+        real_total = 0.0
+        for s in model["schemes"]:
+            cut = s.annual.filter(pl.col("year") <= thru)
+            nom = float(cut["cost_gbp"].sum()) if cut.height else 0.0
+            if "cost_gbp_2024" in cut.columns and cut.height:
+                real_total += float(cut["cost_gbp_2024"].sum())
+            key = "cfd" if s.scheme_id in ("cfd_renewable", "cfd_low_carbon") else s.scheme_id
+            comp[key] = comp.get(key, 0.0) + nom
+        recon = reconcile.ref_reconciliation(comp, real_total, ref_t)
+        (out_dir / "ref_reconciliation.json").write_text(
+            json.dumps(recon, indent=1, allow_nan=False))
+        print(f"[ref-reconciliation] ours £{recon['ours_total_gbp']/1e9:.1f}bn vs "
+              f"REF £{recon['ref_total_gbp']/1e9:.1f}bn to {thru}; "
+              f"stricter components account for £{recon['stricter_gap_gbp']/1e9:.1f}bn "
+              f"of the £{recon['gap_gbp']/1e9:.1f}bn gap")
+
     print(f"[ok] site data written to {out_dir}")
     return 0
 

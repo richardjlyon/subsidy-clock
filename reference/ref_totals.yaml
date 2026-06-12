@@ -1,0 +1,33 @@
+# REF's published cumulative subsidy totals - the like-for-like cross-check
+# for the Clock's whole-period claim (impact I1). NOT a data source.
+# Figures read directly from REF Tables 1 (direct) and 2 (indirect),
+# cumulative 2002 to FY 2023/24, GBP nominal. Re-verify on REF updates.
+source: REF, "UK Renewable Electricity Subsidy Totals 2002 to the Present Day", April 2025, Tables 1 and 2
+source_url: https://www.ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day
+period: "2002 to FY 2023/24"
+# Our annual series is calendar-year; comparing ours <=2023 against REF's
+# <=FY2023/24 leaves ~3 months of theirs uncovered by ours - the mismatch
+# runs in the conservative direction (understates ours).
+ours_through_year: 2023
+total_nominal_gbp: 185000000000
+total_real_2024_gbp: 223000000000
+verified: true
+components:        # cumulative nominal GBP, exactly as published
+  ro: 67000000000
+  fit: 15300000000
+  cfd: 7800000000
+  constraints: 1700000000
+  rego: 1700000000
+  ccl: 27900000000
+  tnuos: 20400000000
+  bsuos: 18500000000
+  ets: 19000000000
+  capacity_market: 5800000000
+stricter: [ccl, bsuos, ets, rego]   # components where the gap is our deliberate choice
+notes:
+  cfd: REF's CfD line covers renewable generators including biomass; ours compares CfD-renewables plus the CfD nuclear & biomass line (nuclear payments only begin in 2025, outside this window).
+  rego: REGO certificate costs are excluded from the Clock entirely (listed under "What is not included").
+  ccl: REF counts total CCL receipts (OBR series, all fuels); we count electricity's share of main-rate receipts plus Carbon Price Support.
+  bsuos: REF does not net off direct constraint payments; we do, to avoid double-counting against our constraints line.
+  ets: REF counts total ETS receipts (OBR series, all sectors); we count only the power-sector share of auctioned allowance revenue.
+  fit: Ours runs on calendar years from Ofgem annual reports; REF's on fiscal years.

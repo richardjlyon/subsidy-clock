@@ -1,0 +1,94 @@
+{
+ "comparison_period": "2002 to FY 2023/24",
+ "ours_through_year": 2023,
+ "ref_source": "REF, \"UK Renewable Electricity Subsidy Totals 2002 to the Present Day\", April 2025, Tables 1 and 2",
+ "ref_source_url": "https://www.ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day",
+ "ours_total_gbp": 159229320926.8,
+ "ref_total_gbp": 185100000000.0,
+ "gap_gbp": 25870679073.2,
+ "stricter_gap_gbp": 26228873554.45,
+ "ours_real_2024_gbp": 200053802846.14,
+ "ref_real_2024_gbp": 223000000000.0,
+ "components": [
+  {
+   "component": "ro",
+   "ours_gbp": 66890000000.0,
+   "ref_gbp": 67000000000.0,
+   "divergence_pct": -0.2,
+   "note": "",
+   "stricter": false
+  },
+  {
+   "component": "fit",
+   "ours_gbp": 16389000000.0,
+   "ref_gbp": 15300000000.0,
+   "divergence_pct": 7.1,
+   "note": "Ours runs on calendar years from Ofgem annual reports; REF's on fiscal years.",
+   "stricter": false
+  },
+  {
+   "component": "cfd",
+   "ours_gbp": 7171292490.39,
+   "ref_gbp": 7800000000.0,
+   "divergence_pct": -8.1,
+   "note": "REF's CfD line covers renewable generators including biomass; ours compares CfD-renewables plus the CfD nuclear & biomass line (nuclear payments only begin in 2025, outside this window).",
+   "stricter": false
+  },
+  {
+   "component": "constraints",
+   "ours_gbp": 1604551989.0,
+   "ref_gbp": 1700000000.0,
+   "divergence_pct": -5.6,
+   "note": "",
+   "stricter": false
+  },
+  {
+   "component": "rego",
+   "ours_gbp": 0.0,
+   "ref_gbp": 1700000000.0,
+   "divergence_pct": -100.0,
+   "note": "REGO certificate costs are excluded from the Clock entirely (listed under \"What is not included\").",
+   "stricter": true
+  },
+  {
+   "component": "ccl",
+   "ours_gbp": 21595100000.0,
+   "ref_gbp": 27900000000.0,
+   "divergence_pct": -22.6,
+   "note": "REF counts total CCL receipts (OBR series, all fuels); we count electricity's share of main-rate receipts plus Carbon Price Support.",
+   "stricter": true
+  },
+  {
+   "component": "tnuos",
+   "ours_gbp": 21055674418.6,
+   "ref_gbp": 20400000000.0,
+   "divergence_pct": 3.2,
+   "note": "",
+   "stricter": false
+  },
+  {
+   "component": "bsuos",
+   "ours_gbp": 9592626445.55,
+   "ref_gbp": 18500000000.0,
+   "divergence_pct": -48.1,
+   "note": "REF does not net off direct constraint payments; we do, to avoid double-counting against our constraints line.",
+   "stricter": true
+  },
+  {
+   "component": "ets",
+   "ours_gbp": 9683400000.0,
+   "ref_gbp": 19000000000.0,
+   "divergence_pct": -49.0,
+   "note": "REF counts total ETS receipts (OBR series, all sectors); we count only the power-sector share of auctioned allowance revenue.",
+   "stricter": true
+  },
+  {
+   "component": "capacity_market",
+   "ours_gbp": 5247675583.26,
+   "ref_gbp": 5800000000.0,
+   "divergence_pct": -9.5,
+   "note": "",
+   "stricter": false
+  }
+ ]
+}

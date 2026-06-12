@@ -54,6 +54,10 @@ def load_ref_crosscheck(path: Path) -> dict:
     return yaml.safe_load(Path(path).read_text())
 
 
+def load_ref_totals(path: Path) -> dict:
+    return yaml.safe_load(Path(path).read_text())
+
+
 def load_context(path: Path) -> dict:
     return yaml.safe_load(Path(path).read_text())
 

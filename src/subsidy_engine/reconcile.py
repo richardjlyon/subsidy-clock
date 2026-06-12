@@ -118,3 +118,44 @@ def indirect_crosscheck(ours: dict[str, float], ref: dict,
         "components": components,
         "unexplained_count": unexplained,
     }
+
+
+def ref_reconciliation(ours: dict[str, float], ours_real_total: float, ref: dict) -> dict:
+    """Period-matched cumulative comparison against REF's published study
+    (impact I1). `ours` holds our per-component nominal sums over calendar
+    years <= ref['ours_through_year']; components REF counts that we
+    deliberately do not (e.g. REGO) are simply absent and compare as zero.
+    The 'stricter' list marks components where the divergence is our
+    deliberate attribution choice - their summed gap is the headline of the
+    methodology table."""
+    components = []
+    stricter_gap = 0.0
+    for name, ref_v in ref["components"].items():
+        our_v = float(ours.get(name, 0.0))
+        pct = round((our_v - ref_v) / ref_v * 100, 1) if ref_v else None
+        is_stricter = name in (ref.get("stricter") or [])
+        if is_stricter:
+            stricter_gap += ref_v - our_v
+        components.append({
+            "component": name,
+            "ours_gbp": round(our_v, 2),
+            "ref_gbp": float(ref_v),
+            "divergence_pct": pct,
+            "note": (ref.get("notes") or {}).get(name, ""),
+            "stricter": is_stricter,
+        })
+    ours_total = sum(float(v) for v in ours.values())
+    ref_total = sum(float(v) for v in ref["components"].values())
+    return {
+        "comparison_period": ref["period"],
+        "ours_through_year": ref["ours_through_year"],
+        "ref_source": ref["source"],
+        "ref_source_url": ref["source_url"],
+        "ours_total_gbp": round(ours_total, 2),
+        "ref_total_gbp": round(ref_total, 2),
+        "gap_gbp": round(ref_total - ours_total, 2),
+        "stricter_gap_gbp": round(stricter_gap, 2),
+        "ours_real_2024_gbp": round(ours_real_total, 2),
+        "ref_real_2024_gbp": float(ref["total_real_2024_gbp"]),
+        "components": components,
+    }

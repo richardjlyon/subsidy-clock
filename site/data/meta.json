@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-06-12T15:00:13.415484+00:00",
+ "generated_at": "2026-06-12T15:43:07.617897+00:00",
  "freshness": {
   "cfd": {
    "retrieved_at": "2026-06-12T07:04:39.717223+00:00",
@@ -50,18 +50,26 @@
   },
   "equivalences": {
    "nurse_salary_gbp": {
-    "value": 37796,
-    "description": "NHS Band 5 nurse annual salary, top of band (Agenda for Change, England, 2025-26). Top of band is used so nurse-equivalent counts are conservative.",
-    "source": "NHS Employers, Agenda for Change pay scales 2025/26",
-    "source_url": "https://www.nhsemployers.org/articles/pay-scales-202526",
-    "as_of": 2025
+    "value": 39043,
+    "description": "NHS Band 5 nurse annual salary, top of band (Agenda for Change, England, 2026-27). Top of band is used so nurse-equivalent counts are conservative.",
+    "source": "NHS Employers, Agenda for Change pay scales 2026/27",
+    "source_url": "https://www.nhsemployers.org/articles/pay-scales-202627",
+    "as_of": 2026
    },
-   "ghost_hospital_gbp": {
-    "value": 500000000,
-    "description": "Indicative cost of building a new, average mid-sized hospital, per NAO reporting on the New Hospital Programme.",
-    "source": "National Audit Office, Progress with the New Hospital Programme (July 2023)",
-    "source_url": "https://www.nao.org.uk/reports/progress-with-the-new-hospital-programme/",
-    "as_of": 2023
+   "social_home_gbp": {
+    "value": 393333,
+    "description": "Gross upfront cost of building one social-rent home in England, including land (\u00a335.4bn for 90,000 homes \u2014 \u00a3393,333 each). A full-cost figure is used rather than the much lower grant-per-home, so home counts round down.",
+    "source": "Cebr for Shelter and the National Housing Federation, \"The economic impact of building social housing\" (2024)",
+    "source_url": "https://england.shelter.org.uk/professional_resources/policy_and_research/policy_library/economic_impact_social_housing",
+    "as_of": 2024
+   },
+   "hinkley_point_c_gbp": {
+    "value": 35000000000,
+    "price_base": 2015,
+    "description": "EDF's latest published cost estimate for Hinkley Point C (3.26 GW), \u00a335bn in 2015 prices (2025 annual results, February 2026). The engine converts to 2024 prices with its own CPIH deflator series so the comparison shares the price basis of the numerator.",
+    "source": "New Civil Engineer, reporting EDF's 2025 annual results (20 February 2026)",
+    "source_url": "https://www.newcivilengineer.com/latest/hinkley-point-cs-cost-climbs-to-35bn-with-confirmation-unit-1-will-power-up-in-2030-20-02-2026/",
+    "as_of": 2026
    }
   }
  },
@@ -75,5 +83,52 @@
   "source": "DESNZ, Digest of UK Energy Statistics (DUKES) 1.3, Sales of electricity and gas by sector",
   "source_url": "https://www.gov.uk/government/statistics/energy-chapter-1-digest-of-united-kingdom-energy-statistics-dukes",
   "verified": true
- }
+ },
+ "factoids": [
+  {
+   "slug": "nurses",
+   "figure": "312,000",
+   "sentence": "A year of UK renewable subsidy pays the salaries of 312,000 NHS nurses.",
+   "display_html": "A year of this pays the salaries of <span class=\"money num\">312,000</span> <a class=\"eq-src\" href=\"https://www.nhsemployers.org/articles/pay-scales-202627\" title=\"NHS Employers, Agenda for Change pay scales 2026/27\">NHS nurses</a>",
+   "label": "NHS nurses' annual salaries paid by one year of direct renewable subsidy",
+   "source_name": "NHS Employers, Agenda for Change pay scales 2026/27",
+   "source_url": "https://www.nhsemployers.org/articles/pay-scales-202627"
+  },
+  {
+   "slug": "homes",
+   "figure": "567,000",
+   "sentence": "The \u00a3220bn+ full cost of supporting renewables would have built 567,000 social homes \u2014 land included \u2014 in today\u2019s money.",
+   "display_html": "The \u00a3220bn+ full cost would have built <span class=\"money num\">567,000</span> <a class=\"eq-src\" href=\"https://england.shelter.org.uk/professional_resources/policy_and_research/policy_library/economic_impact_social_housing\" title=\"Cebr for Shelter and the National Housing Federation, &quot;The economic impact of building social housing&quot; (2024)\">social homes</a>, land included \u2014 in today\u2019s money",
+   "label": "social homes (land included) the \u00a3220bn+ full renewables cost would have built, in today's money",
+   "source_name": "Cebr for Shelter and the National Housing Federation, \"The economic impact of building social housing\" (2024)",
+   "source_url": "https://england.shelter.org.uk/professional_resources/policy_and_research/policy_library/economic_impact_social_housing"
+  },
+  {
+   "slug": "hinkley",
+   "figure": "4",
+   "sentence": "The \u00a3220bn+ full cost of supporting renewables would have built 4 Hinkley Point C-scale nuclear stations, in today\u2019s money.",
+   "display_html": "\u2014 or <span class=\"money num\">4</span> <a class=\"eq-src\" href=\"https://www.newcivilengineer.com/latest/hinkley-point-cs-cost-climbs-to-35bn-with-confirmation-unit-1-will-power-up-in-2030-20-02-2026/\" title=\"New Civil Engineer, reporting EDF&#x27;s 2025 annual results (20 February 2026)\">Hinkley Point C</a>-scale nuclear stations",
+   "label": "Hinkley Point C-scale nuclear stations the \u00a3220bn+ full renewables cost would have built, in today's money",
+   "source_name": "New Civil Engineer, reporting EDF's 2025 annual results (20 February 2026)",
+   "source_url": "https://www.newcivilengineer.com/latest/hinkley-point-cs-cost-climbs-to-35bn-with-confirmation-unit-1-will-power-up-in-2030-20-02-2026/"
+  },
+  {
+   "slug": "per-mwh",
+   "figure": "\u00a344.61",
+   "sentence": "Direct renewable subsidy adds \u00a344.61 to every MWh of electricity delivered in the UK.",
+   "display_html": "That is <span class=\"money num\">\u00a344.61</span> on every <a class=\"eq-src\" href=\"https://www.gov.uk/government/statistics/electricity-section-5-energy-trends\" title=\"DESNZ Energy Trends, March 2026 statistical release (2025 annual data, section 5 / table 5.2)\">MWh of electricity delivered</a>",
+   "label": "added to every MWh of electricity delivered in the UK by direct renewable subsidy",
+   "source_name": "DESNZ Energy Trends, March 2026 statistical release (2025 annual data, section 5 / table 5.2)",
+   "source_url": "https://www.gov.uk/government/statistics/electricity-section-5-energy-trends"
+  },
+  {
+   "slug": "per-person",
+   "figure": "\u00a3178.86",
+   "sentence": "Direct renewable subsidy costs every UK person \u00a3178.86 a year.",
+   "display_html": "Per person, it is <span class=\"money num\">\u00a3178.86</span> a year <a class=\"eq-src\" href=\"https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2023\" title=\"ONS, Population estimates for the UK, mid-2023 (October 2024)\">(UK population)</a>",
+   "label": "per person per year \u2014 the direct cost of renewable subsidy to every UK resident",
+   "source_name": "ONS, Population estimates for the UK, mid-2023 (October 2024)",
+   "source_url": "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2023"
+  }
+ ]
 }
