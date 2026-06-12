@@ -668,7 +668,7 @@
     // fetch the daily card so the OS share sheet carries the picture
     // (the Instagram/iMessage path); fall back to text+url on any failure.
     fetch('share/total.png')
-      .then(function (r) { return r.blob(); })
+      .then(function (r) { if (!r.ok) throw new Error('' + r.status); return r.blob(); })
       .then(function (b) {
         var payload = { text: shareText(), url: SHARE_STUB,
                         files: [new File([b], 'subsidy-clock.png', { type: 'image/png' })] };
