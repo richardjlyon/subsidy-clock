@@ -178,7 +178,7 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
         combined = r["cumulative_gbp"] + indirect["cumulative_gbp"]
         facts.append({"slug": "the-bill", "figure": fmt_full(combined),
                       "label": "the cumulative cost of direct and estimated indirect "
-                               f"support for renewables since {r['since_year']}",
+                               f"subsidy to renewables since {r['since_year']}",
                       "anchor": "cost-per-year", "stub": True, "chart": True})
 
     # Factoid figures are pre-composed by sitedata.py (floored divisions,

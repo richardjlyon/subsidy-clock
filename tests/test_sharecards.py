@@ -138,7 +138,7 @@ def test_load_facts_includes_factoids(data_dir, tmp_path):
     (data_dir / "meta.json").write_text(json.dumps({
         "factoids": [
             {"slug": "hinkley", "figure": "4",
-             "sentence": "The £220bn+ full cost of supporting renewables would have built 4 Hinkley Point C-scale nuclear stations, in today's money.",
+             "sentence": "The £220bn+ full cost of subsidising renewables would have built 4 Hinkley Point C-scale nuclear stations, in today's money.",
              "display_html": "...",
              "label": "Hinkley Point C-scale nuclear stations the £220bn+ full renewables cost would have built, in today's money",
              "source_name": "EDF", "source_url": "https://edf"},

@@ -102,7 +102,7 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
             fig = f"{int(_floor_to(combined_floor / home['value'], 1000)):,}"
             out.append({
                 "slug": "homes", "figure": fig,
-                "sentence": (f"The {full} full cost of supporting renewables would have built "
+                "sentence": (f"The {full} full cost of subsidising renewables would have built "
                              f"{fig} social homes — land included — in today’s money."),
                 "display_html": (f'The {full} full cost would have built '
                                  f'<span class="money num">{fig}</span> {src(home, "social homes")}, '
@@ -119,7 +119,7 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
             n = int(combined_floor // unit)
             out.append({
                 "slug": "hinkley", "figure": str(n),
-                "sentence": (f"The {full} full cost of supporting renewables would have built "
+                "sentence": (f"The {full} full cost of subsidising renewables would have built "
                              f"{n} Hinkley Point C-scale nuclear stations, in today’s money."),
                 "display_html": (f'— or <span class="money num">{n}</span> '
                                  f'{src(hpc, "Hinkley Point C")}-scale nuclear stations'),
