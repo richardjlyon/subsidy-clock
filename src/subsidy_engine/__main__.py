@@ -148,7 +148,11 @@ def cmd_build_cards(args: argparse.Namespace) -> int:
 
     site = args.root / "site"
     facts, asof, datestr = sharecards.load_facts(site / "data")
-    sharecards.render(facts, asof, site / "share")
+    sharecards.render([f for f in facts if not f.get("chart")], asof, site / "share")
+    timeseries = json.loads((site / "data" / "timeseries.json").read_text())
+    for fact in facts:
+        if fact.get("chart"):
+            sharecards.render_chart_card(timeseries, fact, asof, site / "share")
     sharecards.write_stubs(facts, site / "s", asof, datestr)
     n_stubs = sum(1 for f in facts if f.get("stub"))
     print(f"[ok] {len(facts)} share cards and {n_stubs} share stubs written (as of {asof})")

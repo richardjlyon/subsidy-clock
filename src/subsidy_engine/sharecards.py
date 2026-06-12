@@ -15,6 +15,16 @@ from pathlib import Path
 TEMPLATES = Path(__file__).parent / "templates"
 SITE_URL = "https://subsidyclock.co.uk"
 
+# Hex values mirror the --c-* variables in site/style.css and the stack
+# order mirrors STACK_ORDER in site/app.js renderChart - keep all three
+# in step (CSS vars are not available inside the card template).
+CHART_STACK = [
+    ("ro", "#6f2014"), ("fit", "#99412c"), ("cfd_renewable", "#bb6647"),
+    ("cfd_low_carbon", "#d48f6b"), ("constraints", "#e7b896"),
+    ("capacity_market", "#5f8098"), ("ccl", "#2e4a5e"), ("ets", "#46677e"),
+    ("tnuos", "#84a3b8"), ("bsuos", "#b3c8d8"),
+]
+
 # explainer slug + display name per scheme id (mirrors SCHEME_META in site/app.js)
 EXPLAINERS = {
     "ro":              ("renewables-obligation",    "Renewables Obligation"),
@@ -28,6 +38,62 @@ EXPLAINERS = {
     "tnuos":           ("tnuos",                    "Grid upgrades for renewables (TNUoS)"),
     # constraints explainer reuses the switch-off dashboard card
 }
+
+
+def cumulative_svg(timeseries: dict, width: int = 1072, height: int = 400) -> str:
+    """Stacked cumulative bars (the dashboard chart's default view) as a
+    static SVG for the chart share card - a deliberate small
+    re-implementation of renderChart's cumulative view in site/app.js."""
+    schemes = timeseries["schemes"]
+    member = [(sid, col) for sid, col in CHART_STACK if sid in schemes]
+    years = sorted({a["year"] for sid, _ in member for a in schemes[sid]["annual"]})
+    cum: dict[str, dict[int, float]] = {}
+    for sid, _ in member:
+        by_year = {a["year"]: a["cost_gbp"] for a in schemes[sid]["annual"]}
+        run, series = 0.0, {}
+        for y in years:
+            run += by_year.get(y, 0.0)
+            series[y] = run
+        cum[sid] = series
+    max_stack = max(
+        sum(max(cum[sid][y], 0.0) for sid, _ in member) for y in years)
+    ml, mr, mt, mb = 70, 6, 8, 34
+    plot_w, plot_h = width - ml - mr, height - mt - mb
+    band = plot_w / len(years)
+    bar = band * 0.74
+
+    def ypos(v: float) -> float:
+        return mt + plot_h * (1 - v / max_stack)
+
+    step = 50e9 if max_stack > 120e9 else 20e9
+    parts = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}">']
+    g = step
+    while g <= max_stack:
+        gy = ypos(g)
+        parts.append(f'<line x1="{ml}" y1="{gy:.1f}" x2="{width - mr}" y2="{gy:.1f}" '
+                     'stroke="#e4dfd2" stroke-width="1"/>')
+        parts.append(f'<text x="{ml - 8}" y="{gy + 5:.1f}" text-anchor="end" '
+                     f'font-size="17" fill="#6e6a5f">£{int(g / 1e9)}bn</text>')
+        g += step
+    for i, y in enumerate(years):
+        x = ml + band * i + (band - bar) / 2
+        acc = 0.0
+        for sid, col in member:
+            v = cum[sid][y]
+            if v <= 0:
+                continue
+            y0 = ypos(acc + v)
+            h = ypos(acc) - y0
+            acc += v
+            if h < 0.1:
+                continue
+            parts.append(f'<rect x="{x:.1f}" y="{y0:.1f}" width="{bar:.1f}" '
+                         f'height="{h:.1f}" fill="{col}"/>')
+        if y % 4 == 2 or y == years[-1]:
+            parts.append(f'<text x="{ml + band * i + band / 2:.1f}" y="{height - 8}" '
+                         f'text-anchor="middle" font-size="17" fill="#6e6a5f">{y}</text>')
+    parts.append("</svg>")
+    return "".join(parts)
 
 
 def fmt_full(v: float) -> str:
@@ -101,6 +167,14 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
         facts.append({"slug": slug, "figure": fmt_full(s["cumulative_gbp"]),
                       "label": f"{name} — cumulative cost{since}{estimated}",
                       "anchor": None, "stub": False})
+    indirect = totals.get("indirect")
+    if indirect:
+        combined = r["cumulative_gbp"] + indirect["cumulative_gbp"]
+        facts.append({"slug": "the-bill", "figure": fmt_full(combined),
+                      "label": "the cumulative cost of direct and estimated indirect "
+                               f"support for renewables since {r['since_year']}",
+                      "anchor": "cost-per-year", "stub": True, "chart": True})
+
     # Factoid figures are pre-composed by sitedata.py (floored divisions,
     # deflation) and published in meta.json - reading them here keeps card,
     # stub and dashboard wording identical without re-running the maths.
@@ -182,6 +256,9 @@ def render(facts: list[dict], asof: str, out_dir: Path | str) -> None:
             browser = p.chromium.launch()
             page = browser.new_page(viewport={"width": 1200, "height": 630})
             for fact in facts:
+                # chart cards are rendered by render_chart_card
+                if fact.get("chart"):
+                    continue
                 src = tmp / f"{fact['slug']}.html"
                 src.write_text(compose(template, fact, asof))
                 page.goto(src.as_uri(), wait_until="networkidle")
@@ -198,3 +275,33 @@ def compose(template: str, fact: dict, asof: str) -> str:
     if "{{" in html:
         raise ValueError("unfilled template token in share card HTML")
     return html
+
+
+def render_chart_card(timeseries: dict, fact: dict, asof: str, out_dir: Path | str) -> None:
+    """Screenshot the cumulative-bars chart card (the dashboard's default view)."""
+    import shutil
+    import tempfile
+
+    from playwright.sync_api import sync_playwright
+
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    template = (TEMPLATES / "sharecard-chart.html").read_text()
+    html = (template
+            .replace("{{TITLE}}", "The bill since 2002")
+            .replace("{{SVG}}", cumulative_svg(timeseries))
+            .replace("{{ASOF}}", asof))
+    if "{{" in html:
+        raise ValueError("unfilled template token in chart card HTML")
+    with tempfile.TemporaryDirectory() as td:
+        tmp = Path(td)
+        shutil.copytree(TEMPLATES / "fonts", tmp / "fonts")
+        src = tmp / f"{fact['slug']}.html"
+        src.write_text(html)
+        with sync_playwright() as p:
+            browser = p.chromium.launch()
+            page = browser.new_page(viewport={"width": 1200, "height": 630})
+            page.goto(src.as_uri(), wait_until="networkidle")
+            page.evaluate("() => document.fonts.ready")
+            page.screenshot(path=str(out / f"{fact['slug']}.png"))
+            browser.close()

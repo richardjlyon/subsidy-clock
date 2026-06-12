@@ -109,7 +109,7 @@ def test_write_stubs(data_dir, tmp_path):
     sharecards.write_stubs(facts, out, asof, datestr)
     # one stub per stub-flagged fact, none for explainer/site cards
     assert sorted(p.name for p in out.glob("*.html")) == [
-        "household.html", "run-rate.html", "switch-off.html", "total.html"]
+        "household.html", "run-rate.html", "switch-off.html", "the-bill.html", "total.html"]
     html = (out / "switch-off.html").read_text()
     # per-fact OG tags with a dated image URL (defeats platform preview caching)
     assert 'property="og:image" content="https://subsidyclock.co.uk/share/switch-off.png?d=2026-06-11"' in html
@@ -154,6 +154,28 @@ def test_load_facts_includes_factoids(data_dir, tmp_path):
     out = tmp_path / "s"
     sharecards.write_stubs(facts, out, asof, datestr)
     assert (out / "hinkley.html").is_file()
+
+
+def test_cumulative_svg_stacks_and_is_monotonic():
+    timeseries = {"schemes": {
+        "ro": {"annual": [{"year": 2002, "cost_gbp": 1.0e9}, {"year": 2003, "cost_gbp": 2.0e9}]},
+        "bsuos": {"annual": [{"year": 2003, "cost_gbp": 0.5e9}]},
+    }}
+    svg = sharecards.cumulative_svg(timeseries)
+    assert svg.startswith("<svg")
+    # 2002: one segment (ro=1bn); 2003: ro=3bn cumulative + bsuos=0.5bn
+    assert svg.count("<rect") == 3
+    assert "#6f2014" in svg     # ro colour
+    assert "#b3c8d8" in svg     # bsuos colour
+
+
+def test_load_facts_includes_the_bill_chart_fact(data_dir):
+    facts, asof, datestr = sharecards.load_facts(data_dir)
+    bill = next(f for f in facts if f["slug"] == "the-bill")
+    assert bill["stub"] is True
+    assert bill["anchor"] == "cost-per-year"
+    assert bill["chart"] is True
+    assert bill["figure"].startswith("£")
 
 
 def test_render_produces_1200x630_pngs(data_dir, tmp_path):
