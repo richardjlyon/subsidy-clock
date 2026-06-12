@@ -119,20 +119,29 @@ def test_write_csvs(tmp_path):
     cfd = (tmp_path / "cfd.csv").read_text().splitlines()
     assert cfd[0] == "# The Subsidy Clock — subsidyclock.co.uk"
     assert cfd[1] == ('# Licence: CC BY 4.0 (credit "The Subsidy Clock — '
-                      'subsidyclock.co.uk") — generated 2026-06-11')
-    assert cfd[2] == "year,cost_gbp,cost_gbp_2024"
+                      'subsidyclock.co.uk") — generated 2026-06-11 05:45 UTC')
+    # third line: measured vs estimated must travel with the file
+    assert cfd[2] == ("# Measured payments — derivation: "
+                      "subsidyclock.co.uk/explainers/contracts-for-difference")
+    assert cfd[3] == "year,cost_gbp,cost_gbp_2024"
     # money columns print at fixed 2 dp - real pennies kept, float noise cut
-    assert cfd[3] == "2025,3000000000.00,2900000000.00"
-    assert (tmp_path / "bsuos.csv").is_file()
+    assert cfd[4] == "2025,3000000000.00,2900000000.00"
+    bsuos = (tmp_path / "bsuos.csv").read_text().splitlines()
+    assert bsuos[2] == ("# Estimated share attributed to renewables — method: "
+                        "subsidyclock.co.uk/methodology#attr-bsuos")
     # combined annual: one row per year, one column per scheme
     combined = (tmp_path / "combined-annual.csv").read_text().splitlines()
     assert combined[0].startswith("# The Subsidy Clock")
-    assert combined[2] == "year,cfd_renewable_gbp,bsuos_gbp"
-    assert combined[3] == "2025,3000000000.00,3000000000.00"
+    assert combined[2] == ("# Mixes measured and estimated series — see "
+                           "subsidyclock.co.uk/methodology#indirect")
+    assert combined[3] == "year,cfd_renewable_gbp,bsuos_gbp"
+    assert combined[4] == "2025,3000000000.00,3000000000.00"
     # restatements published alongside, same header
     rst = (tmp_path / "restatements.csv").read_text().splitlines()
-    assert rst[2] == "scheme,table,detected_at,partition,previous_version,new_version"
-    assert rst[3].startswith("bsuos,daily,")
+    assert rst[2] == ("# Source revisions log — every restatement the engine "
+                      "has recorded: subsidyclock.co.uk/data")
+    assert rst[3] == "scheme,table,detected_at,partition,previous_version,new_version"
+    assert rst[4].startswith("bsuos,daily,")
 
 
 def test_write_csvs_pennies_match_store(tmp_path):
@@ -152,8 +161,9 @@ def test_write_csvs_no_restatements_writes_header_only(tmp_path):
     rst = (tmp_path / "restatements.csv").read_text().splitlines()
     assert rst[0] == "# The Subsidy Clock — subsidyclock.co.uk"
     assert rst[1].startswith("# Licence: CC BY 4.0")
-    assert rst[2] == "scheme,table,detected_at,partition,previous_version,new_version"
-    assert len(rst) == 3
+    assert rst[2].startswith("# Source revisions log")
+    assert rst[3] == "scheme,table,detected_at,partition,previous_version,new_version"
+    assert len(rst) == 4
 
 
 def test_write_widget_stamps_figure_and_rate(tmp_path):

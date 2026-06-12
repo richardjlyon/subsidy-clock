@@ -9,6 +9,8 @@ from pathlib import Path
 
 import polars as pl
 
+from subsidy_engine.sharecards import EXPLAINERS
+
 
 def _annual_records(annual: pl.DataFrame) -> list[dict]:
     cols = [pl.col("year").cast(pl.Int64), pl.col("cost_gbp").cast(pl.Float64)]
@@ -132,13 +134,34 @@ RESTATEMENT_COLS = ["scheme", "table", "detected_at", "partition",
                     "previous_version", "new_version"]
 
 
+# indirect schemes with their own attribution-rule anchor on /methodology;
+# the rest fall back to the #indirect section. Anchors are public contracts.
+ATTR_ANCHORS = {"bsuos", "ccl", "ets", "tnuos"}
+
+
 def _attribution(generated: str) -> str:
-    """Two comment lines at the top of every published CSV (share-UX rework).
-    Dated from the same generated_at stamp as the JSON. Documented on the
-    /data page: skip with pandas comment='#' or R comment.char='#'."""
+    """First two of the three comment lines at the top of every published CSV.
+    Stamped (to the minute, UTC) from the same generated_at as the JSON.
+    Documented on the /data page: skip with pandas comment='#' or R
+    comment.char='#'."""
     return ("# The Subsidy Clock — subsidyclock.co.uk\n"
             '# Licence: CC BY 4.0 (credit "The Subsidy Clock — '
-            f'subsidyclock.co.uk") — generated {generated[:10]}\n')
+            f'subsidyclock.co.uk") — generated {generated[:10]} '
+            f'{generated[11:16]} UTC\n')
+
+
+def _series_note(scheme) -> str:
+    """Third comment line: what kind of number this is, and where its
+    derivation lives. Measured-vs-estimated must travel with the file."""
+    if scheme.layer == "indirect":
+        anchor = (f"attr-{scheme.scheme_id}"
+                  if scheme.scheme_id in ATTR_ANCHORS else "indirect")
+        return ("# Estimated share attributed to renewables — method: "
+                f"subsidyclock.co.uk/methodology#{anchor}\n")
+    slug = EXPLAINERS.get(scheme.scheme_id,
+                          (CSV_NAMES.get(scheme.scheme_id, scheme.scheme_id),))[0]
+    return ("# Measured payments — derivation: "
+            f"subsidyclock.co.uk/explainers/{slug}\n")
 
 
 def write_csvs(model: dict, out_dir: Path | str,
@@ -146,31 +169,35 @@ def write_csvs(model: dict, out_dir: Path | str,
     """Per-scheme annual CSVs, one combined wide table, and the restatement
     log (distribution F4). Values are written from the same model that feeds
     the JSON, so CSVs can never disagree with the dashboard. Every file
-    carries an in-file attribution header."""
+    carries a three-line attribution header (source, licence, method)."""
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     header = _attribution(generated)
 
-    def write(df: pl.DataFrame, name: str) -> None:
+    def write(df: pl.DataFrame, name: str, note: str) -> None:
         # fixed 2 dp: measured pennies are kept intact, while estimated and
         # deflated values stop carrying spurious float-tail precision
-        (out / name).write_text(header + df.write_csv(float_precision=2))
+        (out / name).write_text(header + note + df.write_csv(float_precision=2))
 
     combined = None
     for s in model["schemes"]:
         name = CSV_NAMES.get(s.scheme_id, s.scheme_id)
         df = s.annual.sort("year")
-        write(df, f"{name}.csv")
+        write(df, f"{name}.csv", _series_note(s))
         col = df.select(pl.col("year"),
                         pl.col("cost_gbp").alias(f"{s.scheme_id}_gbp"))
         combined = col if combined is None else combined.join(
             col, on="year", how="full", coalesce=True)
     if combined is not None:
-        write(combined.sort("year"), "combined-annual.csv")
+        write(combined.sort("year"), "combined-annual.csv",
+              "# Mixes measured and estimated series — see "
+              "subsidyclock.co.uk/methodology#indirect\n")
 
     rows = [{k: str(r.get(k, "")) for k in RESTATEMENT_COLS} for r in restatements]
     write(pl.DataFrame(rows, schema={k: pl.String for k in RESTATEMENT_COLS}),
-          "restatements.csv")
+          "restatements.csv",
+          "# Source revisions log — every restatement the engine has "
+          "recorded: subsidyclock.co.uk/data\n")
 
 
 WIDGET_TEMPLATE = Path(__file__).parent / "templates" / "widget.html"

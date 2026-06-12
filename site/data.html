@@ -49,7 +49,8 @@
   The current year is a partial year. Amounts for indirect schemes are the estimated share
   attributed to renewables — the attribution rules are
   <a href="methodology.html#indirect">on the methodology page</a>.
-  Each file begins with two <code>#</code> comment lines recording the source and licence;
+  Each file begins with three <code>#</code> comment lines recording the source, licence,
+  build time and method;
   most tools skip them automatically (<code>pandas.read_csv(…, comment='#')</code>;
   in R, <code>read.csv(…, comment.char='#')</code>).</p>
 
@@ -103,6 +104,24 @@
     <p class="footer-links">Made by <a href="https://theenergytrap.org">Richard Lyon</a> · <a href="data.html">Data</a> · <a href="methodology.html">Methodology &amp; sources</a> · <a href="about.html">About this site</a></p>
   </div>
 </footer>
+
+<script>
+// Stamp download names with the build time (YYYY-MM-DD-HH-MM-file.csv) so a
+// saved file records when it was produced. The URLs themselves stay stable -
+// they are the citable resource; only the suggested filename is dated.
+fetch('data/meta.json')
+  .then(function (r) { return r.json(); })
+  .then(function (m) {
+    var g = m.generated_at;
+    var stamp = g.slice(0, 10) + '-' + g.slice(11, 13) + '-' + g.slice(14, 16);
+    var links = document.querySelectorAll('a[download][href^="data/"]');
+    for (var i = 0; i < links.length; i++) {
+      links[i].setAttribute('download',
+        stamp + '-' + links[i].getAttribute('href').slice(5));
+    }
+  })
+  .catch(function () {});
+</script>
 
 </body>
 </html>
