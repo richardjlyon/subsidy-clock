@@ -134,7 +134,7 @@
     if (hasCombinedReal()) {
       var leadin = document.getElementById('hero-leadin');
       leadin.innerHTML =
-        'Supporting renewables has cost Great Britain over ' +
+        'Subsidising renewables has cost Great Britain over ' +
         '<a href="methodology.html#ref-reconciliation"><strong class="money num">£' +
         (combinedRealFlooredGbp() / 1e9) + '&nbsp;billion</strong></a> in today\u2019s money. ' +
         'This much is measured to the penny:';
@@ -145,7 +145,7 @@
       '<sup class="hero-fn" title="Estimated between official updates: the counter ' +
       'advances at each scheme\u2019s most recent published run-rate.">†</sup></span>';
     document.getElementById('strip-alltime-since').textContent =
-      'since ' + sinceYear + ', direct (with estimated indirect)';
+      'since ' + sinceYear + ', direct (full cost, 2024 prices)';
     document.getElementById('strip-fullcost').textContent = hasCombinedReal()
       ? '£' + (combinedRealFlooredGbp() / 1e9) + 'bn+'
       : '—';
@@ -164,12 +164,12 @@
     alltime: document.getElementById('strip-alltime')
   };
 
-  // The all-time bracket (combined direct+indirect, nominal) is computed
-  // once: the tick stays on the measured direct figure only - no ticking
-  // estimate, ever - and at 0.1bn display precision it is stable all day.
-  var alltimeSuffix = indirectTotals
-    ? ' (' + fmtCompact(totals.perspectives.renewables.cumulative_gbp +
-                        indirectTotals.cumulative_gbp) + ')'
+  // The all-time bracket is the same combined real-2024 £10bn floor the
+  // lead-in and Full-cost chip quote - the three must match. Computed once:
+  // the tick stays on the measured direct figure only - no ticking
+  // estimate, ever.
+  var alltimeSuffix = hasCombinedReal()
+    ? ' (£' + (combinedRealFlooredGbp() / 1e9) + 'bn+)'
     : '';
 
   function tick() {
