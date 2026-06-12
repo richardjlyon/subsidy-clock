@@ -186,6 +186,12 @@
   <h2>Restatements</h2>
   <p>Source datasets are revised by their publishers. When a source revises history, the change is logged as a restatement; figures are never silently overwritten.</p>
 
+  <h2 id="corrections">Corrections</h2>
+  <p>This site reconstructs official data, and reconstruction can contain errors. If you
+  find one, I want to know. Confirmed errors are corrected and logged on the
+  <a href="corrections.html">corrections page</a>, with credit to the finder if they
+  wish. <a id="report-link" href="corrections.html">Report an error</a>.</p>
+
   <h2 id="citing">Citing this site</h2>
   <p>Every dashboard card has a stable anchor (e.g. <code>subsidyclock.co.uk/#switch-off</code>)
   and a Cite option in its share menu with these formats filled in. To cite the site as a
@@ -202,6 +208,7 @@
   <p class="caveat">Figures computed <span id="generated-at" class="num"></span>. Questions about the data should start with the source links above.</p>
 </main>
 
+<script src="share.js"></script>
 <script>
 'use strict';
 (async function () {
@@ -469,6 +476,16 @@
     document.querySelector('.cite-bibtex').textContent =
       '@misc{subsidyclock' + y + ',\n  title = {The Subsidy Clock},\n  author = {{The Subsidy Clock}},\n  year = {' + y + '},\n  howpublished = {\\url{' + url + '}},\n  note = {Data from LCCC/Ofgem/Elexon/NESO; retrieved ' + accessed + '}\n}';
   })();
+</script>
+<script>
+(function () {
+  var a = document.getElementById('report-link');
+  a.href = SCShare.reportMailto({});
+  fetch('data/meta.json')
+    .then(function (r) { return r.json(); })
+    .then(function (m) { a.href = SCShare.reportMailto({ version: m.generated_at }); })
+    .catch(function () {});
+})();
 </script>
 </body>
 </html>

@@ -76,6 +76,10 @@
   <a href="data/timeseries.json">timeseries</a>, <a href="data/breakdown.json">breakdown</a>,
   <a href="data/meta.json">meta</a>) is published at the same stable URLs.</p>
 
+  <p>Spot an error in any of these figures?
+  <a id="report-link" href="corrections.html">Report it</a> — confirmed errors are
+  corrected and logged on the <a href="corrections.html">corrections page</a>.</p>
+
   <h2>Licence</h2>
 
   <p>This dataset is published under
@@ -105,6 +109,7 @@
   </div>
 </footer>
 
+<script src="share.js"></script>
 <script>
 // Stamp download names with the build time (YYYY-MM-DD-HH-MM-file.csv) so a
 // saved file records when it was produced. The URLs themselves stay stable -
@@ -121,6 +126,16 @@ fetch('data/meta.json')
     }
   })
   .catch(function () {});
+</script>
+<script>
+(function () {
+  var a = document.getElementById('report-link');
+  a.href = SCShare.reportMailto({});
+  fetch('data/meta.json')
+    .then(function (r) { return r.json(); })
+    .then(function (m) { a.href = SCShare.reportMailto({ version: m.generated_at }); })
+    .catch(function () {});
+})();
 </script>
 
 </body>
