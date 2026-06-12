@@ -9,7 +9,7 @@ period: "2002 to FY 2023/24"
 # <=FY2023/24 leaves ~3 months of theirs uncovered by ours - the mismatch
 # runs in the conservative direction (understates ours).
 ours_through_year: 2023
-total_nominal_gbp: 185000000000
+total_nominal_gbp: 185000000000  # REF's published headline; component rows sum to 185.1 - REF's own rounding
 total_real_2024_gbp: 223000000000
 verified: true
 components:        # cumulative nominal GBP, exactly as published
@@ -31,3 +31,4 @@ notes:
   bsuos: REF does not net off direct constraint payments; we do, to avoid double-counting against our constraints line.
   ets: REF counts total ETS receipts (OBR series, all sectors); we count only the power-sector share of auctioned allowance revenue.
   fit: Ours runs on calendar years from Ofgem annual reports; REF's on fiscal years.
+  real_terms: "REF's £223bn 2024-price total uses REF's own deflation; the Clock's real column is CPIH-deflated (see methodology #real-terms). The bases are close but not identical."

@@ -95,7 +95,7 @@ def test_ref_reconciliation_components_and_gap():
     ref = {
         "source": "REF study", "source_url": "https://ref",
         "period": "2002 to FY 2023/24", "ours_through_year": 2023,
-        "total_nominal_gbp": 185.0e9, "total_real_2024_gbp": 223.0e9,
+        "total_nominal_gbp": 87.7e9, "total_real_2024_gbp": 223.0e9,
         "components": {"ro": 67.0e9, "ets": 19.0e9, "rego": 1.7e9},
         "stricter": ["ets", "rego"],
         "notes": {"ets": "power-sector share only", "rego": "not counted"},
@@ -111,9 +111,25 @@ def test_ref_reconciliation_components_and_gap():
 
     assert out["ours_total_gbp"] == 76.6e9
     assert out["ref_total_gbp"] == 87.7e9
+    assert out["ref_total_published_gbp"] == 87.7e9
     assert out["gap_gbp"] == 11.1e9
     # the stricter components account for (19.0-9.7) + (1.7-0) = 11.0bn
     assert out["stricter_gap_gbp"] == 11.0e9
     assert out["ours_real_2024_gbp"] == 200.0e9
     assert out["ref_real_2024_gbp"] == 223.0e9
     assert out["ours_through_year"] == 2023
+
+
+def test_ref_reconciliation_raises_when_components_disagree_with_headline():
+    ref = {
+        "source": "REF study", "source_url": "https://ref",
+        "period": "2002 to FY 2023/24", "ours_through_year": 2023,
+        "total_nominal_gbp": 200.0e9,   # far from component sum of 87.7e9
+        "total_real_2024_gbp": 223.0e9,
+        "components": {"ro": 67.0e9, "ets": 19.0e9, "rego": 1.7e9},
+        "stricter": [],
+        "notes": {},
+    }
+    import pytest
+    with pytest.raises(ValueError, match="re-read the source tables"):
+        reconcile.ref_reconciliation({}, 200.0e9, ref)

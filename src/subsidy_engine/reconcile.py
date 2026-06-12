@@ -127,7 +127,12 @@ def ref_reconciliation(ours: dict[str, float], ours_real_total: float, ref: dict
     deliberately do not (e.g. REGO) are simply absent and compare as zero.
     The 'stricter' list marks components where the divergence is our
     deliberate attribution choice - their summed gap is the headline of the
-    methodology table."""
+    methodology table.
+
+    ref_total_gbp is the sum of REF's published component rows (the
+    like-for-like table denominator); ref_total_published_gbp is REF's own
+    rounded headline — the two may differ by REF's rounding.
+    """
     components = []
     stricter_gap = 0.0
     for name, ref_v in ref["components"].items():
@@ -146,13 +151,20 @@ def ref_reconciliation(ours: dict[str, float], ours_real_total: float, ref: dict
         })
     ours_total = sum(float(v) for v in ours.values())
     ref_total = sum(float(v) for v in ref["components"].values())
+    # Sanity check: component rows are published at £0.1bn precision; with ten
+    # rows, allow up to £0.5bn cumulative rounding vs REF's own headline.
+    if abs(ref_total - float(ref["total_nominal_gbp"])) > 5e8:
+        raise ValueError(
+            f"REF component rows sum to {ref_total:,.0f} but the published "
+            f"headline is {ref['total_nominal_gbp']:,.0f} - re-read the source tables")
     return {
         "comparison_period": ref["period"],
         "ours_through_year": ref["ours_through_year"],
         "ref_source": ref["source"],
         "ref_source_url": ref["source_url"],
         "ours_total_gbp": round(ours_total, 2),
-        "ref_total_gbp": round(ref_total, 2),
+        "ref_total_gbp": round(ref_total, 2),          # component-row sum
+        "ref_total_published_gbp": float(ref["total_nominal_gbp"]),  # REF's own headline
         "gap_gbp": round(ref_total - ours_total, 2),
         "stricter_gap_gbp": round(stricter_gap, 2),
         "ours_real_2024_gbp": round(ours_real_total, 2),
