@@ -101,6 +101,12 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
         facts.append({"slug": slug, "figure": fmt_full(s["cumulative_gbp"]),
                       "label": f"{name} — cumulative cost{since}{estimated}",
                       "anchor": None, "stub": False})
+    meta_path = data / "meta.json"
+    if meta_path.is_file():
+        meta = json.loads(meta_path.read_text())
+        for f in meta.get("factoids", []):
+            facts.append({"slug": f["slug"], "figure": f["figure"],
+                          "label": f["label"], "anchor": None, "stub": True})
     return facts, asof, datestr
 
 

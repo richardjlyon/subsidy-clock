@@ -134,6 +134,28 @@ def _png_size(path):
     return struct.unpack(">II", data[16:24])
 
 
+def test_load_facts_includes_factoids(tmp_path):
+    (tmp_path / "totals.json").write_text(json.dumps(TOTALS))
+    (tmp_path / "breakdown.json").write_text(json.dumps(BREAKDOWN))
+    (tmp_path / "timeseries.json").write_text(json.dumps(TIMESERIES))
+    (tmp_path / "meta.json").write_text(json.dumps({
+        "factoids": [
+            {"slug": "hinkley", "figure": "4",
+             "sentence": "The £220bn+ full cost of supporting renewables would have built 4 Hinkley Point C-scale nuclear stations, in today's money.",
+             "display_html": "...",
+             "label": "Hinkley Point C-scale nuclear stations the £220bn+ full renewables cost would have built, in today's money",
+             "source_name": "EDF", "source_url": "https://edf"},
+        ],
+    }))
+    facts, asof, datestr = sharecards.load_facts(tmp_path)
+    by_slug = {f["slug"]: f for f in facts}
+    h = by_slug["hinkley"]
+    assert h["figure"] == "4"
+    assert h["stub"] is True
+    assert h["anchor"] is None
+    assert h["label"].startswith("Hinkley Point C-scale")
+
+
 def test_render_produces_1200x630_pngs(data_dir, tmp_path):
     pytest.importorskip("playwright.sync_api")
     facts, asof, _ = sharecards.load_facts(data_dir)
