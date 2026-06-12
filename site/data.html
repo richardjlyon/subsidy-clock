@@ -48,7 +48,10 @@
   paid), <code>cost_gbp_2024</code> (the same series in 2024 prices, HMT GDP deflator).
   The current year is a partial year. Amounts for indirect schemes are the estimated share
   attributed to renewables — the attribution rules are
-  <a href="methodology.html#indirect">on the methodology page</a>.</p>
+  <a href="methodology.html#indirect">on the methodology page</a>.
+  Each file begins with two <code>#</code> comment lines recording the source and licence;
+  most tools skip them automatically (<code>pandas.read_csv(…, comment='#')</code>;
+  in R, <code>read.csv(…, comment.char='#')</code>).</p>
 
   <table class="data-table">
     <thead><tr><th>File</th><th>Series</th><th>Source body</th><th>Layer</th></tr></thead>
