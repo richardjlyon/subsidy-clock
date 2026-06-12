@@ -1,6 +1,8 @@
 import json
 from datetime import date
 
+import pytest
+
 import polars as pl
 
 from subsidy_engine import sitedata
@@ -279,3 +281,52 @@ def test_write_widget_stamps_figure_and_rate(tmp_path):
     assert '"cum": 108634210556.78' in html
     assert "{{" not in html                     # no unfilled tokens
     assert "subsidyclock.co.uk" in html         # locked attribution
+
+
+# ---- corrections log (corrections C4) ----
+
+CORR_VALID = ('{"date": "2026-07-01", "figure": "switch-off", '
+              '"figure_label": "Paid to switch off", "was": "£1.62bn", '
+              '"now": "£1.59bn", "cause": "Double-counted two settlement days", '
+              '"credit": "J. Smith"}')
+
+
+def _corr_file(tmp_path, lines):
+    p = tmp_path / "corrections.jsonl"
+    p.write_text("\n".join(lines) + ("\n" if lines else ""))
+    return p
+
+
+def test_load_corrections_missing_file_is_empty(tmp_path):
+    assert sitedata.load_corrections(tmp_path / "corrections.jsonl") == []
+
+
+def test_load_corrections_valid_entry(tmp_path):
+    entries = sitedata.load_corrections(_corr_file(tmp_path, [CORR_VALID]))
+    assert len(entries) == 1
+    assert entries[0]["figure"] == "switch-off"
+    assert entries[0]["now"] == "£1.59bn"
+    assert entries[0]["credit"] == "J. Smith"
+
+
+def test_load_corrections_credit_optional(tmp_path):
+    line = CORR_VALID.replace(', "credit": "J. Smith"', '')
+    entries = sitedata.load_corrections(_corr_file(tmp_path, [line]))
+    assert entries[0]["credit"] == ""
+
+
+def test_load_corrections_missing_field_raises(tmp_path):
+    line = CORR_VALID.replace('"cause": "Double-counted two settlement days", ', '')
+    with pytest.raises(ValueError, match="cause"):
+        sitedata.load_corrections(_corr_file(tmp_path, [line]))
+
+
+def test_load_corrections_bad_json_raises(tmp_path):
+    with pytest.raises(ValueError, match="line 1"):
+        sitedata.load_corrections(_corr_file(tmp_path, ["{not json"]))
+
+
+def test_load_corrections_sorted_oldest_first(tmp_path):
+    older = CORR_VALID.replace("2026-07-01", "2026-05-01")
+    entries = sitedata.load_corrections(_corr_file(tmp_path, [CORR_VALID, older]))
+    assert [e["date"] for e in entries] == ["2026-05-01", "2026-07-01"]

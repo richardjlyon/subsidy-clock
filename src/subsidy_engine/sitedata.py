@@ -247,6 +247,34 @@ CSV_NAMES = {
 RESTATEMENT_COLS = ["scheme", "table", "detected_at", "partition",
                     "previous_version", "new_version"]
 
+CORRECTION_FIELDS = ["date", "figure", "figure_label", "was", "now", "cause"]
+
+
+def load_corrections(path: Path | str) -> list[dict]:
+    """Append-only log of confirmed errors in our own published figures
+    (corrections C4) — the restatement-log honesty pattern applied to our own
+    mistakes. A missing file means no corrections; a malformed entry fails the
+    build loudly — never publish a half-readable log."""
+    p = Path(path)
+    if not p.is_file():
+        return []
+    entries = []
+    for i, line in enumerate(p.read_text().splitlines(), start=1):
+        if not line.strip():
+            continue
+        try:
+            rec = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"corrections.jsonl line {i}: invalid JSON") from exc
+        missing = [k for k in CORRECTION_FIELDS if not rec.get(k)]
+        if missing:
+            raise ValueError(f"corrections.jsonl line {i}: missing {missing}")
+        out = {k: rec[k] for k in CORRECTION_FIELDS}
+        out["credit"] = rec.get("credit") or ""
+        entries.append(out)
+    entries.sort(key=lambda r: r["date"])
+    return entries
+
 
 # indirect schemes with their own attribution-rule anchor on /methodology;
 # the rest fall back to the #indirect section. Anchors are public contracts.
