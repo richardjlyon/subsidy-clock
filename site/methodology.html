@@ -25,10 +25,10 @@
 <header class="masthead">
   <div class="container masthead-inner">
     <div class="brand-block">
-      <p class="brand"><a href="index.html"><span class="brand-tick" aria-hidden="true"></span>The Subsidy Clock</a></p>
+      <p class="brand"><a href="/"><span class="brand-tick" aria-hidden="true"></span>The Subsidy Clock</a></p>
       <p class="brand-tag">What UK energy subsidies cost</p>
     </div>
-    <nav><a href="index.html">← Back to the clock</a><a href="data.html">Data</a><a href="about.html">About</a></nav>
+    <nav><a href="/">← Back to the clock</a><a href="/data">Data</a><a href="/about">About</a></nav>
   </div>
 </header>
 
@@ -41,6 +41,7 @@
     <a href="#indirect">Indirect subsidies</a> ·
     <a href="#ref-reconciliation">Comparison with REF</a> ·
     <a href="#prices">Nominal &amp; 2024 prices</a> ·
+    <a href="#equivalences">Equivalences</a> ·
     <a href="#freshness">Data freshness</a> ·
     <a href="#corrections">Corrections</a> ·
     <a href="#citing">Citing this site</a></p>
@@ -55,7 +56,7 @@
   <p class="scheme-meta">Source: <a href="https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid">Elexon BMRS, balancing settlement bid stacks</a> · cadence: daily · history: <a id="ref-history-link" href="https://www.ref.org.uk/constraints/index.php?tab=yr">REF published annual totals</a></p>
   <p><strong>Formula in words:</strong> for each settlement period, the accepted balancing-mechanism bids of wind units are summed: the cost is the bid volume multiplied by the bid price, and the curtailed volume is the energy the unit was instructed not to generate.</p>
   <blockquote>All accepted bids from wind BM units are counted, regardless of soFlag, consistent with REF’s published curtailment methodology. The soFlag governs imbalance-price tagging, not whether the unit is paid.</blockquote>
-  <p>History before the bottom-up settlement window comes from the Renewable Energy Foundation’s <a href="https://www.ref.org.uk/constraints/index.php?tab=yr">published annual constraint totals</a>. Bilateral trades agreed outside the balancing mechanism are <em>excluded</em>, so the constraint figures are a <strong>lower bound</strong> on what is actually paid for curtailment.</p>
+  <p>History before the bottom-up settlement window<span id="splice-date"></span> comes from the Renewable Energy Foundation’s <a href="https://www.ref.org.uk/constraints/index.php?tab=yr">published annual constraint totals</a>. Bilateral trades agreed outside the balancing mechanism are <em>excluded</em>, so the constraint figures are a <strong>lower bound</strong> on what is actually paid for curtailment.</p>
 
   <h2>Renewables Obligation (RO)</h2>
   <p class="scheme-meta" id="ro-meta"></p>
@@ -68,15 +69,15 @@
   <p class="src-quote" id="fit-source"></p>
 
   <h2 id="perspectives">Perspectives: renewables only, and all low-carbon</h2>
-  <p>The dashboard's headline counts <strong>renewable generators only</strong> — the most conservative reading. The same schemes also pay nuclear and biomass generators under the CfD: counting those, the all-low-carbon total is <span class="num" id="persp-lowcarbon"></span> against the renewables-only <span class="num" id="persp-renewables"></span> — a difference of <span class="num" id="persp-delta"></span>, almost all of it <a href="explainers/cfd-nuclear-biomass.html">CfD payments to nuclear and biomass</a>. Indirect costs (network, balancing, carbon pricing, capacity) are tracked separately and always marked estimated; they are never folded into the headline.</p>
+  <p>The dashboard's headline counts <strong>renewable generators only</strong> — the most conservative reading. The same schemes also pay nuclear and biomass generators under the CfD: counting those, the all-low-carbon total is <span class="num" id="persp-lowcarbon"></span> against the renewables-only <span class="num" id="persp-renewables"></span> — a difference of <span class="num" id="persp-delta"></span>, almost all of it <a href="/explainers/cfd-nuclear-biomass">CfD payments to nuclear and biomass</a>. Indirect costs (network, balancing, carbon pricing, capacity) are tracked separately and always marked estimated; they are never folded into the headline.</p>
 
   <h2 id="indirect">Indirect subsidies (estimated)</h2>
-  <p>Beyond the direct schemes above, renewable generation imposes costs that reach bill-payers and taxpayers through network charges, balancing costs, carbon pricing and the capacity levy. The dashboard shows these as “the indirect bill”, always marked <strong>estimated</strong>: each component’s <em>amount</em> is measured from an official source (amount confidence: high for all five), but the share <em>attributable</em> to renewables is a stated judgement. The attribution rule for each component is quoted verbatim below.</p>
+  <p>Beyond the direct schemes above, renewable generation imposes costs that reach bill-payers and taxpayers through network charges, balancing costs, carbon pricing and the capacity levy. The dashboard shows these as ‘the indirect bill’, always marked <strong>estimated</strong>: each component’s <em>amount</em> is measured from an official source (amount confidence: high for all five), but the share <em>attributable</em> to renewables is a stated judgement. The attribution rule for each component is quoted verbatim below.</p>
 
   <h3>Capacity Market</h3>
   <p class="scheme-meta" id="im-capacity_market"></p>
   <blockquote id="attr-capacity_market"></blockquote>
-  <p>Availability payments procure firm backup capacity for a system with a growing share of intermittent generation. The full levy is counted; attribution confidence is <strong>medium</strong> because some capacity would be procured in any system. This component was previously shown in the dashboard’s “All levy” total, which has been removed.</p>
+  <p>Availability payments procure firm backup capacity for a system with a growing share of intermittent generation. The full levy is counted; attribution confidence is <strong>medium</strong> because some capacity would be procured in any system. This component was previously shown in the dashboard’s ‘All levy’ total, which has been removed.</p>
 
   <h3>Climate Change Levy and Carbon Price Support</h3>
   <p class="scheme-meta" id="im-ccl"></p>
@@ -101,7 +102,7 @@
   <p>Conservative direction: as for TNUoS, only the uplift above the inflation-indexed baseline is attributed, floored at zero.</p>
 
   <h3>The double-counting guard</h3>
-  <p>Constraint payments to wind farms are counted in the <strong>direct</strong> layer (“paid to switch off”). Those same payments are recovered from bill-payers through BSUoS, so the BSUoS series is <strong>netted of direct constraint payments before attribution</strong> — the same pound is never counted twice across the direct and indirect layers.</p>
+  <p>Constraint payments to wind farms are counted in the <strong>direct</strong> layer (‘paid to switch off’). Those same payments are recovered from bill-payers through BSUoS, so the BSUoS series is <strong>netted of direct constraint payments before attribution</strong> — the same pound is never counted twice across the direct and indirect layers.</p>
 
   <h3>Indirect costs <em>not</em> counted</h3>
   <ul>
@@ -125,8 +126,9 @@
   <strong>£185&nbsp;billion nominal — £223&nbsp;billion in 2024 prices — for 2002 to
   FY&nbsp;2023/24</strong>. In 2024 prices the Clock's combined total, counted to today,
   reaches REF's figure despite deliberately stricter attributions, because it includes
-  the years since.
-  Compared like-for-like over the same period, component by component:</p>
+  the years since.</p>
+  <p id="combined-real-note"></p>
+  <p>Compared like-for-like over the same period, component by component:</p>
   <table class="data-table" id="ref-recon-table">
     <thead><tr><th>Component</th><th class="num-col">The Clock</th><th class="num-col">REF</th><th class="num-col">Divergence</th><th>Note</th></tr></thead>
     <tbody></tbody>
@@ -188,6 +190,26 @@
   </table>
   <p class="caveat" id="prices-note"></p>
 
+  <h2 id="equivalences">The equivalence figures</h2>
+  <p>The dashboard's comparison lines use deliberately conservative denominators, and every
+  count divides the quoted £220bn+ floor — not the raw total — then rounds down:</p>
+  <ul>
+    <li><strong>NHS nurses</strong> — Band 5 annual salary at the top of the band
+    (<a href="https://www.nhsemployers.org/articles/pay-scales-202627">Agenda for Change,
+    England, 2026/27</a>: £39,043). Using the top of the band lowers the count.</li>
+    <li><strong>Social homes</strong> — gross build cost including land: £393,333 per home,
+    from <a href="https://england.shelter.org.uk/professional_resources/policy_and_research/policy_library/economic_impact_social_housing">Cebr's
+    costing for Shelter and the National Housing Federation</a> (2024: £35.4bn for 90,000
+    homes). The full cost is used, not the far lower public grant per home.</li>
+    <li><strong>Hinkley Point C</strong> — EDF's <a href="https://www.newcivilengineer.com/latest/hinkley-point-cs-cost-climbs-to-35bn-with-confirmation-unit-1-will-power-up-in-2030-20-02-2026/">£35bn
+    estimate</a> is in 2015 prices; the Clock converts it to 2024 prices with the same ONS
+    CPIH series it uses everywhere (about £46.5bn) before dividing. Dividing £220bn by the
+    unadjusted £35bn would give 6 stations; the like-for-like comparison gives 4.</li>
+    <li><strong>Per MWh</strong> — divides by electricity finally consumed by end users
+    (273.8&nbsp;TWh/year), not total demand including network losses (320.2&nbsp;TWh), so
+    the figure is not inflated by losses.</li>
+  </ul>
+
   <h2 id="freshness">Data freshness</h2>
   <p class="scheme-meta" id="freshness-detail"></p>
   <p>Each scheme on the dashboard carries a badge showing its update cadence and the latest date its data covers. Every source publishes in arrears — LCCC releases daily CfD data weekly, NESO publishes daily balancing costs with a few days’ lag, and Capacity Market monthly data follows the settlement calendar — so a publication lag is normal and is not flagged. A scheme is marked <strong>stale</strong> only when its latest data is older than that scheme’s normal publication lag: 21 days for CfD, 3 days for constraints, 7 days for BSUoS, 75 days after the end of the latest data month for the Capacity Market, and 2 years for RO and FIT annual reports.</p>
@@ -198,8 +220,8 @@
   <h2 id="corrections">Corrections</h2>
   <p>This site reconstructs official data, and reconstruction can contain errors. If you
   find one, I want to know. Confirmed errors are corrected and logged on the
-  <a href="corrections.html">corrections page</a>, with credit to the finder if they
-  wish. <a id="report-link" href="corrections.html">Report an error</a>.</p>
+  <a href="/corrections">corrections page</a>, with credit to the finder if they
+  wish. <a id="report-link" href="/corrections">Report an error</a>.</p>
 
   <h2 id="citing">Citing this site</h2>
   <p>Every dashboard card has a stable anchor (e.g. <code>subsidyclock.co.uk/#switch-off</code>)
@@ -212,7 +234,7 @@
     <li><strong>BibTeX:</strong> <code class="cite-bibtex" style="white-space:pre-wrap"></code></li>
   </ul>
   <p>Anchors are a public contract: they will not be renamed. Data downloads and their
-  licence are on the <a href="data.html">data page</a>.</p>
+  licence are on the <a href="/data">data page</a>.</p>
 
   <p class="caveat">Figures computed <span id="generated-at" class="num"></span>. Questions about the data should start with the source links above.</p>
 </main>
@@ -250,6 +272,18 @@
     return '\u00a3' + (v / 1e9).toFixed(1) + 'bn';
   }
 
+  // constraints splice date - lives in the data (it retreats with the
+  // weekly backfill), quoted in the prose above the formula (audit item 10)
+  (function () {
+    var con = null;
+    bd.schemes.forEach(function (s) { if (s.id === 'constraints') con = s; });
+    if (!con || !con.bottom_up_from) return;
+    var d = new Date(con.bottom_up_from).toLocaleDateString('en-GB',
+      { day: 'numeric', month: 'long', year: 'numeric' });
+    document.getElementById('splice-date').textContent =
+      ' (the bid-by-bid reconstruction currently reaches back to ' + d + ')';
+  })();
+
   // perspectives: live renewables vs all-low-carbon totals
   (function () {
     var r = totals.perspectives.renewables, lc = totals.perspectives.low_carbon;
@@ -259,10 +293,27 @@
     document.getElementById('persp-delta').textContent = fmtBn(lc.cumulative_gbp - r.cumulative_gbp);
   })();
 
+  // the lead-in figure's parents, beside the table its link lands on (audit 7a)
+  (function () {
+    var r = totals.perspectives.renewables, ind = totals.indirect;
+    if (!r.real_2024 || !ind || !ind.real_2024) return;
+    var direct = r.real_2024.cumulative_gbp, indirect = ind.real_2024.cumulative_gbp;
+    var combined = direct + indirect;
+    var floored = Math.floor(combined / 1e10) * 1e10;
+    if (floored === combined) floored -= 1e10;
+    document.getElementById('combined-real-note').innerHTML =
+      'The dashboard lead-in’s figure decomposes as: measured direct subsidy of ' +
+      fmtBn(direct) + ' plus estimated indirect costs of ' + fmtBn(indirect) +
+      ', both in 2024 prices and counted to today — <strong>' + fmtBn(combined) +
+      '</strong> combined. The lead-in quotes this as ‘over £' + (floored / 1e9) +
+      '&nbsp;billion’: floored to the £10&nbsp;billion step strictly below it, never rounded up.';
+  })();
+
   // nominal vs 2024-price annual series (renewables perspective, direct schemes)
   (function () {
     var annual = (timeseries.perspectives.renewables || {}).annual || [];
     var totN = 0, totR = 0;
+    var ind = totals.indirect;
     document.querySelector('#prices-table tbody').innerHTML = annual.map(function (a) {
       totN += a.cost_gbp; totR += a.cost_gbp_2024;
       return '<tr><td class="num">' + a.year + '</td>' +
@@ -271,9 +322,15 @@
     }).join('') +
       '<tr><td><strong>Total</strong></td>' +
       '<td class="num-col num"><strong>' + fmtBn(totN) + '</strong></td>' +
-      '<td class="num-col num"><strong>' + fmtBn(totR) + '</strong></td></tr>';
+      '<td class="num-col num"><strong>' + fmtBn(totR) + '</strong></td></tr>' +
+      // the combined-nominal figure's one public appearance (audit 7b)
+      (ind && ind.real_2024
+        ? '<tr><td><strong>Total incl. estimated indirect</strong></td>' +
+          '<td class="num-col num"><strong>' + fmtBn(totN + ind.cumulative_gbp) + '</strong></td>' +
+          '<td class="num-col num"><strong>' + fmtBn(totR + ind.real_2024.cumulative_gbp) + '</strong></td></tr>'
+        : '');
     document.getElementById('prices-note').textContent =
-      'Renewables-only direct schemes; the final year is partial. Deflated with the HM Treasury GDP deflator (see reference inputs in the repository).';
+      'Renewables-only direct schemes; the final year is partial; the last row adds the estimated indirect layer. Deflated with ONS CPIH (series L522) — see reference inputs in the repository.';
   })();
 
   // per-scheme retrieval detail (moved here from the dashboard footer)
@@ -423,7 +480,7 @@
 
   // real-terms deflator
   document.getElementById('deflator-note').innerHTML =
-    'The dashboard’s “2024 £” toggle restates every nominal figure in ' + esc(meta.deflator.base_year) +
+    'Real-terms (2024 £) figures restate nominal pounds in ' + esc(meta.deflator.base_year) +
     ' prices using annual averages of <a href="' + esc(meta.deflator.source_url) + '">' +
     esc(meta.deflator.source) + '</a>.' +
     (meta.deflator.verified ? ' <span class="tick-ok">✓ verified against the published series</span>' : '');

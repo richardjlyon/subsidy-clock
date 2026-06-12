@@ -16,8 +16,10 @@ from subsidy_engine import ckan
 from subsidy_engine.store import SnapshotStore
 
 DATASET = "daily-balancing-costs-balancing-services-use-of-system"
+# the CKAN id above still resolves; the human-facing portal page dropped the
+# "of" (old slug 404s since NESO's 2026 portal reshuffle)
 DATASET_URL = ("https://www.neso.energy/data-portal/"
-               "daily-balancing-costs-balancing-services-use-of-system")
+               "daily-balancing-costs-balancing-services-use-system")
 
 COST_COLUMNS = ["Energy Imbalance", "Frequency Control", "Positive Reserve",
                 "Constraints", "Negative Reserve", "Other"]

@@ -404,7 +404,7 @@ var SCShare = (function () {
           '<a class="share-item" data-act="report-email" href="' + esc(reportMailto(info)) + '">Email a report</a>' +
           '<a class="share-item" data-act="report-github" target="_blank" rel="noopener" href="' +
             esc(reportIssueUrl(info)) + '">Open a GitHub issue</a>' +
-          '<a class="share-item" data-act="report-how" href="corrections.html">How corrections work</a>';
+          '<a class="share-item" data-act="report-how" href="/corrections">How corrections work</a>';
         pop.hidden = false;
         btn.setAttribute('aria-expanded', 'true');
         openPop = pop;

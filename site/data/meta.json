@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-06-12T22:02:36.176624+00:00",
+ "generated_at": "2026-06-12T23:56:44.907910+00:00",
  "freshness": {
   "cfd": {
    "retrieved_at": "2026-06-12T07:04:39.717223+00:00",
@@ -20,26 +20,26 @@
    "row_count": 744
   },
   "bsuos": {
-   "retrieved_at": "2026-06-12T07:04:59.204636+00:00",
+   "retrieved_at": "2026-06-12T23:54:05.897636+00:00",
    "source_date": "2026-2027",
-   "source_url": "https://www.neso.energy/data-portal/daily-balancing-costs-balancing-services-use-of-system",
-   "row_count": 67
+   "source_url": "https://www.neso.energy/data-portal/daily-balancing-costs-balancing-services-use-system",
+   "row_count": 71
   }
  },
  "context": {
   "households": {
-   "value": 28400000,
+   "value": 29000000,
    "description": "UK households",
-   "source": "ONS, Families and households in the UK, 2023 bulletin (May 2024)",
-   "source_url": "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/families/bulletins/familiesandhouseholds/2023",
-   "as_of": 2023
+   "source": "ONS, Families and households in the UK, 2025 bulletin",
+   "source_url": "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/families/bulletins/familiesandhouseholds/2025",
+   "as_of": 2025
   },
   "population": {
-   "value": 68300000,
+   "value": 69300000,
    "description": "UK mid-year population estimate",
-   "source": "ONS, Population estimates for the UK, mid-2023 (October 2024)",
-   "source_url": "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2023",
-   "as_of": 2023
+   "source": "ONS, Population estimates for the UK, mid-2024",
+   "source_url": "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2024",
+   "as_of": 2024
   },
   "annual_demand_twh": {
    "value": 273.8,
@@ -88,7 +88,7 @@
   {
    "slug": "nurses",
    "figure": "312,000",
-   "sentence": "A year of UK renewable subsidy pays the salaries of 312,000 NHS nurses.",
+   "sentence": "A year of direct UK renewable subsidy pays the salaries of 312,000 NHS nurses.",
    "display_html": "A year of this pays the salaries of <span class=\"money num\">312,000</span> <a class=\"eq-src\" href=\"https://www.nhsemployers.org/articles/pay-scales-202627\" title=\"NHS Employers, Agenda for Change pay scales 2026/27\">NHS nurses</a>",
    "label": "NHS nurses' annual salaries paid by one year of direct renewable subsidy",
    "source_name": "NHS Employers, Agenda for Change pay scales 2026/27",
@@ -97,7 +97,7 @@
   {
    "slug": "homes",
    "figure": "559,000",
-   "sentence": "The \u00a3220bn+ full cost of subsidising UK renewables would have built 559,000 social homes \u2014 land included \u2014 in today\u2019s money.",
+   "sentence": "The \u00a3220bn+ full cost of subsidising UK renewables, including estimated indirect costs, would have built 559,000 social homes \u2014 land included \u2014 in today\u2019s money.",
    "display_html": "The \u00a3220bn+ full cost would have built <span class=\"money num\">559,000</span> <a class=\"eq-src\" href=\"https://england.shelter.org.uk/professional_resources/policy_and_research/policy_library/economic_impact_social_housing\" title=\"Cebr for Shelter and the National Housing Federation, &quot;The economic impact of building social housing&quot; (2024)\">social homes</a>, land included \u2014 in today\u2019s money",
    "label": "social homes (land included) the \u00a3220bn+ full UK renewables cost would have built, in today's money",
    "source_name": "Cebr for Shelter and the National Housing Federation, \"The economic impact of building social housing\" (2024)",
@@ -106,7 +106,7 @@
   {
    "slug": "hinkley",
    "figure": "4",
-   "sentence": "The \u00a3220bn+ full cost of subsidising UK renewables would have built 4 Hinkley Point C-scale nuclear stations in the UK, in today\u2019s money.",
+   "sentence": "The \u00a3220bn+ full cost of subsidising UK renewables, including estimated indirect costs, would have built 4 Hinkley Point C-scale nuclear stations in the UK, in today\u2019s money.",
    "display_html": "\u2014 or <span class=\"money num\">4</span> <a class=\"eq-src\" href=\"https://www.newcivilengineer.com/latest/hinkley-point-cs-cost-climbs-to-35bn-with-confirmation-unit-1-will-power-up-in-2030-20-02-2026/\" title=\"New Civil Engineer, reporting EDF&#x27;s 2025 annual results (20 February 2026)\">Hinkley Point C</a>-scale nuclear stations",
    "label": "Hinkley Point C-scale nuclear stations the \u00a3220bn+ full UK renewables cost would have built, in today's money",
    "source_name": "New Civil Engineer, reporting EDF's 2025 annual results (20 February 2026)",
@@ -123,12 +123,12 @@
   },
   {
    "slug": "per-person",
-   "figure": "\u00a3178.86",
-   "sentence": "Direct renewable subsidy costs every UK person \u00a3178.86 a year.",
-   "display_html": "Per person, it is <span class=\"money num\">\u00a3178.86</span> a year <a class=\"eq-src\" href=\"https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2023\" title=\"ONS, Population estimates for the UK, mid-2023 (October 2024)\">(UK population)</a>",
+   "figure": "\u00a3176.28",
+   "sentence": "Direct renewable subsidy costs every UK person \u00a3176.28 a year.",
+   "display_html": "Per person, it is <span class=\"money num\">\u00a3176.28</span> a year <a class=\"eq-src\" href=\"https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2024\" title=\"ONS, Population estimates for the UK, mid-2024\">(UK population)</a>",
    "label": "per person per year \u2014 the direct cost of renewable subsidy to every UK resident",
-   "source_name": "ONS, Population estimates for the UK, mid-2023 (October 2024)",
-   "source_url": "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2023"
+   "source_name": "ONS, Population estimates for the UK, mid-2024",
+   "source_url": "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2024"
   }
  ]
 }

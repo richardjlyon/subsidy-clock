@@ -21,7 +21,13 @@
       cumulative: SC.fmtCompact(s.cumulative_gbp),
       runrate: SC.fmtCompact(s.runrate_gbp_per_year),
       household: SC.fmtPence(perHousehold),
-      rate: SC.fmtPence(rate)
+      rate: SC.fmtPence(rate),
+      // the constraints bottom-up splice date retreats weekly with the
+      // nightly backfill, so prose quoting it must read it live
+      'bottom-up-from': s.bottom_up_from
+        ? new Date(s.bottom_up_from).toLocaleDateString('en-GB',
+            { day: 'numeric', month: 'long', year: 'numeric' })
+        : ''
     };
     Array.prototype.forEach.call(document.querySelectorAll('[data-live]'), function (el) {
       el.textContent = liveVals[el.getAttribute('data-live')] || '';

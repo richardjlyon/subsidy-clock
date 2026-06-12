@@ -77,18 +77,21 @@ def test_factoids_floored_figures_and_sentences(tmp_path):
     # nurses: 12.2e9 / 39043 = 312,475.6 -> floored to 1,000 -> 312,000
     assert by_slug["nurses"]["figure"] == "312,000"
     assert "312,000 NHS nurses" in by_slug["nurses"]["sentence"]
+    assert by_slug["nurses"]["sentence"].startswith("A year of direct UK renewable subsidy")
 
     # combined real 223.35e9 -> £10bn floor strictly below -> 220
     # counts divide the quoted floor: homes = 220e9 / 393000 = 559,796.4 -> 559,000
     assert by_slug["homes"]["figure"] == "559,000"
     assert "£220bn+" in by_slug["homes"]["sentence"]
-    assert "subsidising UK renewables" in by_slug["homes"]["sentence"]
+    assert "subsidising UK renewables, including estimated indirect costs" \
+        in by_slug["homes"]["sentence"]
     assert "UK renewables" in by_slug["homes"]["label"]
     assert "in today" in by_slug["homes"]["sentence"]  # 'in today’s money' label
 
     # hinkley: 35e9 * 132.9/100 = 46.515e9; 220 / 46.515 = 4.73 -> 4
     assert by_slug["hinkley"]["figure"] == "4"
-    assert "subsidising UK renewables" in by_slug["hinkley"]["sentence"]
+    assert "subsidising UK renewables, including estimated indirect costs" \
+        in by_slug["hinkley"]["sentence"]
     assert "4 Hinkley Point C-scale nuclear stations in the UK" in by_slug["hinkley"]["sentence"]
     assert "UK renewables" in by_slug["hinkley"]["label"]
 
@@ -199,7 +202,8 @@ def test_write_csvs(tmp_path):
     cfd = (tmp_path / "cfd.csv").read_text().splitlines()
     assert cfd[0] == "# The Subsidy Clock — subsidyclock.co.uk"
     assert cfd[1] == ('# Licence: CC BY 4.0 (credit "The Subsidy Clock — '
-                      'subsidyclock.co.uk") — generated 2026-06-11 05:45 UTC')
+                      'subsidyclock.co.uk") · contains public sector information '
+                      'licensed under OGL v3.0 — generated 2026-06-11 05:45 UTC')
     # third line: measured vs estimated must travel with the file
     assert cfd[2] == ("# Measured payments — derivation: "
                       "subsidyclock.co.uk/explainers/contracts-for-difference")

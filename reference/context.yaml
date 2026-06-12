@@ -1,17 +1,17 @@
 # Contextual denominators for viewer-relevant framings (spec M-3).
 # Each value carries its official source. Verify on annual refresh.
 households:
-  value: 28400000
+  value: 29000000
   description: UK households
-  source: ONS, Families and households in the UK, 2023 bulletin (May 2024)
-  source_url: https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/families/bulletins/familiesandhouseholds/2023
-  as_of: 2023
+  source: ONS, Families and households in the UK, 2025 bulletin
+  source_url: https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/families/bulletins/familiesandhouseholds/2025
+  as_of: 2025
 population:
-  value: 68300000
+  value: 69300000
   description: UK mid-year population estimate
-  source: ONS, Population estimates for the UK, mid-2023 (October 2024)
-  source_url: https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2023
-  as_of: 2023
+  source: ONS, Population estimates for the UK, mid-2024
+  source_url: https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2024
+  as_of: 2024
 annual_demand_twh:
   value: 273.8
   description: >-

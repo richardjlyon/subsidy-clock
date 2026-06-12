@@ -88,3 +88,9 @@ A GitHub Action (`.github/workflows/update.yml`) runs daily at 05:30 UTC, after 
 ## Data reuse
 
 Every published series is downloadable as CSV from [subsidyclock.co.uk/data](https://subsidyclock.co.uk/data) under CC BY 4.0, with attribution headers in each file. CSVs are written from the same model that feeds the dashboard, so they cannot disagree with it.
+
+## Licence
+
+- **Code** (engine, site, tests): [MIT](LICENSE).
+- **Published data** (the JSON and CSV series this engine produces): [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), credit "The Subsidy Clock — subsidyclock.co.uk".
+- **Upstream official data** (LCCC, Elexon, Ofgem, HMRC, DESNZ, NESO): subject to the source bodies' own terms, generally the [Open Government Licence v3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/).

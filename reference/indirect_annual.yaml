@@ -116,7 +116,10 @@ schemes:
       2023: 1305800000
       2024: 895600000
   tnuos:
-    label: Transmission Network Use of System (raw total revenue)
+    # the annual series below is raw total revenue; the published scheme series
+    # is the attributed uplift money.py derives from it, so the public label
+    # must describe that, not the input (2026-06-12 audit item 6)
+    label: Transmission Network Use of System (attributed uplift)
     perspectives: []
     cadence: annual
     source: >-

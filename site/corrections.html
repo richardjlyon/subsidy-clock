@@ -25,10 +25,10 @@
 <header class="masthead">
   <div class="container masthead-inner">
     <div class="brand-block">
-      <p class="brand"><a href="index.html"><span class="brand-tick" aria-hidden="true"></span>The Subsidy Clock</a></p>
+      <p class="brand"><a href="/"><span class="brand-tick" aria-hidden="true"></span>The Subsidy Clock</a></p>
       <p class="brand-tag">What UK energy subsidies cost</p>
     </div>
-    <nav><a href="index.html">← Back to the clock</a><a href="data.html">Data</a><a href="methodology.html">Methodology</a></nav>
+    <nav><a href="/">← Back to the clock</a><a href="/data">Data</a><a href="/methodology">Methodology</a></nav>
   </div>
 </header>
 
@@ -41,10 +41,12 @@
 
   <h2>Reporting an error</h2>
 
-  <p><a id="report-link" href="about.html">Report an error</a> — the email opens with the
+  <!-- default href is the static GitHub form so the link works without JS
+       (the About email is also script-assembled); JS swaps in the mailto -->
+  <p><a id="report-link" href="https://github.com/richardjlyon/subsidy-clock/issues/new?template=correction.yml">Report an error</a> — the email opens with the
   page's details attached; you supply only what you believe is wrong and, if you wish,
   your evidence and a name for credit. Every card below the headline figure on
-  <a href="index.html">the dashboard</a> also carries its own report mark, which attaches
+  <a href="/">the dashboard</a> also carries its own report mark, which attaches
   that figure's details automatically.
   Technical readers may prefer to
   <a href="https://github.com/richardjlyon/subsidy-clock/issues/new?template=correction.yml">file a
@@ -53,9 +55,9 @@
   <p>Three things can be true of a disputed number. If the figure is wrong, it is fixed
   and logged here. If the figure is right under the stated method and the disagreement is
   with the method, that is answered on the
-  <a href="methodology.html">methodology page</a> — a definitional dispute is not an
+  <a href="/methodology">methodology page</a> — a definitional dispute is not an
   error. And if a source has revised its own history, that is logged automatically in the
-  <a href="data.html">restatements file</a>.</p>
+  <a href="/data">restatements file</a>.</p>
 
   <h2>The log</h2>
 
@@ -68,7 +70,7 @@
 
 <footer class="footer">
   <div class="container">
-    <p class="footer-links">Made by <a href="https://theenergytrap.org">Richard Lyon</a> · <a href="data.html">Data</a> · <a href="methodology.html">Methodology &amp; sources</a> · <a href="about.html">About this site</a></p>
+    <p class="footer-links">Made by <a href="https://theenergytrap.org">Richard Lyon</a> · <a href="/data">Data</a> · <a href="/methodology">Methodology &amp; sources</a> · <a href="/about">About this site</a></p>
   </div>
 </footer>
 

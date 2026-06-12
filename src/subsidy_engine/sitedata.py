@@ -79,7 +79,7 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
         fig = f"{int(_floor_to(runrate / nurse['value'], 1000)):,}"
         out.append({
             "slug": "nurses", "figure": fig,
-            "sentence": f"A year of UK renewable subsidy pays the salaries of {fig} NHS nurses.",
+            "sentence": f"A year of direct UK renewable subsidy pays the salaries of {fig} NHS nurses.",
             "display_html": ('A year of this pays the salaries of '
                              f'<span class="money num">{fig}</span> {src(nurse, "NHS nurses")}'),
             "label": "NHS nurses' annual salaries paid by one year of direct renewable subsidy",
@@ -102,7 +102,8 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
             fig = f"{int(_floor_to(combined_floor / home['value'], 1000)):,}"
             out.append({
                 "slug": "homes", "figure": fig,
-                "sentence": (f"The {full} full cost of subsidising UK renewables would have built "
+                "sentence": (f"The {full} full cost of subsidising UK renewables, including "
+                             f"estimated indirect costs, would have built "
                              f"{fig} social homes — land included — in today’s money."),
                 "display_html": (f'The {full} full cost would have built '
                                  f'<span class="money num">{fig}</span> {src(home, "social homes")}, '
@@ -119,7 +120,8 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
             n = int(combined_floor // unit)
             out.append({
                 "slug": "hinkley", "figure": str(n),
-                "sentence": (f"The {full} full cost of subsidising UK renewables would have built "
+                "sentence": (f"The {full} full cost of subsidising UK renewables, including "
+                             f"estimated indirect costs, would have built "
                              f"{n} Hinkley Point C-scale nuclear stations in the UK, in today’s money."),
                 "display_html": (f'— or <span class="money num">{n}</span> '
                                  f'{src(hpc, "Hinkley Point C")}-scale nuclear stations'),
@@ -288,7 +290,8 @@ def _attribution(generated: str) -> str:
     comment.char='#'."""
     return ("# The Subsidy Clock — subsidyclock.co.uk\n"
             '# Licence: CC BY 4.0 (credit "The Subsidy Clock — '
-            f'subsidyclock.co.uk") — generated {generated[:10]} '
+            'subsidyclock.co.uk") · contains public sector information '
+            f'licensed under OGL v3.0 — generated {generated[:10]} '
             f'{generated[11:16]} UTC\n')
 
 

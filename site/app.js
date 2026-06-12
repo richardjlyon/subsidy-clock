@@ -135,9 +135,9 @@
       var leadin = document.getElementById('hero-leadin');
       leadin.innerHTML =
         'Subsidising renewables has cost Great Britain over ' +
-        '<a href="methodology.html#ref-reconciliation"><strong class="money num">£' +
-        (combinedRealFlooredGbp() / 1e9) + '&nbsp;billion</strong></a> in today\u2019s money. ' +
-        'This much is measured to the penny:';
+        '<a href="/methodology#ref-reconciliation"><strong class="money num">£' +
+        (combinedRealFlooredGbp() / 1e9) + '&nbsp;billion</strong></a> in today\u2019s money, ' +
+        'including estimated indirect costs. This much is measured to the penny:';
       leadin.hidden = false;
     }
     document.getElementById('hero-sub').innerHTML =
@@ -302,7 +302,7 @@
       var m = SCHEME_META[s.id];
       var v = schemeCumulative(s);
       var pct = grand > 0 ? Math.round(100 * v / grand) : 0;
-      return '<a class="krow" href="explainers/' + m.slug + '.html">' +
+      return '<a class="krow" href="/explainers/' + m.slug + '">' +
         '<span class="dot" style="background:' + m.color + '"></span>' +
         '<span class="nm">' + esc(m.name) + '</span>' +
         '<span class="amt money num">' + fmtCompact(v) + '</span>' +
@@ -326,7 +326,7 @@
       document.getElementById('direct-card-foot').innerHTML =
         'Under the same schemes, nuclear and biomass received a further ' +
         '<span class="money num">' + fmtCompact(delta) + '</span> — ' +
-        '<a href="methodology.html#perspectives">see the methodology page</a>.';
+        '<a href="/methodology#perspectives">see the methodology page</a>.';
     }
   }
 
@@ -544,9 +544,9 @@
     document.getElementById('trend-h').textContent =
       cumulative ? 'The bill since 2002, in today’s money' : 'Cost per year, by scheme, in today’s money';
     document.getElementById('trend-note').innerHTML = cumulative
-      ? 'Cumulative cost by scheme since ' + firstYear + '; the ' + currentYear + ' bar includes the year to date. Warm bars are measured direct schemes; cool blue bars are estimated indirect costs. All years in 2024 prices — the as-paid figures are on the <a href="data.html">data page</a>.'
+      ? 'Cumulative cost by scheme since ' + firstYear + '; the ' + currentYear + ' bar includes the year to date. Warm bars are measured direct schemes; cool blue bars are estimated indirect costs. All years in 2024 prices — the as-paid figures are on the <a href="/data">data page</a>.'
       : 'Annual cost by scheme, ' + firstYear + '–' + currentYear +
-        '. Warm bars are measured direct schemes; cool blue bars are estimated indirect costs. All years in 2024 prices — the as-paid figures are on the <a href="data.html">data page</a>.' +
+        '. Warm bars are measured direct schemes; cool blue bars are estimated indirect costs. All years in 2024 prices — the as-paid figures are on the <a href="/data">data page</a>.' +
         ' *' + currentYear + ' is a partial year (data to date).';
     var directIds = memberIds.filter(function (id) { return !isIndirectScheme(id); });
     function legendItem(id) {
@@ -673,7 +673,7 @@
     var stale = breakdown.schemes.filter(isStale);
     document.getElementById('freshness').innerHTML = stale.length
       ? '<span class="stale-warning">Data for ' + stale.map(function (s) { return esc(s.label); }).join(', ') +
-        ' is older than its normal publication lag \u2014 details on the <a href="methodology.html#freshness">methodology page</a>.</span>'
+        ' is older than its normal publication lag \u2014 details on the <a href="/methodology#freshness">methodology page</a>.</span>'
       : '';
   }
 
