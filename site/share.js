@@ -53,6 +53,13 @@ var SCShare = (function () {
     }
   }
 
+  function canShareFiles() {
+    try {
+      return !!(navigator.canShare &&
+        navigator.canShare({ files: [new File([''], 't.png', { type: 'image/png' })] }));
+    } catch (e) { return false; }
+  }
+
   // ---- citations (F3). Cite always uses the canonical anchor URL, never a stub.
   function citeUrl(fact) {
     return fact.anchor ? SITE + '/#' + fact.anchor : (fact.url || SITE + '/');
@@ -120,7 +127,11 @@ var SCShare = (function () {
       'color:var(--money-deep,#7a2419)}' +
     '.share-to{display:flex;flex-wrap:wrap;gap:.15rem;border-top:1px solid var(--line-soft,#ece8dc);' +
       'margin-top:.3rem;padding-top:.3rem}' +
-    '.share-to a.share-item{width:auto;display:inline-block}';
+    '.share-to a.share-item{width:auto;display:inline-block}' +
+    '.fact-share-wrap{position:relative;display:inline-block;margin-left:.3rem;vertical-align:baseline}' +
+    '.fact-share-btn{background:none;border:0;padding:1px 3px;cursor:pointer;' +
+      'color:var(--ink,#23211c);opacity:.5;line-height:1}' +
+    '.fact-share-btn:hover,.fact-share-btn:active{opacity:1;color:var(--money-deep,#7a2419)}';
   var styleDone = false;
   function injectStyle() {
     if (styleDone) return;
@@ -220,6 +231,81 @@ var SCShare = (function () {
     setTimeout(function () { btn.textContent = old; }, 1400);
   }
 
+  // ---- factoid share glyphs (impact I5). One quiet always-visible glyph per
+  // equivalence line; native share with the factoid's own card PNG where the
+  // device supports file sharing, else a compact X / WhatsApp / Copy-link
+  // popover. Events: share:fact:{slug}:{channel}.
+  var GLYPH = '<svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" ' +
+    'stroke-width="1.5" aria-hidden="true"><path d="M8 1v9M5 3.5 8 1l3 2.5M3 7v7h10V7"/></svg>';
+
+  function factoidNativeShare(fact) {
+    fetch(fact.png)
+      .then(function (r) { if (!r.ok) throw new Error('' + r.status); return r.blob(); })
+      .then(function (b) {
+        var payload = { text: fact.sentence, url: fact.url,
+                        files: [new File([b], fact.slug + '.png', { type: 'image/png' })] };
+        if (!navigator.canShare(payload)) payload = { text: fact.sentence, url: fact.url };
+        return navigator.share(payload);
+      })
+      .catch(function () {
+        if (navigator.share) {
+          navigator.share({ text: fact.sentence, url: fact.url }).catch(function () {});
+        }
+      });
+    track('share:fact:' + fact.slug + ':native');
+  }
+
+  /* Attach a factoid share glyph for `fact` = {slug, sentence, png, url}. */
+  function attachFactoid(container, fact) {
+    injectStyle();
+    var wrap = document.createElement('span');
+    wrap.className = 'fact-share-wrap';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'fact-share-btn';
+    btn.setAttribute('aria-label', 'Share this fact');
+    btn.innerHTML = GLYPH;
+    wrap.appendChild(btn);
+    if (canShareFiles()) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        factoidNativeShare(fact);
+      });
+    } else {
+      var encT = encodeURIComponent(fact.sentence);
+      var encU = encodeURIComponent(fact.url);
+      var pop = document.createElement('div');
+      pop.className = 'share-pop';
+      pop.hidden = true;
+      pop.innerHTML =
+        '<a class="share-item" data-ch="x" target="_blank" rel="noopener" ' +
+          'href="https://twitter.com/intent/tweet?text=' + encT + '&url=' + encU + '">X</a>' +
+        '<a class="share-item" data-ch="whatsapp" target="_blank" rel="noopener" ' +
+          'href="https://wa.me/?text=' + encT + '%20' + encU + '">WhatsApp</a>' +
+        '<button data-ch="copy-link">Copy link</button>';
+      pop.addEventListener('click', function (e) {
+        var ch = e.target.getAttribute && e.target.getAttribute('data-ch');
+        if (!ch) return;
+        if (ch === 'copy-link') copyText(fact.url, function () { flash(e.target, 'Copied'); });
+        track('share:fact:' + fact.slug + ':' + ch);
+      });
+      wrap.appendChild(pop);
+      btn.setAttribute('aria-haspopup', 'true');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var opening = pop.hidden;
+        closePop();
+        if (opening) {
+          pop.hidden = false;
+          btn.setAttribute('aria-expanded', 'true');
+          openPop = pop;
+        }
+      });
+    }
+    container.appendChild(wrap);
+  }
+
   /* Attach a quiet share control for `fact` inside `container`. */
   function attach(container, fact, asof) {
     injectStyle();
@@ -249,6 +335,7 @@ var SCShare = (function () {
 
   return {
     initTracking: initTracking, track: track, attach: attach,
+    attachFactoid: attachFactoid, canShareFiles: canShareFiles,
     copyText: copyText, copyFigureText: copyFigureText
   };
 })();

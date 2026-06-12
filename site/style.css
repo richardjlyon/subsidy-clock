@@ -175,6 +175,7 @@ a:hover { color: var(--money); }
 .equivalences .eq-src {
   border-bottom: 1px dotted var(--faint); cursor: help; text-decoration: none; color: inherit;
 }
+.equivalences a.eq-src { color: inherit; }
 
 /* ---------- cards ---------- */
 .card {

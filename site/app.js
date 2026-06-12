@@ -69,6 +69,9 @@
   var motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var rafId;
   var state = { perspective: 'renewables', real: false };
+  // SITE_URL/SHARE_URL live with the state - renderEquivalences needs them at first paint.
+  var SITE_URL = 'https://subsidyclock.co.uk';
+  var SHARE_URL = SITE_URL + '/';
 
   // display names, explainer slugs and chart colours for the category cards
   var SCHEME_META = {
@@ -177,39 +180,23 @@
     }
   }
 
-  // ---------- equivalences ----------
+  // ---------- equivalences (impact I4/I5) ----------
+  // Sentences are composed once, in the engine (sitedata.py _factoids) and
+  // rendered verbatim here - figure, card PNG and /s/ stub can never disagree.
   function renderEquivalences() {
-    var p = pv();
-    var eq = meta.context.equivalences;
-    var pop = meta.context.population;
-    var items = [];
-    if (eq && eq.nurse_salary_gbp) {
-      var nurses = p.runrate_gbp_per_year / eq.nurse_salary_gbp.value;
-      items.push(
-        'This year’s run-rate equals the annual salaries of <span class="money num">' +
-        fmtInt(Math.round(nurses / 1000) * 1000) + '</span> ' +
-        '<span class="eq-src" title="' + esc(eq.nurse_salary_gbp.source + ' — ' + eq.nurse_salary_gbp.description) + '">NHS Band&nbsp;5 nurses</span>'
-      );
-    }
-    if (eq && eq.ghost_hospital_gbp) {
-      var hospitals = p.runrate_gbp_per_year / eq.ghost_hospital_gbp.value;
-      items.push(
-        'or the construction of <span class="money num">' + fmtInt(hospitals) + '</span> ' +
-        '<span class="eq-src" title="' + esc(eq.ghost_hospital_gbp.source + ' — ' + eq.ghost_hospital_gbp.description) + '">new mid-sized hospitals</span> each year'
-      );
-    }
-    items.push(
-      'That is <span class="money num">' + fmtPence(p.per_mwh_delivered_gbp) +
-      '</span> on every MWh of electricity delivered'
-    );
-    if (pop) {
-      items.push(
-        'Per person, it is <span class="money num">' + fmtPence(p.per_person_per_year_gbp) + '</span> a year ' +
-        '<span class="eq-src" title="' + esc(pop.source + ' — ' + pop.description) + '">(UK population)</span>'
-      );
-    }
-    document.getElementById('equivalences').innerHTML =
-      items.map(function (h) { return '<li>' + h + '</li>'; }).join('');
+    var ul = document.getElementById('equivalences');
+    ul.innerHTML = '';
+    (meta.factoids || []).forEach(function (f) {
+      var li = document.createElement('li');
+      li.innerHTML = f.display_html + ' ';
+      SCShare.attachFactoid(li, {
+        slug: f.slug,
+        sentence: f.sentence,
+        png: 'share/' + f.slug + '.png',
+        url: SITE_URL + '/s/' + f.slug
+      });
+      ul.appendChild(li);
+    });
   }
 
   // ---------- paid to switch off ----------
@@ -643,8 +630,7 @@
   // trusts; the homepage's own OG tags serve the daily total card.
   // share.js still owns GoatCounter and the copy/track helpers; its attach()
   // per-card component is deliberately unwired (share-UX rework, 2026-06-12).
-  var SITE_URL = 'https://subsidyclock.co.uk';
-  var SHARE_URL = SITE_URL + '/';
+  // SITE_URL/SHARE_URL live with the state - renderEquivalences needs them at first paint.
 
   function svgIcon(d) {
     return '<svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="' + d + '"/></svg>';
@@ -670,13 +656,6 @@
     return 'More than £' + bn.toFixed(1) + ' billion' + full +
       ' — paid to renewable electricity generators by Great Britain’s bill-payers since ' +
       totals.perspectives.renewables.since_year;
-  }
-
-  function canShareFiles() {
-    try {
-      return !!(navigator.canShare &&
-        navigator.canShare({ files: [new File([''], 't.png', { type: 'image/png' })] }));
-    } catch (e) { return false; }
   }
 
   function intentUrl(target) {
@@ -719,7 +698,7 @@
     SCShare.initTracking();
     var row = document.getElementById('hero-share');
     if (!row) return;
-    if (canShareFiles()) {
+    if (SCShare.canShareFiles()) {
       var nb = sharePill('Share…', 'native');
       nb.addEventListener('click', nativeShare);
       row.appendChild(nb);
