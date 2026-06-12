@@ -462,7 +462,10 @@
     var valueBySchemeYear = {};
     memberIds.forEach(function (id) {
       var m = {};
-      timeseries.schemes[id].annual.forEach(function (a) { m[a.year] = annualCost(a); });
+      // always real-2024, regardless of state.real: the wedge terminus must
+      // equal the hero's combined "in today's money" figure (annualCost
+      // stays nominal for the share-of-bill chart and the strip)
+      timeseries.schemes[id].annual.forEach(function (a) { m[a.year] = a.cost_gbp_2024; });
       if (cumulative) {
         var run = 0, c = {};
         years.forEach(function (yr) { run += m[yr] || 0; c[yr] = run; });
@@ -497,7 +500,7 @@
     var barW = bandW * 0.72;
 
     var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' +
-      (cumulative ? 'Cumulative' : 'Annual') + ' subsidy cost by scheme, direct and estimated indirect, ' + firstYear + ' to ' + currentYear + '">';
+      (cumulative ? 'Cumulative' : 'Annual') + ' subsidy cost by scheme, direct and estimated indirect, ' + firstYear + ' to ' + currentYear + ', in 2024 prices">';
 
     var indirectIds = memberIds.filter(isIndirectScheme);
 
@@ -539,11 +542,11 @@
 
     document.getElementById('trend-chart').innerHTML = svg;
     document.getElementById('trend-h').textContent =
-      cumulative ? 'The bill since 2002' : 'Cost per year, by scheme';
-    document.getElementById('trend-note').textContent = cumulative
-      ? 'Cumulative cost by scheme since ' + firstYear + '. Warm bars are measured direct subsidies; cool blue bars are estimated indirect costs. The ' + currentYear + ' bar includes the year to date.'
+      cumulative ? 'The bill since 2002, in today’s money' : 'Cost per year, by scheme, in today’s money';
+    document.getElementById('trend-note').innerHTML = cumulative
+      ? 'Cumulative cost by scheme since ' + firstYear + '; the ' + currentYear + ' bar includes the year to date. Warm bars are measured direct schemes; cool blue bars are estimated indirect costs. All years in 2024 prices — the as-paid figures are on the <a href="data.html">data page</a>.'
       : 'Annual cost by scheme, ' + firstYear + '–' + currentYear +
-        '. Warm bars are measured direct subsidies; cool blue bars are estimated indirect costs.' +
+        '. Warm bars are measured direct schemes; cool blue bars are estimated indirect costs. All years in 2024 prices — the as-paid figures are on the <a href="data.html">data page</a>.' +
         ' *' + currentYear + ' is a partial year (data to date).';
     var directIds = memberIds.filter(function (id) { return !isIndirectScheme(id); });
     function legendItem(id) {
@@ -777,7 +780,7 @@
     { id: 'by-scheme',     label: 'By scheme',                     valueEl: null },
     { id: 'by-technology', label: 'By technology (CfD)',           valueEl: null },
     { id: 'recipients',    label: 'Largest recipients',            valueEl: null },
-    { id: 'cost-per-year', label: 'The bill since 2002',           valueEl: null },
+    { id: 'cost-per-year', label: 'The bill since 2002, in today’s money', valueEl: null },
     { id: 'share-of-bill', label: 'Share of the electricity bill', valueEl: 'strip-share' }
   ];
   function initReports() {
