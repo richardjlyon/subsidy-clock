@@ -4,6 +4,7 @@ phase-2 spec section 5). This module is the engine<->dashboard contract."""
 from __future__ import annotations
 
 import json
+from datetime import datetime
 from pathlib import Path
 
 import polars as pl
@@ -154,3 +155,25 @@ def write_csvs(model: dict, out_dir: Path | str,
     rows = [{k: str(r.get(k, "")) for k in RESTATEMENT_COLS} for r in restatements]
     pl.DataFrame(rows, schema={k: pl.String for k in RESTATEMENT_COLS}) \
         .write_csv(out / "restatements.csv")
+
+
+WIDGET_TEMPLATE = Path(__file__).parent / "templates" / "widget.html"
+
+
+def write_widget(totals: dict, out_path: Path | str) -> None:
+    """Render the embeddable widget (distribution F5), stamping the latest
+    figure so a JS-blocked iframe still shows a dated number."""
+    r = totals["perspectives"]["renewables"]
+    d = datetime.fromisoformat(totals["generated_at"])
+    asof = f"{d.day} {d.strftime('%B %Y')}"
+    html = (WIDGET_TEMPLATE.read_text()
+            .replace("{{CUM}}", repr(r["cumulative_gbp"]))
+            .replace("{{RATE}}", repr(r["rate_gbp_per_sec"]))
+            .replace("{{GENERATED}}", totals["generated_at"])
+            .replace("{{FIGURE}}", f"£{int(r['cumulative_gbp']):,}")
+            .replace("{{ASOF}}", asof))
+    if "{{" in html:
+        raise ValueError("unfilled token in widget template")
+    out = Path(out_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(html)

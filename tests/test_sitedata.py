@@ -143,3 +143,23 @@ def test_write_csvs_no_restatements_writes_header_only(tmp_path):
     sitedata.write_csvs(model(), tmp_path, restatements=[])
     rst = (tmp_path / "restatements.csv").read_text().splitlines()
     assert rst == ["scheme,table,detected_at,partition,previous_version,new_version"]
+
+
+def test_write_widget_stamps_figure_and_rate(tmp_path):
+    totals = {
+        "generated_at": "2026-06-11T05:45:00+00:00",
+        "perspectives": {"renewables": {
+            "cumulative_gbp": 108_634_210_556.78,
+            "rate_gbp_per_sec": 385.72,
+            "since_year": 2002,
+        }},
+    }
+    out = tmp_path / "widget.html"
+    sitedata.write_widget(totals, out)
+    html = out.read_text()
+    assert "£108,634,210,556" in html          # static fallback figure
+    assert "11 June 2026" in html               # as-of date always visible
+    assert '"rate": 385.72' in html             # ticking parameters
+    assert '"cum": 108634210556.78' in html
+    assert "{{" not in html                     # no unfilled tokens
+    assert "subsidyclock.co.uk" in html         # locked attribution
