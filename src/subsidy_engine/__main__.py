@@ -128,6 +128,9 @@ def cmd_build_site(args: argparse.Namespace) -> int:
                 real_total += float(cut["cost_gbp_2024"].sum())
             key = "cfd" if s.scheme_id in ("cfd_renewable", "cfd_low_carbon") else s.scheme_id
             comp[key] = comp.get(key, 0.0) + nom
+        unmapped = set(comp) - set(ref_t["components"])
+        if unmapped:
+            raise SystemExit(f"[ref-reconciliation] schemes not in REF table: {sorted(unmapped)}")
         recon = reconcile.ref_reconciliation(comp, real_total, ref_t)
         (out_dir / "ref_reconciliation.json").write_text(
             json.dumps(recon, indent=1, allow_nan=False))
