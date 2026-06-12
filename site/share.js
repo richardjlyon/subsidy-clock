@@ -349,6 +349,14 @@ var SCShare = (function () {
       '&body=' + encodeURIComponent(body);
   }
 
+  var ISSUES_URL = 'https://github.com/richardjlyon/subsidy-clock/issues/new';
+  function reportIssueUrl(info) {
+    var title = '[correction] Possible error' + (info.label ? ': ' + info.label : '');
+    return ISSUES_URL + '?template=correction.yml&labels=correction' +
+      '&title=' + encodeURIComponent(title) +
+      '&context=' + encodeURIComponent(reportContext(info).join('\n'));
+  }
+
   /* Attach a quiet report-an-error mark for `info` = {id, label, valueEl, version}. */
   function attachReport(container, info) {
     injectStyle();
@@ -366,6 +374,11 @@ var SCShare = (function () {
     pop.hidden = true;
     wrap.appendChild(btn);
     wrap.appendChild(pop);
+    pop.addEventListener('click', function (e) {
+      var act = e.target.getAttribute && e.target.getAttribute('data-act');
+      if (act === 'report-email') track('correction:submit:email');
+      if (act === 'report-github') track('correction:submit:github');
+    });
     btn.addEventListener('click', function (e) {
       e.stopPropagation();
       var opening = pop.hidden;
@@ -375,10 +388,13 @@ var SCShare = (function () {
         pop.innerHTML =
           '<p class="report-note">Spotted an error? The figure’s details attach automatically.</p>' +
           '<a class="share-item" data-act="report-email" href="' + esc(reportMailto(info)) + '">Email a report</a>' +
+          '<a class="share-item" data-act="report-github" target="_blank" rel="noopener" href="' +
+            esc(reportIssueUrl(info)) + '">Open a GitHub issue</a>' +
           '<a class="share-item" data-act="report-how" href="corrections.html">How corrections work</a>';
         pop.hidden = false;
         btn.setAttribute('aria-expanded', 'true');
         openPop = pop;
+        track('correction:open');
       }
     });
     container.appendChild(wrap);
