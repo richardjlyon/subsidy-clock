@@ -305,6 +305,7 @@ main > .card-pair { margin: 26px 0; }
 .prose .src-quote { font-size: 0.84rem; color: var(--muted); }
 .tick-ok { color: #3c6e47; font-weight: 600; }
 tr.out-of-tolerance td { color: var(--money-deep); font-weight: 500; }
+.data-table tr.total-row td:not(.cell-dim) { border-top: 2px solid var(--line); font-weight: 600; }
 .scheme-meta { font-size: 0.78rem; color: var(--faint); margin: 2px 0 12px; }
 
 /* ---------- responsive ---------- */

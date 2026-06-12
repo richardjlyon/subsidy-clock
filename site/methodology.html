@@ -374,22 +374,27 @@
           '<td class="num-col money">' + (c.ours_gbp === 0 ? 'not counted' : refBn(c.ours_gbp)) + '</td>' +
           '<td class="num-col money">' + refBn(c.ref_gbp) + '</td>' +
           '<td class="num-col">' + div + '</td>' +
-          '<td class="cell-dim">' + c.note + '</td></tr>';
+          '<td class="cell-dim">' + (c.note ? esc(c.note) : '—') + '</td></tr>';
       }).join('') +
-      '<tr><td><strong>Total (nominal)</strong></td>' +
-      '<td class="num-col money"><strong>' + refBn(refRecon.ours_total_gbp) + '</strong></td>' +
-      '<td class="num-col money"><strong>' + refBn(refRecon.ref_total_gbp) + '</strong></td>' +
-      '<td class="num-col">' + totalPct.toFixed(1) + '%</td>' +
-      '<td class="cell-dim">REF’s rows sum to ' + refBn(refRecon.ref_total_gbp) +
-      '; its published headline is ' + refBn(refRecon.ref_total_published_gbp || refRecon.ref_total_gbp) + '</td></tr>' +
-      '<tr><td>Total (2024 prices), to ' + refRecon.ours_through_year + '</td>' +
-      '<td class="num-col money">' + refBn(refRecon.ours_real_2024_gbp) + '</td>' +
-      '<td class="num-col money">' + refBn(refRecon.ref_real_2024_gbp) + '</td>' +
-      '<td class="num-col"></td>' +
-      '<td class="cell-dim">REF’s real total spans its full window and uses REF’s own deflation; ours is CPIH</td></tr>';
+      (function () {
+        var rowsStr = refBn(refRecon.ref_total_gbp);
+        var pubStr = refBn(refRecon.ref_total_published_gbp || refRecon.ref_total_gbp);
+        var nomNote = ‘REF’s rows sum to ‘ + rowsStr +
+          (pubStr !== rowsStr ? ‘; its published headline is ‘ + pubStr : ‘’);
+        return ‘<tr class="total-row"><td>Total (nominal)</td>’ +
+          ‘<td class="num-col money">’ + refBn(refRecon.ours_total_gbp) + ‘</td>’ +
+          ‘<td class="num-col money">’ + refBn(refRecon.ref_total_gbp) + ‘</td>’ +
+          ‘<td class="num-col">’ + totalPct.toFixed(1) + ‘%</td>’ +
+          ‘<td class="cell-dim">’ + nomNote + ‘</td></tr>’;
+      })() +
+      ‘<tr class="total-row"><td>Total (2024 prices), to ‘ + refRecon.ours_through_year + ‘</td>’ +
+      ‘<td class="num-col money">’ + refBn(refRecon.ours_real_2024_gbp) + ‘</td>’ +
+      ‘<td class="num-col money">’ + refBn(refRecon.ref_real_2024_gbp) + ‘</td>’ +
+      ‘<td class="num-col"></td>’ +
+      ‘<td class="cell-dim">REF’s real total spans its full window and uses REF’s own deflation; ours is CPIH</td></tr>’;
     document.getElementById('ref-recon-summary').innerHTML =
-      'Like-for-like, the Clock lands <strong>' + Math.abs(totalPct).toFixed(0) +
-      '% below REF’s total</strong>. The components its attributions deliberately count more ' +
+      ‘Like-for-like, the Clock lands <strong>’ + Math.abs(totalPct).toFixed(0) +
+      (totalPct < 0 ? ‘% below’ : ‘% above’) + ‘ REF’s total</strong>. The components its attributions deliberately count more ‘ +
       'strictly — the power-sector-only ETS and CCL shares, BSUoS with constraint payments ' +
       'netted off — or decline to count at all (REGO) remove ' + refBn(refRecon.stricter_gap_gbp) +
       ', more than the whole ' + refBn(refRecon.gap_gbp) + ' gap; everywhere else the two ' +
