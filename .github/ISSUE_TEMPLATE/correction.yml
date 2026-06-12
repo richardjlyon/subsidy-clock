@@ -1,0 +1,32 @@
+name: Report an error
+description: Report a possible error in a figure published on subsidyclock.co.uk
+title: "[correction] "
+labels: [correction]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What looks wrong
+      description: The figure you believe is in error, and why.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Your evidence or source (optional)
+    validations:
+      required: false
+  - type: input
+    id: credit
+    attributes:
+      label: Name for credit (optional)
+      description: Confirmed corrections are credited at subsidyclock.co.uk/corrections, with your permission.
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Context (attached automatically)
+      description: Filled in by the site's report link — leave as is.
+    validations:
+      required: false
