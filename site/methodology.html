@@ -110,6 +110,24 @@
     <tbody></tbody>
   </table>
 
+  <h2 id="ref-reconciliation">How the Clock compares with REF</h2>
+  <p>The <a href="https://www.ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day">Renewable
+  Energy Foundation's April 2025 study</a> independently reconstructs the same bill:
+  <strong>£185&nbsp;billion nominal — £223&nbsp;billion in 2024 prices — for 2002 to
+  FY&nbsp;2023/24</strong>. The Clock's combined total reaches REF's figure despite
+  deliberately stricter attributions, because it includes the years since.
+  Compared like-for-like over the same period, component by component:</p>
+  <table class="data-table" id="ref-recon-table">
+    <thead><tr><th>Component</th><th class="num-col">The Clock</th><th class="num-col">REF</th><th class="num-col">Divergence</th><th>Note</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <p id="ref-recon-summary"></p>
+  <p class="caveat">The Clock's column sums calendar years to the year shown; REF's runs to the
+  end of FY&nbsp;2023/24 — the basis difference leaves about three months of REF's window
+  uncovered, which understates the Clock's column and so runs in the conservative direction.
+  Price basis for real-terms figures: CPIH, 2024 — see <a href="#real-terms">Real terms</a>;
+  the deflator vintage is refreshed annually.</p>
+
   <h3 id="share">Share of the electricity bill</h3>
   <p>
     The "Subsidy as a share of the electricity bill" chart expresses the
@@ -186,12 +204,13 @@
 <script>
 'use strict';
 (async function () {
-  var bd, recon, meta, xcheck, totals, timeseries;
+  var bd, recon, meta, xcheck, totals, timeseries, refRecon;
   try {
     var res = await Promise.all([
       fetch('data/breakdown.json'), fetch('data/reconciliation.json'),
       fetch('data/meta.json'), fetch('data/indirect_crosscheck.json'),
-      fetch('data/totals.json'), fetch('data/timeseries.json')
+      fetch('data/totals.json'), fetch('data/timeseries.json'),
+      fetch('data/ref_reconciliation.json')
     ]);
     bd = await res[0].json();
     recon = await res[1].json();
@@ -199,6 +218,7 @@
     xcheck = await res[3].json();
     totals = await res[4].json();
     timeseries = await res[5].json();
+    refRecon = await res[6].json();
   } catch (e) {
     document.getElementById('recon-summary').textContent =
       'Live reconciliation data could not be loaded — figures remain available in the repository.';
@@ -337,6 +357,44 @@
       '<td class="cell-dim">' + (c.note ? esc(c.note) : '—') + '</td>' +
     '</tr>';
   }).join('');
+
+  // Clock vs REF full reconciliation table
+  if (refRecon) {
+    var REF_NAMES = { ro: 'Renewables Obligation', fit: 'Feed-in Tariffs', cfd: 'Contracts for Difference',
+      constraints: 'Constraint payments', rego: 'REGO certificates', ccl: 'Climate Change Levy',
+      tnuos: 'Transmission (TNUoS)', bsuos: 'Balancing (BSUoS)', ets: 'Emissions trading',
+      capacity_market: 'Capacity Market' };
+    var refBn = function (v) { return '£' + (v / 1e9).toFixed(1) + 'bn'; };
+    var totalPct = (refRecon.ours_total_gbp - refRecon.ref_total_gbp) / refRecon.ref_total_gbp * 100;
+    document.querySelector('#ref-recon-table tbody').innerHTML =
+      refRecon.components.map(function (c) {
+        var div = c.divergence_pct == null ? '—'
+          : (c.divergence_pct > 0 ? '+' : '') + c.divergence_pct.toFixed(1) + '%';
+        return '<tr><td>' + (REF_NAMES[c.component] || c.component) + '</td>' +
+          '<td class="num-col money">' + (c.ours_gbp === 0 ? 'not counted' : refBn(c.ours_gbp)) + '</td>' +
+          '<td class="num-col money">' + refBn(c.ref_gbp) + '</td>' +
+          '<td class="num-col">' + div + '</td>' +
+          '<td class="cell-dim">' + c.note + '</td></tr>';
+      }).join('') +
+      '<tr><td><strong>Total (nominal)</strong></td>' +
+      '<td class="num-col money"><strong>' + refBn(refRecon.ours_total_gbp) + '</strong></td>' +
+      '<td class="num-col money"><strong>' + refBn(refRecon.ref_total_gbp) + '</strong></td>' +
+      '<td class="num-col">' + totalPct.toFixed(1) + '%</td>' +
+      '<td class="cell-dim">REF’s rows sum to ' + refBn(refRecon.ref_total_gbp) +
+      '; its published headline is ' + refBn(refRecon.ref_total_published_gbp || refRecon.ref_total_gbp) + '</td></tr>' +
+      '<tr><td>Total (2024 prices), to ' + refRecon.ours_through_year + '</td>' +
+      '<td class="num-col money">' + refBn(refRecon.ours_real_2024_gbp) + '</td>' +
+      '<td class="num-col money">' + refBn(refRecon.ref_real_2024_gbp) + '</td>' +
+      '<td class="num-col"></td>' +
+      '<td class="cell-dim">REF’s real total spans its full window and uses REF’s own deflation; ours is CPIH</td></tr>';
+    document.getElementById('ref-recon-summary').innerHTML =
+      'Like-for-like, the Clock lands <strong>' + Math.abs(totalPct).toFixed(0) +
+      '% below REF’s total</strong>. The components its attributions deliberately count more ' +
+      'strictly — the power-sector-only ETS and CCL shares, BSUoS with constraint payments ' +
+      'netted off — or decline to count at all (REGO) remove ' + refBn(refRecon.stricter_gap_gbp) +
+      ', more than the whole ' + refBn(refRecon.gap_gbp) + ' gap; everywhere else the two ' +
+      'reconstructions agree within a few per cent.';
+  }
 
   // real-terms deflator
   document.getElementById('deflator-note').innerHTML =
