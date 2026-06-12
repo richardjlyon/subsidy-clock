@@ -118,11 +118,14 @@ a:hover { color: var(--money); }
   font-size: clamp(2.05rem, 8.6vw, 5.4rem);
   letter-spacing: -0.015em;
 }
-.hero-fn { font-size: 0.4em; color: var(--faint); margin-left: 0.25em; cursor: help; }
+.hero-fn { font-size: 0.72em; color: var(--faint); margin-left: 0.25em; cursor: help; }
+
+.hero-leadin { margin: 0 auto 18px; max-width: 38em; font-size: 1.04rem; color: var(--ink); }
+.hero-leadin a { color: inherit; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.hero-leadin strong { color: var(--money-deep); font-weight: 600; }
+.nowrap { white-space: nowrap; }
 
 .hero-sub { margin: 14px auto 0; max-width: 34em; font-size: 1.02rem; color: var(--muted); }
-.hero-delta { margin: 8px auto 0; max-width: 38em; font-size: 0.88rem; color: var(--muted); }
-.hero-footnote { margin: 10px 0 0; font-size: 0.74rem; color: var(--muted); }
 
 .since-opened {
   margin: 30px auto 0; display: inline-block;

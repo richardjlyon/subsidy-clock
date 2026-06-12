@@ -108,37 +108,37 @@
   }
 
   // ---------- hero (static parts) ----------
-  // F8 floor: the combined direct+indirect total, floored to the nearest
-  // £10bn STRICTLY BELOW it (a floor, never a midpoint), so every sentence
-  // quoting it understates by construction. One source for the hero note
-  // and the share text - they must never disagree.
-  function combinedFlooredGbp() {
-    var combined = totals.perspectives.renewables.cumulative_gbp + indirectTotals.cumulative_gbp;
+  // I1 floor: the combined direct+indirect total in 2024 prices, floored to
+  // the nearest £10bn STRICTLY BELOW it (a floor, never a midpoint), so every
+  // sentence quoting it understates by construction. One source for the
+  // lead-in, the Full-cost chip and the share text - sitedata.py applies the
+  // same rule to the factoid sentences (_floor_step_below); they must never
+  // disagree.
+  function combinedRealFlooredGbp() {
+    var combined = totals.perspectives.renewables.real_2024.cumulative_gbp +
+                   indirectTotals.real_2024.cumulative_gbp;
     var floored = Math.floor(combined / 1e10) * 1e10;
     return floored === combined ? floored - 1e10 : floored; // exact boundary: step down
+  }
+  function hasCombinedReal() {
+    return !!(indirectTotals && indirectTotals.real_2024 &&
+              totals.perspectives.renewables.real_2024);
   }
 
   function renderHeroStatic() {
     var sinceYear = persp().since_year;
     document.getElementById('hero-value').textContent = fmtFull(liveCumulative(Date.now()));
-    document.getElementById('hero-sub').textContent =
-      'paid to renewable electricity generators by Great Britain\u2019s bill-payers since ' + sinceYear;
-    var lc = totals.perspectives.low_carbon;
-    if (lc) {
-      var delta = lc.cumulative_gbp - totals.perspectives.renewables.cumulative_gbp;
-      document.getElementById('hero-delta').innerHTML =
-        'Under the same schemes, nuclear and biomass received a further <span class="money num">' +
-        fmtCompact(delta) + '</span> \u2014 <a href="methodology.html#perspectives">see the methodology page</a>.';
+    if (hasCombinedReal()) {
+      document.getElementById('hero-leadin').innerHTML =
+        'Supporting renewables has cost Great Britain over ' +
+        '<a href="methodology.html#ref-reconciliation"><strong class="money num">£' +
+        (combinedRealFlooredGbp() / 1e9) + ' billion</strong></a> in today\u2019s money. ' +
+        'This much is measured to the penny:';
     }
-    // F8: the combined total must register. No second ticking numeral.
-    if (indirectTotals) {
-      var flooredBn = combinedFlooredGbp();
-      document.getElementById('hero-direct-note').innerHTML =
-        '<strong>This is the direct bill alone.</strong> Adding estimated indirect costs ' +
-        '\u2014 backup, balancing and the grid \u2014 takes the true total above ' +
-        '<span class="money num">\u00a3' + (flooredBn / 1e9) + ' billion</span>. ' +
-        '<a href="#indirect-bill">The indirect bill \u2193</a>';
-    }
+    document.getElementById('hero-sub').innerHTML =
+      'paid directly to renewable generators <span class="nowrap">since ' + sinceYear +
+      '</span><sup class="hero-fn" title="Estimated between official updates: the counter ' +
+      'advances at each scheme\u2019s most recent published run-rate.">†</sup>';
     document.getElementById('strip-alltime-since').textContent = 'since ' + sinceYear;
   }
 
@@ -313,6 +313,15 @@
     document.getElementById('indirect-card-sub').textContent = ind ?
       'adding ' + fmtPence(ind.rate_gbp_per_sec) + ' a second at the current run-rate' : '';
     document.getElementById('indirect-card-rows').innerHTML = indirect.map(rowHtml).join('');
+
+    var lc = totals.perspectives.low_carbon;
+    if (lc) {
+      var delta = lc.cumulative_gbp - totals.perspectives.renewables.cumulative_gbp;
+      document.getElementById('direct-card-foot').innerHTML =
+        'Under the same schemes, nuclear and biomass received a further ' +
+        '<span class="money num">' + fmtCompact(delta) + '</span> — ' +
+        '<a href="methodology.html#perspectives">see the methodology page</a>.';
+    }
   }
 
   // ---------- strip extras: household & share-of-bill chips (direct schemes only) ----------
@@ -652,12 +661,14 @@
   function shareText() {
     // floored to £0.1bn: "more than" stays strictly true, and the text can
     // never visibly disagree with the daily card's full-precision snapshot.
-    // The bracketed combined figure is the same F8 floor the hero quotes.
+    // The bracketed full-cost figure is the same I1 real-2024 floor the hero
+    // lead-in quotes - 'in today's money' travels with it (integrity rule).
     var bn = Math.floor(liveCumulative(Date.now()) / 1e8) / 10;
-    var combined = indirectTotals
-      ? ' (£' + (combinedFlooredGbp() / 1e9) + ' billion with indirect costs)'
+    var full = hasCombinedReal()
+      ? ' (over £' + (combinedRealFlooredGbp() / 1e9) +
+        ' billion in today\u2019s money with estimated indirect costs)'
       : '';
-    return 'More than £' + bn.toFixed(1) + ' billion' + combined +
+    return 'More than £' + bn.toFixed(1) + ' billion' + full +
       ' — paid to renewable electricity generators by Great Britain’s bill-payers since ' +
       totals.perspectives.renewables.since_year;
   }
