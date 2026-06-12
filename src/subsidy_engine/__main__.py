@@ -84,6 +84,8 @@ def cmd_build_site(args: argparse.Namespace) -> int:
                    bill_annual=bill, bill_info=bill_info, deflators=deflators)
     sitedata.write_csvs(model, out_dir, restatements=store.all_restatements(),
                         generated=generated_at)
+    corrections = sitedata.load_corrections(args.root / "corrections.jsonl")
+    sitedata.write_corrections(corrections, out_dir, generated=generated_at)
 
     totals_json = json.loads((out_dir / "totals.json").read_text())
     sitedata.write_widget(totals_json, args.root / "site" / "embed" / "widget.html")
