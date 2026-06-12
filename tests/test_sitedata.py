@@ -330,3 +330,29 @@ def test_load_corrections_sorted_oldest_first(tmp_path):
     older = CORR_VALID.replace("2026-07-01", "2026-05-01")
     entries = sitedata.load_corrections(_corr_file(tmp_path, [CORR_VALID, older]))
     assert [e["date"] for e in entries] == ["2026-05-01", "2026-07-01"]
+
+
+def test_write_corrections_files(tmp_path):
+    entries = sitedata.load_corrections(_corr_file(tmp_path, [CORR_VALID]))
+    sitedata.write_corrections(entries, tmp_path / "out",
+                               generated="2026-06-12T17:00:00+00:00")
+    data = json.loads((tmp_path / "out" / "corrections.json").read_text())
+    assert data["generated_at"] == "2026-06-12T17:00:00+00:00"
+    assert data["corrections"][0]["now"] == "£1.59bn"
+    lines = (tmp_path / "out" / "corrections.csv").read_text().splitlines()
+    assert lines[0].startswith("# The Subsidy Clock")
+    assert lines[1].startswith("# Licence: CC BY 4.0")
+    assert lines[2] == ("# Corrections to our own published figures — every "
+                        "confirmed error: subsidyclock.co.uk/corrections")
+    assert lines[3] == "date,figure,figure_label,was,now,cause,credit"
+    assert "£1.59bn" in lines[4]
+
+
+def test_write_corrections_empty_log(tmp_path):
+    sitedata.write_corrections([], tmp_path / "out",
+                               generated="2026-06-12T17:00:00+00:00")
+    data = json.loads((tmp_path / "out" / "corrections.json").read_text())
+    assert data["corrections"] == []
+    lines = (tmp_path / "out" / "corrections.csv").read_text().splitlines()
+    assert lines[3] == "date,figure,figure_label,was,now,cause,credit"
+    assert len(lines) == 4

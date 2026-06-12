@@ -292,6 +292,24 @@ def _attribution(generated: str) -> str:
             f'{generated[11:16]} UTC\n')
 
 
+def write_corrections(entries: list[dict], out_dir: Path | str,
+                      *, generated: str) -> None:
+    """Publish the corrections log (corrections C4): JSON for the /corrections
+    page, CSV for the /data table. Written even when empty — the absence of
+    corrections is itself published, not implied."""
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "corrections.json").write_text(json.dumps(
+        {"generated_at": generated, "corrections": entries}, indent=1))
+    cols = CORRECTION_FIELDS + ["credit"]
+    rows = [{k: str(r.get(k, "")) for k in cols} for r in entries]
+    note = ("# Corrections to our own published figures — every confirmed "
+            "error: subsidyclock.co.uk/corrections\n")
+    (out / "corrections.csv").write_text(
+        _attribution(generated) + note +
+        pl.DataFrame(rows, schema={k: pl.String for k in cols}).write_csv())
+
+
 def _series_note(scheme) -> str:
     """Third comment line: what kind of number this is, and where its
     derivation lives. Measured-vs-estimated must travel with the file."""
