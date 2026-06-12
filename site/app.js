@@ -625,12 +625,12 @@
 
   // ---------- share (hero row): the one share mechanism ----------
   // The viral unit is fact + picture + link. Intents carry the live figure
-  // (floored to £0.1bn) and the /s/total stub; platforms render the daily
-  // card from its OG tags.
+  // (floored to £0.1bn) and the bare site URL - the clean link a reader
+  // trusts; the homepage's own OG tags serve the daily total card.
   // share.js still owns GoatCounter and the copy/track helpers; its attach()
   // per-card component is deliberately unwired (share-UX rework, 2026-06-12).
   var SITE_URL = 'https://subsidyclock.co.uk';
-  var SHARE_STUB = SITE_URL + '/s/total';
+  var SHARE_URL = SITE_URL + '/';
 
   function svgIcon(d) {
     return '<svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="' + d + '"/></svg>';
@@ -661,7 +661,7 @@
 
   function intentUrl(target) {
     var encT = encodeURIComponent(shareText());
-    var encU = encodeURIComponent(SHARE_STUB);
+    var encU = encodeURIComponent(SHARE_URL);
     if (target === 'x') return 'https://twitter.com/intent/tweet?text=' + encT + '&url=' + encU;
     if (target === 'whatsapp') return 'https://wa.me/?text=' + encT + '%20' + encU;
     if (target === 'facebook') return 'https://www.facebook.com/sharer/sharer.php?u=' + encU;
@@ -674,14 +674,14 @@
     fetch('share/total.png')
       .then(function (r) { if (!r.ok) throw new Error('' + r.status); return r.blob(); })
       .then(function (b) {
-        var payload = { text: shareText(), url: SHARE_STUB,
+        var payload = { text: shareText(), url: SHARE_URL,
                         files: [new File([b], 'subsidy-clock.png', { type: 'image/png' })] };
-        if (!navigator.canShare(payload)) payload = { text: shareText(), url: SHARE_STUB };
+        if (!navigator.canShare(payload)) payload = { text: shareText(), url: SHARE_URL };
         return navigator.share(payload);
       })
       .catch(function () {
         if (navigator.share) {
-          navigator.share({ text: shareText(), url: SHARE_STUB }).catch(function () {});
+          navigator.share({ text: shareText(), url: SHARE_URL }).catch(function () {});
         }
       });
     SCShare.track('share:hero:native');
