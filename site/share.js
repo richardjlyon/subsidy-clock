@@ -131,7 +131,9 @@ var SCShare = (function () {
     '.fact-share-wrap{position:relative;display:inline-block;margin-left:.3rem;vertical-align:baseline}' +
     '.fact-share-btn{background:none;border:0;padding:1px 3px;cursor:pointer;' +
       'color:var(--ink,#23211c);opacity:.5;line-height:1}' +
-    '.fact-share-btn:hover,.fact-share-btn:active{opacity:1;color:var(--money-deep,#7a2419)}';
+    '.fact-share-btn:hover,.fact-share-btn:active{opacity:1;color:var(--money-deep,#7a2419)}' +
+    '.report-pop{min-width:14rem}' +
+    '.report-note{margin:.15rem .6rem .35rem;color:var(--muted,#6e6a5f);font-size:.78rem}';
   var styleDone = false;
   function injectStyle() {
     if (styleDone) return;
@@ -308,6 +310,80 @@ var SCShare = (function () {
     container.appendChild(wrap);
   }
 
+  // ---- report an error (corrections C2). Same quiet register as the factoid
+  // glyphs: a dimmed always-visible mark per card heading; compact popover; the
+  // mailto carries the figure's context so the reporter supplies only the
+  // description. The address is assembled at open time, never in page source.
+  var REPORT_GLYPH = '<svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" ' +
+    'stroke-width="1.5" aria-hidden="true"><path d="M4 15V2m0 .8h8.5l-2.2 3.1 2.2 3.1H4"/></svg>';
+
+  /* The auto-attached context block. `info` = {id, label, valueEl, version},
+     all optional: prose pages pass only {version}. The displayed value is read
+     from the DOM at call time so the report carries what the reporter saw. */
+  function reportContext(info) {
+    var lines = [];
+    if (info.id) {
+      var displayed = '(chart/table)';
+      if (info.valueEl) {
+        var el = document.getElementById(info.valueEl);
+        if (el && el.textContent.trim()) displayed = el.textContent.trim();
+      }
+      lines.push('Figure: ' + info.label + ' (' + info.id + ')');
+      lines.push('Displayed: ' + displayed);
+    }
+    if (info.version) lines.push('Data version: ' + info.version);
+    lines.push('Page: ' + window.location.href);
+    return lines;
+  }
+
+  function reportMailto(info) {
+    var u = 'richlyon';
+    var d = ['fastmail', 'com'].join('.');
+    var subject = 'Subsidy Clock — possible error' + (info.label ? ': ' + info.label : '');
+    var body = 'What looks wrong:\n[describe the error here]\n\n' +
+      'Your evidence or source (optional):\n\n\n' +
+      'Name for credit (optional):\n\n\n' +
+      '---- attached automatically ----\n' +
+      reportContext(info).join('\n');
+    return 'mailto:' + u + '@' + d + '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+  }
+
+  /* Attach a quiet report-an-error mark for `info` = {id, label, valueEl, version}. */
+  function attachReport(container, info) {
+    injectStyle();
+    var wrap = document.createElement('span');
+    wrap.className = 'fact-share-wrap';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'fact-share-btn report-btn';
+    btn.setAttribute('aria-label', 'Report an error in this figure');
+    btn.setAttribute('aria-haspopup', 'true');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.innerHTML = REPORT_GLYPH;
+    var pop = document.createElement('div');
+    pop.className = 'share-pop report-pop';
+    pop.hidden = true;
+    wrap.appendChild(btn);
+    wrap.appendChild(pop);
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var opening = pop.hidden;
+      closePop();
+      if (opening) {
+        // rebuilt at open time so the displayed value is current
+        pop.innerHTML =
+          '<p class="report-note">Spotted an error? The figure’s details attach automatically.</p>' +
+          '<a class="share-item" data-act="report-email" href="' + esc(reportMailto(info)) + '">Email a report</a>' +
+          '<a class="share-item" data-act="report-how" href="corrections.html">How corrections work</a>';
+        pop.hidden = false;
+        btn.setAttribute('aria-expanded', 'true');
+        openPop = pop;
+      }
+    });
+    container.appendChild(wrap);
+  }
+
   /* Attach a quiet share control for `fact` inside `container`. */
   function attach(container, fact, asof) {
     injectStyle();
@@ -337,7 +413,8 @@ var SCShare = (function () {
 
   return {
     initTracking: initTracking, track: track, attach: attach,
-    attachFactoid: attachFactoid, canShareFiles: canShareFiles,
+    attachFactoid: attachFactoid, attachReport: attachReport,
+    reportMailto: reportMailto, canShareFiles: canShareFiles,
     copyText: copyText, copyFigureText: copyFigureText
   };
 })();
