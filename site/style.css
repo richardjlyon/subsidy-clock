@@ -122,12 +122,6 @@ a:hover { color: var(--money); }
 
 .hero-sub { margin: 14px auto 0; max-width: 34em; font-size: 1.02rem; color: var(--muted); }
 .hero-delta { margin: 8px auto 0; max-width: 38em; font-size: 0.88rem; color: var(--muted); }
-.copy-figure {
-  border: 0; background: none; padding: 0; cursor: pointer;
-  font: 500 0.85rem var(--sans); color: var(--money-deep);
-  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px;
-}
-.copy-figure:hover { color: var(--money); }
 .hero-footnote { margin: 10px 0 0; font-size: 0.74rem; color: var(--muted); }
 
 .since-opened {
