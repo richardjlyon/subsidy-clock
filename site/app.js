@@ -141,23 +141,22 @@
       'paid directly to renewable generators <span class="nowrap">since ' + sinceYear +
       '<sup class="hero-fn" title="Estimated between official updates: the counter ' +
       'advances at each scheme\u2019s most recent published run-rate.">†</sup></span>';
-    document.getElementById('strip-alltime-since').textContent = 'since ' + sinceYear;
+    document.getElementById('strip-alltime-since').textContent = 'direct, since ' + sinceYear;
+    if (hasCombinedReal()) {
+      document.getElementById('strip-fullcost').textContent =
+        '£' + (combinedRealFlooredGbp() / 1e9) + 'bn+';
+    }
   }
 
   // ---------- ticking ----------
   function startOfToday(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime(); }
-  function startOfWeek(d) {
-    var dow = (d.getDay() + 6) % 7; // Monday = 0
-    return new Date(d.getFullYear(), d.getMonth(), d.getDate() - dow).getTime();
-  }
   function startOfYear(d) { return new Date(d.getFullYear(), 0, 1).getTime(); }
 
   var els = {
     heroValue: document.getElementById('hero-value'),
     sinceOpened: document.getElementById('since-opened'),
-    now: document.getElementById('strip-now'),
+    hour: document.getElementById('strip-hour'),
     today: document.getElementById('strip-today'),
-    week: document.getElementById('strip-week'),
     year: document.getElementById('strip-year'),
     alltime: document.getElementById('strip-alltime')
   };
@@ -168,9 +167,8 @@
     var rate = pv().rate_gbp_per_sec;
     els.heroValue.textContent = fmtFull(liveCumulative(t));
     els.sinceOpened.textContent = fmtPence(rate * (t - openedAt) / 1000);
-    els.now.textContent = fmtPence(rate);
+    els.hour.textContent = fmtCompact(rate * 3600);
     els.today.textContent = fmtFull(rate * (t - startOfToday(d)) / 1000);
-    els.week.textContent = fmtFull(rate * (t - startOfWeek(d)) / 1000);
     els.year.textContent = fmtCompact(rate * (t - startOfYear(d)) / 1000);
     els.alltime.textContent = fmtCompact(liveCumulative(t));
     if (motionOK) {
