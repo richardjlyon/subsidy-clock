@@ -121,13 +121,14 @@ def test_write_csvs(tmp_path):
     assert cfd[1] == ('# Licence: CC BY 4.0 (credit "The Subsidy Clock — '
                       'subsidyclock.co.uk") — generated 2026-06-11')
     assert cfd[2] == "year,cost_gbp,cost_gbp_2024"
-    assert cfd[3].startswith("2025,3000000000")
+    # money columns print at fixed 2 dp - real pennies kept, float noise cut
+    assert cfd[3] == "2025,3000000000.00,2900000000.00"
     assert (tmp_path / "bsuos.csv").is_file()
     # combined annual: one row per year, one column per scheme
     combined = (tmp_path / "combined-annual.csv").read_text().splitlines()
     assert combined[0].startswith("# The Subsidy Clock")
     assert combined[2] == "year,cfd_renewable_gbp,bsuos_gbp"
-    assert combined[3].startswith("2025,")
+    assert combined[3] == "2025,3000000000.00,3000000000.00"
     # restatements published alongside, same header
     rst = (tmp_path / "restatements.csv").read_text().splitlines()
     assert rst[2] == "scheme,table,detected_at,partition,previous_version,new_version"

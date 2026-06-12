@@ -152,7 +152,9 @@ def write_csvs(model: dict, out_dir: Path | str,
     header = _attribution(generated)
 
     def write(df: pl.DataFrame, name: str) -> None:
-        (out / name).write_text(header + df.write_csv())
+        # fixed 2 dp: measured pennies are kept intact, while estimated and
+        # deflated values stop carrying spurious float-tail precision
+        (out / name).write_text(header + df.write_csv(float_precision=2))
 
     combined = None
     for s in model["schemes"]:
