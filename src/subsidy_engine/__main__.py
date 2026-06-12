@@ -136,8 +136,8 @@ def cmd_build_site(args: argparse.Namespace) -> int:
             json.dumps(recon, indent=1, allow_nan=False))
         print(f"[ref-reconciliation] ours £{recon['ours_total_gbp']/1e9:.1f}bn vs "
               f"REF £{recon['ref_total_gbp']/1e9:.1f}bn to {thru}; "
-              f"stricter components account for £{recon['stricter_gap_gbp']/1e9:.1f}bn "
-              f"of the £{recon['gap_gbp']/1e9:.1f}bn gap")
+              f"stricter choices remove £{recon['stricter_gap_gbp']/1e9:.1f}bn "
+              f"against the £{recon['gap_gbp']/1e9:.1f}bn gap")
 
     print(f"[ok] site data written to {out_dir}")
     return 0

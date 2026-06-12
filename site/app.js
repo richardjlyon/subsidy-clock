@@ -190,8 +190,20 @@
       var li = document.createElement('li');
       // display_html is engine-authored (sitedata.py escapes attrs with
       // html.escape) - the only innerHTML the page takes from data.
-      li.innerHTML = f.display_html + ' ';
-      SCShare.attachFactoid(li, {
+      li.innerHTML = f.display_html;
+      // bind the glyph to the last word so it can never wrap alone
+      var tail = document.createElement('span');
+      tail.className = 'nowrap';
+      var last = li.lastChild;
+      if (last && last.nodeType === 3) {
+        var m = last.textContent.match(/^(.*\s)(\S+)\s*$/);
+        if (m) {
+          last.textContent = m[1];
+          tail.textContent = m[2];
+        }
+      }
+      li.appendChild(tail);
+      SCShare.attachFactoid(tail, {
         slug: f.slug,
         sentence: f.sentence,
         png: 'share/' + f.slug + '.png',
