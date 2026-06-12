@@ -77,11 +77,13 @@ def cmd_build_site(args: argparse.Namespace) -> int:
                      "source_url": deflator_yaml["source_url"],
                      "base_year": deflator_yaml["base_year"],
                      "verified": deflator_yaml.get("verified", False)}
+    generated_at = datetime.now(timezone.utc).isoformat()
     sitedata.build(model, ctx, freshness, out_dir,
-                   generated_at=datetime.now(timezone.utc).isoformat(),
+                   generated_at=generated_at,
                    deflator_info=deflator_info,
                    bill_annual=bill, bill_info=bill_info)
-    sitedata.write_csvs(model, out_dir, restatements=store.all_restatements())
+    sitedata.write_csvs(model, out_dir, restatements=store.all_restatements(),
+                        generated=generated_at)
 
     totals_json = json.loads((out_dir / "totals.json").read_text())
     sitedata.write_widget(totals_json, args.root / "site" / "embed" / "widget.html")

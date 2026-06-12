@@ -132,29 +132,43 @@ RESTATEMENT_COLS = ["scheme", "table", "detected_at", "partition",
                     "previous_version", "new_version"]
 
 
+def _attribution(generated: str) -> str:
+    """Two comment lines at the top of every published CSV (share-UX rework).
+    Dated from the same generated_at stamp as the JSON. Documented on the
+    /data page: skip with pandas comment='#' or R comment.char='#'."""
+    return ("# The Subsidy Clock — subsidyclock.co.uk\n"
+            '# Licence: CC BY 4.0 (credit "The Subsidy Clock — '
+            f'subsidyclock.co.uk") — generated {generated[:10]}\n')
+
+
 def write_csvs(model: dict, out_dir: Path | str,
-               *, restatements: list[dict]) -> None:
+               *, restatements: list[dict], generated: str) -> None:
     """Per-scheme annual CSVs, one combined wide table, and the restatement
     log (distribution F4). Values are written from the same model that feeds
-    the JSON, so CSVs can never disagree with the dashboard."""
+    the JSON, so CSVs can never disagree with the dashboard. Every file
+    carries an in-file attribution header."""
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
+    header = _attribution(generated)
+
+    def write(df: pl.DataFrame, name: str) -> None:
+        (out / name).write_text(header + df.write_csv())
 
     combined = None
     for s in model["schemes"]:
         name = CSV_NAMES.get(s.scheme_id, s.scheme_id)
         df = s.annual.sort("year")
-        df.write_csv(out / f"{name}.csv")
+        write(df, f"{name}.csv")
         col = df.select(pl.col("year"),
                         pl.col("cost_gbp").alias(f"{s.scheme_id}_gbp"))
         combined = col if combined is None else combined.join(
             col, on="year", how="full", coalesce=True)
     if combined is not None:
-        combined.sort("year").write_csv(out / "combined-annual.csv")
+        write(combined.sort("year"), "combined-annual.csv")
 
     rows = [{k: str(r.get(k, "")) for k in RESTATEMENT_COLS} for r in restatements]
-    pl.DataFrame(rows, schema={k: pl.String for k in RESTATEMENT_COLS}) \
-        .write_csv(out / "restatements.csv")
+    write(pl.DataFrame(rows, schema={k: pl.String for k in RESTATEMENT_COLS}),
+          "restatements.csv")
 
 
 WIDGET_TEMPLATE = Path(__file__).parent / "templates" / "widget.html"
