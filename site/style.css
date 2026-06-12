@@ -138,6 +138,18 @@ a:hover { color: var(--money); }
 }
 .since-opened .money { font-weight: 600; }
 
+/* ---------- hero share row (share-UX rework) ---------- */
+.hero-share { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.45rem; margin: 14px 0 0; }
+.hero-share-lead { font-family: var(--sans); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.hero-share-pill {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-family: var(--sans); font-size: 0.78rem; color: var(--muted);
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 0.18rem 0.65rem; cursor: pointer;
+}
+.hero-share-pill:hover { color: var(--money-deep); border-color: var(--money-deep); }
+.hero-share-pill svg { display: block; }
+
 /* ---------- timeframe strip ---------- */
 .strip {
   margin: 40px 0 0;
