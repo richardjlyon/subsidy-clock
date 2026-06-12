@@ -23,21 +23,34 @@ annual_demand_twh:
   source_url: https://www.gov.uk/government/statistics/electricity-section-5-energy-trends
   as_of: 2025
 equivalences:
-  # Conservative, sourced denominators for human-scale comparisons (spec D-4).
+  # Conservative, sourced denominators for human-scale comparisons (spec D-4 / impact I4).
+  # Unit costs are high-end published figures so every equivalence count rounds DOWN.
   nurse_salary_gbp:
-    value: 37796
+    value: 39043
     description: >-
       NHS Band 5 nurse annual salary, top of band (Agenda for Change,
-      England, 2025-26). Top of band is used so nurse-equivalent counts are
+      England, 2026-27). Top of band is used so nurse-equivalent counts are
       conservative.
-    source: NHS Employers, Agenda for Change pay scales 2025/26
-    source_url: https://www.nhsemployers.org/articles/pay-scales-202526
-    as_of: 2025
-  ghost_hospital_gbp:
-    value: 500000000
+    source: NHS Employers, Agenda for Change pay scales 2026/27
+    source_url: https://www.nhsemployers.org/articles/pay-scales-202627
+    as_of: 2026
+  social_home_gbp:
+    value: 393000
     description: >-
-      Indicative cost of building a new, average mid-sized hospital, per NAO
-      reporting on the New Hospital Programme.
-    source: National Audit Office, Progress with the New Hospital Programme (July 2023)
-    source_url: https://www.nao.org.uk/reports/progress-with-the-new-hospital-programme/
-    as_of: 2023
+      Gross upfront cost of building one social-rent home in England,
+      including land (£35.4bn for 90,000 homes). A full-cost figure is used
+      rather than the much lower grant-per-home, so home counts round down.
+    source: Cebr for Shelter and the National Housing Federation, "The economic impact of building social housing" (2024)
+    source_url: https://england.shelter.org.uk/professional_resources/policy_and_research/policy_library/economic_impact_social_housing
+    as_of: 2024
+  hinkley_point_c_gbp:
+    value: 35000000000
+    price_base: 2015
+    description: >-
+      EDF's latest published cost estimate for Hinkley Point C (3.26 GW),
+      £35bn in 2015 prices (2025 annual results, February 2026). The engine
+      converts to 2024 prices with its own CPIH deflator series so the
+      comparison shares the price basis of the numerator.
+    source: EDF 2025 annual results, 20 February 2026
+    source_url: https://www.newcivilengineer.com/latest/hinkley-point-cs-cost-climbs-to-35bn-with-confirmation-unit-1-will-power-up-in-2030-20-02-2026/
+    as_of: 2026
