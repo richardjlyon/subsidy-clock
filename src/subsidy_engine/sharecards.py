@@ -175,10 +175,16 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
                       "anchor": None, "stub": False})
     indirect = totals.get("indirect")
     if indirect:
-        combined = r["cumulative_gbp"] + indirect["cumulative_gbp"]
+        # real-basis so the figure matches the chart's wedge terminus and the
+        # hero's "£220bn+ in today's money" lead-in; KeyError on a missing
+        # real_2024 block fails the build loudly rather than publishing a
+        # silently nominal card
+        combined = (r["real_2024"]["cumulative_gbp"]
+                    + indirect["real_2024"]["cumulative_gbp"])
         facts.append({"slug": "the-bill", "figure": fmt_full(combined),
                       "label": "the cumulative cost of direct and estimated indirect "
-                               f"subsidy to renewables since {r['since_year']}",
+                               f"subsidy to renewables since {r['since_year']}, "
+                               "in today’s money (2024 prices)",
                       "anchor": "cost-per-year", "stub": True, "chart": True})
 
     # Factoid figures are pre-composed by sitedata.py (floored divisions,

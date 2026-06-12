@@ -14,10 +14,12 @@ TOTALS = {
             "rate_gbp_per_sec": 385.72,
             "per_household_per_year_gbp": 428.60,
             "since_year": 2002,
+            "real_2024": {"cumulative_gbp": 130_000_000_000.0},
         },
         "low_carbon": {"cumulative_gbp": 1.2e11, "since_year": 2002},
     },
-    "indirect": {"cumulative_gbp": 77.5e9},
+    "indirect": {"cumulative_gbp": 77.5e9,
+                 "real_2024": {"cumulative_gbp": 90_000_000_000.0}},
 }
 
 BREAKDOWN = {
@@ -185,7 +187,9 @@ def test_load_facts_includes_the_bill_chart_fact(data_dir):
     assert bill["stub"] is True
     assert bill["anchor"] == "cost-per-year"
     assert bill["chart"] is True
-    assert bill["figure"].startswith("£")
+    # real-basis: 130bn + 90bn combined-real, NOT the nominal 108.6+77.5
+    assert bill["figure"] == "£220,000,000,000"
+    assert "today’s money" in bill["label"]
 
 
 def test_render_chart_card_produces_1200x630_png(tmp_path):
