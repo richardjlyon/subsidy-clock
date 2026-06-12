@@ -504,9 +504,7 @@
     document.getElementById('trend-h').textContent =
       cumulative ? 'The bill since 2002' : 'Cost per year, by scheme';
     document.getElementById('trend-note').textContent = cumulative
-      ? 'Cumulative cost by scheme since ' + firstYear + '. It never comes back down: ' +
-        'warm bars are measured direct subsidies; cool blue bars are estimated indirect costs. ' +
-        'The ' + currentYear + ' bar includes the year to date.'
+      ? 'Cumulative cost by scheme since ' + firstYear + '. Warm bars are measured direct subsidies; cool blue bars are estimated indirect costs. The ' + currentYear + ' bar includes the year to date.'
       : 'Annual cost by scheme, ' + firstYear + '–' + currentYear +
         '. Warm bars are measured direct subsidies; cool blue bars are estimated indirect costs.' +
         ' *' + currentYear + ' is a partial year (data to date).';
