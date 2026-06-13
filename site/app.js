@@ -720,9 +720,12 @@
     return 'https://www.linkedin.com/sharing/share-offsite/?url=' + encU;
   }
 
-  function nativeShare() {
+  function nativeShare(onFail) {
     // fetch the daily card so the OS share sheet carries the picture
-    // (the Instagram/iMessage path); fall back to text+url on any failure.
+    // (the Instagram/iMessage path); fall back to text+url if the card
+    // fails, and to the visible intent pills if sharing itself fails -
+    // a share click must never do nothing.
+    function tracked() { SCShare.track('share:hero:native'); }
     fetch('share/total.png')
       .then(function (r) { if (!r.ok) throw new Error('' + r.status); return r.blob(); })
       .then(function (b) {
@@ -731,12 +734,17 @@
         if (!navigator.canShare(payload)) payload = { text: shareText(), url: SHARE_URL };
         return navigator.share(payload);
       })
-      .catch(function () {
-        if (navigator.share) {
-          navigator.share({ text: shareText(), url: SHARE_URL }).catch(function () {});
-        }
+      .then(tracked)
+      .catch(function (err) {
+        if (err && err.name === 'AbortError') return; // sheet dismissed: not a failure
+        if (!navigator.share) return onFail();
+        navigator.share({ text: shareText(), url: SHARE_URL })
+          .then(tracked)
+          .catch(function (err2) {
+            if (err2 && err2.name === 'AbortError') return;
+            onFail();
+          });
       });
-    SCShare.track('share:hero:native');
   }
 
   function sharePill(label, icon) {
@@ -747,16 +755,7 @@
     return b;
   }
 
-  function initHeroShare() {
-    SCShare.initTracking();
-    var row = document.getElementById('hero-share');
-    if (!row) return;
-    if (SCShare.canShareFiles()) {
-      var nb = sharePill('Share…', 'native');
-      nb.addEventListener('click', nativeShare);
-      row.appendChild(nb);
-      return;
-    }
+  function addIntentPills(row) {
     [['X', 'x'], ['WhatsApp', 'whatsapp'], ['Facebook', 'facebook'], ['LinkedIn', 'linkedin']]
       .forEach(function (t) {
         var b = sharePill(t[0], t[1]);
@@ -767,6 +766,27 @@
         });
         row.appendChild(b);
       });
+  }
+
+  function initHeroShare() {
+    SCShare.initTracking();
+    var row = document.getElementById('hero-share');
+    if (!row) return;
+    if (SCShare.canShareFiles()) {
+      var nb = sharePill('Share…', 'native');
+      nb.addEventListener('click', function () {
+        nativeShare(function () {
+          // native sharing is broken here: swap in the intent pills so the
+          // next tap works
+          if (!nb.parentNode) return;
+          row.removeChild(nb);
+          addIntentPills(row);
+        });
+      });
+      row.appendChild(nb);
+      return;
+    }
+    addIntentPills(row);
   }
 
   // ---------- report an error (corrections C2) ----------

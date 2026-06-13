@@ -54,6 +54,11 @@ var SCShare = (function () {
   }
 
   function canShareFiles() {
+    // Firefox iOS passes the canShare({files}) probe but loses the user
+    // activation across the card fetch, so navigator.share() then rejects
+    // (real-device test, 2026-06-12). Route it to the intent-pill/popover
+    // arm, which is synchronous and works.
+    if (/FxiOS/.test(navigator.userAgent)) return false;
     try {
       return !!(navigator.canShare &&
         navigator.canShare({ files: [new File([''], 't.png', { type: 'image/png' })] }));
@@ -254,7 +259,8 @@ var SCShare = (function () {
   var GLYPH = '<svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" ' +
     'stroke-width="1.5" aria-hidden="true"><path d="M8 1v9M5 3.5 8 1l3 2.5M3 7v7h10V7"/></svg>';
 
-  function factoidNativeShare(fact) {
+  function factoidNativeShare(fact, onFail) {
+    function tracked() { track('share:fact:' + fact.slug + ':native'); }
     fetch(fact.png)
       .then(function (r) { if (!r.ok) throw new Error('' + r.status); return r.blob(); })
       .then(function (b) {
@@ -263,12 +269,17 @@ var SCShare = (function () {
         if (!navigator.canShare(payload)) payload = { text: fact.sentence, url: fact.url };
         return navigator.share(payload);
       })
-      .catch(function () {
-        if (navigator.share) {
-          navigator.share({ text: fact.sentence, url: fact.url }).catch(function () {});
-        }
+      .then(tracked)
+      .catch(function (err) {
+        if (err && err.name === 'AbortError') return; // sheet dismissed: not a failure
+        if (!navigator.share) return onFail();
+        navigator.share({ text: fact.sentence, url: fact.url })
+          .then(tracked)
+          .catch(function (err2) {
+            if (err2 && err2.name === 'AbortError') return;
+            onFail(); // never fail silently: show the popover instead
+          });
       });
-    track('share:fact:' + fact.slug + ':native');
   }
 
   /* Attach a factoid share glyph for `fact` = {slug, sentence, png, url}. */
@@ -283,43 +294,43 @@ var SCShare = (function () {
     btn.setAttribute('data-tip', 'Share this fact');
     btn.innerHTML = GLYPH;
     wrap.appendChild(btn);
-    if (canShareFiles()) {
-      btn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        factoidNativeShare(fact);
-      });
-    } else {
-      var encT = encodeURIComponent(fact.sentence);
-      var encU = encodeURIComponent(fact.url);
-      var pop = document.createElement('div');
-      pop.className = 'share-pop';
-      pop.hidden = true;
-      pop.innerHTML =
-        '<a class="share-item" data-ch="x" target="_blank" rel="noopener" ' +
-          'href="https://twitter.com/intent/tweet?text=' + encT + '&url=' + encU + '">X</a>' +
-        '<a class="share-item" data-ch="whatsapp" target="_blank" rel="noopener" ' +
-          'href="https://wa.me/?text=' + encT + '%20' + encU + '">WhatsApp</a>' +
-        '<button data-ch="copy-link">Copy link</button>';
-      pop.addEventListener('click', function (e) {
-        var ch = e.target.getAttribute && e.target.getAttribute('data-ch');
-        if (!ch) return;
-        if (ch === 'copy-link') copyText(fact.url, function () { flash(e.target, 'Copied'); });
-        track('share:fact:' + fact.slug + ':' + ch);
-      });
-      wrap.appendChild(pop);
-      btn.setAttribute('aria-haspopup', 'true');
-      btn.setAttribute('aria-expanded', 'false');
-      btn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var opening = pop.hidden;
-        closePop();
-        if (opening) {
-          pop.hidden = false;
-          btn.setAttribute('aria-expanded', 'true');
-          openPop = pop;
-        }
-      });
+    // the popover is built for every device: primary UI where file-share is
+    // unavailable, visible fallback where a native share fails (a share that
+    // does nothing must never be silent)
+    var encT = encodeURIComponent(fact.sentence);
+    var encU = encodeURIComponent(fact.url);
+    var pop = document.createElement('div');
+    pop.className = 'share-pop';
+    pop.hidden = true;
+    pop.innerHTML =
+      '<a class="share-item" data-ch="x" target="_blank" rel="noopener" ' +
+        'href="https://twitter.com/intent/tweet?text=' + encT + '&url=' + encU + '">X</a>' +
+      '<a class="share-item" data-ch="whatsapp" target="_blank" rel="noopener" ' +
+        'href="https://wa.me/?text=' + encT + '%20' + encU + '">WhatsApp</a>' +
+      '<button data-ch="copy-link">Copy link</button>';
+    pop.addEventListener('click', function (e) {
+      var ch = e.target.getAttribute && e.target.getAttribute('data-ch');
+      if (!ch) return;
+      if (ch === 'copy-link') copyText(fact.url, function () { flash(e.target, 'Copied'); });
+      track('share:fact:' + fact.slug + ':' + ch);
+    });
+    wrap.appendChild(pop);
+    btn.setAttribute('aria-haspopup', 'true');
+    btn.setAttribute('aria-expanded', 'false');
+    function showPop() {
+      closePop();
+      pop.hidden = false;
+      btn.setAttribute('aria-expanded', 'true');
+      openPop = pop;
     }
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (canShareFiles()) {
+        factoidNativeShare(fact, showPop);
+        return;
+      }
+      if (pop.hidden) showPop(); else closePop();
+    });
     container.appendChild(wrap);
   }
 
