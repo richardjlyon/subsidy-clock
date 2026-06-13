@@ -1,26 +1,26 @@
 {
- "generated_at": "2026-06-12T23:56:44.907910+00:00",
+ "generated_at": "2026-06-13T06:52:28.387148+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-06-12T07:04:39.717223+00:00",
+   "retrieved_at": "2026-06-13T06:50:54.747369+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
-   "row_count": 108114
+   "row_count": 108189
   },
   "constraints": {
-   "retrieved_at": "2026-06-12T07:05:39.356095+00:00",
-   "source_date": "2026-04-02",
+   "retrieved_at": "2026-06-13T06:52:27.979227+00:00",
+   "source_date": "2026-03-26",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 73
+   "row_count": 20
   },
   "capacity_market": {
-   "retrieved_at": "2026-06-12T07:04:57.421142+00:00",
+   "retrieved_at": "2026-06-13T06:51:24.562211+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 744
   },
   "bsuos": {
-   "retrieved_at": "2026-06-12T23:54:05.897636+00:00",
+   "retrieved_at": "2026-06-13T06:51:26.739752+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/daily-balancing-costs-balancing-services-use-system",
    "row_count": 71
@@ -123,9 +123,9 @@
   },
   {
    "slug": "per-person",
-   "figure": "\u00a3176.28",
-   "sentence": "Direct renewable subsidy costs every UK person \u00a3176.28 a year.",
-   "display_html": "Per person, it is <span class=\"money num\">\u00a3176.28</span> a year <a class=\"eq-src\" href=\"https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2024\" title=\"ONS, Population estimates for the UK, mid-2024\">(UK population)</a>",
+   "figure": "\u00a3176.27",
+   "sentence": "Direct renewable subsidy costs every UK person \u00a3176.27 a year.",
+   "display_html": "Per person, it is <span class=\"money num\">\u00a3176.27</span> a year <a class=\"eq-src\" href=\"https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2024\" title=\"ONS, Population estimates for the UK, mid-2024\">(UK population)</a>",
    "label": "per person per year \u2014 the direct cost of renewable subsidy to every UK resident",
    "source_name": "ONS, Population estimates for the UK, mid-2024",
    "source_url": "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2024"
