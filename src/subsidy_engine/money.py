@@ -9,6 +9,7 @@ from datetime import date, timedelta
 import polars as pl
 
 from subsidy_engine.reference import ReferenceScheme
+from subsidy_engine.schemes import cfd
 from subsidy_engine.store import SnapshotStore
 
 SECONDS_PER_YEAR = 365.25 * 86400  # 31_557_600
@@ -198,15 +199,25 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
     """Assemble every scheme result plus perspective totals and the indirect layer total."""
     schemes: list[SchemeResult] = []
 
-    # --- CfD: bottom-up, split renewable / non-renewable by technology (M-7)
+    # --- CfD: bottom-up, split renewable / non-renewable by technology (M-7).
+    # is_renewable is classified here from the stored technology label, so the
+    # split reflects the current policy across the whole history rather than
+    # whatever was frozen into each snapshot at fetch time (cfd.classify also
+    # fails the build on any unclassified technology label).
     gen = store.latest("cfd", "generation")
     if gen is not None and gen.height:
+        gen = cfd.classify(gen)
         for part, flag, perspectives, label in [
             ("cfd_renewable", True, PERSPECTIVES, "CfD - renewables"),
             ("cfd_low_carbon", False, ["low_carbon"],
-             "CfD - nuclear & biomass"),
+             "CfD - nuclear"),
         ]:
             sub = gen.filter(pl.col("is_renewable") == flag)
+            # Only emit a line that has payments. Nuclear holds CfDs but has not
+            # generated, so it has no rows yet and simply does not appear until
+            # Hinkley Point C starts paying out — no £0 placeholder to carry.
+            if not sub.height:
+                continue
             daily = (sub.group_by("date").agg(pl.col("payment_gbp").sum().alias("cost_gbp"))
                      .sort("date"))
             gross, net = gross_net(sub, "payment_gbp")

@@ -235,7 +235,7 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
 # public CSV filename per scheme id - part of the published URL contract (/data/*.csv)
 CSV_NAMES = {
     "cfd_renewable":   "cfd",
-    "cfd_low_carbon":  "cfd-nuclear-biomass",
+    "cfd_low_carbon":  "cfd-nuclear",
     "ro":              "renewables-obligation",
     "fit":             "feed-in-tariffs",
     "constraints":     "constraints",

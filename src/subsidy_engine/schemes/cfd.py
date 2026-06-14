@@ -16,10 +16,13 @@ DATASET_URL = (
 )
 TRACKING_URL = "https://dp.lowcarboncontracts.uk/dataset/in-period-tracking"
 
-# Technologies counted in the renewables-only total. Anything not listed
-# (Nuclear, biomass variants, energy-from-waste, unknown future labels)
-# counts toward "all low-carbon" only, so the renewables figure is never
-# overstated by accident (spec M-7).
+# Renewable CfD technologies. These are the generators that hold renewable
+# CfDs and count toward the UK's renewable targets and REF's renewable
+# subsidy totals — so they belong in the renewables headline. The biomass
+# family (conversions like Drax, dedicated biomass, advanced conversion and
+# energy-from-waste) is officially renewable and is counted here; excluding it
+# would understate renewable subsidy and mismatch every external aggregate we
+# reconcile against (spec M-7).
 RENEWABLE_TECHNOLOGIES = {
     "Offshore Wind",
     "Onshore Wind",
@@ -29,7 +32,55 @@ RENEWABLE_TECHNOLOGIES = {
     "Wave",
     "Hydro",
     "Geothermal",
+    "Biomass Conversion",
+    "Dedicated Biomass",
+    "Advanced Conversion Technology",
+    "Energy from Waste",
 }
+
+# The only non-renewable low-carbon CfD technology. Nuclear is listed
+# explicitly (rather than caught as a residual) so that an unrecognised
+# technology label fails the build loudly — see _check_technologies — instead
+# of silently dropping into either bucket.
+NUCLEAR_TECHNOLOGIES = {
+    "Nuclear",
+}
+
+KNOWN_TECHNOLOGIES = RENEWABLE_TECHNOLOGIES | NUCLEAR_TECHNOLOGIES
+
+
+def _check_technologies(df: pl.DataFrame) -> None:
+    """Fail loudly if LCCC publishes a technology we have not classified.
+
+    Every CfD technology must be explicitly assigned to either the renewable
+    or the nuclear set. An unknown label is the one way a generator could be
+    silently mis-bucketed (the failure mode that previously left biomass out
+    of the renewables headline), so we refuse to build until it is classified."""
+    seen = set(df.select("technology").unique().to_series().to_list())
+    unknown = {t for t in seen if t is not None} - KNOWN_TECHNOLOGIES
+    if unknown:
+        raise ValueError(
+            "Unclassified CfD technology label(s): "
+            f"{sorted(unknown)}. Add each to RENEWABLE_TECHNOLOGIES or "
+            "NUCLEAR_TECHNOLOGIES in schemes/cfd.py before rebuilding.")
+
+
+def is_renewable_expr() -> pl.Expr:
+    """The single source of truth for the renewable/non-renewable CfD split.
+
+    Used both when parsing freshly fetched data and when building the money
+    model from the stored history, so a change to RENEWABLE_TECHNOLOGIES takes
+    effect on the whole back-catalogue without refetching — the classification
+    is a live policy, not a value frozen into the immutable store."""
+    return (pl.col("technology").is_in(RENEWABLE_TECHNOLOGIES)
+            .fill_null(False).alias("is_renewable"))
+
+
+def classify(df: pl.DataFrame) -> pl.DataFrame:
+    """Apply the current renewable/nuclear policy to a generation frame,
+    failing loudly on any unclassified technology label."""
+    _check_technologies(df)
+    return df.with_columns(is_renewable_expr())
 
 
 def _lccc_date(col: str) -> pl.Expr:
@@ -38,7 +89,7 @@ def _lccc_date(col: str) -> pl.Expr:
 
 def parse_generation(records: list[dict]) -> pl.DataFrame:
     df = pl.DataFrame(records, infer_schema_length=None)
-    return (
+    parsed = (
         df.select(
             _lccc_date("Settlement_Date"),
             pl.col("CfD_ID").alias("cfd_id"),
@@ -50,9 +101,14 @@ def parse_generation(records: list[dict]) -> pl.DataFrame:
               .alias("strike_price_gbp_mwh"),
         )
         .drop_nulls("payment_gbp")
-        .with_columns(pl.col("technology").is_in(RENEWABLE_TECHNOLOGIES).fill_null(False).alias("is_renewable"))
         .sort("date", "cfd_id")
     )
+    # The store holds only what LCCC publishes; is_renewable is our
+    # classification (a live policy) and is derived at build time, not frozen
+    # into the snapshot — see classify(). We still guard at fetch so a new
+    # technology label fails fast.
+    _check_technologies(parsed)
+    return parsed
 
 
 def parse_tracking(records: list[dict]) -> pl.DataFrame:

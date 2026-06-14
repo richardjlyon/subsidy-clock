@@ -30,7 +30,7 @@ EXPLAINERS = {
     "ro":              ("renewables-obligation",    "Renewables Obligation"),
     "fit":             ("feed-in-tariffs",          "Feed-in Tariffs"),
     "cfd_renewable":   ("contracts-for-difference", "Contracts for Difference"),
-    "cfd_low_carbon":  ("cfd-nuclear-biomass",      "CfD — nuclear & biomass"),
+    "cfd_low_carbon":  ("cfd-nuclear",              "CfD — nuclear"),
     "capacity_market": ("capacity-market",          "Capacity Market"),
     "ccl":             ("climate-change-levy",      "Climate Change Levy"),
     "bsuos":           ("bsuos",                    "Balancing the grid (BSUoS)"),

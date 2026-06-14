@@ -78,7 +78,7 @@
     ro:              { slug: 'renewables-obligation',    name: 'Renewables Obligation',                color: 'var(--c-ro)' },
     fit:             { slug: 'feed-in-tariffs',          name: 'Feed-in Tariffs',                      color: 'var(--c-fit)' },
     cfd_renewable:   { slug: 'contracts-for-difference', name: 'Contracts for Difference',             color: 'var(--c-cfdr)' },
-    cfd_low_carbon:  { slug: 'cfd-nuclear-biomass',      name: 'CfD — nuclear & biomass',              color: 'var(--c-cfdl)' },
+    cfd_low_carbon:  { slug: 'cfd-nuclear',              name: 'CfD — nuclear',                        color: 'var(--c-cfdl)' },
     constraints:     { slug: 'constraints',              name: 'Paid to switch off (constraints)',     color: 'var(--c-con)' },
     tnuos:           { slug: 'tnuos',                    name: 'Grid upgrades for renewables (TNUoS)', color: 'var(--c-tnuos)' },
     ccl:             { slug: 'climate-change-levy',      name: 'Climate Change Levy',                  color: 'var(--c-ccl)' },
@@ -323,10 +323,15 @@
     var lc = totals.perspectives.low_carbon;
     if (lc) {
       var delta = lc.cumulative_gbp - totals.perspectives.renewables.cumulative_gbp;
-      document.getElementById('direct-card-foot').innerHTML =
-        'Under the same schemes, nuclear and biomass received a further ' +
-        '<span class="money num">' + fmtCompact(delta) + '</span> — ' +
-        '<a href="/methodology#perspectives">see the methodology page</a>.';
+      // Biomass is counted in the renewable headline; the only thing the
+      // low-carbon view adds is nuclear, which is £0 until Hinkley generates.
+      document.getElementById('direct-card-foot').innerHTML = delta > 1e6
+        ? 'Under the same schemes, nuclear received a further ' +
+          '<span class="money num">' + fmtCompact(delta) + '</span> — ' +
+          '<a href="/methodology#perspectives">see the methodology page</a>.'
+        : 'Nuclear is paid under the same contracts (Hinkley Point C), but ' +
+          'has not yet generated — nothing has been paid to date. ' +
+          '<a href="/methodology#perspectives">See the methodology page</a>.';
     }
   }
 

@@ -71,14 +71,16 @@ TRACKING_RECORDS = [
 
 def test_parse_generation_types_and_values():
     df = cfd.parse_generation(GENERATION_RECORDS)
+    # is_renewable is NOT stored — it is a derived classification applied at
+    # build time (see test_classify_* below), so the parsed/stored frame holds
+    # only the source columns LCCC publishes.
     assert df.columns == [
         "date", "cfd_id", "unit_name", "technology",
-        "generation_mwh", "payment_gbp", "strike_price_gbp_mwh", "is_renewable",
+        "generation_mwh", "payment_gbp", "strike_price_gbp_mwh",
     ]
     row = df.filter(df["cfd_id"] == "AR2-TKN-203").to_dicts()[0]
     assert row["date"] == date(2024, 8, 20)
     assert row["payment_gbp"] == 116500.39
-    assert row["is_renewable"] is True
 
 
 def test_negative_payments_preserved():
@@ -87,17 +89,37 @@ def test_negative_payments_preserved():
     assert row["payment_gbp"] == -4250.52
 
 
-def test_nuclear_is_not_renewable():
-    df = cfd.parse_generation(GENERATION_RECORDS)
+def test_classify_nuclear_is_not_renewable():
+    df = cfd.classify(cfd.parse_generation(GENERATION_RECORDS))
     row = df.filter(df["cfd_id"] == "INV-HPC-001").to_dicts()[0]
     assert row["is_renewable"] is False
 
 
-def test_unknown_technology_defaults_to_not_renewable():
-    """Spec M-7: the renewables total must never be overstated by accident."""
+def test_classify_biomass_is_renewable():
+    """Biomass holds renewable CfDs and counts toward renewable targets, so it
+    belongs in the renewables headline (REF and every external aggregate count
+    it there)."""
+    for tech in ("Biomass Conversion", "Dedicated Biomass",
+                 "Advanced Conversion Technology", "Energy from Waste"):
+        df = cfd.classify(cfd.parse_generation(
+            [dict(GENERATION_RECORDS[0], Technology=tech)]))
+        assert df.to_dicts()[0]["is_renewable"] is True, tech
+
+
+def test_classify_wind_is_renewable():
+    df = cfd.classify(cfd.parse_generation(GENERATION_RECORDS))
+    row = df.filter(df["cfd_id"] == "AR2-TKN-203").to_dicts()[0]
+    assert row["is_renewable"] is True
+
+
+def test_unknown_technology_raises():
+    """An unrecognised label must fail the build, not silently drop into a
+    bucket — the failure mode that previously left biomass out of the headline.
+    Guarded at both fetch (parse_generation) and build (classify)."""
+    import pytest
     record = dict(GENERATION_RECORDS[0], Technology="Future Mystery Tech")
-    df = cfd.parse_generation([record])
-    assert df.to_dicts()[0]["is_renewable"] is False
+    with pytest.raises(ValueError, match="Unclassified CfD technology"):
+        cfd.parse_generation([record])
 
 
 def test_parse_tracking_drops_rows_without_actuals():
@@ -106,9 +128,9 @@ def test_parse_tracking_drops_rows_without_actuals():
     assert df.to_dicts()[0] == {"date": date(2024, 10, 1), "payment_gbp": 8880757.19}
 
 
-def test_null_technology_is_not_renewable():
+def test_classify_null_technology_is_not_renewable():
     record = dict(GENERATION_RECORDS[0], Technology=None)
-    df = cfd.parse_generation([record])
+    df = cfd.classify(cfd.parse_generation([record]))
     assert df.to_dicts()[0]["is_renewable"] is False
 
 

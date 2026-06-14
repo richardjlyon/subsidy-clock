@@ -10,7 +10,7 @@ This repository is the complete system: the data engine, the raw data store, the
 
 Two layers, never invisibly blended:
 
-- **Direct subsidies (measured)** — payments traceable to generators in official settlement data: Contracts for Difference (shown as two entries: renewables, and nuclear & biomass), the Renewables Obligation, Feed-in Tariffs, and wind constraint payments. The dashboard's headline counts **renewable generators only**, in nominal pounds — the most conservative reading.
+- **Direct subsidies (measured)** — payments traceable to generators in official settlement data: Contracts for Difference (renewables, including biomass), the Renewables Obligation, Feed-in Tariffs, and wind constraint payments. The dashboard's headline counts **renewable generators**, in nominal pounds. Biomass holds renewable contracts and counts towards the UK's renewable targets, so it is in the headline; the only CfD generation classed as non-renewable is nuclear (low-carbon but not renewable), which is tracked separately and appears once Hinkley Point C generates.
 - **Indirect costs (estimated)** — costs that settlement data does not attribute to individual generators: the Capacity Market, Climate Change Levy and Carbon Price Support, emissions trading, transmission charges (TNUoS) and balancing costs (BSUoS). Each carries a published attribution rule and is always marked estimated.
 
 Some figures do combine the layers — the "in today's money" lead-in, the bracketed chip figures, the cumulative chart — but a combined figure always says so, and the estimated share is never folded into the measured headline.
@@ -29,7 +29,7 @@ uv run python -m subsidy_engine build-site   # write site/data/*.json and the /d
 cd site && python3 -m http.server
 ```
 
-Open http://localhost:8000 to view the dashboard. Two further commands:
+Open http://localhost:8000 to view the dashboard. (The deployed site uses clean URLs, so explainer links have no `.html`; with `http.server` either add the `.html` suffix or run `npx serve site`, which matches production.) Two further commands:
 
 ```sh
 uv run python -m subsidy_engine backfill-constraints --start 2024-01-01 --end 2024-03-31
