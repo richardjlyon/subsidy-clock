@@ -1,0 +1,44 @@
+/* ── Subsidy Clock · Spacing, radii, borders, layout ────────────────────
+   The ledger is built on hairline rules and generous card padding. There
+   are essentially no drop shadows — depth comes from a 1px border and the
+   warm card tint against paper. Radii are soft but restrained. */
+
+:root {
+  /* ---- Spacing scale ---- */
+  --sp-1: 2px;
+  --sp-2: 4px;
+  --sp-3: 8px;
+  --sp-4: 12px;
+  --sp-5: 16px;
+  --sp-6: 20px;
+  --sp-7: 26px;
+  --sp-8: 34px;
+  --sp-9: 44px;
+  --sp-10: 64px;
+
+  /* ---- Radii ---- */
+  --r-xs:   2px;   /* swatch / tick mark */
+  --r-sm:   4px;   /* badges, dots */
+  --r-md:   6px;   /* bar fills, small controls */
+  --r-lg:   10px;  /* strips, inner cards, explainer cards */
+  --r-xl:   14px;  /* primary cards */
+  --r-pill: 999px; /* pills, chips */
+
+  /* ---- Borders ---- */
+  --bw:        1px;
+  --border:    var(--bw) solid var(--line);
+  --border-soft: var(--bw) solid var(--line-soft);
+
+  /* ---- The one shadow: a barely-there double-rule lift ---- */
+  --shadow-card: none;                                   /* cards use border only */
+  --shadow-rule: inset 0 -6px 0 -5px rgba(247,244,238,0.30); /* masthead hairline */
+
+  /* ---- Layout ---- */
+  --container:    1060px;
+  --container-prose: 760px;
+  --gutter:       20px;
+
+  /* ---- Paper texture: the dot grid ---- */
+  --dot-grid: radial-gradient(rgba(35, 33, 28, 0.025) 1px, transparent 1px); /* @kind other */
+  --dot-size: 26px 26px; /* @kind other */
+}

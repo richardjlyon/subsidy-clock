@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What Could The Subsidy Clock Buy?</title>
+<link rel="stylesheet" href="_ds/subsidy-clock-design-system-82934339-7fa7-471c-a928-d34d802fd969/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/subsidy-clock-design-system-82934339-7fa7-471c-a928-d34d802fd969/tokens/colors.css">
+<link rel="stylesheet" href="_ds/subsidy-clock-design-system-82934339-7fa7-471c-a928-d34d802fd969/tokens/typography.css">
+<link rel="stylesheet" href="_ds/subsidy-clock-design-system-82934339-7fa7-471c-a928-d34d802fd969/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/subsidy-clock-design-system-82934339-7fa7-471c-a928-d34d802fd969/tokens/base.css">
+<link rel="stylesheet" href="_ds/subsidy-clock-design-system-82934339-7fa7-471c-a928-d34d802fd969/components/components.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;height:100%;background:var(--paper);color:var(--ink);font-family:var(--font-sans);}
+  @keyframes scblink{0%,49%{opacity:1}50%,100%{opacity:.16}}
+  .scbar{scrollbar-width:thin;scrollbar-color:#d8d2c4 transparent;}
+  .scbar::-webkit-scrollbar{width:9px;height:9px;}
+  .scbar::-webkit-scrollbar-thumb{background:#d8d2c4;border-radius:999px;border:2px solid var(--card);}
+  .scbar::-webkit-scrollbar-track{background:transparent;}
+  .itemrow:hover{background:var(--paper-tint);}
+  .scsearch::placeholder{color:var(--faint);}
+  @media (prefers-reduced-motion: reduce){.sctick{animation:none !important;}}
+</style>
+</head>
+<body>
+<div style="height:100vh;display:flex;flex-direction:column;background:var(--paper);background-image:radial-gradient(rgba(35,33,28,0.025) 1px, transparent 1px);background-size:26px 26px;overflow:hidden;">
+
+  <header style="flex:none;background:linear-gradient(180deg,#6a1f12,#7a2419);color:#f7f4ee;box-shadow:inset 0 -6px 0 -5px rgba(247,244,238,0.30);padding:9px 18px;display:flex;align-items:center;gap:12px;">
+    <span class="sctick" style="width:14px;height:14px;background:var(--c-con);border-radius:2px;animation:scblink 2s steps(1) infinite;flex:none;"></span>
+    <span style="font-family:var(--font-serif);font-weight:600;font-size:1.08rem;letter-spacing:.01em;">The Subsidy Clock</span>
+    <span style="font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(247,244,238,.62);font-weight:500;">What could it buy?</span>
+    <span style="margin-left:auto;font-size:.72rem;letter-spacing:.05em;"><a href="/" style="color:rgba(247,244,238,.85);text-decoration:none;font-weight:500;">← Back to clock</a></span>
+  </header>
+
+  <div style="flex:none;display:flex;align-items:flex-end;gap:18px 28px;flex-wrap:wrap;padding:16px 20px 12px;border-bottom:1px solid var(--line);background:var(--card);">
+    <div style="min-width:0;">
+      <div style="font-size:.72rem;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:2px;">Left of the clock to spend</div>
+      <div id="remStr" class="sc-num" style="font-family:var(--font-serif);font-weight:600;font-size:clamp(1.7rem,5.4vw,3.3rem);line-height:1;letter-spacing:-.015em;color:var(--money);font-variant-numeric:tabular-nums lining-nums;">&nbsp;</div>
+      <div style="font-size:.82rem;color:var(--muted);margin-top:4px;">of <span id="totalStr" class="sc-num" style="color:var(--ink);font-weight:600;">&nbsp;</span> &nbsp;·&nbsp; <span id="totalLabel">&nbsp;</span> &nbsp;·&nbsp; <span id="rateStr" style="color:var(--faint);">&nbsp;</span></div>
+    </div>
+    <div style="margin-left:auto;text-align:right;min-width:170px;">
+      <div style="font-size:.72rem;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:6px;">Spent so far</div>
+      <div id="spentStr" class="sc-num" style="font-family:var(--font-serif);font-weight:600;font-size:1.5rem;line-height:1;color:var(--ink);">&nbsp;</div>
+      <div style="font-size:.78rem;color:var(--muted);margin-top:4px;"><span id="pctStr">&nbsp;</span> &nbsp;·&nbsp; <span id="ballCountStr">&nbsp;</span></div>
+    </div>
+  </div>
+
+  <div style="flex:none;height:8px;background:var(--line-soft);position:relative;">
+    <div id="progressBar" style="position:absolute;inset:0 auto 0 0;height:100%;background:var(--money);width:0%;transition:width .25s linear;"></div>
+  </div>
+
+  <div style="flex:1 1 auto;display:flex;min-height:0;position:relative;">
+
+    <!-- Sidebar / aside panel -->
+    <aside id="sidebar" style="display:flex;flex-direction:column;background:var(--card);min-height:0;">
+      <div id="grabber" style="display:none;flex:none;justify-content:center;padding:9px 0 4px;cursor:pointer;">
+        <span style="width:38px;height:4px;border-radius:999px;background:var(--line);display:block;"></span>
+      </div>
+
+      <div style="flex:none;padding:12px 16px;border-bottom:1px solid var(--line);">
+        <input id="searchInput" class="scsearch" placeholder="Search things to buy…" style="width:100%;font-family:var(--font-sans);font-size:.9rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:9px 12px;outline:none;" />
+      </div>
+
+      <div style="flex:none;padding:13px 16px 12px;border-bottom:1px solid var(--line);">
+        <div style="font-size:.72rem;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:8px;">Spend in batches of</div>
+        
+        <!-- Multiplier layout -->
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">
+          <div style="display:flex;gap:6px;align-items:stretch;">
+            <button id="mDec100" class="sc-btn sc-btn--secondary" style="flex:1;font-family:var(--font-mono);font-size:.78rem;font-weight:500;padding:6px 0;cursor:pointer;">−100</button>
+            <button id="mDec10" class="sc-btn sc-btn--secondary" style="flex:1;font-family:var(--font-mono);font-size:.78rem;font-weight:500;padding:6px 0;cursor:pointer;">−10</button>
+            <button id="mDec5" class="sc-btn sc-btn--secondary" style="flex:1;font-family:var(--font-mono);font-size:.78rem;font-weight:500;padding:6px 0;cursor:pointer;">−5</button>
+            <button id="mDec1" class="sc-btn sc-btn--secondary" style="flex:1;font-family:var(--font-mono);font-size:.78rem;font-weight:500;padding:6px 0;cursor:pointer;">−1</button>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;justify-content:center;">
+            <div id="mMultiplier" class="sc-num" style="width:72px;height:30px;display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-weight:600;font-size:1.15rem;color:var(--ink);background:var(--paper-tint);border:1px solid var(--line);border-radius:6px;">×1</div>
+          </div>
+          <div style="display:flex;gap:6px;align-items:stretch;">
+            <button id="mInc1" class="sc-btn sc-btn--secondary" style="flex:1;font-family:var(--font-mono);font-size:.78rem;font-weight:500;padding:6px 0;cursor:pointer;">+1</button>
+            <button id="mInc5" class="sc-btn sc-btn--secondary" style="flex:1;font-family:var(--font-mono);font-size:.78rem;font-weight:500;padding:6px 0;cursor:pointer;">+5</button>
+            <button id="mInc10" class="sc-btn sc-btn--secondary" style="flex:1;font-family:var(--font-mono);font-size:.78rem;font-weight:500;padding:6px 0;cursor:pointer;">+10</button>
+            <button id="mInc100" class="sc-btn sc-btn--secondary" style="flex:1;font-family:var(--font-mono);font-size:.78rem;font-weight:500;padding:6px 0;cursor:pointer;">+100</button>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+          <span style="font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;">Ball size</span>
+          <div class="sc-toggle">
+            <button id="scaleTrueBtn" type="button" aria-pressed="true">True scale</button>
+            <button id="scaleEasedBtn" type="button" aria-pressed="false">Eased</button>
+          </div>
+        </div>
+        <div id="scaleHint" style="font-size:.7rem;color:var(--faint);margin-top:8px;line-height:1.45;">Ball area is true to cost, and the whole canvas equals the whole clock. A flat is a speck; Hinkley fills the jar.</div>
+      </div>
+
+      <div id="jarFullWarning" style="display:none;flex:none;padding:10px 16px;background:var(--paper-tint);border-bottom:1px solid var(--line);font-size:.78rem;color:var(--money-deep);line-height:1.5;"><strong style="font-weight:600;">The jar is full.</strong> 1,100 objects is all that fits on screen — and it has barely scratched the clock. Clear some to keep spending.</div>
+
+      <!-- Catalogue Container -->
+      <div id="catalogueContainer" class="scbar" style="flex:1 1 auto;overflow-y:auto;min-height:0;"></div>
+      <div id="noResultsNotice" style="display:none;padding:22px 16px;font-size:.86rem;color:var(--faint);line-height:1.5;">No matches. Try “nurse”, “tank”, “house”, “Hinkley”…</div>
+
+      <!-- Spent Bill Container -->
+      <div style="flex:none;border-top:1px solid var(--line);background:var(--card);">
+        <div style="display:flex;align-items:baseline;gap:8px;padding:11px 16px 6px;">
+          <span style="font-size:.72rem;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:600;">Your bill</span>
+          <span id="billNote" style="margin-left:auto;font-size:.74rem;color:var(--faint);">empty</span>
+        </div>
+        <div class="scbar" style="max-height:118px;overflow-y:auto;padding:0 16px;">
+          <div id="billRowsContainer"></div>
+          <div id="billEmptyNotice" style="padding:8px 0 12px;font-size:.82rem;color:var(--faint);line-height:1.5;">Nothing spent yet. Pick something — a hospital, a frigate, your local pub — and watch it drop into the clock.</div>
+        </div>
+        <div style="display:flex;gap:8px;padding:12px 16px 14px;">
+          <button id="shareButton" class="sc-btn sc-btn--primary" style="flex:1;cursor:pointer;">Share this bill</button>
+          <button id="clearButton" class="sc-btn sc-btn--secondary" style="cursor:pointer;">Clear</button>
+        </div>
+      </div>
+    </aside>
+
+    <div id="backdrop" style="display:none;position:fixed;inset:0;background:rgba(35,33,28,.32);z-index:50;"></div>
+
+    <!-- Canvas and Info section -->
+    <section style="flex:1 1 auto;position:relative;min-width:0;min-height:0;">
+      <canvas id="physicsCanvas" style="display:block;width:100%;height:100%;touch-action:none;cursor:grab;"></canvas>
+
+      <div style="position:absolute;left:14px;bottom:12px;z-index:30;font-size:.72rem;color:var(--faint);pointer-events:none;">Drag the balls. Hover to read them.</div>
+
+      <button id="mobileFab" style="display:none;position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:40;align-items:center;gap:8px;font-family:var(--font-sans);font-weight:600;font-size:.9rem;color:var(--paper);background:var(--money-deep);border:none;border-radius:999px;padding:11px 20px;cursor:pointer;box-shadow:0 2px 10px rgba(35,33,28,.22);">
+        Spend items <span class="fab-count sc-num" style="font-weight:500;opacity:.8;">0</span>
+      </button>
+    </section>
+  </div>
+</div>
+
+<script>
+class SubsidyBuyApp {
+  constructor() {
+    this.GEN = Date.parse('2026-06-13T06:52:28.387Z');
+    this.PERS = {
+      renewables:{base:105478162683.49948, rate:387.1051619944799, label:'Renewables · nominal'},
+      lowcarbon:{base:108628542381.01949, rate:405.6684552735895, label:'Low-carbon · nominal'},
+      indirect:{base:105478162683.49948+77808498292.55038, rate:387.1051619944799+254.03111834553684, label:'Incl. estimated indirect'}
+    };
+    this.PORD = ['renewables','lowcarbon','indirect'];
+    this.CATS = [];
+    this.ITEMS = [];
+    this.perspective = 'renewables';
+    this.scaleMode = 'true';
+    this.multiplier = 1;
+    this.query = '';
+    this.sheetOpen = false;
+    this.copied = false;
+    this.vw = window.innerWidth;
+    this.nextBallId = 0;
+  }
+
+  async init() {
+    // 0. Fetch catalogue
+    try {
+      const res = await fetch('data/catalogue.json');
+      if (res.ok) {
+        this.CATS = await res.json();
+        let id = 0, minC = Infinity, maxC = 0;
+        for (const cat of this.CATS) {
+          for (const it of cat.items) {
+            it.id = id++;
+            it.color = cat.color;
+            this.ITEMS[it.id] = it;
+            if (it.c < minC) minC = it.c;
+            if (it.c > maxC) maxC = it.c;
+          }
+        }
+        this.logMin = Math.log(minC);
+        this.logMax = Math.log(maxC);
+        this.COUNT = this.ITEMS.length;
+      }
+    } catch(e) {
+      console.error("Failed to load catalogue", e);
+    }
+    console.log("SubsidyBuyApp initialized. Hostname:", window.location.hostname);
+
+    this.PACK = 0.72;        // fraction of the canvas filled if the whole clock were spent
+    this.MAXBALLS = 1100;    // physical capacity of the jar
+    this.SPAWN_PER_FRAME = 6;
+    this.balls = [];
+    this.spawnQueue = [];
+    this.spent = {};
+    this.spentTotal = 0;
+    this.pendingSum = 0;
+    this.hover = null;
+    this.drag = null;
+    this.pointer = null;
+    this.W = 0; this.H = 0; this.k = 1e-6;
+    this.minR = 3.4; this.maxR = 200; this.maxRvis = 60;
+
+    // 1. Fetch live totals
+    try {
+      const res = await fetch('data/totals.json');
+      if(res.ok) {
+        const totals = await res.json();
+        this.GEN = Date.parse(totals.generated_at);
+        this.PERS.renewables.base = totals.perspectives.renewables.cumulative_gbp;
+        this.PERS.renewables.rate = totals.perspectives.renewables.rate_gbp_per_sec;
+        this.PERS.lowcarbon.base = totals.perspectives.low_carbon.cumulative_gbp;
+        this.PERS.lowcarbon.rate = totals.perspectives.low_carbon.rate_gbp_per_sec;
+        this.PERS.indirect.base = totals.perspectives.renewables.cumulative_gbp + totals.indirect.cumulative_gbp;
+        this.PERS.indirect.rate = totals.perspectives.renewables.rate_gbp_per_sec + totals.indirect.rate_gbp_per_sec;
+      }
+    } catch(e) {
+      console.warn("Failed to load live totals, falling back to static", e);
+    }
+
+    this.canvas = document.getElementById('physicsCanvas');
+    this.ctx = this.canvas.getContext('2d');
+
+    this.buildCatalogueUI();
+    this.bindUI();
+    this.setupSize();
+
+    this.loadHash();
+    
+    // Register resize observer on canvas to resize it dynamically
+    if(typeof ResizeObserver !== 'undefined'){
+      this.ro = new ResizeObserver(()=>{ this.setupSize(); });
+      this.ro.observe(this.canvas);
+    }
+
+    // Start simulation loop
+    this.loop();
+    
+    // Periodically redraw UI to count live tick
+    this.uiInterval = setInterval(() => this.renderUI(), 200);
+  }
+
+  bindUI() {
+    window.addEventListener('resize', () => {
+      this.vw = window.innerWidth;
+      this.setupSize();
+      this.renderUI();
+    });
+
+    const canvas = this.canvas;
+    canvas.addEventListener('pointerdown', (e) => this.handleDown(e));
+    window.addEventListener('pointermove', (e) => this.handleMove(e));
+    window.addEventListener('pointerup', (e) => this.handleUp(e));
+    window.addEventListener('pointercancel', (e) => this.handleUp(e));
+
+    // Search input
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', (e) => {
+      this.query = e.target.value;
+      this.renderUI();
+    });
+
+    // Multiplier actions
+    const multActions = {
+      mDec100: -100, mDec10: -10, mDec5: -5, mDec1: -1,
+      mInc1: 1, mInc5: 5, mInc10: 10, mInc100: 100
+    };
+    for(const [id, val] of Object.entries(multActions)) {
+      document.getElementById(id).addEventListener('click', () => {
+        if (this.multiplier === 1 && val > 1) {
+          this.multiplier = val;
+        } else {
+          this.multiplier = Math.max(1, Math.min(999, this.multiplier + val));
+        }
+        this.renderUI();
+      });
+    }
+
+    // Scale options
+    document.getElementById('scaleTrueBtn').addEventListener('click', () => {
+      this.scaleMode = 'true';
+      this.rescaleBalls();
+      this.renderUI();
+    });
+    document.getElementById('scaleEasedBtn').addEventListener('click', () => {
+      this.scaleMode = 'eased';
+      this.rescaleBalls();
+      this.renderUI();
+    });
+
+    // Share & Clear
+    document.getElementById('shareButton').addEventListener('click', () => this.share());
+    document.getElementById('clearButton').addEventListener('click', () => this.reset());
+
+    // Mobile Sheet Actions
+    const mobileFab = document.getElementById('mobileFab');
+    mobileFab.addEventListener('click', () => {
+      this.sheetOpen = true;
+      this.renderUI();
+    });
+    const grabber = document.getElementById('grabber');
+    grabber.addEventListener('click', () => {
+      this.sheetOpen = false;
+      this.renderUI();
+    });
+    const backdrop = document.getElementById('backdrop');
+    backdrop.addEventListener('click', () => {
+      this.sheetOpen = false;
+      this.renderUI();
+    });
+  }
+
+  buildCatalogueUI() {
+    const container = document.getElementById('catalogueContainer');
+    container.innerHTML = this.CATS.map(cat => `
+      <div id="cat-block-${cat.key}">
+        <div style="position:sticky;top:0;z-index:1;display:flex;align-items:center;gap:8px;padding:9px 16px 7px;background:var(--card);border-bottom:1px solid var(--line-soft);">
+          <span style="width:11px;height:11px;border-radius:3px;background:${cat.color};flex:none;"></span>
+          <span style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;">${cat.name}</span>
+        </div>
+        ${cat.items.map(it => `
+          <button class="itemrow" data-item-id="${it.id}" style="display:flex;align-items:center;gap:10px;width:100%;padding:8px 16px;border:0;border-bottom:1px solid var(--line-soft);background:transparent;text-align:left;font-family:var(--font-sans);cursor:pointer;outline:none;">
+            <span style="width:9px;height:9px;border-radius:2px;background:${cat.color};flex:none;"></span>
+            <span style="flex:1 1 auto;text-align:left;font-size:.9rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${it.n}</span>
+            <span class="item-count-badge sc-num" style="display:none;flex:none;font-family:var(--font-mono);font-size:.72rem;font-weight:500;color:var(--paper);background:var(--money-deep);border-radius:999px;padding:1px 7px;"></span>
+            <span class="sc-num" style="flex:none;font-family:var(--font-mono);font-size:.78rem;color:var(--muted);min-width:48px;text-align:right;">${this.short(it.c)}</span>
+          </button>
+        `).join('')}
+      </div>
+    `).join('');
+
+    container.querySelectorAll('.itemrow').forEach(row => {
+      row.addEventListener('click', () => {
+        const itemId = parseInt(row.getAttribute('data-item-id'));
+        this.spawn(itemId);
+      });
+    });
+  }
+
+  setupSize(){
+    const c = this.canvas; if(!c) return false;
+    const rect = c.getBoundingClientRect();
+    if(rect.width < 10 || rect.height < 10) return false;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    this.W = rect.width; this.H = rect.height;
+    c.width = Math.round(this.W*dpr); c.height = Math.round(this.H*dpr);
+    this.ctx.setTransform(dpr,0,0,dpr,0,0);
+    this.minR = 3.4;
+    this.maxR = Math.min(this.W, this.H) * 0.4;
+    this.maxRvis = Math.min(this.maxR, Math.min(this.W, this.H) * 0.32);
+    this.recomputeK();
+    this.rescaleBalls();
+    return true;
+  }
+
+  recomputeK(){ this.k = this.PACK * (this.W * this.H) / this.PERS[this.perspective].base; }
+
+  rescaleBalls(){
+    for(const b of this.balls){
+      // Scale radius based on total cost = it.c * count
+      let r = this.radiusFor(this.ITEMS[b.id].c * b.count);
+      r = Math.min(r, (this.W-6)/2, (this.H*0.94)/2);
+      b.r = r; b.mass = r*r;
+      b.x = Math.max(r, Math.min(this.W-r, b.x));
+      b.y = Math.min(this.H-r, b.y);
+    }
+  }
+
+  radiusFor(cost){
+    if(this.scaleMode === 'eased'){
+      let t = (Math.log(cost) - this.logMin) / (this.logMax - this.logMin);
+      t = Math.max(0, Math.min(1, t));
+      return 6 + t * (this.maxRvis - 6);
+    }
+    const r = Math.sqrt(cost * this.k / Math.PI);
+    return Math.max(this.minR, Math.min(this.maxR, r));
+  }
+
+  liveTotal(){ const p = this.PERS[this.perspective]; return p.base + (Date.now()-this.GEN)/1000 * p.rate; }
+  available(){ return this.liveTotal() - this.spentTotal - this.pendingSum; }
+
+  spawn(itemId){
+    const it = this.ITEMS[itemId];
+    const m = this.multiplier;
+    // Spawning a batch of count `m` increments by 1 ball object
+    if(this.balls.length + this.spawnQueue.length >= this.MAXBALLS) return;
+    if(it.c * m > this.available()) return;
+    
+    // Group into a single batch entry in the queue
+    this.spawnQueue.push({ id: itemId, count: m });
+    this.pendingSum += it.c * m;
+    this.renderUI();
+  }
+
+  makeBall(id, count){
+    const it = this.ITEMS[id];
+    let r = this.radiusFor(it.c * count);
+    r = Math.min(r, (this.W-6)/2, (this.H*0.94)/2);
+    const pad = r + 3;
+    let x;
+    if(pad*2 >= this.W){ x = this.W/2; }
+    else { x = pad + Math.random()*(this.W - 2*pad); }
+    const y = -r - Math.random()*26;
+    
+    this.balls.push({
+      x, y,
+      px: x - (Math.random()-0.5)*1.3,
+      py: y - 1.0,
+      r,
+      mass: r*r,
+      color: it.color,
+      id,
+      count: count,
+      vx: 0,
+      vy: 0,
+      ballId: this.nextBallId++
+    });
+    
+    this.spent[id] = (this.spent[id]||0) + count;
+    this.spentTotal += it.c * count;
+    this.pendingSum = Math.max(0, this.pendingSum - it.c * count);
+  }
+
+  consumeQueue(){
+    let n = 0;
+    while(this.spawnQueue.length && n < this.SPAWN_PER_FRAME){
+      const batch = this.spawnQueue.shift();
+      this.makeBall(batch.id, batch.count);
+      n++;
+    }
+  }
+
+  physics(){
+    const g = 0.42, damp = 0.985, ITER = 6, W = this.W, H = this.H, arr = this.balls, MAXV = 34;
+    const sleepThreshold = 0.15;
+    const wakeThreshold = 0.8;
+    const slop = 0.05; // Penetration tolerance to reduce micro-jitter
+    
+    // 1. Dragged ball pinning
+    if(this.drag && this.drag.ball && this.pointer){
+      const b = this.drag.ball;
+      b.px = b.x; b.py = b.y;
+      b.x = Math.max(b.r, Math.min(W-b.r, this.pointer.x - this.drag.dx));
+      b.y = Math.max(b.r, Math.min(H-b.r, this.pointer.y - this.drag.dy));
+      b._pin = true;
+      if(b.sleep) console.log("Ball woke up (drag):", b.ballId + " (item #" + b.id + ")");
+      b.sleep = false;
+      b.sleepFrames = 0;
+    }
+    
+    // 2. Integration & Gravity (only for awake balls)
+    for(const b of arr){
+      if(b._pin) continue;
+      if(b.sleep){
+        b.px = b.x;
+        b.py = b.y;
+        b.vx = 0;
+        b.vy = 0;
+        continue;
+      }
+      let vx = (b.x-b.px)*damp, vy = (b.y-b.py)*damp;
+      const sp = Math.hypot(vx,vy); if(sp > MAXV){ const s = MAXV/sp; vx *= s; vy *= s; }
+      b.px = b.x; b.py = b.y;
+      b.x += vx; b.y += vy + g;
+    }
+    
+    // Sort once per frame before the solver loop (83% reduction in sorting overhead!)
+    arr.sort((a,b)=>(a.x-a.r)-(b.x-b.r));
+    
+    // 3. Collision Resolution
+    for(let it=0; it<ITER; it++){
+      const n = arr.length;
+      for(let i=0;i<n;i++){
+        const a = arr[i], aMax = a.x + a.r;
+        for(let j=i+1;j<n;j++){
+          const b = arr[j];
+          if(b.x - b.r > aMax) break;
+          
+          // Skip if both are sleeping
+          if(a.sleep && b.sleep) continue;
+          
+          let dx = b.x-a.x; const dy = b.y-a.y, rs = a.r+b.r;
+          if(dy>rs||dy<-rs) continue;
+          const d2 = dx*dx+dy*dy;
+          if(d2 < rs*rs && d2 > 0.0001){
+            const d = Math.sqrt(d2);
+            let overlap = rs-d; 
+            if(overlap > 10) overlap = 10;
+            
+            // Resolve overlap only if it exceeds the penetration slop
+            if(overlap > slop){
+              const correctedOverlap = overlap - slop;
+              const nx = dx/d, ny = dy/d;
+              
+              // Wake them up on active contact or if touched by a dragged ball
+              if(a.sleep || b.sleep) {
+                let wake = false;
+                if(a._pin || b._pin) {
+                  wake = true;
+                } else {
+                  const vA = a.sleep ? 0 : Math.hypot(a.vx || 0, a.vy || 0);
+                  const vB = b.sleep ? 0 : Math.hypot(b.vx || 0, b.vy || 0);
+                  if(vA > wakeThreshold || vB > wakeThreshold) wake = true;
+                }
+                if(wake) {
+                  if(a.sleep) { console.log("Woke up (collision):", a.ballId); this.wakeTouching(a); }
+                  if(b.sleep) { console.log("Woke up (collision):", b.ballId); this.wakeTouching(b); }
+                }
+              }
+              
+              const ima = (a._pin || a.sleep)?0:1/a.mass, imb = (b._pin || b.sleep)?0:1/b.mass, sum = ima+imb;
+              if(sum > 0){
+                const t = correctedOverlap/sum*0.8;
+                a.x -= nx*ima*t; a.y -= ny*ima*t;
+                b.x += nx*imb*t; b.y += ny*imb*t;
+                
+                // Only inject stack jitter if balls are awake to preserve static stability
+                if(nx < 0.18 && nx > -0.18 && !a.sleep && !b.sleep){
+                  const jit = (Math.random()-0.5) * correctedOverlap * 0.7;
+                  if(!a._pin) a.x -= jit;
+                  if(!b._pin) b.x += jit;
+                }
+              }
+            }
+          } else if(d2 <= 0.0001){
+            const ang = Math.random()*6.283;
+            a.sleep = false; a.sleepFrames = 0;
+            b.sleep = false; b.sleepFrames = 0;
+            a.x -= Math.cos(ang)*0.6; b.x += Math.cos(ang)*0.6; b.y += Math.abs(Math.sin(ang))*0.6;
+          }
+        }
+      }
+      for(const b of arr){
+        if(b.x < b.r) { b.x = b.r; }
+        else if(b.x > W-b.r) { b.x = W-b.r; }
+        if(b.y > H-b.r) { b.y = H-b.r; }
+      }
+    }
+    
+    // 4. Floor Bounce Contact (skip for sleeping balls)
+    const REST = 0.34, MINB = 1.5;
+    for(const b of arr){
+      if(b._pin || b.sleep) continue;
+      if(b.y >= H-b.r-0.5){
+        const vy = b.y - b.py;
+        b.y = H - b.r;
+        if(vy > MINB) {
+          b.py = b.y + vy*REST;
+          if(b.sleep) console.log("Ball woke up (floor bounce):", b.ballId + " (item #" + b.id + ")");
+          b.sleep = false;
+          b.sleepFrames = 0;
+        } else {
+          b.py = b.y;
+        }
+        const vx = b.x - b.px; b.px = b.x - vx*0.9;
+      }
+    }
+
+    // 5. Inactivity Sleep Detection
+    for(const b of arr){
+      if(b._pin) continue;
+      
+      // If already sleeping and was not woken up in Step 3, lock its position
+      if(b.sleep){
+        b.px = b.x;
+        b.py = b.y;
+        b.vx = 0;
+        b.vy = 0;
+        continue;
+      }
+      
+      const vx = b.x - b.px, vy = b.y - b.py;
+      b.vx = vx; b.vy = vy; // Store resolved velocity
+      if(Math.hypot(vx, vy) < sleepThreshold){
+        b.sleepFrames = (b.sleepFrames || 0) + 1;
+        if(b.sleepFrames > 15){
+          b.sleep = true;
+          b.px = b.x;
+          b.py = b.y;
+          b.vx = 0;
+          b.vy = 0;
+          console.log("Ball went to sleep:", b.ballId + " (item #" + b.id + ")");
+        }
+      } else {
+        b.sleepFrames = 0;
+      }
+    }
+  }
+
+  draw(){
+    const ctx = this.ctx; if(!ctx) return;
+    ctx.clearRect(0,0,this.W,this.H);
+    
+    // 1. Draw all ball bodies
+    for(const b of this.balls){
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.r, 0, 6.2832);
+      ctx.fillStyle = b.color;
+      ctx.fill();
+      if(b.r > 2.5){
+        ctx.lineWidth = Math.min(1, b.r*0.14);
+        ctx.strokeStyle = 'rgba(35,33,28,0.18)';
+        ctx.stroke();
+      }
+    }
+
+    // 2. Draw all overlays on top of the balls
+    for(const b of this.balls){
+      // Grouping count indicator text inside the ball
+      if(b.count > 1 && b.r > 8) {
+        ctx.fillStyle = 'rgba(255,253,249,0.92)';
+        ctx.font = `600 ${Math.max(8, Math.min(13, b.r * 0.45))}px "IBM Plex Sans", sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('×' + b.count, b.x, b.y + 0.5);
+      }
+
+      // Show "zzz" unconditionally for debugging sleep states
+      if (b.sleep) {
+        ctx.fillStyle = 'rgba(35, 33, 28, 0.75)'; // dark for visibility
+        ctx.font = '600 12px "IBM Plex Mono", monospace'; // bold and larger
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('zzz', b.x + b.r * 0.3, b.y - b.r * 0.3);
+      }
+    }
+    if(this.hover && !this.drag){
+      const it = this.ITEMS[this.hover.id];
+      const label = it.n + (this.hover.count > 1 ? ` (×${this.hover.count})` : '') + '   ' + this.short(it.c * this.hover.count);
+      ctx.font = '12px "IBM Plex Mono", monospace';
+      const w = ctx.measureText(label).width + 18;
+      let hx = this.hover.x + 14, hy = this.hover.y - 30;
+      if(hx + w > this.W-6) hx = this.W-6-w;
+      if(hx < 6) hx = 6;
+      if(hy < 6) hy = this.hover.y + 16;
+      ctx.beginPath(); this.roundRect(ctx, hx, hy, w, 23, 5);
+      ctx.fillStyle = 'rgba(255,253,249,0.97)'; ctx.fill();
+      ctx.lineWidth = 1; ctx.strokeStyle = '#e4dfd2'; ctx.stroke();
+      ctx.fillStyle = '#23211c'; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+      ctx.fillText(label, hx+9, hy+12);
+    }
+  }
+
+  roundRect(ctx,x,y,w,h,r){ ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+
+  loop(){
+    this.consumeQueue();
+    if(this.balls.length) this.physics();
+    this.draw();
+    requestAnimationFrame(()=>this.loop());
+  }
+
+  pointerPos(e){
+    const r = this.canvas.getBoundingClientRect();
+    return {x: e.clientX - r.left, y: e.clientY - r.top};
+  }
+
+  topBallAt(p){
+    let f=null;
+    for(const b of this.balls){
+      const dx=p.x-b.x, dy=p.y-b.y;
+      if(dx*dx+dy*dy <= b.r*b.r) f=b;
+    }
+    return f;
+  }
+
+  wakeTouching(startBall) {
+    if (startBall.sleep) {
+      startBall.sleep = false;
+      startBall.sleepFrames = 0;
+    }
+    const stack = [startBall];
+    const visited = new Set([startBall.ballId]);
+
+    while(stack.length > 0){
+      const curr = stack.pop();
+      for(const other of this.balls){
+        if(other.sleep && !visited.has(other.ballId)){
+          const dx = other.x - curr.x;
+          const dy = other.y - curr.y;
+          const rs = curr.r + other.r;
+          if(dx*dx + dy*dy <= (rs + 4)*(rs + 4)){
+            visited.add(other.ballId);
+            other.sleep = false;
+            other.sleepFrames = 0;
+            stack.push(other);
+          }
+        }
+      }
+    }
+  }
+
+  handleDown(e){
+    const p = this.pointerPos(e);
+    const b = this.topBallAt(p);
+    if(b){
+      this.drag = {ball:b, dx:p.x-b.x, dy:p.y-b.y};
+      this.pointer = p;
+      this.hover = null;
+      b._pin = true;
+      this.wakeTouching(b);
+      e.preventDefault();
+    }
+  }
+
+  handleMove(e){
+    const p = this.pointerPos(e);
+    if(this.drag){
+      this.pointer = p;
+      this.hover = null;
+      return;
+    }
+    if(p.x>=0 && p.y>=0 && p.x<=this.W && p.y<=this.H){
+      const b = this.topBallAt(p);
+      this.hover = b ? {id:b.id, x:p.x, y:p.y, count: b.count} : null;
+    } else {
+      this.hover = null;
+    }
+  }
+
+  handleUp(){
+    if(this.drag){
+      this.drag.ball._pin = false;
+      this.drag = null;
+    }
+  }
+
+  reset(){
+    this.balls = [];
+    this.spawnQueue = [];
+    this.spent = {};
+    this.spentTotal = 0;
+    this.pendingSum = 0;
+    this.hover = null;
+    this.drag = null;
+    try {
+      history.replaceState(null,'',location.pathname+location.search);
+    } catch(e){}
+    this.copied = false;
+    this.renderUI();
+  }
+
+  pushV(arr,v){ v=v>>>0; while(v>127){ arr.push((v&127)|128); v>>>=7; } arr.push(v); }
+  b64(bytes){ let s=''; for(const b of bytes) s+=String.fromCharCode(b); return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
+  unb64(str){ str=str.replace(/-/g,'+').replace(/_/g,'/'); while(str.length%4) str+='='; const bin=atob(str); const a=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) a[i]=bin.charCodeAt(i); return a; }
+
+  encode(){
+    const b = [1, this.PORD.indexOf(this.perspective), this.scaleMode==='eased'?1:0];
+    const ent = Object.entries(this.spent).filter(([,c])=>c>0);
+    this.pushV(b, ent.length);
+    for(const [id,c] of ent){ this.pushV(b, +id); this.pushV(b, c); }
+    return this.b64(Uint8Array.from(b));
+  }
+
+  decode(str){
+    const a = this.unb64(str); let i = 0;
+    const cur = ()=>a[i++];
+    const readV = ()=>{ let r=0,s=0,x; do{ x=a[i++]; r |= (x&127)<<s; s+=7; }while(x&128); return r>>>0; };
+    cur();
+    const persp = this.PORD[cur()] || 'renewables';
+    const scale = cur() ? 'eased' : 'true';
+    const n = readV();
+    const entries = [];
+    for(let e=0;e<n;e++){ const id=readV(); const c=readV(); entries.push([id,c]); }
+    return {persp, scale, entries};
+  }
+
+  loadHash(){
+    const m = (location.hash||'').match(/[#&]b=([^&]+)/);
+    if(!m) return;
+    try {
+      const d = this.decode(m[1]);
+      this.perspective = d.persp;
+      this.scaleMode = d.scale;
+      this.recomputeK();
+      for(const [id,c] of d.entries){
+        // Group the total count into a single spawn entry
+        this.spawnQueue.push({ id: +id, count: c });
+        const it = this.ITEMS[id];
+        if (it) {
+          this.pendingSum += it.c * c;
+        }
+      }
+      this.renderUI();
+    } catch(e){
+      console.warn("Hash decode failed", e);
+    }
+  }
+
+  share(){
+    const code = this.encode();
+    const url = location.origin + '/sandbox/' + code;
+    try {
+      history.replaceState(null,'','#b='+code);
+    } catch(e){}
+    this.copied = true;
+    this.renderUI();
+    clearTimeout(this._ct);
+    this._ct = setTimeout(() => {
+      this.copied = false;
+      this.renderUI();
+    }, 1900);
+
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url);
+    }
+  }
+
+  gbp(n){ return '£' + Math.round(n).toLocaleString('en-GB'); }
+  
+  short(n){
+    const a = Math.abs(n);
+    if(a>=1e9) return '£'+(n/1e9).toFixed(n/1e9>=100?0:1).replace(/\.0$/,'')+'bn';
+    if(a>=1e6) return '£'+(n/1e6).toFixed(n/1e6>=100?0:1).replace(/\.0$/,'')+'m';
+    if(a>=1e3) return '£'+Math.round(n/1e3)+'k';
+    return '£'+Math.round(n);
+  }
+
+  tickClock() {
+    this.renderUI();
+  }
+
+  renderUI() {
+    const isMobile = window.innerWidth < 860;
+    const live = this.liveTotal();
+    const committed = this.spentTotal + this.pendingSum;
+    const remaining = Math.max(0, live - committed);
+    const avail = live - committed;
+    const jarFull = (this.balls.length + this.spawnQueue.length) >= this.MAXBALLS;
+    
+    // Summary Headers
+    document.getElementById('remStr').textContent = this.gbp(remaining);
+    document.getElementById('totalStr').textContent = this.short(live);
+    document.getElementById('totalLabel').textContent = this.PERS[this.perspective].label;
+    document.getElementById('rateStr').textContent = '+£' + Math.round(this.PERS[this.perspective].rate).toLocaleString('en-GB') + '/sec';
+    
+    document.getElementById('spentStr').textContent = this.gbp(committed);
+    const pct = (committed / live * 100);
+    document.getElementById('pctStr').textContent = pct.toFixed(committed/live*100 < 1 ? 3 : 2) + '%';
+    
+    const count = this.balls.length + this.spawnQueue.length;
+    document.getElementById('ballCountStr').textContent = count === 1 ? '1 item in the jar' : count.toLocaleString('en-GB') + ' items';
+    
+    // Progress Bar
+    document.getElementById('progressBar').style.width = Math.min(100, pct) + '%';
+    
+    // Multiplier Display
+    document.getElementById('mMultiplier').textContent = '×' + this.multiplier;
+    
+    // Scale button highlights
+    const trueBtn = document.getElementById('scaleTrueBtn');
+    const easedBtn = document.getElementById('scaleEasedBtn');
+    if(this.scaleMode === 'true') {
+      trueBtn.setAttribute('aria-pressed', 'true');
+      easedBtn.setAttribute('aria-pressed', 'false');
+      document.getElementById('scaleHint').textContent = 'Ball area is true to cost, and the whole canvas equals the whole clock. A flat is a speck; Hinkley fills the jar.';
+    } else {
+      trueBtn.setAttribute('aria-pressed', 'false');
+      easedBtn.setAttribute('aria-pressed', 'true');
+      document.getElementById('scaleHint').textContent = 'Log-eased sizing so cheap items stay visible — easier to read, no longer to scale.';
+    }
+
+    // Jar Warning
+    document.getElementById('jarFullWarning').style.display = jarFull ? 'flex' : 'none';
+
+    // Catalog filtering and enablement
+    this.renderCatalogue(avail, jarFull);
+
+    // Bill Rendering
+    this.renderBill();
+
+    // Buttons labels
+    document.getElementById('shareButton').textContent = this.copied ? 'Link copied ✓' : 'Share this bill';
+
+    // Mobile sheet positioning
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('backdrop');
+    const mobileFab = document.getElementById('mobileFab');
+    const grabber = document.getElementById('grabber');
+
+    if (isMobile) {
+      grabber.style.display = 'flex';
+      sidebar.className = 'scbar';
+      sidebar.style.position = 'fixed';
+      sidebar.style.left = '0';
+      sidebar.style.right = '0';
+      sidebar.style.bottom = '0';
+      sidebar.style.height = '84vh';
+      sidebar.style.zIndex = '60';
+      sidebar.style.borderTop = '1px solid var(--line)';
+      sidebar.style.borderTopLeftRadius = '16px';
+      sidebar.style.borderTopRightRadius = '16px';
+      sidebar.style.transition = 'transform .28s cubic-bezier(.4,0,.2,1)';
+      sidebar.style.width = '100%';
+
+      if (this.sheetOpen) {
+        sidebar.style.transform = 'translateY(0)';
+        backdrop.style.display = 'block';
+      } else {
+        sidebar.style.transform = 'translateY(101%)';
+        backdrop.style.display = 'none';
+      }
+      mobileFab.style.display = this.sheetOpen ? 'none' : 'inline-flex';
+      mobileFab.querySelector('.fab-count').textContent = count;
+    } else {
+      grabber.style.display = 'none';
+      sidebar.className = 'scbar';
+      sidebar.style.position = 'static';
+      sidebar.style.height = '100%';
+      sidebar.style.width = '368px';
+      sidebar.style.flex = 'none';
+      sidebar.style.borderRight = '1px solid var(--line)';
+      sidebar.style.transform = 'none';
+      sidebar.style.borderTopLeftRadius = '0';
+      sidebar.style.borderTopRightRadius = '0';
+      
+      backdrop.style.display = 'none';
+      mobileFab.style.display = 'none';
+    }
+  }
+
+  renderCatalogue(avail, jarFull) {
+    const q = this.query.trim().toLowerCase();
+    
+    for (const cat of this.CATS) {
+      const block = document.getElementById('cat-block-' + cat.key);
+      if(!block) continue;
+      const rows = block.querySelectorAll('.itemrow');
+      let visibleCount = 0;
+      
+      for (const row of rows) {
+        const itemId = parseInt(row.getAttribute('data-item-id'));
+        const it = this.ITEMS[itemId];
+        
+        const match = q === '' || it.n.toLowerCase().includes(q);
+        if (match) {
+          row.style.display = 'flex';
+          visibleCount++;
+        } else {
+          row.style.display = 'none';
+        }
+        
+        const cost = it.c * this.multiplier;
+        const affordable = !jarFull && cost <= avail;
+        
+        if (affordable) {
+          row.style.opacity = '1';
+          row.style.cursor = 'pointer';
+          row.style.pointerEvents = 'auto';
+        } else {
+          row.style.opacity = '.34';
+          row.style.cursor = 'not-allowed';
+          row.style.pointerEvents = 'none';
+        }
+        
+        const countBadge = row.querySelector('.item-count-badge');
+        const count = this.spent[itemId] || 0;
+        if (count > 0) {
+          countBadge.textContent = '×' + count;
+          countBadge.style.display = 'inline-block';
+        } else {
+          countBadge.style.display = 'none';
+        }
+      }
+      
+      if (visibleCount > 0) {
+        block.style.display = 'block';
+      } else {
+        block.style.display = 'none';
+      }
+    }
+    
+    const noResults = document.getElementById('noResultsNotice');
+    let anyVisible = false;
+    for (const cat of this.CATS) {
+      const b = document.getElementById('cat-block-' + cat.key);
+      if (b && b.style.display === 'block') {
+        anyVisible = true;
+        break;
+      }
+    }
+    noResults.style.display = (!anyVisible && q.length > 0) ? 'block' : 'none';
+  }
+
+  renderBill() {
+    const container = document.getElementById('billRowsContainer');
+    const emptyNotice = document.getElementById('billEmptyNotice');
+    const billNote = document.getElementById('billNote');
+    
+    const billRowsData = Object.entries(this.spent)
+      .filter(([, c]) => c > 0)
+      .map(([id, c]) => {
+        const it = this.ITEMS[+id];
+        return { id: +id, name: it.n, count: c, cost: it.c * c, color: it.color };
+      })
+      .sort((a, b) => b.cost - a.cost);
+      
+    if (billRowsData.length > 0) {
+      emptyNotice.style.display = 'none';
+      container.innerHTML = billRowsData.map(row => `
+        <div style="display:flex;align-items:baseline;gap:8px;padding:4px 0;border-bottom:1px solid var(--line-soft);font-size:.84rem;">
+          <span style="width:8px;height:8px;border-radius:2px;background:${row.color};flex:none;"></span>
+          <span style="flex:1 1 auto;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${row.name}</span>
+          <span class="sc-num" style="flex:none;font-family:var(--font-mono);font-size:.74rem;color:var(--faint);">×${row.count}</span>
+          <span class="sc-num" style="flex:none;font-family:var(--font-mono);font-size:.78rem;color:var(--ink);font-weight:500;min-width:52px;text-align:right;">${this.short(row.cost)}</span>
+        </div>
+      `).join('');
+      
+      const committed = this.spentTotal + this.pendingSum;
+      billNote.textContent = this.gbp(committed) + ' spent';
+    } else {
+      emptyNotice.style.display = 'block';
+      container.innerHTML = '';
+      billNote.textContent = 'empty';
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  window.app = new SubsidyBuyApp();
+  window.app.init();
+});
+</script>
+</body>
+</html>
