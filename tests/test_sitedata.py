@@ -385,3 +385,11 @@ def test_write_corrections_empty_log(tmp_path):
     lines = (tmp_path / "out" / "corrections.csv").read_text().splitlines()
     assert lines[3] == "date,figure,figure_label,was,now,cause,credit"
     assert len(lines) == 4
+
+
+def test_floor2_floors_does_not_round():
+    # 45.2477 floors to 45.24 but rounds to 45.25 — proves _floor2 understates
+    assert sitedata._floor2(45.2477) == 45.24
+    assert sitedata._floor2(45.2477) != round(45.2477, 2)
+    # exact-2dp values are unchanged
+    assert sitedata._floor2(46.98) == 46.98
