@@ -284,3 +284,24 @@ def test_build_indirect_layer(tmp_path):
                          baselines=baselines)
     assert (model["perspectives"]["renewables"]["cumulative_gbp"]
             == model2["perspectives"]["renewables"]["cumulative_gbp"])
+
+
+def test_annual_to_result_data_to_honours_year_basis():
+    import polars as pl
+    from datetime import date
+    from subsidy_engine import money
+    from subsidy_engine.reference import ReferenceScheme
+
+    annual = pl.DataFrame({"year": [2023, 2024], "cost_gbp": [1.0e9, 2.0e9]},
+                          schema={"year": pl.Int64, "cost_gbp": pl.Float64})
+
+    def mk(year_basis):
+        return ReferenceScheme(
+            scheme_id="x", label="X", perspectives=[], cadence="annual",
+            source="s", source_url="u", verified=True, annual=annual,
+            year_basis=year_basis)
+
+    cal = money.annual_to_result("x", mk("calendar"), layer="indirect")
+    assert cal.data_to == date(2024, 12, 31)
+    obl = money.annual_to_result("x", mk("obligation_apr"), layer="direct")
+    assert obl.data_to == date(2025, 3, 31)

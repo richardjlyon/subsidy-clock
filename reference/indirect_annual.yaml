@@ -10,6 +10,7 @@ schemes:
     label: Climate Change Levy (electricity share) + Carbon Price Support
     perspectives: []
     cadence: annual
+    year_basis: calendar
     source: >-
       HMRC Environmental Taxes Bulletin (formerly Climate Change Levy and
       Carbon Price Floor Bulletin), March 2026 edition, tables ODS
@@ -63,6 +64,7 @@ schemes:
     label: Emissions trading (power-sector share of UK auction revenue)
     perspectives: []
     cadence: annual
+    year_basis: calendar
     source: >-
       Auction revenue: 2012-2018 calendar-year sums of UK EUA auction results
       from the European Commission's UK Phase III Auction Platform Reports

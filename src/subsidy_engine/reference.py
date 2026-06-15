@@ -22,6 +22,7 @@ class ReferenceScheme:
     note: str = ""
     attribution_rule: str = ""
     attribution_confidence: str = ""
+    year_basis: str = "obligation_apr"  # "calendar" for calendar-year-keyed schemes (CCL, ETS)
 
 
 def load_annual_costs(path: Path) -> dict[str, ReferenceScheme]:
@@ -46,6 +47,7 @@ def load_annual_costs(path: Path) -> dict[str, ReferenceScheme]:
             note=s.get("note", ""),
             attribution_rule=attribution.get("rule", ""),
             attribution_confidence=attribution.get("confidence", ""),
+            year_basis=s.get("year_basis", "obligation_apr"),
         )
     return out
 

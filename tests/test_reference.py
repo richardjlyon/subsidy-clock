@@ -76,3 +76,11 @@ def test_load_baselines():
         assert b[key]["value"] > 0
         assert b[key]["source_url"].startswith("https://")
         assert b[key]["period"] == "2002-2005"
+
+
+def test_year_basis_defaults_and_calendar_override():
+    direct = reference.load_annual_costs(REF_DIR / "annual_scheme_costs.yaml")
+    assert direct["ro"].year_basis == "obligation_apr"   # default
+    indirect = reference.load_annual_costs(REF_DIR / "indirect_annual.yaml")
+    assert indirect["ccl"].year_basis == "calendar"
+    assert indirect["ets"].year_basis == "calendar"

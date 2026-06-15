@@ -153,7 +153,8 @@ def annual_to_result(scheme_id: str, ref: ReferenceScheme, *,
         runrate_gbp_per_year=float(
             annual.filter(pl.col("year") == latest_year)["cost_gbp"][0]
         ),
-        data_to=date(latest_year + 1, 3, 31),  # obligation/scheme year ends 31 March of the following year
+        data_to=(date(latest_year, 12, 31) if ref.year_basis == "calendar"
+                 else date(latest_year + 1, 3, 31)),  # calendar series end 31 Dec; obligation years 31 Mar
         layer=layer,
         attribution_note=ref.attribution_rule,
         attribution_confidence=ref.attribution_confidence,
