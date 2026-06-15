@@ -1,0 +1,62 @@
+/* ── Subsidy Clock · Colour ─────────────────────────────────────────────
+   A ledger palette: warm paper, ink text, one claret accent reserved for
+   money. Two data ramps — a warm claret ramp for DIRECT (measured) costs,
+   a cool slate-blue ramp for INDIRECT (estimated) costs. Cool = estimated.
+   Claret is never decorative; it always means "this is the money". */
+
+:root {
+  /* ---- Surfaces & paper ---- */
+  --paper:      #f7f4ee;  /* page background — warm off-white */
+  --card:       #fffdf9;  /* raised surfaces, cards, strips */
+  --paper-tint: #f3e3dc;  /* claret-tinted highlight wash */
+
+  /* ---- Ink & text ---- */
+  --ink:    #23211c;  /* primary text */
+  --muted:  #6e6a5f;  /* secondary text, labels */
+  --faint:  #97927f;  /* tertiary, captions, footnote marks */
+
+  /* ---- Rules & hairlines ---- */
+  --line:      #e4dfd2;  /* borders, dividers */
+  --line-soft: #ece8dc;  /* inner rules, table rows */
+
+  /* ---- Money (the one accent) ---- */
+  --money:      #99311f;  /* live figures, the accent */
+  --money-deep: #7a2419;  /* masthead, links, headings on figures */
+
+  /* ---- Stale / warning ---- */
+  --stale:    #8a6d1f;  /* "data is stale" amber-brown */
+  --stale-bg: #f4ead0;  /* its tint */
+
+  /* ---- Direct layer · claret ramp (measured costs) ---- */
+  --c-ro:   #6f2014;  /* Renewables Obligation */
+  --c-fit:  #99412c;  /* Feed-in Tariffs */
+  --c-cfdr: #bb6647;  /* CfD — renewables */
+  --c-cfdl: #d48f6b;  /* CfD — nuclear & biomass */
+  --c-con:  #e7b896;  /* Constraint payments */
+
+  /* ---- Indirect layer · slate-blue ramp (estimated costs) ---- */
+  --c-cm:    #5f8098;  /* Capacity Market */
+  --c-ccl:   #2e4a5e;  /* Climate Change Levy + CPS */
+  --c-ets:   #46677e;  /* Emissions trading */
+  --c-tnuos: #84a3b8;  /* Transmission (TNUoS) */
+  --c-bsuos: #b3c8d8;  /* Balancing (BSUoS) */
+
+  /* ---- Neutral data ---- */
+  --c-other: #bdb6a8;  /* "all other costs", warm grey */
+
+  /* ---- Confidence / verification ---- */
+  --ok:     #3c6e47;  /* verified, in-tolerance, high confidence */
+  --ok-bg:  #e7efe6;
+
+  /* ---- Semantic aliases ---- */
+  --bg-page:        var(--paper);
+  --surface-card:   var(--card);
+  --text-body:      var(--ink);
+  --text-muted:     var(--muted);
+  --text-faint:     var(--faint);
+  --border-default: var(--line);
+  --border-soft:    var(--line-soft);
+  --accent:         var(--money);
+  --accent-deep:    var(--money-deep);
+  --focus-ring:     var(--money);
+}

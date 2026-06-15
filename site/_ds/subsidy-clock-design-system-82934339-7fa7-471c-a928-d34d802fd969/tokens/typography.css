@@ -1,0 +1,52 @@
+/* ── Subsidy Clock · Typography ─────────────────────────────────────────
+   Two families. Fraunces (serif) carries authority and editorial weight —
+   the brand, big figures and headings. IBM Plex Sans runs the interface
+   and body. Every number is tabular & lining so figures align in columns
+   and never reflow as the counter ticks. */
+
+:root {
+  --font-serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans:  "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono:  "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* ---- Type scale (rem) ---- */
+  --fs-hero:    clamp(2.05rem, 8.6vw, 5.4rem); /* @kind font */ /* headline counter */
+  --fs-display: 2rem;     /* page titles */
+  --fs-h1:      1.6rem;
+  --fs-h2:      1.35rem;
+  --fs-figure:  1.5rem;   /* category figures */
+  --fs-stat:    1.7rem;   /* stat values */
+  --fs-lg:      1.06rem;
+  --fs-body:    1rem;     /* 16px base */
+  --fs-sm:      0.92rem;
+  --fs-label:   0.8rem;
+  --fs-meta:    0.74rem;  /* uppercase labels */
+  --fs-micro:   0.66rem;  /* badges */
+
+  /* ---- Weights ---- */
+  --fw-regular: 400; /* @kind font */
+  --fw-medium:  500; /* @kind font */
+  --fw-semibold: 600; /* @kind font */
+  --fw-bold:    700; /* @kind font */
+
+  /* ---- Line heights ---- */
+  --lh-tight: 1.2; /* @kind font */
+  --lh-snug:  1.4; /* @kind font */
+  --lh-body:  1.55; /* @kind font */
+  --lh-prose: 1.6; /* @kind font */
+
+  /* ---- Letter spacing ---- */
+  --ls-tight: -0.015em; /* @kind font */
+  --ls-label: 0.08em;   /* @kind font */
+  --ls-badge: 0.07em;   /* @kind font */
+  --ls-tag:   0.15em;   /* @kind font */
+
+  /* ---- Tabular numerals (apply to any figure) ---- */
+  --num-feat: "tnum" 1, "lnum" 1; /* @kind font */
+}
+
+/* Utility: any element carrying real figures */
+.sc-num {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: var(--num-feat);
+}

@@ -1,0 +1,57 @@
+/* ── Subsidy Clock · Base ───────────────────────────────────────────────
+   Page reset and the few global primitives every surface shares: the
+   warm dot-grid paper, ink defaults, money helpers, focus ring. */
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  background-image: var(--dot-grid);
+  background-size: var(--dot-size);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+a {
+  color: var(--money-deep);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+a:hover { color: var(--money); }
+
+/* Figures: tabular, lining numerals so columns align and ticking
+   counters never reflow. Use on any element showing real numbers. */
+.num,
+.sc-num {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+/* The money colour — reserved exclusively for sums of money. */
+.money { color: var(--money); }
+
+.nowrap { white-space: nowrap; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* Layout helpers */
+.container { max-width: var(--container); margin: 0 auto; padding: 0 var(--gutter); }
+.container-prose { max-width: var(--container-prose); margin: 0 auto; padding: 0 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+}
