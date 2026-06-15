@@ -50,18 +50,19 @@
 
   /* ---- chart ramp: navy + navy tints, amber on the HEADLINE series ---- */
   /* direct (measured) layer — Renewables Obligation is the amber headline */
+  /* warm amber/gold ramp — RO is the brand-amber headline, darkening up the stack */
   --c-ro:   #e3a13c;   /* HEADLINE — Renewables Obligation (£74.6bn) */
-  --c-fit:  #16243a;
-  --c-cfdr: #2e4a6b;
-  --c-cfdl: #46658c;
-  --c-con:  #6f8aad;
+  --c-fit:  #c8862a;
+  --c-cfdr: #a86e22;
+  --c-cfdl: #855417;
+  --c-con:  #5e3a0e;
 
-  /* indirect (estimated) layer — paler, cool navy-greys */
-  --c-cm:    #8fa1bb;
-  --c-ccl:   #243a5a;
-  --c-ets:   #5777a0;
-  --c-tnuos: #a9b7cd;
-  --c-bsuos: #c4cedd;
+  /* indirect (estimated) layer — cool blue ramp, deep navy → pale sky */
+  --c-cm:    #16243a;
+  --c-ccl:   #274b73;
+  --c-ets:   #3f74a3;
+  --c-tnuos: #7ba6c9;
+  --c-bsuos: #b8d0e2;
 
   /* warm neutral — "all other costs" in the share-of-bill chart */
   --c-other: #cdc6b6;
