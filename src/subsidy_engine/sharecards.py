@@ -19,10 +19,10 @@ SITE_URL = "https://subsidyclock.co.uk"
 # order mirrors STACK_ORDER in site/app.js renderChart - keep all three
 # in step (CSS vars are not available inside the card template).
 CHART_STACK = [
-    ("ro", "#6f2014"), ("fit", "#99412c"), ("cfd_renewable", "#bb6647"),
-    ("cfd_low_carbon", "#d48f6b"), ("constraints", "#e7b896"),
-    ("capacity_market", "#5f8098"), ("ccl", "#2e4a5e"), ("ets", "#46677e"),
-    ("tnuos", "#84a3b8"), ("bsuos", "#b3c8d8"),
+    ("ro", "#e3a13c"), ("fit", "#c8862a"), ("cfd_renewable", "#a86e22"),
+    ("cfd_low_carbon", "#855417"), ("constraints", "#5e3a0e"),
+    ("capacity_market", "#16243a"), ("ccl", "#274b73"), ("ets", "#3f74a3"),
+    ("tnuos", "#7ba6c9"), ("bsuos", "#b8d0e2"),
 ]
 
 # explainer slug + display name per scheme id (mirrors SCHEME_META in site/app.js)
@@ -78,9 +78,9 @@ def cumulative_svg(timeseries: dict, member_ids: list[str],
     while g <= max_stack:
         gy = ypos(g)
         parts.append(f'<line x1="{ml}" y1="{gy:.1f}" x2="{width - mr}" y2="{gy:.1f}" '
-                     'stroke="#e4dfd2" stroke-width="1"/>')
+                     'stroke="#d9d2c4" stroke-width="1"/>')
         parts.append(f'<text x="{ml - 8}" y="{gy + 5:.1f}" text-anchor="end" '
-                     f'font-size="17" fill="#6e6a5f">£{int(g / 1e9)}bn</text>')
+                     f'font-size="17" fill="#5d6470">£{int(g / 1e9)}bn</text>')
         g += step
     for i, y in enumerate(years):
         x = ml + band * i + (band - bar) / 2
@@ -98,7 +98,7 @@ def cumulative_svg(timeseries: dict, member_ids: list[str],
                          f'height="{h:.1f}" fill="{col}"/>')
         if y % 4 == 2 or y == years[-1]:
             parts.append(f'<text x="{ml + band * i + band / 2:.1f}" y="{height - 8}" '
-                         f'text-anchor="middle" font-size="17" fill="#6e6a5f">{y}</text>')
+                         f'text-anchor="middle" font-size="17" fill="#5d6470">{y}</text>')
     parts.append("</svg>")
     return "".join(parts)
 
