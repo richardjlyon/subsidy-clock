@@ -229,6 +229,32 @@ STUB_TEMPLATE = """<!DOCTYPE html>
 """
 
 
+def write_manifest(facts: list[dict], out_dir: Path | str, asof: str, datestr: str) -> None:
+    """Write share/cards.json — the manifest the /share media-kit page reads to
+    build its download grid, so the page always lists exactly the cards that
+    were rendered (no hand-maintained list to drift)."""
+    scheme_slugs = {slug for slug, _ in EXPLAINERS.values()}
+    equivalence = {"nurses", "homes", "hinkley"}
+
+    def group(slug: str) -> str:
+        if slug in scheme_slugs:
+            return "By scheme"
+        if slug in equivalence:
+            return "What it could have bought"
+        return "Headline figures"
+
+    cards = [{
+        "slug": f["slug"],
+        "figure": f["figure"],
+        "label": f["label"],
+        "png": f"/share/{f['slug']}.png?d={datestr}",
+        "group": group(f["slug"]),
+    } for f in facts]
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "cards.json").write_text(json.dumps({"asof": asof, "cards": cards}, indent=2))
+
+
 def write_stubs(facts: list[dict], out_dir: Path | str, asof: str, datestr: str) -> None:
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)

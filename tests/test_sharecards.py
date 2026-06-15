@@ -168,8 +168,8 @@ def test_cumulative_svg_stacks_and_is_monotonic():
     assert svg.startswith("<svg")
     # 2002: one segment (ro=1bn); 2003: ro=3bn cumulative + bsuos=0.5bn
     assert svg.count("<rect") == 3
-    assert "#6f2014" in svg     # ro colour
-    assert "#b3c8d8" in svg     # bsuos colour
+    assert "#e3a13c" in svg     # ro colour (amber headline)
+    assert "#b8d0e2" in svg     # bsuos colour (pale sky)
 
 
 def test_cumulative_svg_uses_real_2024_series():
@@ -189,7 +189,7 @@ def test_cumulative_svg_excludes_non_member_schemes():
     }}
     svg = sharecards.cumulative_svg(timeseries, ["ro"])
     assert svg.count("<rect") == 1
-    assert "#d48f6b" not in svg   # cfd_low_carbon colour absent
+    assert "#855417" not in svg   # cfd_low_carbon colour absent
 
 
 def test_load_facts_includes_the_bill_chart_fact(data_dir):
