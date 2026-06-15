@@ -30,5 +30,5 @@ notes:
   ccl: REF counts total CCL receipts (OBR series, all fuels); we count electricity's share of main-rate receipts plus Carbon Price Support.
   bsuos: REF does not net off direct constraint payments; we do, to avoid double-counting against our constraints line.
   ets: REF counts total ETS receipts (OBR series, all sectors); we count only the power-sector share of auctioned allowance revenue.
-  fit: Ours runs on calendar years from Ofgem annual reports; REF's on fiscal years.
+  fit: Both series sum the same April-March Ofgem scheme years, so the gap is not a calendar-vs-fiscal timing difference. Ours uses Ofgem's published FIT scheme value (generation + export + qualifying costs); REF's lower figure appears to use a narrower payments basis, plus rounding to GBP 0.1bn. The residual is a definitional difference and is not yet fully reconciled with REF.
   real_terms: "REF's £223bn 2024-price total uses REF's own deflation; the Clock's real column is CPIH-deflated (see methodology #real-terms). The bases are close but not identical."
