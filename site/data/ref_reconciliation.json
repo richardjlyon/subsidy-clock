@@ -24,7 +24,7 @@
    "ours_gbp": 16389000000.0,
    "ref_gbp": 15300000000.0,
    "divergence_pct": 7.1,
-   "note": "Ours runs on calendar years from Ofgem annual reports; REF's on fiscal years.",
+   "note": "Both series sum the same April-March Ofgem scheme years, so the gap is not a calendar-vs-fiscal timing difference. Ours uses Ofgem's published FIT scheme value (generation + export + qualifying costs); REF's lower figure appears to use a narrower payments basis, plus rounding to GBP 0.1bn. The residual is a definitional difference and is not yet fully reconciled with REF.",
    "stricter": false
   },
   {
@@ -32,7 +32,7 @@
    "ours_gbp": 7171292490.39,
    "ref_gbp": 7800000000.0,
    "divergence_pct": -8.1,
-   "note": "REF's CfD line covers renewable generators including biomass; ours compares CfD-renewables plus the CfD nuclear & biomass line (nuclear payments only begin in 2025, outside this window).",
+   "note": "REF's CfD line covers renewable generators including biomass; ours is CfD-renewables, which likewise already includes biomass (Drax and the like). CfD-nuclear contributes nothing in this window - Hinkley Point C payments begin in 2025.",
    "stricter": false
   },
   {
