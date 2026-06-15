@@ -25,7 +25,7 @@ components:        # cumulative nominal GBP, exactly as published
   capacity_market: 5800000000
 stricter: [ccl, bsuos, ets, rego]   # components where the gap is our deliberate choice
 notes:
-  cfd: REF's CfD line covers renewable generators including biomass; ours compares CfD-renewables plus the CfD nuclear & biomass line (nuclear payments only begin in 2025, outside this window).
+  cfd: REF's CfD line covers renewable generators including biomass; ours is CfD-renewables, which likewise already includes biomass (Drax and the like). CfD-nuclear contributes nothing in this window - Hinkley Point C payments begin in 2025.
   rego: REGO certificate costs are excluded from the Clock entirely (listed under "What is not included").
   ccl: REF counts total CCL receipts (OBR series, all fuels); we count electricity's share of main-rate receipts plus Carbon Price Support.
   bsuos: REF does not net off direct constraint payments; we do, to avoid double-counting against our constraints line.
