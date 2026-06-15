@@ -27,9 +27,9 @@ def _money_block(p: dict, households: int, population: int, demand_mwh: float) -
         "cumulative_gbp": p["cumulative_gbp"],
         "runrate_gbp_per_year": runrate,
         "rate_gbp_per_sec": p["rate_gbp_per_sec"],
-        "per_household_per_year_gbp": round(runrate / households, 2),
-        "per_person_per_year_gbp": round(runrate / population, 2),
-        "per_mwh_delivered_gbp": round(runrate / demand_mwh, 2),
+        "per_household_per_year_gbp": _floor2(runrate / households),
+        "per_person_per_year_gbp": _floor2(runrate / population),
+        "per_mwh_delivered_gbp": _floor2(runrate / demand_mwh),
         "since_year": p["since_year"],
     }
     if "cumulative_gbp_2024" in p:
@@ -38,15 +38,22 @@ def _money_block(p: dict, households: int, population: int, demand_mwh: float) -
             "cumulative_gbp": p["cumulative_gbp_2024"],
             "runrate_gbp_per_year": real_run,
             "rate_gbp_per_sec": p["rate_gbp_per_sec_2024"],
-            "per_household_per_year_gbp": round(real_run / households, 2),
-            "per_person_per_year_gbp": round(real_run / population, 2),
-            "per_mwh_delivered_gbp": round(real_run / demand_mwh, 2),
+            "per_household_per_year_gbp": _floor2(real_run / households),
+            "per_person_per_year_gbp": _floor2(real_run / population),
+            "per_mwh_delivered_gbp": _floor2(real_run / demand_mwh),
         }
     return block
 
 
 def _floor_to(v: float, step: float) -> float:
     return math.floor(v / step) * step
+
+
+def _floor2(v: float) -> float:
+    """Floor a money value to 2 dp, so every per-unit framing understates and
+    the figure is identical wherever it appears (totals.json and the factoids
+    must never disagree by a rounding penny)."""
+    return math.floor(v * 100) / 100
 
 
 def _floor_step_below(v: float, step: float) -> float:
@@ -132,7 +139,7 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
 
     demand = ctx.get("annual_demand_twh")
     if demand:
-        per_mwh = math.floor(runrate / (demand["value"] * 1_000_000) * 100) / 100
+        per_mwh = _floor2(runrate / (demand["value"] * 1_000_000))
         fig = f"£{per_mwh:,.2f}"
         out.append({
             "slug": "per-mwh", "figure": fig,
@@ -144,7 +151,7 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
         })
     pop = ctx.get("population")
     if pop:
-        per_person = math.floor(runrate / pop["value"] * 100) / 100
+        per_person = _floor2(runrate / pop["value"])
         fig = f"£{per_person:,.2f}"
         out.append({
             "slug": "per-person", "figure": fig,

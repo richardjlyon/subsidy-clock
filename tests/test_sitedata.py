@@ -140,9 +140,10 @@ def test_build_writes_all_files(tmp_path):
     totals = json.loads((tmp_path / "totals.json").read_text())
     r = totals["perspectives"]["renewables"]
     assert r["cumulative_gbp"] == 4.0e9
-    assert r["per_household_per_year_gbp"] == round(2.0e9 / 28_400_000, 2)
+    import math
+    assert r["per_household_per_year_gbp"] == math.floor(2.0e9 / 28_400_000 * 100) / 100
     assert r["real_2024"]["cumulative_gbp"] == 3.85e9
-    assert r["real_2024"]["per_household_per_year_gbp"] == round(1.94e9 / 28_400_000, 2)
+    assert r["real_2024"]["per_household_per_year_gbp"] == math.floor(1.94e9 / 28_400_000 * 100) / 100
     assert "all_levy" not in totals["perspectives"]
     ind = totals["indirect"]
     assert ind["runrate_gbp_per_year"] == 1.0e9
@@ -269,6 +270,26 @@ def test_factoid_divisions_floor_not_round(tmp_path):
     assert by_slug["per-mwh"]["figure"] == "£46.61"    # round would give £46.62
     # correct floor value (fraction < 0.5 so floor == round here)
     assert by_slug["per-person"]["figure"] == "£181.55"
+
+
+def test_per_unit_floored_and_agrees_across_surfaces(tmp_path):
+    sitedata.build(big_model(), CTX, {}, tmp_path,
+                   generated_at="2026-06-15T00:00:00+00:00",
+                   deflator_info=DEFLATOR_INFO, deflators=DEFLATORS)
+    totals = json.loads((tmp_path / "totals.json").read_text())
+    meta = json.loads((tmp_path / "meta.json").read_text())
+    r = totals["perspectives"]["renewables"]
+
+    import math
+    runrate = r["runrate_gbp_per_year"]
+    assert r["per_mwh_delivered_gbp"] == math.floor(
+        runrate / (CTX["annual_demand_twh"]["value"] * 1_000_000) * 100) / 100
+    assert r["per_person_per_year_gbp"] == math.floor(
+        runrate / CTX["population"]["value"] * 100) / 100
+
+    by_slug = {f["slug"]: f for f in meta["factoids"]}
+    assert float(by_slug["per-mwh"]["figure"].lstrip("£")) == r["per_mwh_delivered_gbp"]
+    assert float(by_slug["per-person"]["figure"].lstrip("£")) == r["per_person_per_year_gbp"]
 
 
 def test_write_widget_stamps_figure_and_rate(tmp_path):
