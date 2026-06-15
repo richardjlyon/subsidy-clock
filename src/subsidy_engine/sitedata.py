@@ -64,6 +64,19 @@ def _floor_step_below(v: float, step: float) -> float:
     return f - step if f == v else f
 
 
+def _combined_real_floored_gbp(model: dict) -> float | None:
+    """The combined direct+indirect cumulative in 2024 prices, floored to the
+    nearest £10bn STRICTLY BELOW (the I1/F8 rule: a floor,
+    never a midpoint, so every sentence quoting it understates).
+    app.js's combinedRealFlooredGbp() applies the same rule - keep them in step."""
+    r = model["perspectives"]["renewables"]
+    if ("cumulative_gbp_2024" in r and "indirect" in model
+            and "cumulative_gbp_2024" in model["indirect"]):
+        combined = r["cumulative_gbp_2024"] + model["indirect"]["cumulative_gbp_2024"]
+        return _floor_step_below(combined, 1e10)
+    return None
+
+
 def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[dict]:
     """The equivalence factoids (impact I4/I5), composed once here so the
     dashboard, the share-card PNGs and the /s/ stubs can never disagree.
@@ -93,15 +106,11 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
             "source_name": nurse["source"], "source_url": nurse["source_url"],
         })
 
-    combined_real = None
-    if "cumulative_gbp_2024" in r and "indirect" in model \
-            and "cumulative_gbp_2024" in model["indirect"]:
-        combined_real = r["cumulative_gbp_2024"] + model["indirect"]["cumulative_gbp_2024"]
-    if combined_real is not None:
-        # counts divide the quoted £10bn floor, not the raw total, so a
-        # reader checking the sentence's own arithmetic can only get MORE
-        # than we claim — self-consistent and stricter
-        combined_floor = _floor_step_below(combined_real, 1e10)
+    # counts divide the quoted £10bn floor, not the raw total, so a reader
+    # checking the sentence's own arithmetic can only get MORE than we claim —
+    # self-consistent and stricter
+    combined_floor = _combined_real_floored_gbp(model)
+    if combined_floor is not None:
         floored_bn = int(combined_floor / 1e9)
         full = f"£{floored_bn}bn+"
         home = eq.get("social_home_gbp")
@@ -229,12 +238,17 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
         ],
     }, indent=1, default=str, allow_nan=False))
 
+    combined_floor = _combined_real_floored_gbp(model)
+    headline = ({"combined_real_floored_gbp": combined_floor,
+                 "display": f"£{int(combined_floor / 1e9)}bn+"}
+                if combined_floor is not None else None)
     (out / "meta.json").write_text(json.dumps({
         "generated_at": generated_at,
         "freshness": freshness,
         "context": ctx,
         "deflator": deflator_info,
         "bill": bill_info,
+        "headline": headline,
         "factoids": _factoids(model, ctx, deflators),
     }, indent=1, allow_nan=False))
 

@@ -231,3 +231,14 @@ def test_render_produces_1200x630_pngs(data_dir, tmp_path):
             pytest.skip(f"chromium unavailable: {exc}")
         raise
     assert _png_size(out / "total.png") == (1200, 630)
+
+
+def test_load_facts_includes_headline_card(data_dir):
+    (data_dir / "meta.json").write_text(json.dumps(
+        {"headline": {"combined_real_floored_gbp": 2.2e11, "display": "£220bn+"},
+         "factoids": []}))
+    facts, _, _ = sharecards.load_facts(data_dir)
+    headline = next(f for f in facts if f["slug"] == "headline")
+    assert headline["figure"] == "£220bn+"
+    assert headline["stub"] is True
+    assert headline.get("chart") is not True

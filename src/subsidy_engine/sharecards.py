@@ -194,6 +194,14 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
     meta_path = data / "meta.json"
     if meta_path.is_file():
         meta = json.loads(meta_path.read_text())
+        headline = meta.get("headline")
+        if headline and headline.get("display"):
+            facts.append({
+                "slug": "headline", "figure": headline["display"],
+                "label": "the full cost of subsidising UK renewables since "
+                         f"{r['since_year']}, including estimated indirect costs, "
+                         "in today’s money (2024 prices)",
+                "anchor": None, "stub": True})
         for f in meta.get("factoids", []):
             facts.append({"slug": f["slug"], "figure": f["figure"],
                           "label": f["label"], "anchor": None, "stub": True})
