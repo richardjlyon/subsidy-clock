@@ -196,7 +196,9 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
         meta = json.loads(meta_path.read_text())
         headline = meta.get("headline")
         if headline and headline.get("display"):
-            facts.append({
+            # lead the grid: the £Nbn+ combined figure is the site's headline,
+            # so it goes first in the "Headline figures" group (insert at front)
+            facts.insert(0, {
                 "slug": "headline", "figure": headline["display"],
                 "label": "the full cost of subsidising UK renewables since "
                          f"{r['since_year']}, including estimated indirect costs, "
