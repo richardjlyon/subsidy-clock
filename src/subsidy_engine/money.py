@@ -81,7 +81,7 @@ def merge_annual(reference: pl.DataFrame, bottom_up: pl.DataFrame) -> pl.DataFra
 
 
 REAL_BASE_YEAR = 2024
-BASELINE_YEARS = (2002, 2005)  # inclusive window for uplift baselines
+BASELINE_YEARS = (2002, 2005)  # inclusive 4-year calendar window (2002,2003,2004,2005) for uplift baselines
 
 
 def _base_index(deflators: pl.DataFrame) -> float:
