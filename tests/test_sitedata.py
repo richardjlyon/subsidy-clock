@@ -395,7 +395,7 @@ def test_floor2_floors_does_not_round():
     assert sitedata._floor2(46.98) == 46.98
 
 
-def test_meta_publishes_combined_real_floored_headline(tmp_path):
+def test_meta_publishes_full_combined_real_headline(tmp_path):
     sitedata.build(big_model(), CTX, {}, tmp_path,
                    generated_at="2026-06-15T00:00:00+00:00",
                    deflator_info=DEFLATOR_INFO, deflators=DEFLATORS)
@@ -403,6 +403,5 @@ def test_meta_publishes_combined_real_floored_headline(tmp_path):
     meta = json.loads((tmp_path / "meta.json").read_text())
     combined = (totals["perspectives"]["renewables"]["real_2024"]["cumulative_gbp"]
                 + totals["indirect"]["real_2024"]["cumulative_gbp"])
-    floored = sitedata._floor_step_below(combined, 1e10)
-    assert meta["headline"]["combined_real_floored_gbp"] == floored
-    assert meta["headline"]["display"] == f"£{int(floored / 1e9)}bn+"
+    # the headline card shows the FULL figure (every significant figure), not a floor
+    assert meta["headline"]["combined_real_gbp"] == combined

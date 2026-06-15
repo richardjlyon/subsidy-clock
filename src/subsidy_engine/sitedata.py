@@ -64,17 +64,24 @@ def _floor_step_below(v: float, step: float) -> float:
     return f - step if f == v else f
 
 
-def _combined_real_floored_gbp(model: dict) -> float | None:
-    """The combined direct+indirect cumulative in 2024 prices, floored to the
-    nearest £10bn STRICTLY BELOW (the I1/F8 rule: a floor,
-    never a midpoint, so every sentence quoting it understates).
-    app.js's combinedRealFlooredGbp() applies the same rule - keep them in step."""
+def _combined_real_gbp(model: dict) -> float | None:
+    """The full combined direct+indirect cumulative in 2024 prices (no rounding).
+    This is the headline share card's figure — the impact is the full number."""
     r = model["perspectives"]["renewables"]
     if ("cumulative_gbp_2024" in r and "indirect" in model
             and "cumulative_gbp_2024" in model["indirect"]):
-        combined = r["cumulative_gbp_2024"] + model["indirect"]["cumulative_gbp_2024"]
-        return _floor_step_below(combined, 1e10)
+        return r["cumulative_gbp_2024"] + model["indirect"]["cumulative_gbp_2024"]
     return None
+
+
+def _combined_real_floored_gbp(model: dict) -> float | None:
+    """The combined direct+indirect cumulative in 2024 prices, floored to the
+    nearest £10bn STRICTLY BELOW (the I1/F8 rule: a floor, never a midpoint, so
+    every sentence quoting it understates). Used by the hero lead-in and the
+    'could have built' factoids — NOT the headline card, which shows the full
+    figure. app.js's combinedRealFlooredGbp() applies the same rule - keep them in step."""
+    combined = _combined_real_gbp(model)
+    return _floor_step_below(combined, 1e10) if combined is not None else None
 
 
 def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[dict]:
@@ -238,10 +245,9 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
         ],
     }, indent=1, default=str, allow_nan=False))
 
-    combined_floor = _combined_real_floored_gbp(model)
-    headline = ({"combined_real_floored_gbp": combined_floor,
-                 "display": f"£{int(combined_floor / 1e9)}bn+"}
-                if combined_floor is not None else None)
+    combined_real = _combined_real_gbp(model)
+    headline = ({"combined_real_gbp": combined_real}
+                if combined_real is not None else None)
     (out / "meta.json").write_text(json.dumps({
         "generated_at": generated_at,
         "freshness": freshness,

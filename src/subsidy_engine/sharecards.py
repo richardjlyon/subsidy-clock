@@ -195,11 +195,12 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
     if meta_path.is_file():
         meta = json.loads(meta_path.read_text())
         headline = meta.get("headline")
-        if headline and headline.get("display"):
-            # lead the grid: the £Nbn+ combined figure is the site's headline,
-            # so it goes first in the "Headline figures" group (insert at front)
+        if headline and headline.get("combined_real_gbp"):
+            # lead the grid: the full combined figure is the site's headline, so
+            # it goes first in the "Headline figures" group (insert at front).
+            # Shown in full (every significant figure) — the impact is the number.
             facts.insert(0, {
-                "slug": "headline", "figure": headline["display"],
+                "slug": "headline", "figure": fmt_full(headline["combined_real_gbp"]),
                 "label": "the full cost of subsidising UK renewables since "
                          f"{r['since_year']}, including estimated indirect costs, "
                          "in today’s money (2024 prices)",

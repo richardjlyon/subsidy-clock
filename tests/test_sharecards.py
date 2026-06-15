@@ -235,10 +235,12 @@ def test_render_produces_1200x630_pngs(data_dir, tmp_path):
 
 def test_load_facts_includes_headline_card(data_dir):
     (data_dir / "meta.json").write_text(json.dumps(
-        {"headline": {"combined_real_floored_gbp": 2.2e11, "display": "£220bn+"},
+        {"headline": {"combined_real_gbp": 226_966_081_251.12},
          "factoids": []}))
     facts, _, _ = sharecards.load_facts(data_dir)
-    headline = next(f for f in facts if f["slug"] == "headline")
-    assert headline["figure"] == "£220bn+"
+    # headline leads the grid and shows the FULL figure (every significant figure)
+    assert facts[0]["slug"] == "headline"
+    headline = facts[0]
+    assert headline["figure"] == sharecards.fmt_full(226_966_081_251.12)  # "£226,966,081,251"
     assert headline["stub"] is True
     assert headline.get("chart") is not True
