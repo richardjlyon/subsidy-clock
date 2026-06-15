@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Share — The Subsidy Clock</title>
+<meta name="description" content="A media kit for The Subsidy Clock: download the latest figures as ready-to-share images, embed the live counter, and get the underlying data. Updated daily; every figure traces to an official source.">
+<meta property="og:title" content="The Subsidy Clock — share & media kit">
+<meta property="og:description" content="Download the latest figures as ready-to-share images, embed the live counter, and get the data. Updated daily.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Subsidy Clock">
+<meta property="og:url" content="https://subsidyclock.co.uk/share">
+<meta property="og:image" content="https://subsidyclock.co.uk/share/site.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://subsidyclock.co.uk/share">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .kit-group { margin: 30px 0 8px; font-size: 0.78rem; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--faint); }
+  .kit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 22px; margin: 14px 0 8px; padding: 0; list-style: none; }
+  .kit-card { background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+    overflow: hidden; display: flex; flex-direction: column; }
+  .kit-card img { display: block; width: 100%; height: auto; background: var(--paper-dim, #f2ede3);
+    border-bottom: 1px solid var(--line-soft); }
+  .kit-meta { padding: 11px 14px 13px; display: flex; flex-direction: column; gap: 9px; flex: 1; }
+  .kit-cap { font-size: 0.82rem; line-height: 1.4; color: var(--muted); }
+  .kit-acts { display: flex; gap: 8px; margin-top: auto; }
+  .kit-btn { font: inherit; font-size: 0.78rem; cursor: pointer; padding: 5px 11px;
+    border-radius: 4px; border: 1px solid var(--line); background: transparent;
+    color: var(--money-deep); text-decoration: none; white-space: nowrap; }
+  .kit-btn:hover { border-color: var(--money-deep); }
+  .kit-btn.primary { background: var(--money); color: var(--paper); border-color: var(--money); }
+  .kit-snippet pre { overflow-x: auto; background: var(--paper-dim, #f2ede3);
+    border: 1px solid var(--line); border-radius: 4px; padding: 11px 13px; font-size: 0.78rem; }
+  .kit-note { font-size: 0.86rem; color: var(--muted); border-top: 1px solid var(--line);
+    margin-top: 32px; padding-top: 16px; }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container masthead-inner">
+    <div class="brand-block">
+      <p class="brand"><a href="/"><span class="brand-tick" aria-hidden="true"></span>The Subsidy Clock</a></p>
+      <p class="brand-tag">What UK energy subsidies cost</p>
+    </div>
+    <nav><a href="/">← Back to the clock</a><a href="/data">Data</a><a href="/methodology">Methodology</a><a href="/about">About</a></nav>
+  </div>
+</header>
+
+<main class="container prose">
+  <h1>Share</h1>
+  <p>A media kit for sharing the numbers. The images below are regenerated daily, so
+  whatever you download always carries the latest figures. Free to share and republish —
+  please credit <span class="num">subsidyclock.co.uk</span>. Every figure traces to an official source.</p>
+
+  <h2>Images</h2>
+  <p class="card-intro">Ready-to-share 1200×630 cards. <strong>Download</strong> saves the PNG;
+  <strong>Copy image</strong> puts it straight on your clipboard to paste into a post, email or doc.</p>
+  <div id="kit-cards" aria-live="polite"><p class="kit-cap">Loading cards…</p></div>
+
+  <h2>Embed the live counter</h2>
+  <p>Drop the running total onto any page — a self-contained, cookie-free iframe.</p>
+  <div class="kit-snippet">
+    <pre><code>&lt;iframe src="https://subsidyclock.co.uk/embed/widget?size=banner" width="728" height="90" title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy" style="border:0"&gt;&lt;/iframe&gt;</code></pre>
+    <button class="kit-btn" type="button" id="copy-embed">Copy snippet</button>
+    <a class="kit-btn" href="/embed">More sizes &amp; preview →</a>
+  </div>
+
+  <h2>The data</h2>
+  <p>Every series behind the Clock is published as CSV, with schema, sources and licence —
+  <a href="/data">download the data →</a>.</p>
+
+  <p class="kit-note">Usage: the figures and images are free to share and republish. Please credit
+  <span class="num">subsidyclock.co.uk</span> and, where you can, link back. See
+  <a href="/methodology">Methodology &amp; sources</a> for how each figure is built.</p>
+</main>
+
+<script>
+(function () {
+  var root = document.getElementById('kit-cards');
+
+  function flash(btn, msg) {
+    var t = btn.textContent; btn.textContent = msg;
+    setTimeout(function () { btn.textContent = t; }, 1400);
+  }
+
+  function copyImage(url, btn) {
+    if (!(navigator.clipboard && window.ClipboardItem)) { flash(btn, 'Use Download'); return; }
+    fetch(url).then(function (r) { return r.blob(); }).then(function (blob) {
+      return navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    }).then(function () { flash(btn, 'Copied ✓'); })
+      .catch(function () { flash(btn, 'Use Download'); });
+  }
+
+  function card(c) {
+    var li = document.createElement('div');
+    li.className = 'kit-card';
+    var clean = c.png.split('?')[0];                 // /share/total.png
+    var name = clean.split('/').pop();               // total.png
+    li.innerHTML =
+      '<img loading="lazy" src="' + c.png + '" alt="Share card: ' + c.label + '" width="1200" height="630">' +
+      '<div class="kit-meta">' +
+        '<div class="kit-cap"><strong class="num">' + c.figure + '</strong> — ' + c.label + '</div>' +
+        '<div class="kit-acts">' +
+          '<a class="kit-btn primary" href="' + c.png + '" download="' + name + '">Download</a>' +
+          '<button class="kit-btn" type="button" data-copy="' + c.png + '">Copy image</button>' +
+        '</div>' +
+      '</div>';
+    li.querySelector('[data-copy]').addEventListener('click', function (e) {
+      copyImage(e.target.getAttribute('data-copy'), e.target);
+    });
+    return li;
+  }
+
+  fetch('/share/cards.json').then(function (r) { return r.json(); }).then(function (data) {
+    root.innerHTML = '';
+    var order = ['Headline figures', 'What it could have bought', 'By scheme'];
+    var byGroup = {};
+    data.cards.forEach(function (c) { (byGroup[c.group] = byGroup[c.group] || []).push(c); });
+    order.concat(Object.keys(byGroup).filter(function (g) { return order.indexOf(g) === -1; }))
+      .forEach(function (g) {
+        if (!byGroup[g]) return;
+        var h = document.createElement('p'); h.className = 'kit-group'; h.textContent = g;
+        root.appendChild(h);
+        var grid = document.createElement('div'); grid.className = 'kit-grid';
+        byGroup[g].forEach(function (c) { grid.appendChild(card(c)); });
+        root.appendChild(grid);
+      });
+  }).catch(function () {
+    root.innerHTML = '<p class="kit-cap">Couldn’t load the card list. The images are still ' +
+      'available directly under <span class="num">/share/&lt;name&gt;.png</span>.</p>';
+  });
+
+  var ce = document.getElementById('copy-embed');
+  ce.addEventListener('click', function () {
+    var code = document.querySelector('.kit-snippet code').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(code).then(function () { flash(ce, 'Copied ✓'); })
+        .catch(function () { flash(ce, 'Copy failed'); });
+    }
+  });
+})();
+</script>
+</body>
+</html>

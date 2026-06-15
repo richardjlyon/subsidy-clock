@@ -1,12 +1,17 @@
-/* Explainer pages — standalone; palette mirrors ../style.css */
+/* Explainer pages — standalone; palette mirrors ../style.css (Energy Trap brand) */
+@font-face { font-family:'Equity'; src:url('../assets/fonts/equity_a_regular.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Equity'; src:url('../assets/fonts/equity_a_italic.woff2') format('woff2'); font-weight:400; font-style:italic; font-display:swap; }
+@font-face { font-family:'Equity'; src:url('../assets/fonts/equity_a_bold.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:'Concourse'; src:url('../assets/fonts/concourse_t3_regular.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Concourse'; src:url('../assets/fonts/concourse_t3_bold.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
 :root {
-  --paper: #f7f4ee; --card: #fffdf9; --ink: #23211c; --muted: #6e6a5f;
-  --faint: #97927f; --line: #e4dfd2; --line-soft: #ece8dc;
-  --money: #99311f; --money-deep: #7a2419;
-  --c-ro: #6f2014; --c-fit: #99412c; --c-cfdr: #bb6647; --c-cfdl: #d48f6b; --c-con: #e7b896;
-  --c-cm: #5f8098; --c-ccl: #2e4a5e; --c-ets: #46677e; --c-tnuos: #84a3b8; --c-bsuos: #b3c8d8;
-  --serif: "Fraunces", Georgia, "Times New Roman", serif;
-  --sans: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+  --paper: #faf7f1; --card: #fefcf7; --ink: #23282e; --muted: #5d6470;
+  --faint: #8f94a0; --line: #d9d2c4; --line-soft: #e7e1d4;
+  --money: #16243a; --money-deep: #101b2d;
+  --c-ro: #e3a13c; --c-fit: #c8862a; --c-cfdr: #a86e22; --c-cfdl: #855417; --c-con: #5e3a0e;
+  --c-cm: #16243a; --c-ccl: #274b73; --c-ets: #3f74a3; --c-tnuos: #7ba6c9; --c-bsuos: #b8d0e2;
+  --serif: "Equity", Georgia, "Times New Roman", serif;
+  --sans: "Concourse", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
