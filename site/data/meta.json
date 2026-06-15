@@ -1,26 +1,26 @@
 {
- "generated_at": "2026-06-15T07:21:20.205067+00:00",
+ "generated_at": "2026-06-15T20:37:44.996568+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-06-15T07:19:47.946389+00:00",
+   "retrieved_at": "2026-06-15T20:36:19.219854+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
    "row_count": 108189
   },
   "constraints": {
-   "retrieved_at": "2026-06-15T07:21:19.881709+00:00",
-   "source_date": "2026-03-12",
+   "retrieved_at": "2026-06-15T20:37:44.590260+00:00",
+   "source_date": "2026-03-05",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 82
+   "row_count": 31
   },
   "capacity_market": {
-   "retrieved_at": "2026-06-15T07:20:17.514961+00:00",
+   "retrieved_at": "2026-06-15T20:36:47.944405+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 744
   },
   "bsuos": {
-   "retrieved_at": "2026-06-15T07:20:19.637716+00:00",
+   "retrieved_at": "2026-06-15T20:36:50.079966+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/daily-balancing-costs-balancing-services-use-system",
    "row_count": 71
@@ -114,18 +114,18 @@
   },
   {
    "slug": "per-mwh",
-   "figure": "\u00a347.04",
-   "sentence": "Direct renewable subsidy adds \u00a347.04 to every MWh of electricity delivered in the UK.",
-   "display_html": "That is <span class=\"money num\">\u00a347.04</span> on every <a class=\"eq-src\" href=\"https://www.gov.uk/government/statistics/electricity-section-5-energy-trends\" title=\"DESNZ Energy Trends, March 2026 statistical release (2025 annual data, section 5 / table 5.2)\">MWh of electricity delivered</a>",
+   "figure": "\u00a346.98",
+   "sentence": "Direct renewable subsidy adds \u00a346.98 to every MWh of electricity delivered in the UK.",
+   "display_html": "That is <span class=\"money num\">\u00a346.98</span> on every <a class=\"eq-src\" href=\"https://www.gov.uk/government/statistics/electricity-section-5-energy-trends\" title=\"DESNZ Energy Trends, March 2026 statistical release (2025 annual data, section 5 / table 5.2)\">MWh of electricity delivered</a>",
    "label": "added to every MWh of electricity delivered in the UK by direct renewable subsidy",
    "source_name": "DESNZ Energy Trends, March 2026 statistical release (2025 annual data, section 5 / table 5.2)",
    "source_url": "https://www.gov.uk/government/statistics/electricity-section-5-energy-trends"
   },
   {
    "slug": "per-person",
-   "figure": "\u00a3185.85",
-   "sentence": "Direct renewable subsidy costs every UK person \u00a3185.85 a year.",
-   "display_html": "Per person, it is <span class=\"money num\">\u00a3185.85</span> a year <a class=\"eq-src\" href=\"https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2024\" title=\"ONS, Population estimates for the UK, mid-2024\">(UK population)</a>",
+   "figure": "\u00a3185.63",
+   "sentence": "Direct renewable subsidy costs every UK person \u00a3185.63 a year.",
+   "display_html": "Per person, it is <span class=\"money num\">\u00a3185.63</span> a year <a class=\"eq-src\" href=\"https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2024\" title=\"ONS, Population estimates for the UK, mid-2024\">(UK population)</a>",
    "label": "per person per year \u2014 the direct cost of renewable subsidy to every UK resident",
    "source_name": "ONS, Population estimates for the UK, mid-2024",
    "source_url": "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2024"
