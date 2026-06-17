@@ -1,4 +1,5 @@
 import json
+import math
 from datetime import date
 
 import pytest
@@ -405,3 +406,134 @@ def test_meta_publishes_full_combined_real_headline(tmp_path):
                 + totals["indirect"]["real_2024"]["cumulative_gbp"])
     # the headline card shows the FULL figure (every significant figure), not a floor
     assert meta["headline"]["combined_real_gbp"] == combined
+
+
+# ---- recipients map (map.json) ----
+
+BASEMAP = {
+    "provider": "mapbox", "style": "mapbox/dark-v11",
+    "center": [-3.05, 54.45], "zoom": 4.72,
+    "width": 480, "height": 640, "retina": True,
+    "access_token": "pk.test", "attribution": "© Mapbox © OpenStreetMap",
+}
+
+
+def _wm(lat, lon, bm):
+    """Reference Web Mercator projection (mirrors sitedata._web_mercator)."""
+    world = 512 * 2 ** bm["zoom"]
+    def wx(deg):
+        return (deg + 180.0) / 360.0 * world
+    def wy(deg):
+        s = math.sin(math.radians(deg))
+        return (0.5 - math.log((1 + s) / (1 - s)) / (4 * math.pi)) * world
+    clon, clat = bm["center"]
+    return (bm["width"] / 2 + (wx(lon) - wx(clon)),
+            bm["height"] / 2 + (wy(lat) - wy(clat)))
+
+
+def _map_model():
+    cfdr = SchemeResult(
+        scheme_id="cfd_renewable", label="CfD - renewables",
+        perspectives=["renewables"], cadence="daily",
+        annual=pl.DataFrame({"year": [2025], "cost_gbp": [1.0],
+                             "cost_gbp_2024": [1.0]}),
+        cumulative_gbp=1.0, runrate_gbp_per_year=1.0, data_to=date(2025, 1, 1),
+        extras={"by_station": [
+            {"station": "Hornsea 1", "technology": "Offshore Wind",
+             "cost_gbp": 2.5e9},
+            {"station": "Drax", "technology": "Biomass Conversion",
+             "cost_gbp": 1.9e9},
+            {"station": "No Coord Farm", "technology": "Onshore Wind",
+             "cost_gbp": 1.0e9},
+        ]},
+    )
+    ro = SchemeResult(
+        scheme_id="ro", label="Renewables Obligation",
+        perspectives=["renewables"], cadence="annual",
+        annual=pl.DataFrame({"year": [2025], "cost_gbp": [1.0],
+                             "cost_gbp_2024": [1.0]}),
+        cumulative_gbp=1.0, runrate_gbp_per_year=1.0, data_to=date(2025, 1, 1),
+        extras={"by_station": [
+            {"station": "Drax Power Station", "technology": "Biomass",
+             "cost_gbp": 6.4e9},
+        ]},
+    )
+    return {"schemes": [cfdr, ro],
+            "perspectives": {"renewables": {}}}
+
+
+COORDS = {
+    "Hornsea 1": (53.88, 1.68),
+    "Drax": (53.738, -0.9998),
+    "Drax Power Station": (53.738, -0.9998),
+    # "No Coord Farm" deliberately absent
+}
+
+
+def test_map_data_markers_only_for_stations_with_coords():
+    m = sitedata._map_data(_map_model(), COORDS, BASEMAP)
+    names = sorted(mk["name"] for mk in m["markers"])
+    assert names == ["Drax", "Drax Power Station", "Hornsea 1"]
+    assert "No Coord Farm" not in names
+
+
+def test_map_data_drax_yields_two_markers_one_per_scheme():
+    m = sitedata._map_data(_map_model(), COORDS, BASEMAP)
+    drax = [mk for mk in m["markers"] if mk["name"].startswith("Drax")]
+    schemes = sorted(mk["scheme"] for mk in drax)
+    assert schemes == ["cfd_renewable", "ro"]
+
+
+def test_map_data_carries_cost_technology_and_scheme():
+    m = sitedata._map_data(_map_model(), COORDS, BASEMAP)
+    hornsea = next(mk for mk in m["markers"] if mk["name"] == "Hornsea 1")
+    assert hornsea["scheme"] == "cfd_renewable"
+    assert hornsea["technology"] == "Offshore Wind"
+    assert hornsea["cost_gbp"] == 2.5e9
+
+
+def test_map_data_projection_matches_web_mercator():
+    m = sitedata._map_data(_map_model(), COORDS, BASEMAP)
+    hornsea = next(mk for mk in m["markers"] if mk["name"] == "Hornsea 1")
+    x, y = _wm(53.88, 1.68, BASEMAP)
+    assert hornsea["x"] == pytest.approx(x)
+    assert hornsea["y"] == pytest.approx(y)
+
+
+def test_map_data_projects_centre_to_image_middle():
+    # the basemap centre lands at exactly (width/2, height/2)
+    x, y = _wm(BASEMAP["center"][1], BASEMAP["center"][0], BASEMAP)
+    assert (x, y) == pytest.approx((BASEMAP["width"] / 2, BASEMAP["height"] / 2))
+
+
+def test_map_data_carries_basemap_block():
+    m = sitedata._map_data(_map_model(), COORDS, BASEMAP)
+    bm = m["basemap"]
+    assert bm["width"] == 480 and bm["height"] == 640
+    assert bm["attribution"] == "© Mapbox © OpenStreetMap"
+    assert bm["url"].startswith("https://api.mapbox.com/styles/v1/mapbox/dark-v11/static/")
+    assert "@2x" in bm["url"]
+    # the access token is appended client-side at runtime, never baked into the url
+    assert "access_token" not in bm["url"] and "pk.test" not in bm["url"]
+
+
+def test_build_writes_map_json(tmp_path):
+    # use the full model() (proper perspective blocks) but give its
+    # cfd_renewable scheme a by_station list so a marker is emitted
+    full = model()
+    full["schemes"][0].extras["by_station"] = [
+        {"station": "Hornsea 1", "technology": "Offshore Wind", "cost_gbp": 2.5e9},
+    ]
+    sitedata.build(full, CTX, {}, tmp_path,
+                   generated_at="2026-06-17T07:00:00+00:00",
+                   coords=COORDS, basemap=BASEMAP)
+    assert (tmp_path / "map.json").is_file()
+    m = json.loads((tmp_path / "map.json").read_text())
+    assert m["basemap"]["url"].startswith("https://api.mapbox.com/")
+    assert len(m["markers"]) >= 1
+
+
+def test_build_omits_map_json_without_coords(tmp_path):
+    sitedata.build(model(), CTX, {}, tmp_path,
+                   generated_at="2026-06-17T07:00:00+00:00")
+    assert not (tmp_path / "map.json").exists()

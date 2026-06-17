@@ -64,6 +64,8 @@ def cmd_build_site(args: argparse.Namespace) -> int:
     baselines = reference.load_baselines(args.root / "reference" / "baselines.yaml")
     station_map = stations.load_station_map(args.root / "reference" / "cfd_stations.csv")
     ro_stations = stations.load_ro_stations(args.root / "reference" / "ro_stations.csv")
+    station_coords = stations.load_station_coords(args.root / "reference" / "station_coords.csv")
+    basemap = json.loads((args.root / "reference" / "basemap.json").read_text())
     model = money.build(store, refs, deflators=deflators, baselines=baselines,
                         station_map=station_map, ro_stations=ro_stations)
     freshness = {}
@@ -84,7 +86,8 @@ def cmd_build_site(args: argparse.Namespace) -> int:
     sitedata.build(model, ctx, freshness, out_dir,
                    generated_at=generated_at,
                    deflator_info=deflator_info,
-                   bill_annual=bill, bill_info=bill_info, deflators=deflators)
+                   bill_annual=bill, bill_info=bill_info, deflators=deflators,
+                   coords=station_coords, basemap=basemap)
     sitedata.write_csvs(model, out_dir, restatements=store.all_restatements(),
                         generated=generated_at)
     corrections = sitedata.load_corrections(args.root / "corrections.jsonl")

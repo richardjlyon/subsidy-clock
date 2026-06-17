@@ -14,3 +14,6 @@ __pycache__/
 # primary-cited values enter reference/. Provenance points at the
 # underlying primaries (NAO/NESO/Ofgem), not these xlsx.
 /data/david-turver/
+
+# deploy-injected Mapbox token (written by scripts/inject-mapbox-token.js)
+site/mapbox-token.js

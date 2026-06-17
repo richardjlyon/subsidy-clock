@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where the money lands — The Subsidy Clock</title>
+<meta name="description" content="Every Contracts for Difference and Renewables Obligation recipient, mapped across Great Britain. Bubble area is proportional to cumulative subsidy payment.">
+<meta property="og:title" content="The Subsidy Clock — where the money lands">
+<meta property="og:description" content="UK renewable subsidy recipients mapped: bubble area proportional to cumulative payment, coloured by scheme.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Subsidy Clock">
+<meta property="og:url" content="https://subsidyclock.co.uk/map">
+<meta property="og:image" content="https://subsidyclock.co.uk/share/site.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://subsidyclock.co.uk/map">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container masthead-inner">
+    <div class="brand-block">
+      <p class="brand"><a href="/"><span class="brand-tick" aria-hidden="true"></span>The Subsidy Clock</a></p>
+      <p class="brand-tag">What UK energy subsidies cost</p>
+    </div>
+    <nav><a href="/">← Back to the clock</a><a href="/data">Data</a><a href="/methodology">Methodology</a><a href="/about">About</a></nav>
+  </div>
+</header>
+
+<main class="container prose">
+  <h1>Where the money lands</h1>
+  <p class="lede">Every generating station in the largest-recipients table, mapped. Each bubble is one physical station; its <strong>area is proportional to cumulative payment</strong>, and its colour shows the scheme. Hover a bubble for the detail.</p>
+
+  <div class="map-frame" id="map-frame">
+    <div class="map-popup" id="map-popup" role="status" aria-live="polite"></div>
+  </div>
+  <div class="legend" id="map-legend"></div>
+
+  <p class="table-note" id="map-note">Basemap © Mapbox © OpenStreetMap. Bubbles are placed by each station’s coordinates and sized by cumulative payment — Contracts for Difference grouped by physical station, Renewables Obligation at buy-out value. A plant paid under both schemes shows one bubble per scheme (Drax, for example). Constraint-payment recipients are excluded: their payees are registered Balancing Mechanism lead parties, not physical assets, and cannot be located on the map.</p>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p class="footer-links">Made by <a href="https://theenergytrap.org">Richard Lyon</a> · <a href="/data">Data</a> · <a href="/methodology">Methodology &amp; sources</a> · <a href="/corrections">Corrections</a> · <a href="/about">About this site</a></p>
+    <p class="footer-small">Every figure traces to an official source.</p>
+  </div>
+</footer>
+
+<script src="mapbox-token.js"></script>
+<script src="map.js"></script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "buildCommand": "",
+  "buildCommand": "node scripts/inject-mapbox-token.js",
   "installCommand": "",
   "outputDirectory": "site",
   "cleanUrls": true,

@@ -57,6 +57,10 @@
   --c-cfdl: #855417;
   --c-con:  #5e3a0e;
 
+  /* recipients map — jewel tones glowing on the dark Mapbox basemap */
+  --jewel-cfd: #1fb486;   /* emerald — CfD renewables */
+  --jewel-ro:  #a45cf0;   /* amethyst — Renewables Obligation */
+
   /* indirect (estimated) layer — cool blue ramp, deep navy → pale sky */
   --c-cm:    #16243a;
   --c-ccl:   #274b73;
@@ -345,6 +349,25 @@ main > .card-pair { margin: 24px 0; }
 .chart .gridline { stroke: var(--line-soft); stroke-width: 1; }
 .chart .zeroline { stroke: var(--line); stroke-width: 1; }
 .chart rect.partial { opacity: 0.5; }
+
+/* ---------- recipients map (Mapbox basemap + jewel SVG markers) ---------- */
+.map-frame { position: relative; max-width: 480px; margin: 8px auto 0; }
+.map-frame img.map-base { display: block; width: 100%; height: auto; border-radius: 8px; }
+.map-overlay { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.map-marker { cursor: pointer; fill-opacity: 0.85; stroke: #fff; stroke-width: 1; paint-order: stroke; transition: fill-opacity 0.12s ease; }
+.map-marker:hover, .map-marker.is-active { fill-opacity: 1; stroke-width: 1.6; }
+.map-popup {
+  position: absolute; z-index: 5; pointer-events: none; display: none;
+  min-width: 150px; max-width: 230px; padding: 8px 10px;
+  background: rgba(16,19,26,0.96); color: #f4f6f8;
+  border: 1px solid rgba(255,255,255,0.16); border-radius: 6px;
+  font-size: 0.8rem; line-height: 1.35; box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+.map-popup.is-visible { display: block; }
+.map-popup .pop-name { font-weight: 600; display: block; margin-bottom: 2px; }
+.map-popup .pop-meta { color: #aeb6bf; font-size: 0.74rem; }
+.map-popup .pop-cost { font-weight: 600; }
+.map-popup .pop-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: 0; }
 .legend { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 20px; margin-top: 14px; font-size: 0.8rem; color: var(--ink); }
 .legend span.swatch { display: inline-block; width: 11px; height: 11px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
 .legend .swatch-hatch { background-color: var(--card); border: 1px solid; }

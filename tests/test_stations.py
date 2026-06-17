@@ -1,8 +1,39 @@
 from subsidy_engine.stations import (
     group_by_station,
     load_ro_stations,
+    load_station_coords,
     load_station_map,
 )
+
+
+def test_load_station_coords_reads_station_to_latlon_floats(tmp_path):
+    csv = tmp_path / "coords.csv"
+    csv.write_text(
+        "station,lat,lon,source_url\n"
+        "Hornsea 1,53.8800,1.6800,https://example/hornsea\n"
+        "Drax,53.7380,-0.9998,https://example/drax\n"
+    )
+
+    coords = load_station_coords(csv)
+
+    assert coords == {
+        "Hornsea 1": (53.88, 1.68),
+        "Drax": (53.738, -0.9998),
+    }
+
+
+def test_load_station_coords_skips_blank_and_not_found_rows(tmp_path):
+    csv = tmp_path / "coords.csv"
+    csv.write_text(
+        "station,lat,lon,source_url\n"
+        "Hornsea 1,53.8800,1.6800,https://example/hornsea\n"
+        "Mystery Farm,,,\n"
+        "Unlocatable,NOT FOUND,NOT FOUND,\n"
+    )
+
+    coords = load_station_coords(csv)
+
+    assert coords == {"Hornsea 1": (53.88, 1.68)}
 
 
 def test_load_ro_stations_reads_named_stations_with_buyout_value(tmp_path):

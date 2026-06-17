@@ -1,0 +1,11 @@
+{
+  "provider": "mapbox",
+  "style": "mapbox/streets-v12",
+  "center": [-3.05, 54.45],
+  "zoom": 4.72,
+  "width": 480,
+  "height": 640,
+  "retina": true,
+  "attribution": "© Mapbox © OpenStreetMap",
+  "note": "No access token here on purpose — it is kept out of git. The token is a public (pk.*) client token, URL-restricted to subsidyclock.co.uk, set as the Vercel env var MAPBOX_TOKEN; scripts/inject-mapbox-token.js writes site/mapbox-token.js at deploy and site/map.js appends it to the static-image URL client-side. Because it is domain-locked, the basemap 403s off-domain (e.g. localhost) — it only renders on the live site. Served by Mapbox's Static Images API per their ToS (not self-hosted). Marker projection is Web Mercator from center/zoom/width/height, matching the static image exactly."
+}
