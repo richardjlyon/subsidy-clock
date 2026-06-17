@@ -1,4 +1,25 @@
-from subsidy_engine.stations import group_by_station, load_station_map
+from subsidy_engine.stations import (
+    group_by_station,
+    load_ro_stations,
+    load_station_map,
+)
+
+
+def test_load_ro_stations_reads_named_stations_with_buyout_value(tmp_path):
+    csv = tmp_path / "ro.csv"
+    csv.write_text(
+        "station,technology,buyout_gbp\n"
+        "Drax Power Station,Biomass,6480000000\n"
+        "London Array Offshore Windfarm,Offshore Wind,2920000000\n"
+    )
+
+    rows = load_ro_stations(csv)
+
+    assert rows == [
+        {"station": "Drax Power Station", "technology": "Biomass", "cost_gbp": 6480000000.0},
+        {"station": "London Array Offshore Windfarm", "technology": "Offshore Wind",
+         "cost_gbp": 2920000000.0},
+    ]
 
 
 def test_load_station_map_reads_cfd_id_to_station(tmp_path):

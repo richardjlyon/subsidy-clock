@@ -22,6 +22,22 @@ def load_station_map(path):
         return {row["cfd_id"]: row["station"] for row in csv.DictReader(f)}
 
 
+def load_ro_stations(path):
+    """Load named RO recipients from the reference CSV, valued at buy-out.
+
+    Returns a list of ``{station, technology, cost_gbp}`` dicts, sorted as the
+    file is. ``cost_gbp`` is the buy-out value (the directly-sourced per-generator
+    basis); the RO scheme total additionally includes recycle value, so these
+    per-station figures understate the full cost by the recycle element.
+    """
+    with Path(path).open(newline="") as f:
+        return [
+            {"station": row["station"], "technology": row["technology"],
+             "cost_gbp": float(row["buyout_gbp"])}
+            for row in csv.DictReader(f)
+        ]
+
+
 def group_by_station(recipients, station_map):
     """Collapse per-contract recipient rows into per-station rows.
 

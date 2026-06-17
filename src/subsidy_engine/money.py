@@ -141,7 +141,8 @@ def baseline_uplift(
 
 
 def annual_to_result(scheme_id: str, ref: ReferenceScheme, *,
-                     layer: str = "direct") -> SchemeResult:
+                     layer: str = "direct",
+                     extra_extras: dict | None = None) -> SchemeResult:
     annual = ref.annual
     latest_year = int(annual["year"].max())
     return SchemeResult(
@@ -160,7 +161,7 @@ def annual_to_result(scheme_id: str, ref: ReferenceScheme, *,
         attribution_note=ref.attribution_rule,
         attribution_confidence=ref.attribution_confidence,
         extras={"source": ref.source, "source_url": ref.source_url,
-                "verified": ref.verified},
+                "verified": ref.verified, **(extra_extras or {})},
     )
 
 
@@ -198,11 +199,14 @@ def layer_total(schemes: list[SchemeResult], layer: str) -> dict:
 
 def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
           *, deflators: pl.DataFrame, baselines: dict | None = None,
-          station_map: dict | None = None) -> dict:
+          station_map: dict | None = None,
+          ro_stations: list | None = None) -> dict:
     """Assemble every scheme result plus perspective totals and the indirect layer total.
 
     ``station_map`` (cfd_id -> physical-station short name) collapses phased CfD
-    contracts into one station for the recipients view; omitted in unit tests."""
+    contracts into one station for the recipients view; omitted in unit tests.
+    ``ro_stations`` are the named RO recipients (buy-out basis) surfaced in the
+    recipients table; omitted in unit tests."""
     schemes: list[SchemeResult] = []
 
     # --- CfD: bottom-up, split renewable / non-renewable by technology (M-7).
@@ -319,9 +323,13 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
                     "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction"},
         ))
 
-    # --- Annual reference schemes (RO, FIT)
+    # --- Annual reference schemes (RO, FIT). RO carries named per-station
+    # recipients (buy-out basis) for the recipients table; the scheme total
+    # stays the recycle-inclusive Ofgem figure.
     for scheme_id in ("ro", "fit"):
-        schemes.append(annual_to_result(scheme_id, refs[scheme_id]))
+        extra = ({"by_station": ro_stations[:25], "recipient_basis": "buyout"}
+                 if scheme_id == "ro" and ro_stations else None)
+        schemes.append(annual_to_result(scheme_id, refs[scheme_id], extra_extras=extra))
 
     # --- Indirect layer (phase 2): CCL, ETS as stored; TNUoS, BSUoS by uplift
     baselines = baselines or {}

@@ -418,6 +418,13 @@
         });
       });
     });
+    var ro = schemesById.ro;
+    (ro && ro.by_station || []).forEach(function (r) {
+      rows.push({
+        name: r.station, tech: r.technology, scheme: 'RO', cost: r.cost_gbp,
+        detail: 'buy-out basis', contracts: null
+      });
+    });
     var c = schemesById.constraints;
     (c && c.by_recipient || []).forEach(function (r) {
       rows.push({

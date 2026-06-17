@@ -63,8 +63,9 @@ def cmd_build_site(args: argparse.Namespace) -> int:
                  "verified": bill_yaml.get("verified", False)}
     baselines = reference.load_baselines(args.root / "reference" / "baselines.yaml")
     station_map = stations.load_station_map(args.root / "reference" / "cfd_stations.csv")
+    ro_stations = stations.load_ro_stations(args.root / "reference" / "ro_stations.csv")
     model = money.build(store, refs, deflators=deflators, baselines=baselines,
-                        station_map=station_map)
+                        station_map=station_map, ro_stations=ro_stations)
     freshness = {}
     for scheme_id, table in [("cfd", "generation"), ("constraints", "daily"),
                               ("capacity_market", "payments"), ("bsuos", "daily")]:
