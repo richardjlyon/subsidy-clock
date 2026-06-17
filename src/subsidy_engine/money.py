@@ -10,6 +10,7 @@ import polars as pl
 
 from subsidy_engine.reference import ReferenceScheme
 from subsidy_engine.schemes import cfd
+from subsidy_engine.stations import group_by_station
 from subsidy_engine.store import SnapshotStore
 
 SECONDS_PER_YEAR = 365.25 * 86400  # 31_557_600
@@ -196,8 +197,12 @@ def layer_total(schemes: list[SchemeResult], layer: str) -> dict:
 
 
 def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
-          *, deflators: pl.DataFrame, baselines: dict | None = None) -> dict:
-    """Assemble every scheme result plus perspective totals and the indirect layer total."""
+          *, deflators: pl.DataFrame, baselines: dict | None = None,
+          station_map: dict | None = None) -> dict:
+    """Assemble every scheme result plus perspective totals and the indirect layer total.
+
+    ``station_map`` (cfd_id -> physical-station short name) collapses phased CfD
+    contracts into one station for the recipients view; omitted in unit tests."""
     schemes: list[SchemeResult] = []
 
     # --- CfD: bottom-up, split renewable / non-renewable by technology (M-7).
@@ -236,7 +241,12 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
                             .sort("cost_gbp", descending=True).to_dicts(),
                         "by_recipient": sub.group_by("unit_name", "technology")
                             .agg(pl.col("payment_gbp").sum().alias("cost_gbp"))
-                            .sort("cost_gbp", descending=True).head(25).to_dicts()},
+                            .sort("cost_gbp", descending=True).head(25).to_dicts(),
+                        "by_station": group_by_station(
+                            sub.group_by("cfd_id", "unit_name", "technology")
+                               .agg(pl.col("payment_gbp").sum().alias("cost_gbp"))
+                               .to_dicts(),
+                            station_map or {})[:25]},
             ))
 
     # --- Constraints: bottom-up daily merged with curated annual history

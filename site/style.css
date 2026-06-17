@@ -321,6 +321,16 @@ main > .card-pair { margin: 24px 0; }
 .data-table .cell-dim { color: var(--muted); }
 .table-note { margin: 12px 0 0; font-size: 0.8rem; color: var(--muted); max-width: 50em; font-family: var(--serif); }
 
+/* recipients: station rows expandable to their per-contract phases */
+.rec-expand { background: none; border: 0; padding: 0 0 0 6px; cursor: pointer; font: inherit; color: var(--muted); }
+.rec-expand:hover { color: var(--navy); }
+.rec-caret { display: inline-block; width: 0.7em; }
+.data-table tr.rec-contracts.is-hidden { display: none; }
+.data-table tr.rec-contracts td { padding-top: 0; border-bottom: 1px solid var(--line-soft); }
+.contract-list { margin: 0; padding: 0 0 4px; list-style: none; }
+.contract-list li { display: flex; justify-content: space-between; gap: 1em; padding: 2px 0; font-size: 0.85rem; color: var(--muted); }
+.contract-list .money { font-weight: 700; color: var(--navy); }
+
 /* ---------- card head row + view toggle ---------- */
 .card-head-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .card-head-row h2 { margin: 0; }

@@ -10,7 +10,7 @@ import yaml
 from datetime import date, datetime, timezone
 from pathlib import Path
 
-from subsidy_engine import money, reconcile, reference, sitedata
+from subsidy_engine import money, reconcile, reference, sitedata, stations
 from subsidy_engine.schemes import bsuos, capacity_market, cfd, constraints
 from subsidy_engine.store import SnapshotStore
 
@@ -62,7 +62,9 @@ def cmd_build_site(args: argparse.Namespace) -> int:
     bill_info = {"source": bill_yaml["source"], "source_url": bill_yaml["source_url"],
                  "verified": bill_yaml.get("verified", False)}
     baselines = reference.load_baselines(args.root / "reference" / "baselines.yaml")
-    model = money.build(store, refs, deflators=deflators, baselines=baselines)
+    station_map = stations.load_station_map(args.root / "reference" / "cfd_stations.csv")
+    model = money.build(store, refs, deflators=deflators, baselines=baselines,
+                        station_map=station_map)
     freshness = {}
     for scheme_id, table in [("cfd", "generation"), ("constraints", "daily"),
                               ("capacity_market", "payments"), ("bsuos", "daily")]:

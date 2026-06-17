@@ -403,32 +403,66 @@
   }
 
   // ---------- recipients table ----------
+  // CfD rows are grouped by physical station (so a phased wind farm reads as one
+  // asset); a station holding more than one CfD contract is expandable to its
+  // per-contract phases. Constraint rows are by Balancing Mechanism lead party.
   function renderRecipients() {
     var rows = [];
     ['cfd_renewable', 'cfd_low_carbon'].forEach(function (id) {
       var s = schemesById[id];
-      (s && s.by_recipient || []).forEach(function (r) {
-        rows.push({ name: r.unit_name, tech: r.technology, scheme: 'CfD', cost: r.cost_gbp, detail: null });
+      var stations = (s && s.by_station) || [];
+      stations.forEach(function (r) {
+        rows.push({
+          name: r.station, tech: r.technology, scheme: 'CfD', cost: r.cost_gbp,
+          detail: null, contracts: (r.contracts && r.contracts.length > 1) ? r.contracts : null
+        });
       });
     });
     var c = schemesById.constraints;
     (c && c.by_recipient || []).forEach(function (r) {
       rows.push({
         name: r.lead_party, tech: 'Wind (curtailed)', scheme: 'Constraints', cost: r.cost_gbp,
-        detail: fmtInt(Math.abs(r.volume_mwh)) + ' MWh curtailed'
+        detail: fmtInt(Math.abs(r.volume_mwh)) + ' MWh curtailed', contracts: null
       });
     });
     rows.sort(function (a, b) { return b.cost - a.cost; });
-    document.querySelector('#recipients-table tbody').innerHTML =
-      rows.slice(0, 15).map(function (r, i) {
-        return '<tr>' +
-          '<td class="rank-col num">' + (i + 1) + '</td>' +
-          '<td>' + esc(r.name) + (r.detail ? ' <span class="cell-dim">(' + esc(r.detail) + ')</span>' : '') + '</td>' +
-          '<td class="cell-dim">' + esc(r.tech) + '</td>' +
-          '<td class="cell-dim">' + esc(r.scheme) + '</td>' +
-          '<td class="num-col money">' + fmtCompact(r.cost) + '</td>' +
-        '</tr>';
-      }).join('');
+    var html = '';
+    rows.slice(0, 15).forEach(function (r, i) {
+      var name = esc(r.name);
+      if (r.detail) name += ' <span class="cell-dim">(' + esc(r.detail) + ')</span>';
+      if (r.contracts) {
+        name += ' <button type="button" class="rec-expand" aria-expanded="false"' +
+          ' data-target="rec-' + i + '">' +
+          '<span class="rec-caret" aria-hidden="true">▸</span> ' +
+          '<span class="cell-dim">' + r.contracts.length + ' contracts</span></button>';
+      }
+      html += '<tr>' +
+        '<td class="rank-col num">' + (i + 1) + '</td>' +
+        '<td>' + name + '</td>' +
+        '<td class="cell-dim">' + esc(r.tech) + '</td>' +
+        '<td class="cell-dim">' + esc(r.scheme) + '</td>' +
+        '<td class="num-col money">' + fmtCompact(r.cost) + '</td>' +
+      '</tr>';
+      if (r.contracts) {
+        html += '<tr class="rec-contracts is-hidden" id="rec-' + i + '"><td></td>' +
+          '<td colspan="4"><ul class="contract-list">' +
+          r.contracts.map(function (ct) {
+            return '<li>' + esc(ct.unit_name) +
+              ' <span class="num-col money">' + fmtCompact(ct.cost_gbp) + '</span></li>';
+          }).join('') + '</ul></td></tr>';
+      }
+    });
+    var tbody = document.querySelector('#recipients-table tbody');
+    tbody.innerHTML = html;
+    tbody.onclick = function (e) {
+      var btn = e.target.closest('.rec-expand');
+      if (!btn) return;
+      var row = document.getElementById(btn.getAttribute('data-target'));
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+      btn.querySelector('.rec-caret').textContent = open ? '▸' : '▾';
+      if (row) row.classList.toggle('is-hidden', open);
+    };
   }
 
   // ---------- trend chart (stacked annual bars, inline SVG) ----------
