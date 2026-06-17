@@ -51,6 +51,24 @@ def test_load_indirect_annual():
     assert years == sorted(years)
 
 
+def test_tnuos_neso_traced_values():
+    """TNUoS 2013-2024 traced to NESO charging statements (via David Turver's
+    'TNUoS and BSUoS summary' workbook, whose 2022-24 rows match our independent
+    NESO anchors exactly, validating the FYE-1 calendar mapping). Pins the
+    adopted values so accidental drift from the cited primary is caught.
+    See docs/superpowers/specs/2026-06-17-indirect-reconciliation-log.md."""
+    schemes = reference.load_annual_costs(REF_DIR / "indirect_annual.yaml")
+    annual = {r["year"]: r["cost_gbp"] for r in schemes["tnuos"].annual.to_dicts()}
+    expected = {
+        2013: 2_196_600_000, 2014: 2_524_300_000, 2015: 2_636_700_000,
+        2016: 2_708_700_000, 2017: 2_631_500_000, 2018: 2_670_300_000,
+        2019: 2_837_400_000, 2020: 2_843_000_000, 2021: 3_594_000_000,
+        2022: 3_594_000_000, 2023: 4_416_400_000, 2024: 4_188_500_000,
+    }
+    for yr, val in expected.items():
+        assert annual[yr] == val, (yr, annual[yr])
+
+
 def test_load_ref_crosscheck():
     rc = reference.load_ref_crosscheck(REF_DIR / "ref_crosscheck.yaml")
     assert rc["source_url"].startswith("https://www.ref.org.uk")

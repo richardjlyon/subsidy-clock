@@ -125,17 +125,19 @@ schemes:
     perspectives: []
     cadence: annual
     source: >-
-      2023 and 2024: NESO "Final TNUoS Tariffs for 2023/24" (Jan 2023, total
-      TNUoS revenue GBP 4,416.4m; implies 2022/23 total GBP 3,594m via the
-      stated GBP 822m increase) and "Final TNUoS Tariffs for 2024/25"
-      (Jan 2024, MAR Total Revenue GBP 4,188.5m; states a GBP 225.5m decrease
-      from 2023/24, implying GBP 4,414m - the lower of the two 2023/24
-      figures is used). 2002-2004: GBP 0.9bn/yr per the verified 2002-05
-      baseline (reference/baselines.yaml). Intermediate years 2005-2021: REF
+      2013-2024: NESO TNUoS charging statements (total revenue), as compiled in
+      David Turver's "TNUoS and BSUoS summary" workbook from NESO's Final TNUoS
+      Tariffs publications. Calendar mapping is fiscal-year-ended-March minus one
+      (the period starting April of the calendar year); validated because the
+      2022-24 calendar values reproduce our three independent NESO anchors
+      exactly - "Final TNUoS Tariffs for 2023/24" (GBP 4,416.4m, our 2023) and
+      "Final TNUoS Tariffs for 2024/25" (MAR Total Revenue GBP 4,188.5m, our
+      2024). 2002-2004: GBP 0.9bn/yr per the verified 2002-05 baseline
+      (reference/baselines.yaml). Earliest intermediate years 2005-2012: REF
       April 2025 study Table 2 total-charge column (in parentheses), itself
       compiled from NESO/Ofgem charging statements - pending primary
-      confirmation.
-    source_url: https://www.neso.energy/document/301741/download
+      confirmation (not reached by the Turver/NESO series).
+    source_url: https://www.neso.energy/industry-information/charging/tnuos-charges
     verified: false
     attribution:
       rule: >-
@@ -144,12 +146,12 @@ schemes:
         attributed to renewables, floored at zero.
       confidence: low
     note: >-
-      Not fully verified from primary sources. Verified years: 2022-2024
-      (NESO Final TNUoS Tariffs documents) and the 2002-2004 baseline level.
-      Unverified years: 2005-2021 (values from REF Table 2's total-charge
-      column pending confirmation against NESO/National Grid charging
-      statements and Ofgem price-control documents). 2024/25 figure is NESO's
-      final-tariff-setting forecast of revenue to be recovered.
+      NESO-traced years: 2013-2024 (NESO TNUoS charging statements via the
+      Turver workbook; 2022-2024 also confirmed directly against NESO Final
+      TNUoS Tariffs documents). Baseline years: 2002-2004. Still pending primary
+      confirmation: 2005-2012 (REF Table 2's total-charge column - the
+      Turver/NESO series does not reach before 2013/14). 2024/25 figure is
+      NESO's final-tariff-setting forecast of revenue to be recovered.
     annual:
       2002: 900000000
       2003: 900000000
@@ -162,17 +164,17 @@ schemes:
       2010: 1600000000
       2011: 1600000000
       2012: 1600000000
-      2013: 2200000000
-      2014: 2500000000
-      2015: 2600000000
-      2016: 2700000000
-      2017: 2600000000
-      2018: 2700000000
-      2019: 2800000000
-      2020: 2800000000
-      2021: 3300000000
+      2013: 2196600000
+      2014: 2524300000
+      2015: 2636700000
+      2016: 2708700000
+      2017: 2631500000
+      2018: 2670300000
+      2019: 2837400000
+      2020: 2843000000
+      2021: 3594000000
       2022: 3594000000
-      2023: 4414000000
+      2023: 4416400000
       2024: 4188500000
   bsuos_history:
     label: Balancing Services Use of System, pre-2017 history (raw totals)
@@ -202,8 +204,14 @@ schemes:
       these only for years not covered by the bottom-up NESO series. Not
       fully verified: 2006-2010 and 2014-2016 are from REF Table 2's
       total-charge column pending primary confirmation; 2005 and 2011-2013
-      are verified against the NAO report; 2002-2004 against the project
-      baseline.
+      are verified against the NAO report (Figure 9, total balancing costs
+      recovered through BSUoS); 2002-2004 against the project baseline.
+      David Turver's NESO "balancing costs" series was evaluated as a
+      replacement but measures a narrower basis (it excludes National Grid's
+      internal/admin costs, ~GBP 130m/yr, which the NAO Figure 9 series and
+      our 2002-05 baseline include), so adopting it would splice two
+      definitions mid-series; the gross BSUoS basis is retained here pending a
+      shared definition agreed with David.
     annual:
       2002: 400000000
       2003: 400000000
