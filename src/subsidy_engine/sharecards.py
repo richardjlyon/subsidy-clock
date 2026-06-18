@@ -19,10 +19,10 @@ SITE_URL = "https://subsidyclock.co.uk"
 # order mirrors STACK_ORDER in site/app.js renderChart - keep all three
 # in step (CSS vars are not available inside the card template).
 CHART_STACK = [
-    ("ro", "#e3a13c"), ("fit", "#c8862a"), ("cfd_renewable", "#a86e22"),
-    ("cfd_low_carbon", "#855417"), ("constraints", "#5e3a0e"),
-    ("capacity_market", "#16243a"), ("ccl", "#274b73"), ("ets", "#3f74a3"),
-    ("tnuos", "#7ba6c9"), ("bsuos", "#b8d0e2"),
+    ("ro", "#990f3d"), ("fit", "#e0a93e"), ("cfd_renewable", "#c56b2f"),
+    ("cfd_low_carbon", "#9a6a2e"), ("constraints", "#7a3b23"),
+    ("capacity_market", "#1b5a8a"), ("ccl", "#2e7e86"), ("ets", "#5193b0"),
+    ("tnuos", "#8fb8ce"), ("bsuos", "#c5dae6"),
 ]
 
 # explainer slug + display name per scheme id (mirrors SCHEME_META in site/app.js)

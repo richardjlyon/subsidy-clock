@@ -168,8 +168,8 @@ def test_cumulative_svg_stacks_and_is_monotonic():
     assert svg.startswith("<svg")
     # 2002: one segment (ro=1bn); 2003: ro=3bn cumulative + bsuos=0.5bn
     assert svg.count("<rect") == 3
-    assert "#e3a13c" in svg     # ro colour (amber headline)
-    assert "#b8d0e2" in svg     # bsuos colour (pale sky)
+    assert "#990f3d" in svg     # ro colour (claret headline)
+    assert "#c5dae6" in svg     # bsuos colour (palest sky)
 
 
 def test_cumulative_svg_uses_real_2024_series():

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en-GB" data-skin="ft">
 <head>
+<script>(function(){var s=new URLSearchParams(location.search).get('skin');if(s==='ft'||s==='energy-trap')document.documentElement.setAttribute('data-skin',s);})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Subsidy Clock — what UK energy subsidies cost</title>
@@ -19,13 +20,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="skin-ft.css">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
 <body>
 
 <header class="masthead">
   <div class="container masthead-inner">
     <div class="brand-block">
-      <p class="brand"><span class="brand-tick" aria-hidden="true"></span>The Subsidy Clock</p>
+      <p class="brand"><span class="brand-tick" aria-hidden="true"></span>The Subsidy Clock<span class="ft-live ft-only" aria-hidden="true"><span class="ft-live-dot"></span>Live</span></p>
       <p class="brand-tag">What UK energy subsidies cost, counted live</p>
     </div>
     <nav><a href="/data">Data</a><a href="/methodology">Methodology</a><a href="/share">Share</a><a href="/about">About</a></nav>
@@ -38,16 +42,31 @@
   <!-- ====================== HERO ====================== -->
   <section class="hero" id="total" aria-label="Headline counter">
 
+    <div class="ft-hero-head ft-only">
+      <p class="ft-title">What UK energy subsidies cost</p>
+      <p class="ft-subtitle">A live, sourced tally of payments to renewable and low-carbon electricity generators — traced to the official registers, restated in 2024 prices.</p>
+    </div>
+
     <p class="hero-leadin" id="hero-leadin" hidden></p>
 
-    <p class="hero-figure">
-      <span class="hero-value money num" id="hero-value">&nbsp;</span>
-    </p>
-    <p class="hero-sub" id="hero-sub"></p>
-
-    <p class="since-opened">Since you opened this page: <span class="money num" id="since-opened">£0.00</span></p>
-    <div class="hero-share" id="hero-share" aria-label="Share this figure">
-      <span class="hero-share-lead">Share this number:</span>
+    <div class="ft-hero-grid">
+      <div class="ft-col ft-col-left">
+        <p class="ft-eyebrow ft-only">Total paid since 2002 · 2024 prices</p>
+        <p class="hero-figure">
+          <span class="hero-value money num" id="hero-value">&nbsp;</span>
+        </p>
+        <p class="hero-sub" id="hero-sub"></p>
+        <p class="ft-lead ft-only" id="ft-lead"></p>
+      </div>
+      <div class="ft-divider ft-only" aria-hidden="true"></div>
+      <div class="ft-col ft-col-right">
+        <p class="ft-eyebrow ft-only">Since you opened this page</p>
+        <p class="since-opened">Since you opened this page: <span class="money num" id="since-opened">£0.00</span></p>
+        <p class="ft-rate ft-only" id="ft-rate"></p>
+        <div class="hero-share" id="hero-share" aria-label="Share this figure">
+          <span class="hero-share-lead">Share this number:</span>
+        </div>
+      </div>
     </div>
 
     <!-- ============ Timeframe strip (run-rate estimates) ============ -->

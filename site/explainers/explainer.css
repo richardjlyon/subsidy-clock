@@ -7,7 +7,7 @@
 :root {
   --paper: #faf7f1; --card: #fefcf7; --ink: #23282e; --muted: #5d6470;
   --faint: #8f94a0; --line: #d9d2c4; --line-soft: #e7e1d4;
-  --money: #16243a; --money-deep: #101b2d;
+  --money: #16243a; --money-deep: #101b2d; --amber: #e3a13c;
   --c-ro: #e3a13c; --c-fit: #c8862a; --c-cfdr: #a86e22; --c-cfdl: #855417; --c-con: #5e3a0e;
   --c-cm: #16243a; --c-ccl: #274b73; --c-ets: #3f74a3; --c-tnuos: #7ba6c9; --c-bsuos: #b8d0e2;
   --serif: "Equity", Georgia, "Times New Roman", serif;
@@ -22,8 +22,25 @@ body {
 }
 .num { font-variant-numeric: tabular-nums; }
 
+/* site masthead — same header as the main site, styled via tokens so it
+   matches whichever skin is active (oat/claret in FT, cream in the base) */
+.masthead { background: var(--paper); border-bottom: 1px solid var(--line); }
+.masthead-inner { max-width: 760px; margin: 0 auto; padding: 18px 28px;
+  display: flex; justify-content: space-between; align-items: center; gap: 8px 24px; flex-wrap: wrap; }
+.masthead .brand { margin: 0; font-family: var(--sans); font-weight: 700; font-size: 1.5rem;
+  letter-spacing: -0.01em; color: var(--ink); display: flex; align-items: center; }
+.masthead .brand a { color: inherit; text-decoration: none; }
+/* −24px outdent hangs the square in the gutter; wordmark text sits on the column edge */
+.brand-tick { display: inline-block; width: 12px; height: 12px; border-radius: 2px;
+  background: var(--amber); margin-left: -24px; margin-right: 12px; animation: brand-tick 2s steps(1) infinite; }
+@keyframes brand-tick { 0% { opacity: 1; } 50% { opacity: 0.3; } }
+@media (prefers-reduced-motion: reduce) { .brand-tick { animation: none; } }
+.masthead nav { display: flex; gap: 24px; flex-wrap: wrap; }
+.masthead nav a { font-family: var(--sans); font-size: 0.95rem; color: var(--muted); text-decoration: none; }
+.masthead nav a:hover { color: var(--ink); }
+
 /* explainer layout */
-.xwrap { max-width: 760px; margin: 0 auto; padding: 0 16px 48px; }
+.xwrap { max-width: 760px; margin: 0 auto; padding: 0 28px 48px; }
 .crumb { font-size: 0.72rem; color: var(--faint); margin: 14px 0; }
 .crumb a { color: var(--money-deep); }
 .xhead { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -49,8 +66,41 @@ body {
 .src { font-size: 0.8rem; color: var(--muted); }
 .src a { color: var(--money-deep); }
 
-/* footer */
-.vfoot { border-top: 1px solid var(--line); margin-top: 26px; padding-top: 10px;
-  font-size: 0.72rem; color: var(--faint); display: flex; justify-content: space-between;
-  gap: 10px; flex-wrap: wrap; }
-.vfoot a { color: var(--money-deep); }
+/* footer — standardised to match the main site (inside .xwrap for width) */
+.footer { border-top: 1px solid var(--line); margin-top: 40px; padding-top: 22px; color: var(--muted); }
+.footer p { margin: 0 0 10px; }
+.footer-links { font-family: var(--sans); font-size: 0.86rem; color: var(--ink); letter-spacing: 0.01em; }
+.footer-links a { color: var(--money-deep); }
+.footer-links a:hover { color: var(--amber); }
+.footer-small { font-family: var(--serif); font-size: 0.8rem; color: var(--muted); }
+
+/* ============================================================
+   "FINANCIAL TIMES" SKIN — additive, scoped under data-skin="ft".
+   Mirrors ../skin-ft.css: oat ground, white hairline cards, flat
+   corners, claret accent, Equity serif reading. Inert otherwise.
+   ============================================================ */
+html[data-skin="ft"] {
+  font-size: 17px;         /* lift the root so copy AND titles scale up together */
+  --paper: #f9efdf; --card: #ffffff; --paper-dim: #f2e6d2;
+  --ink: #1f242b; --muted: #6a6053; --faint: #9b8f7c;
+  --line: #e7d9c2; --line-soft: #efe4d2;
+  --money: #1f242b; --money-deep: #14181e;
+  --amber: #9e1b32;            /* claret accent */
+  --c-ro:#990f3d; --c-fit:#e0a93e; --c-cfdr:#c56b2f; --c-cfdl:#9a6a2e; --c-con:#7a3b23;
+  --c-cm:#1b5a8a; --c-ccl:#2e7e86; --c-ets:#5193b0; --c-tnuos:#8fb8ce; --c-bsuos:#c5dae6;
+}
+html[data-skin="ft"] body { font-family: var(--serif); }   /* serif reading, as the main site */
+html[data-skin="ft"] .xhead h1 { font-family: var(--sans); font-size: 2rem; letter-spacing: -0.015em; color: var(--ink); }
+html[data-skin="ft"] .xhead .chip { border-radius: 2px; }
+html[data-skin="ft"] .badge { border-radius: 3px; letter-spacing: 0.1em; background: var(--muted); }
+html[data-skin="ft"] .badge.est { background: var(--faint); }
+html[data-skin="ft"] .xstrip { border-radius: 3px; }
+html[data-skin="ft"] .xstrip .v { color: var(--ink); }
+html[data-skin="ft"] .xbody h2 { font-family: var(--sans); color: var(--ink); font-size: 1.25rem; }
+html[data-skin="ft"] .xbody p { font-size: 1rem; }
+html[data-skin="ft"] .bill { border-radius: 3px; border-style: solid; }
+html[data-skin="ft"] .bill .hi { background: var(--paper-dim); color: var(--amber); }
+html[data-skin="ft"] .crumb a,
+html[data-skin="ft"] .src a { color: var(--money-deep); }
+html[data-skin="ft"] .crumb a:hover,
+html[data-skin="ft"] .src a:hover { color: var(--amber); }

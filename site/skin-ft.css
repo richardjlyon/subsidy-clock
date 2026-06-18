@@ -1,0 +1,324 @@
+/* ============================================================
+   THE SUBSIDY CLOCK — "FINANCIAL TIMES" SKIN (additive, scoped)
+   ------------------------------------------------------------
+   Every rule is scoped under html[data-skin="ft"], so this file
+   is wholly inert unless that attribute is set. The default skin
+   (Energy Trap, in style.css) is never touched.
+
+   Identity: warm "FT-pink" oat ground, white cards with hairline
+   rules, near-black Equity SERIF on the display figures and
+   headings (the inverse of Energy Trap, which sets those in
+   Concourse sans), a single claret accent, and a two-box total
+   card in the masthead/hero.
+
+   Typefaces reuse the brand webfonts already declared in
+   style.css (Equity + Concourse) — no new @font-face, no network.
+   ============================================================ */
+
+/* ---- additive hero elements: hidden in every skin by default,
+        revealed only under the FT skin (see reveals below) ---- */
+.ft-only { display: none; }
+/* the two grid wrappers are transparent to layout in Energy Trap */
+.ft-hero-grid, .ft-col { display: contents; }
+
+/* ============================================================
+   TOKENS — redeclared on the FT root; they inherit everywhere,
+   so most components reskin themselves through the cascade.
+   We repurpose the existing token names:
+     --navy   → near-black ink (headings, links, bars, toggles)
+     --amber  → claret accent (live figure, household, LIVE pill)
+   ============================================================ */
+html[data-skin="ft"] {
+  font-size: 17px;         /* lift the root so rem-based copy AND titles scale up together */
+
+  --paper:      #f9efdf;   /* warm oat reading ground */
+  --paper-dim:  #f2e6d2;
+  --card:       #ffffff;   /* white cards lift off the oat */
+
+  --ink:        #1f242b;
+  --muted:      #6a6053;
+  --faint:      #9b8f7c;
+  --line:       #e7d9c2;
+  --line-soft:  #efe4d2;
+
+  --navy:       #1f242b;   /* "navy" is now ink */
+  --navy-deep:  #14181e;
+  --money:      #1f242b;   /* big figures = near-black */
+
+  --amber:      #9e1b32;   /* claret accent */
+  --amber-dark: #7d1427;
+
+  --stale:      #a8702a;
+  --stale-bg:   #f3e6cf;
+
+  --radius:     2px;
+  --radius-lg:  2px;
+
+  /* charts — two FT-family hue groups so colour encodes the direct/indirect
+     split: DIRECT = warm (claret hero → orange → gold → brown), INDIRECT =
+     cool blue (oxford → teal → sky → pale). Tuned to sit on the oat ground. */
+  --c-ro:    #990f3d;   /* claret — measured headline */
+  --c-fit:   #e0a93e;   /* gold */
+  --c-cfdr:  #c56b2f;   /* burnt orange */
+  --c-cfdl:  #9a6a2e;   /* bronze (nuclear, ~0) */
+  --c-con:   #7a3b23;   /* chocolate (constraints) */
+  --c-cm:    #1b5a8a;   /* oxford blue — estimated */
+  --c-ccl:   #2e7e86;   /* teal */
+  --c-ets:   #5193b0;   /* mid sky-blue */
+  --c-tnuos: #8fb8ce;   /* pale sky */
+  --c-bsuos: #c5dae6;   /* palest */
+  --c-other: #d9ccb4;   /* wheat — "all other costs" */
+}
+
+/* flat oat ground — drop Energy Trap's navy dot texture */
+html[data-skin="ft"] body { background-image: none; }
+
+/* keep headings & display figures in SERIF (Equity); the base
+   sheet pushes these into Concourse sans — undo just those */
+html[data-skin="ft"] :is(
+  .kfigure, .stat-value
+) { font-family: var(--serif); }
+
+html[data-skin="ft"] a:hover { color: var(--amber-dark); }
+
+/* ============================================================
+   MASTHEAD — oat band, serif wordmark, claret LIVE pill,
+   "Updated continuously" set italic at the far right of the nav
+   ============================================================ */
+html[data-skin="ft"] .masthead {
+  background: var(--paper);
+  background-image: none;
+  border-bottom: 1px solid var(--line);
+  box-shadow: none;
+}
+html[data-skin="ft"] .masthead-inner { padding-top: 20px; padding-bottom: 18px; }
+
+html[data-skin="ft"] .brand {
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+  gap: 0;
+}
+/* live indicator: keep the brand-tick square with its clock-tick blink
+   (claret in FT via --amber); the "LIVE" pill is retired for the ticking look */
+/* hang the ticking square in the gutter so the wordmark TEXT sits on the column
+   edge, level with the hero headline. The −24px outdent = square (12) + its 12px
+   gap; the column padding below grows to 28px so the square never clips. */
+html[data-skin="ft"] .brand-tick { display: inline-block; width: 12px; height: 12px; margin-left: -24px; }
+html[data-skin="ft"] .container { padding-left: 28px; padding-right: 28px; }
+html[data-skin="ft"] .brand-tag  { display: none; }   /* subtitle hidden */
+html[data-skin="ft"] .ft-live     { display: none; }
+
+html[data-skin="ft"] .masthead nav { align-items: center; gap: 26px; }
+html[data-skin="ft"] .masthead nav a {
+  color: var(--muted);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.95rem;
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+html[data-skin="ft"] .masthead nav a:hover { color: var(--ink); border-bottom: 0; }
+html[data-skin="ft"] .masthead :focus-visible { outline-color: var(--amber); }
+
+/* ============================================================
+   HERO — the section is now a transparent container on the oat
+   ground; the two-box total CARD is .ft-hero-grid.
+   ============================================================ */
+html[data-skin="ft"] .hero {
+  position: relative;          /* positioning context for the top-right share strip */
+  margin: 32px 0 0;
+  padding: 0;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  color: var(--ink);
+}
+html[data-skin="ft"] .hero-leadin { display: none; }
+html[data-skin="ft"] .hero-sub   { display: none; }   /* replaced by .ft-lead */
+
+/* the white card */
+html[data-skin="ft"] .ft-hero-grid {
+  display: grid;
+  grid-template-columns: 1.55fr 1px 1fr;
+  column-gap: 40px;
+  align-items: start;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 30px 36px 32px;
+}
+html[data-skin="ft"] .ft-col { display: flex; flex-direction: column; }
+html[data-skin="ft"] .ft-col-left  { grid-column: 1; }
+html[data-skin="ft"] .ft-col-right { grid-column: 3; }
+html[data-skin="ft"] .ft-divider {
+  grid-column: 2; align-self: stretch;
+  width: 1px; background: var(--line);
+}
+
+/* reveal the additive FT elements */
+html[data-skin="ft"] .ft-hero-head,
+html[data-skin="ft"] .ft-eyebrow,
+html[data-skin="ft"] .ft-lead,
+html[data-skin="ft"] .ft-rate,
+html[data-skin="ft"] .ft-divider { display: block; }
+
+/* hero title + subtitle, above the clock card.
+   padding-right reserves a lane for the absolutely-positioned share strip so
+   the headline can never wrap under it (see the share-strip block below). */
+html[data-skin="ft"] .ft-hero-head { margin: 0 0 26px; padding-right: 390px; }
+html[data-skin="ft"] .ft-title {
+  margin: 0;
+  font-family: var(--serif); font-weight: 700;
+  /* cap in px so the root bump doesn't grow the headline past its one-line lane */
+  font-size: clamp(2rem, 4.6vw, 46px);
+  line-height: 1.05; letter-spacing: -0.015em;
+  color: var(--ink);
+}
+html[data-skin="ft"] .ft-subtitle {
+  margin: 14px 0 0;
+  font-family: var(--serif);
+  font-size: 1.18rem; line-height: 1.4;
+  color: var(--muted); max-width: 34em;
+}
+
+html[data-skin="ft"] .ft-eyebrow {
+  margin: 0 0 14px;
+  font-family: var(--sans); font-weight: 700;
+  font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted);
+}
+
+html[data-skin="ft"] .hero-figure { margin: 0; }
+html[data-skin="ft"] .hero-value {
+  color: var(--money);
+  font-weight: 700;
+  font-size: clamp(2.3rem, 6.4vw, 4.9rem);
+  letter-spacing: -0.02em;
+}
+html[data-skin="ft"] .hero-fn { color: var(--faint); }
+
+html[data-skin="ft"] .ft-lead {
+  margin: 18px 0 0;
+  font-family: var(--serif);
+  font-size: 1.06rem; line-height: 1.5;
+  color: var(--ink); max-width: 30em;
+}
+html[data-skin="ft"] .ft-lead strong { font-weight: 700; }
+
+/* right box: claret live figure + per-day descriptor */
+html[data-skin="ft"] .since-opened {
+  margin: 0; padding: 0; border: 0; background: none;
+  display: block; font-size: 0;          /* hides the inline label text node */
+}
+html[data-skin="ft"] .since-opened .money {
+  color: var(--amber);
+  font-family: var(--serif); font-weight: 700;
+  font-size: clamp(1.9rem, 4.2vw, 2.85rem);
+  letter-spacing: -0.015em;
+}
+html[data-skin="ft"] .ft-rate {
+  margin: 8px 0 0;
+  font-family: var(--serif); font-style: italic;
+  color: var(--muted); font-size: 1rem;
+}
+
+/* social share strip — floated top-right of the hero, aligned with the title;
+   shares the whole page (figure + site URL), not the since-opened number */
+html[data-skin="ft"] .hero-share {
+  position: absolute; top: 6px; right: 0;
+  margin: 0; gap: 8px; justify-content: flex-end;
+}
+html[data-skin="ft"] .hero-share-lead { display: none; }
+html[data-skin="ft"] .hero-share-pill {
+  color: var(--muted);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+}
+html[data-skin="ft"] .hero-share-pill:hover {
+  color: #fff; background: var(--amber); border-color: var(--amber);
+}
+
+/* narrow screens: stack the two-box card and drop the share strip into normal
+   flow (left-aligned, below the card content) so it can't overlap the title */
+@media (max-width: 760px) {
+  html[data-skin="ft"] .ft-hero-head { padding-right: 0; }
+  html[data-skin="ft"] .ft-hero-grid { grid-template-columns: 1fr; row-gap: 24px; }
+  html[data-skin="ft"] .ft-divider { display: none; }
+  html[data-skin="ft"] .ft-col-right { grid-column: 1; }
+  html[data-skin="ft"] .hero-share {
+    position: static; justify-content: flex-start; margin: 16px 0 0;
+  }
+}
+
+/* ============================================================
+   CHIPS — separate white cards on the oat ground (not a joined
+   strip). Same six cells, same data; fonts/colours remapped.
+   ============================================================ */
+html[data-skin="ft"] .strip {
+  margin: 16px 0 0;
+  gap: 14px;
+  border: 0; border-radius: 0; background: none;
+  overflow: visible;
+}
+html[data-skin="ft"] .strip-cell {
+  border: 1px solid var(--line); border-radius: 3px;
+  background: var(--card);
+  padding: 16px 16px 18px;
+}
+html[data-skin="ft"] .strip-label {
+  color: var(--muted); font-size: 0.66rem; letter-spacing: 0.11em;
+}
+html[data-skin="ft"] .strip-value { color: var(--ink); font-size: 1.32rem; margin-top: 2px; }
+html[data-skin="ft"] .strip-value.money { color: var(--ink); }
+html[data-skin="ft"] .strip-sub { color: var(--faint); }
+/* the household chip carries the claret accent */
+html[data-skin="ft"] #strip-household,
+html[data-skin="ft"] .strip-cell:nth-child(5) .strip-label { color: var(--amber); }
+
+html[data-skin="ft"] .strip-caption { color: var(--muted); }
+
+/* equivalences ("what this buys") — a flat tinted aside that sets the
+   editorial colour apart from the white data cards; no shadow (broadsheet flat) */
+html[data-skin="ft"] .equivalences {
+  color: var(--ink);
+  margin: 22px 0 6px;
+  padding: 20px 8px;
+  background: var(--paper-dim);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18em, 1fr));
+  gap: 16px 0;
+  align-items: stretch;
+  font-size: 1.02rem;
+}
+html[data-skin="ft"] .equivalences li {
+  max-width: none;
+  padding: 0 28px;
+  line-height: 1.45;
+  border-left: 1px solid var(--line);
+}
+html[data-skin="ft"] .equivalences li:first-child { border-left: 0; }
+html[data-skin="ft"] .equivalences .money { color: var(--amber); font-weight: 700; }
+html[data-skin="ft"] .equivalences .eq-src { border-bottom-color: var(--faint); }
+
+/* ============================================================
+   DATA SECTIONS — the cream cards already inherit the tokens;
+   only a couple of accents need nudging for the claret/white look
+   ============================================================ */
+html[data-skin="ft"] .view-toggle button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+html[data-skin="ft"] .card-foot a { color: var(--amber-dark); }
+/* by-scheme & by-technology bars in the claret accent; net-payback (neg) bars
+   keep the contrasting blue so the sign still reads */
+html[data-skin="ft"] .bar-fill:not(.neg) { background: var(--amber); }
+
+/* trend-chart legend: break the "Indirect (estimated)" group onto its own
+   line so it can't read as another direct item. Inert (removed) in other skins. */
+.legend-break { display: none; }
+html[data-skin="ft"] .legend-break { display: block; flex-basis: 100%; height: 0; margin: 0; }
+/* the group already starts a new line — drop the inline indent so it aligns left */
+html[data-skin="ft"] .legend .legend-group:not(:first-child) { margin-left: 0; }

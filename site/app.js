@@ -146,6 +146,18 @@
       'advances at each scheme\u2019s most recent published run-rate.">†</sup></span>';
     document.getElementById('strip-alltime-since').textContent =
       'since ' + sinceYear + ', direct (full cost, 2024 prices)';
+    // FT skin: left-box descriptive paragraph (inert markup in other skins).
+    // Uses the same floored combined total as the lead-in so the figures can't drift.
+    var ftLead = document.getElementById('ft-lead');
+    if (ftLead) {
+      ftLead.innerHTML =
+        'Paid to renewable &amp; low-carbon generators through the Renewables ' +
+        'Obligation, Contracts for Difference, Feed-in Tariffs and constraint payments.' +
+        (hasCombinedReal()
+          ? ' With estimated indirect costs, <strong>£' +
+            (combinedRealFlooredGbp() / 1e9) + 'bn</strong>.'
+          : '');
+    }
   }
 
   // ---------- ticking ----------
@@ -158,7 +170,8 @@
     hour: document.getElementById('strip-hour'),
     today: document.getElementById('strip-today'),
     year: document.getElementById('strip-year'),
-    alltime: document.getElementById('strip-alltime')
+    alltime: document.getElementById('strip-alltime'),
+    ftRate: document.getElementById('ft-rate')   // FT skin per-day descriptor
   };
 
   // The all-time bracket is the same combined real-2024 £10bn floor the
@@ -179,6 +192,7 @@
     els.today.textContent = fmtFull(rate * (t - startOfToday(d)) / 1000);
     els.year.textContent = fmtCompact(rate * (t - startOfYear(d)) / 1000);
     els.alltime.textContent = fmtCompact(liveCumulative(t)) + alltimeSuffix;
+    if (els.ftRate) els.ftRate.textContent = 'and counting, at ' + fmtCompact(rate * 86400) + ' a day';
     if (motionOK) {
       rafId = requestAnimationFrame(tick);
     } else {
@@ -311,7 +325,7 @@
 
     document.getElementById('direct-card-total').textContent = fmtCompact(pv().cumulative_gbp);
     document.getElementById('direct-card-sub').textContent =
-      'paid through electricity bills since ' + persp().since_year +
+      'paid through electricity bills and taxes since ' + persp().since_year +
       ' · adding ' + fmtPence(pv().rate_gbp_per_sec) + ' a second';
     document.getElementById('direct-card-rows').innerHTML = direct.map(rowHtml).join('');
 
@@ -601,6 +615,7 @@
     }
     document.getElementById('trend-legend').innerHTML =
       '<span class="legend-group">Direct (measured)</span>' + directIds.map(legendItem).join('') +
+      '<span class="legend-break" aria-hidden="true"></span>' +
       '<span class="legend-group">Indirect (estimated)</span>' + indirectIds.map(legendItem).join('');
   }
 
@@ -651,7 +666,10 @@
     var lowCarbon = state.perspective === 'low_carbon';
     var subsidyLabel = lowCarbon ? 'Low-carbon energy' : 'Renewable-energy';
 
+    var ftSkin = document.documentElement.getAttribute('data-skin') === 'ft';
     var DIRECT = 'var(--c-ro)', HATCH = 'var(--c-cm)', OTHER = 'var(--c-other)';
+    // FT skin renders the indirect band as a solid blue tone; other skins hatch it.
+    var INDIRECT = ftSkin ? 'var(--c-cm)' : 'url(#share-hatch)';
     var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + (lowCarbon ? 'Low-carbon energy' : 'Renewable') + ' subsidy as a share of the total electricity bill, ' + firstYear + ' to ' + lastYear + '">';
     svg += '<defs><pattern id="share-hatch" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">' +
       '<line x1="0" y1="0" x2="0" y2="5" stroke="' + HATCH + '" stroke-width="1.8"/></pattern></defs>';
@@ -667,14 +685,14 @@
       var x = mL + bandW * i + (bandW - barW) / 2;
       var acc = 0;
       [['direct', DIRECT, ' direct subsidy'],
-       ['indirect', 'url(#share-hatch)', ' indirect subsidy (estimated)'],
+       ['indirect', INDIRECT, ' indirect subsidy (estimated)'],
        ['other', OTHER, ' all other costs']].forEach(function (seg) {
         var v = r[seg[0]];
         if (v <= 0) return;
         var y0 = yPos(acc + v), h = yPos(acc) - y0;
         acc += v;
         if (h < 0.1) return;
-        var stroke = seg[0] === 'indirect' ? ' stroke="' + HATCH + '" stroke-width="0.7"' : '';
+        var stroke = (!ftSkin && seg[0] === 'indirect') ? ' stroke="' + HATCH + '" stroke-width="0.7"' : '';
         var pct = r.bill > 0 ? Math.round(100 * v / r.bill) : 0;
         svg += '<rect x="' + x.toFixed(1) + '" y="' + y0.toFixed(1) + '" width="' + barW.toFixed(1) +
           '" height="' + h.toFixed(1) + '" fill="' + seg[1] + '"' + stroke + '>' +
@@ -700,10 +718,13 @@
       (state.real ? 'Figures in 2024 prices. ' : '') +
       'High-price years (the 2022–23 energy spike) raise the denominator and lower the share even as subsidy rises.';
 
+    var indirectSwatch = ftSkin
+      ? '<span class="swatch" style="background:' + INDIRECT + '"></span>'
+      : '<span class="swatch swatch-hatch" style="background-image:repeating-linear-gradient(45deg,' +
+          HATCH + ' 0,' + HATCH + ' 1.5px,transparent 1.5px,transparent 4px);border-color:' + HATCH + '"></span>';
     document.getElementById('share-legend').innerHTML =
       '<span><span class="swatch" style="background:' + DIRECT + '"></span>Direct subsidy</span>' +
-      '<span><span class="swatch swatch-hatch" style="background-image:repeating-linear-gradient(45deg,' +
-        HATCH + ' 0,' + HATCH + ' 1.5px,transparent 1.5px,transparent 4px);border-color:' + HATCH + '"></span>Indirect subsidy (estimated)</span>' +
+      '<span>' + indirectSwatch + 'Indirect subsidy (estimated)</span>' +
       '<span><span class="swatch" style="background:' + OTHER + '"></span>All other costs</span>';
   }
 
@@ -818,7 +839,10 @@
     SCShare.initTracking();
     var row = document.getElementById('hero-share');
     if (!row) return;
-    if (SCShare.canShareFiles()) {
+    // FT skin shows the explicit social strip (platform pills); the native
+    // share sheet is the Energy Trap default where the platform supports it.
+    var ftSkin = document.documentElement.getAttribute('data-skin') === 'ft';
+    if (!ftSkin && SCShare.canShareFiles()) {
       var nb = sharePill('Share…', 'native');
       nb.addEventListener('click', function () {
         nativeShare(function () {

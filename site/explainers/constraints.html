@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en-gb">
+<html lang="en-gb" data-skin="ft">
 <head>
+<script>(function(){var s=new URLSearchParams(location.search).get('skin');if(s==='ft'||s==='energy-trap')document.documentElement.setAttribute('data-skin',s);})();</script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Paid to switch off (constraints) — The Subsidy Clock</title>
@@ -19,8 +20,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="explainer.css">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
 <body data-scheme-id="constraints" data-scheme-slug="constraints">
+<header class="masthead">
+  <div class="masthead-inner">
+    <p class="brand"><span class="brand-tick" aria-hidden="true"></span><a href="/">The Subsidy Clock</a></p>
+    <nav><a href="/data">Data</a><a href="/methodology">Methodology</a><a href="/share">Share</a><a href="/about">About</a></nav>
+  </div>
+</header>
 <div class="xwrap">
   <p class="crumb"><a href="/">← All subsidies</a> · The Subsidy Clock</p>
   <div class="xhead">
@@ -76,9 +85,9 @@
     <a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026">Ofgem Q3 2026 price cap announcement</a>.</p>
   </div>
 
-  <footer class="vfoot">
-    <span>Anonymous view counting by GoatCounter — no cookies, no personal data</span>
-    <span><a href="/">← back to the counter</a></span>
+  <footer class="footer">
+    <p class="footer-links">Made by <a href="https://theenergytrap.org">Richard Lyon</a> · <a href="/data">Data</a> · <a href="/methodology">Methodology &amp; sources</a> · <a href="/corrections">Corrections</a> · <a href="/about">About this site</a></p>
+    <p class="footer-small">Every figure traces to an official source.</p>
   </footer>
 </div>
 <script src="../share.js"></script>

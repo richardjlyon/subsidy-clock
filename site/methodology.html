@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en-GB" data-skin="ft">
 <head>
+<script>(function(){var s=new URLSearchParams(location.search).get('skin');if(s==='ft'||s==='energy-trap')document.documentElement.setAttribute('data-skin',s);})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Methodology &amp; sources — The Subsidy Clock</title>
@@ -19,6 +20,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="skin-ft.css">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
 <body>
 
@@ -28,7 +32,7 @@
       <p class="brand"><a href="/"><span class="brand-tick" aria-hidden="true"></span>The Subsidy Clock</a></p>
       <p class="brand-tag">What UK energy subsidies cost</p>
     </div>
-    <nav><a href="/">← Back to the clock</a><a href="/data">Data</a><a href="/about">About</a><a href="/share">Share</a></nav>
+    <nav><a href="/">← Back to the clock</a><a href="/data">Data</a><a href="/share">Share</a><a href="/about">About</a></nav>
   </div>
 </header>
 
@@ -238,6 +242,12 @@
 
   <p class="caveat">Figures computed <span id="generated-at" class="num"></span>. Questions about the data should start with the source links above.</p>
 </main>
+<footer class="footer">
+  <div class="container">
+    <p class="footer-links">Made by <a href="https://theenergytrap.org">Richard Lyon</a> · <a href="/data">Data</a> · <a href="/methodology">Methodology &amp; sources</a> · <a href="/corrections">Corrections</a> · <a href="/about">About this site</a></p>
+    <p class="footer-small">Every figure traces to an official source.</p>
+  </div>
+</footer>
 
 <script src="share.js"></script>
 <script>
