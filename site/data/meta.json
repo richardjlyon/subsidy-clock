@@ -1,26 +1,26 @@
 {
- "generated_at": "2026-06-17T21:19:28.245844+00:00",
+ "generated_at": "2026-06-18T07:12:07.152575+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-06-17T07:18:27.166018+00:00",
+   "retrieved_at": "2026-06-18T07:10:53.713827+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
-   "row_count": 108485
+   "row_count": 108560
   },
   "constraints": {
-   "retrieved_at": "2026-06-17T07:19:36.684888+00:00",
-   "source_date": "2026-02-19",
+   "retrieved_at": "2026-06-18T07:12:06.711349+00:00",
+   "source_date": "2026-02-12",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 21
+   "row_count": 16
   },
   "capacity_market": {
-   "retrieved_at": "2026-06-17T07:18:47.820530+00:00",
+   "retrieved_at": "2026-06-18T07:11:15.879784+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 744
   },
   "bsuos": {
-   "retrieved_at": "2026-06-17T07:18:49.502822+00:00",
+   "retrieved_at": "2026-06-18T07:11:17.787284+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/daily-balancing-costs-balancing-services-use-system",
    "row_count": 75
@@ -85,7 +85,7 @@
   "verified": true
  },
  "headline": {
-  "combined_real_gbp": 227591875250.95682
+  "combined_real_gbp": 227594371454.19458
  },
  "factoids": [
   {
@@ -117,18 +117,18 @@
   },
   {
    "slug": "per-mwh",
-   "figure": "\u00a346.89",
-   "sentence": "Direct renewable subsidy adds \u00a346.89 to every MWh of electricity delivered in the UK.",
-   "display_html": "That is <span class=\"money num\">\u00a346.89</span> on every <a class=\"eq-src\" href=\"https://www.gov.uk/government/statistics/electricity-section-5-energy-trends\" title=\"DESNZ Energy Trends, March 2026 statistical release (2025 annual data, section 5 / table 5.2)\">MWh of electricity delivered</a>",
+   "figure": "\u00a346.81",
+   "sentence": "Direct renewable subsidy adds \u00a346.81 to every MWh of electricity delivered in the UK.",
+   "display_html": "That is <span class=\"money num\">\u00a346.81</span> on every <a class=\"eq-src\" href=\"https://www.gov.uk/government/statistics/electricity-section-5-energy-trends\" title=\"DESNZ Energy Trends, March 2026 statistical release (2025 annual data, section 5 / table 5.2)\">MWh of electricity delivered</a>",
    "label": "added to every MWh of electricity delivered in the UK by direct renewable subsidy",
    "source_name": "DESNZ Energy Trends, March 2026 statistical release (2025 annual data, section 5 / table 5.2)",
    "source_url": "https://www.gov.uk/government/statistics/electricity-section-5-energy-trends"
   },
   {
    "slug": "per-person",
-   "figure": "\u00a3185.27",
-   "sentence": "Direct renewable subsidy costs every UK person \u00a3185.27 a year.",
-   "display_html": "Per person, it is <span class=\"money num\">\u00a3185.27</span> a year <a class=\"eq-src\" href=\"https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2024\" title=\"ONS, Population estimates for the UK, mid-2024\">(UK population)</a>",
+   "figure": "\u00a3184.96",
+   "sentence": "Direct renewable subsidy costs every UK person \u00a3184.96 a year.",
+   "display_html": "Per person, it is <span class=\"money num\">\u00a3184.96</span> a year <a class=\"eq-src\" href=\"https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2024\" title=\"ONS, Population estimates for the UK, mid-2024\">(UK population)</a>",
    "label": "per person per year \u2014 the direct cost of renewable subsidy to every UK resident",
    "source_name": "ONS, Population estimates for the UK, mid-2024",
    "source_url": "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2024"
