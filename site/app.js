@@ -518,6 +518,22 @@
     var years = [];
     for (var y = firstYear; y <= currentYear; y++) years.push(y);
 
+    // Last fully-reported year: annual-cadence schemes (RO, FiT, CCL, ETS,
+    // TNUoS) publish a year or more in arrears, so a calendar year is only
+    // complete once every annual member has filed it. Years beyond this are
+    // partial — they carry just the daily/monthly schemes — and are flagged
+    // as such so the apparent drop isn't read as a real fall in subsidy.
+    var lastCompleteYear = currentYear;
+    memberIds.forEach(function (id) {
+      if (schemesById[id].cadence !== 'annual') return;
+      var maxYr = 0;
+      timeseries.schemes[id].annual.forEach(function (a) {
+        if (a.year > maxYr) maxYr = a.year;
+      });
+      if (maxYr < lastCompleteYear) lastCompleteYear = maxYr;
+    });
+    function isPartialYear(yr) { return yr > lastCompleteYear; }
+
     var cumulative = state.trendView === 'cumulative';
     var valueBySchemeYear = {};
     memberIds.forEach(function (id) {
@@ -576,7 +592,7 @@
     years.forEach(function (yr, i) {
       var x = mL + bandW * i + (bandW - barW) / 2;
       var posAcc = 0, negAcc = 0;
-      var partial = (!cumulative && yr === currentYear) ? ' class="partial"' : '';
+      var partial = (!cumulative && isPartialYear(yr)) ? ' class="partial"' : '';
       memberIds.forEach(function (id) {
         var v = valueBySchemeYear[id][yr] || 0;
         if (v === 0) return;
@@ -589,25 +605,37 @@
           '" width="' + barW.toFixed(1) + '" height="' + h.toFixed(1) +
           '" fill="' + SCHEME_COLOURS[id] + '">' +
           '<title>' + esc(schemesById[id].label) + (indirect ? ' (indirect, estimated)' : '') +
-          (cumulative ? ', to ' + yr + (yr === currentYear ? ' (incl. partial year)' : '')
-                      : ', ' + yr + (yr === currentYear ? ' (partial)' : '')) +
+          (cumulative ? ', to ' + yr + (isPartialYear(yr) ? ' (incl. partial years)' : '')
+                      : ', ' + yr + (isPartialYear(yr) ? ' (partial)' : '')) +
           ': ' + fmtCompact(v) + '</title></rect>';
       });
-      if (yr % 4 === 2 || yr === currentYear) {
+      if (yr % 4 === 2 || isPartialYear(yr)) {
         svg += '<text class="axis-label" x="' + (mL + bandW * i + bandW / 2).toFixed(1) + '" y="' + (H - 10) +
-          '" text-anchor="middle">' + yr + (yr === currentYear ? '*' : '') + '</text>';
+          '" text-anchor="middle">' + yr + (isPartialYear(yr) ? '*' : '') + '</text>';
       }
     });
     svg += '</svg>';
 
+    var partialYears = years.filter(isPartialYear);
+    var partialLabel = partialYears.length
+      ? (partialYears.length === 1
+          ? partialYears[0] + ' is'
+          : partialYears[0] + '–' + partialYears[partialYears.length - 1] + ' are')
+      : '';
+    var partialNote = partialYears.length
+      ? ' *' + partialLabel + ' incomplete: the annual schemes ' +
+        '(Renewables Obligation, Feed-in Tariffs, Climate Change Levy, ' +
+        'Emissions Trading, TNUoS) report in arrears and have not yet filed ' +
+        'these years, so only the daily and monthly schemes appear.'
+      : '';
     document.getElementById('trend-chart').innerHTML = svg;
     document.getElementById('trend-h').textContent =
       cumulative ? 'The bill since 2002, in today’s money' : 'Cost per year, by scheme, in today’s money';
     document.getElementById('trend-note').innerHTML = cumulative
-      ? 'Cumulative cost by scheme since ' + firstYear + '; the ' + currentYear + ' bar includes the year to date. Warm bars are measured direct schemes; cool blue bars are estimated indirect costs. All years in 2024 prices — the as-paid figures are on the <a href="/data">data page</a>.'
+      ? 'Cumulative cost by scheme since ' + firstYear + '; the most recent bars include years still being reported. Warm bars are measured direct schemes; cool blue bars are estimated indirect costs. All years in 2024 prices — the as-paid figures are on the <a href="/data">data page</a>.'
       : 'Annual cost by scheme, ' + firstYear + '–' + currentYear +
         '. Warm bars are measured direct schemes; cool blue bars are estimated indirect costs. All years in 2024 prices — the as-paid figures are on the <a href="/data">data page</a>.' +
-        ' *' + currentYear + ' is a partial year (data to date).';
+        partialNote;
     var directIds = memberIds.filter(function (id) { return !isIndirectScheme(id); });
     function legendItem(id) {
       return '<span><span class="swatch" style="background:' + SCHEME_COLOURS[id] + '"></span>' +
