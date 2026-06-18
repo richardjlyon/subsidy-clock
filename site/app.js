@@ -68,7 +68,7 @@
   // ---------- state ----------
   var motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var rafId;
-  var state = { perspective: 'renewables', real: false, trendView: 'cumulative' };
+  var state = { perspective: 'renewables', real: true, trendView: 'cumulative' };
   // SITE_URL/SHARE_URL live with the state - renderEquivalences needs them at first paint.
   var SITE_URL = 'https://subsidyclock.co.uk';
   var SHARE_URL = SITE_URL + '/';
