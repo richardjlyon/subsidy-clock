@@ -1,26 +1,26 @@
 {
- "generated_at": "2026-06-21T07:11:55.354702+00:00",
+ "generated_at": "2026-06-22T07:21:42.700914+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-06-21T07:10:48.297250+00:00",
+   "retrieved_at": "2026-06-22T07:20:11.378560+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
    "row_count": 108714
   },
   "constraints": {
-   "retrieved_at": "2026-06-21T07:11:54.891361+00:00",
-   "source_date": "2026-01-22",
+   "retrieved_at": "2026-06-22T07:21:42.218402+00:00",
+   "source_date": "2026-01-15",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 38
+   "row_count": 24
   },
   "capacity_market": {
-   "retrieved_at": "2026-06-21T07:11:08.744352+00:00",
+   "retrieved_at": "2026-06-22T07:20:38.282498+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 744
   },
   "bsuos": {
-   "retrieved_at": "2026-06-21T07:11:10.468710+00:00",
+   "retrieved_at": "2026-06-22T07:20:41.509755+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/daily-balancing-costs-balancing-services-use-system",
    "row_count": 77
@@ -90,9 +90,9 @@
  "factoids": [
   {
    "slug": "nurses",
-   "figure": "327,000",
-   "sentence": "A year of direct UK renewable subsidy pays the salaries of 327,000 NHS nurses.",
-   "display_html": "A year of this pays the salaries of <span class=\"money num\">327,000</span> <a class=\"eq-src\" href=\"https://www.nhsemployers.org/articles/pay-scales-202627\" title=\"NHS Employers, Agenda for Change pay scales 2026/27\">NHS nurses</a>",
+   "figure": "328,000",
+   "sentence": "A year of direct UK renewable subsidy pays the salaries of 328,000 NHS nurses.",
+   "display_html": "A year of this pays the salaries of <span class=\"money num\">328,000</span> <a class=\"eq-src\" href=\"https://www.nhsemployers.org/articles/pay-scales-202627\" title=\"NHS Employers, Agenda for Change pay scales 2026/27\">NHS nurses</a>",
    "label": "NHS nurses' annual salaries paid by one year of direct renewable subsidy",
    "source_name": "NHS Employers, Agenda for Change pay scales 2026/27",
    "source_url": "https://www.nhsemployers.org/articles/pay-scales-202627"
@@ -117,18 +117,18 @@
   },
   {
    "slug": "per-mwh",
-   "figure": "\u00a346.73",
-   "sentence": "Direct renewable subsidy adds \u00a346.73 to every MWh of electricity delivered in the UK.",
-   "display_html": "That is <span class=\"money num\">\u00a346.73</span> on every <a class=\"eq-src\" href=\"https://www.gov.uk/government/statistics/electricity-section-5-energy-trends\" title=\"DESNZ Energy Trends, March 2026 statistical release (2025 annual data, section 5 / table 5.2)\">MWh of electricity delivered</a>",
+   "figure": "\u00a346.77",
+   "sentence": "Direct renewable subsidy adds \u00a346.77 to every MWh of electricity delivered in the UK.",
+   "display_html": "That is <span class=\"money num\">\u00a346.77</span> on every <a class=\"eq-src\" href=\"https://www.gov.uk/government/statistics/electricity-section-5-energy-trends\" title=\"DESNZ Energy Trends, March 2026 statistical release (2025 annual data, section 5 / table 5.2)\">MWh of electricity delivered</a>",
    "label": "added to every MWh of electricity delivered in the UK by direct renewable subsidy",
    "source_name": "DESNZ Energy Trends, March 2026 statistical release (2025 annual data, section 5 / table 5.2)",
    "source_url": "https://www.gov.uk/government/statistics/electricity-section-5-energy-trends"
   },
   {
    "slug": "per-person",
-   "figure": "\u00a3184.64",
-   "sentence": "Direct renewable subsidy costs every UK person \u00a3184.64 a year.",
-   "display_html": "Per person, it is <span class=\"money num\">\u00a3184.64</span> a year <a class=\"eq-src\" href=\"https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2024\" title=\"ONS, Population estimates for the UK, mid-2024\">(UK population)</a>",
+   "figure": "\u00a3184.79",
+   "sentence": "Direct renewable subsidy costs every UK person \u00a3184.79 a year.",
+   "display_html": "Per person, it is <span class=\"money num\">\u00a3184.79</span> a year <a class=\"eq-src\" href=\"https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2024\" title=\"ONS, Population estimates for the UK, mid-2024\">(UK population)</a>",
    "label": "per person per year \u2014 the direct cost of renewable subsidy to every UK resident",
    "source_name": "ONS, Population estimates for the UK, mid-2024",
    "source_url": "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2024"
