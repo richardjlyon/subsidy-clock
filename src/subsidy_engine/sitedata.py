@@ -94,7 +94,11 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
     if not eq:
         return []
     r = model["perspectives"]["renewables"]
-    runrate = r["runrate_gbp_per_year"]
+    # Real-2024 basis: the whole site quotes today's-money figures (the strip,
+    # the household chip and the homes/Hinkley factoids all do), so the
+    # equivalence run-rate must match. Falls back to nominal only if no
+    # deflated series exists.
+    runrate = r.get("runrate_gbp_per_year_2024", r["runrate_gbp_per_year"])
     out: list[dict] = []
 
     def src(entry: dict, text: str) -> str:
@@ -106,10 +110,10 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
         fig = f"{int(_floor_to(runrate / nurse['value'], 1000)):,}"
         out.append({
             "slug": "nurses", "figure": fig,
-            "sentence": f"A year of direct UK renewable subsidy pays the salaries of {fig} NHS nurses.",
+            "sentence": f"A year of direct UK renewable subsidy pays the salaries of {fig} NHS nurses, in today’s money.",
             "display_html": ('A year of this pays the salaries of '
-                             f'<span class="money num">{fig}</span> {src(nurse, "NHS nurses")}'),
-            "label": "NHS nurses' annual salaries paid by one year of direct renewable subsidy",
+                             f'<span class="money num">{fig}</span> {src(nurse, "NHS nurses")}, in today’s money'),
+            "label": "NHS nurses' annual salaries paid by one year of direct renewable subsidy, in today’s money",
             "source_name": nurse["source"], "source_url": nurse["source_url"],
         })
 
@@ -159,10 +163,10 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
         fig = f"£{per_mwh:,.2f}"
         out.append({
             "slug": "per-mwh", "figure": fig,
-            "sentence": f"Direct renewable subsidy adds {fig} to every MWh of electricity delivered in the UK.",
+            "sentence": f"Direct renewable subsidy adds {fig} to every MWh of electricity delivered in the UK, in today’s money.",
             "display_html": (f'That is <span class="money num">{fig}</span> on every '
-                             f'{src(demand, "MWh of electricity delivered")}'),
-            "label": "added to every MWh of electricity delivered in the UK by direct renewable subsidy",
+                             f'{src(demand, "MWh of electricity delivered")}, in today’s money'),
+            "label": "added to every MWh of electricity delivered in the UK by direct renewable subsidy, in today’s money",
             "source_name": demand["source"], "source_url": demand["source_url"],
         })
     pop = ctx.get("population")
@@ -171,10 +175,10 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
         fig = f"£{per_person:,.2f}"
         out.append({
             "slug": "per-person", "figure": fig,
-            "sentence": f"Direct renewable subsidy costs every UK person {fig} a year.",
+            "sentence": f"Direct renewable subsidy costs every UK person {fig} a year, in today’s money.",
             "display_html": (f'Per person, it is <span class="money num">{fig}</span> a year '
-                             f'{src(pop, "(UK population)")}'),
-            "label": "per person per year — the direct cost of renewable subsidy to every UK resident",
+                             f'{src(pop, "(UK population)")}, in today’s money'),
+            "label": "per person per year — the direct cost of renewable subsidy to every UK resident, in today’s money",
             "source_name": pop["source"], "source_url": pop["source_url"],
         })
     return out

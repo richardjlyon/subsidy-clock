@@ -14,7 +14,11 @@ TOTALS = {
             "rate_gbp_per_sec": 385.72,
             "per_household_per_year_gbp": 428.60,
             "since_year": 2002,
-            "real_2024": {"cumulative_gbp": 130_000_000_000.0},
+            # real_2024 deliberately distinct from nominal so the tests prove
+            # the cards read the real basis, not the as-paid figures
+            "real_2024": {"cumulative_gbp": 130_000_000_000.0,
+                          "runrate_gbp_per_year": 11_800_000_000.0,
+                          "per_household_per_year_gbp": 415.40},
         },
         "low_carbon": {"cumulative_gbp": 1.2e11, "since_year": 2002},
     },
@@ -35,9 +39,10 @@ BREAKDOWN = {
 
 TIMESERIES = {
     "schemes": {
-        "ro": {"annual": [{"year": 2002, "cost_gbp": 0.0}, {"year": 2003, "cost_gbp": 3.1e8}]},
-        "constraints": {"annual": [{"year": 2010, "cost_gbp": 1.7e8}]},
-        "bsuos": {"annual": [{"year": 2018, "cost_gbp": 4.0e8}]},
+        "ro": {"annual": [{"year": 2002, "cost_gbp": 0.0, "cost_gbp_2024": 0.0},
+                          {"year": 2003, "cost_gbp": 3.1e8, "cost_gbp_2024": 48.0e9}]},
+        "constraints": {"annual": [{"year": 2010, "cost_gbp": 1.7e8, "cost_gbp_2024": 2.7e9}]},
+        "bsuos": {"annual": [{"year": 2018, "cost_gbp": 4.0e8, "cost_gbp_2024": 11.0e9}]},
     },
 }
 
@@ -70,16 +75,21 @@ def test_load_facts_headline_set(data_dir):
     # the four stubbed dashboard facts
     for slug in ("total", "run-rate", "household", "switch-off"):
         assert by_slug[slug]["stub"], slug
-    assert by_slug["total"]["figure"] == "£108,634,210,556"
+    # real-basis (2024 prices): the real_2024 cumulative, NOT the nominal 108.6bn
+    assert by_slug["total"]["figure"] == "£130,000,000,000"
+    assert by_slug["run-rate"]["figure"] == "£11,800,000,000"
+    assert "today’s money" in by_slug["total"]["label"]
     # headline facts land on the page top (masthead visible), not a #total anchor
     for slug in ("total", "run-rate", "household"):
         assert by_slug[slug]["anchor"] is None, slug
     assert "since 2002" in by_slug["total"]["label"]
-    assert by_slug["household"]["figure"] == "£428.60"
+    assert by_slug["household"]["figure"] == "£415.40"
     assert by_slug["switch-off"]["anchor"] == "switch-off"
-    # per-scheme explainer cards, keyed by explainer slug
-    assert by_slug["renewables-obligation"]["figure"] == "£45,000,000,000"
+    # per-scheme explainer cards, keyed by explainer slug; real cumulative is
+    # the sum of the scheme's deflated annual series (ro = £48bn, not £45bn)
+    assert by_slug["renewables-obligation"]["figure"] == "£48,000,000,000"
     assert "since 2003" in by_slug["renewables-obligation"]["label"]  # first non-zero year
+    assert "today’s money" in by_slug["renewables-obligation"]["label"]
     assert not by_slug["renewables-obligation"]["stub"]
     # indirect scheme cards label themselves estimated
     assert "estimated" in by_slug["bsuos"]["label"]
@@ -121,8 +131,9 @@ def test_write_stubs(data_dir, tmp_path):
     assert 'name="robots" content="noindex"' in html
     assert 'url=https://subsidyclock.co.uk/#switch-off' in html
     assert 'location.replace("https://subsidyclock.co.uk/#switch-off")' in html
-    # crawler/JS-off fallback carries the dated figure and a link
-    assert "£2,510,000,000" in html
+    # crawler/JS-off fallback carries the dated figure and a link (real basis:
+    # the £2.7bn deflated constraints cumulative, not the nominal £2.51bn)
+    assert "£2,700,000,000" in html
     assert "11 June 2026" in html
     # anchorless facts bounce to the bare page so the masthead stays visible
     total = (out / "total.html").read_text()
