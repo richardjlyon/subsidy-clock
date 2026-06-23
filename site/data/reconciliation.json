@@ -1,12 +1,12 @@
 {
  "comparison": "Per-contract daily CfD payments (bottom-up) vs LCCC In-period Tracking daily totals, summed over settlement dates present in both series",
- "matched_days": 542,
+ "matched_days": 549,
  "excluded_recent_days": 45,
  "settlement_lag_days": 45,
  "overall": {
-  "bottom_up_gbp": 4057985014.82,
-  "official_gbp": 4064342339.12,
-  "divergence_pct": -0.1564
+  "bottom_up_gbp": 4093237008.47,
+  "official_gbp": 4099678619.12,
+  "divergence_pct": -0.1571
  },
  "months": [
   {
@@ -155,11 +155,11 @@
   },
   {
    "month": "2026-04",
-   "days_compared": 18,
-   "bottom_up_gbp": 173190349.19,
-   "official_gbp": 173106062.5,
-   "abs_divergence_gbp": 84286.69,
-   "divergence_pct": 0.0487
+   "days_compared": 25,
+   "bottom_up_gbp": 208442342.84,
+   "official_gbp": 208442342.5,
+   "abs_divergence_gbp": 0.34,
+   "divergence_pct": 0.0
   }
  ],
  "bottom_up_only_months": [
