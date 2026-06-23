@@ -63,6 +63,9 @@ def big_model():
     for p in m["perspectives"].values():
         p["cumulative_gbp_2024"] = 128.0e9
         p["runrate_gbp_per_year"] = 12.2e9
+        # real run-rate kept distinct from nominal: the factoids quote today's
+        # money, so they must read this, not the as-paid 12.2e9
+        p["runrate_gbp_per_year_2024"] = 11.9e9
     m["indirect"]["cumulative_gbp_2024"] = 95.35e9   # combined real = 223.35e9
     return m
 
@@ -75,10 +78,11 @@ def test_factoids_floored_figures_and_sentences(tmp_path):
     by_slug = {f["slug"]: f for f in meta["factoids"]}
     assert list(by_slug) == ["nurses", "homes", "hinkley", "per-mwh", "per-person"]
 
-    # nurses: 12.2e9 / 39043 = 312,475.6 -> floored to 1,000 -> 312,000
-    assert by_slug["nurses"]["figure"] == "312,000"
-    assert "312,000 NHS nurses" in by_slug["nurses"]["sentence"]
+    # nurses: real 11.9e9 / 39043 = 304,791.6 -> floored to 1,000 -> 304,000
+    assert by_slug["nurses"]["figure"] == "304,000"
+    assert "304,000 NHS nurses" in by_slug["nurses"]["sentence"]
     assert by_slug["nurses"]["sentence"].startswith("A year of direct UK renewable subsidy")
+    assert "in today’s money" in by_slug["nurses"]["sentence"]
 
     # combined real 223.35e9 -> £10bn floor strictly below -> 220
     # counts divide the quoted floor: homes = 220e9 / 393000 = 559,796.4 -> 559,000
@@ -96,10 +100,10 @@ def test_factoids_floored_figures_and_sentences(tmp_path):
     assert "4 Hinkley Point C-scale nuclear stations in the UK" in by_slug["hinkley"]["sentence"]
     assert "UK renewables" in by_slug["hinkley"]["label"]
 
-    # per-mwh: 12.2e9 / 266e6 = 45.864... -> floored to 2dp -> £45.86
-    assert by_slug["per-mwh"]["figure"] == "£45.86"
-    # per-person: 12.2e9 / 68.3e6 = 178.624 -> £178.62
-    assert by_slug["per-person"]["figure"] == "£178.62"
+    # per-mwh: real 11.9e9 / 266e6 = 44.736... -> floored to 2dp -> £44.73
+    assert by_slug["per-mwh"]["figure"] == "£44.73"
+    # per-person: real 11.9e9 / 68.3e6 = 174.231 -> £174.23
+    assert by_slug["per-person"]["figure"] == "£174.23"
 
     for f in meta["factoids"]:
         assert f["source_url"], f["slug"]
@@ -256,11 +260,12 @@ def test_factoid_divisions_floor_not_round(tmp_path):
     """Every equivalence division must FLOOR - rounding to nearest would
     overstate, which the conservative-number rule forbids."""
     m = big_model()
+    # factoids read the real (2024-price) run-rate, so drive that:
     # nurses: 12.4e9 / 39043 = 317,598.5... -> floor 317,000 (round would give 318,000)
     # per-mwh: 12.4e9 / 266e6 = 46.616... -> floor £46.61 (round would give £46.62)
     # per-person: 12.4e9 / 68.3e6 = 181.552... -> floor £181.55 (round same here)
     for p in m["perspectives"].values():
-        p["runrate_gbp_per_year"] = 12.4e9
+        p["runrate_gbp_per_year_2024"] = 12.4e9
     sitedata.build(m, CTX, {}, tmp_path,
                    generated_at="2026-06-12T07:00:00+00:00",
                    deflator_info=DEFLATOR_INFO, deflators=DEFLATORS)
@@ -282,15 +287,20 @@ def test_per_unit_floored_and_agrees_across_surfaces(tmp_path):
     r = totals["perspectives"]["renewables"]
 
     import math
-    runrate = r["runrate_gbp_per_year"]
+    rr = r["real_2024"]
+    # _block derives each per-unit figure from its own basis run-rate
     assert r["per_mwh_delivered_gbp"] == math.floor(
-        runrate / (CTX["annual_demand_twh"]["value"] * 1_000_000) * 100) / 100
-    assert r["per_person_per_year_gbp"] == math.floor(
-        runrate / CTX["population"]["value"] * 100) / 100
+        r["runrate_gbp_per_year"] / (CTX["annual_demand_twh"]["value"] * 1_000_000) * 100) / 100
+    assert rr["per_mwh_delivered_gbp"] == math.floor(
+        rr["runrate_gbp_per_year"] / (CTX["annual_demand_twh"]["value"] * 1_000_000) * 100) / 100
+    assert rr["per_person_per_year_gbp"] == math.floor(
+        rr["runrate_gbp_per_year"] / CTX["population"]["value"] * 100) / 100
 
+    # the factoids quote the REAL (today's-money) per-unit, not the as-paid one
     by_slug = {f["slug"]: f for f in meta["factoids"]}
-    assert float(by_slug["per-mwh"]["figure"].lstrip("£")) == r["per_mwh_delivered_gbp"]
-    assert float(by_slug["per-person"]["figure"].lstrip("£")) == r["per_person_per_year_gbp"]
+    assert float(by_slug["per-mwh"]["figure"].lstrip("£")) == rr["per_mwh_delivered_gbp"]
+    assert float(by_slug["per-person"]["figure"].lstrip("£")) == rr["per_person_per_year_gbp"]
+    assert rr["per_mwh_delivered_gbp"] != r["per_mwh_delivered_gbp"]
 
 
 def test_write_widget_stamps_figure_and_rate(tmp_path):

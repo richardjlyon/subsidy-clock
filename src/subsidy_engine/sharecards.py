@@ -1,8 +1,9 @@
 """Share cards (distribution F1): OG-image PNGs and share-stub pages,
 regenerated daily from the published site JSON so cards can never
-disagree with the dashboard. Conservative-number rule: figures are
-renewables-only, nominal, direct-measured unless the card's own label
-says otherwise."""
+disagree with the dashboard. Basis rule: figures are renewables-only,
+in 2024 prices (real), direct-measured unless the card's own label says
+otherwise - matching the dashboard, which quotes today's money throughout.
+The as-paid (nominal) figures live on the /data page."""
 
 from __future__ import annotations
 
@@ -133,25 +134,36 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
     asof = fmt_asof(totals["generated_at"])
     datestr = datetime.fromisoformat(totals["generated_at"]).strftime("%Y-%m-%d")
 
-    total_figure = fmt_full(r["cumulative_gbp"])
+    # Real-2024 basis throughout (matches the dashboard). KeyError on a missing
+    # real_2024 block fails the build loudly rather than publishing silently
+    # nominal cards. Per-scheme real cumulatives are the sum of the deflated
+    # annual series (mirrors realCumById in site/app.js and the chart card).
+    rr = r["real_2024"]
+    real_cum = {sid: float(sum(a.get("cost_gbp_2024", 0.0) for a in s["annual"]))
+                for sid, s in timeseries.get("schemes", {}).items()}
+
+    def _real_cum(scheme_id: str, nominal: float) -> float:
+        return real_cum[scheme_id] if scheme_id in real_cum else nominal
+
+    total_figure = fmt_full(rr["cumulative_gbp"])
     facts = [
         # headline facts carry no anchor: their stubs bounce to the page top
         # so first-time visitors arrive with the masthead visible
         {"slug": "total", "figure": total_figure,
          "label": "paid to renewable electricity generators by Great Britain's "
-                  f"bill-payers since {r['since_year']}",
+                  f"bill-payers since {r['since_year']}, in today’s money (2024 prices)",
          "anchor": None, "stub": True},
-        {"slug": "run-rate", "figure": fmt_full(r["runrate_gbp_per_year"]),
+        {"slug": "run-rate", "figure": fmt_full(rr["runrate_gbp_per_year"]),
          "label": "a year — the current run-rate of direct subsidy "
-                  "to renewable electricity generators",
+                  "to renewable electricity generators, in today’s money",
          "anchor": None, "stub": True},
-        {"slug": "household", "figure": fmt_pence(r["per_household_per_year_gbp"]),
+        {"slug": "household", "figure": fmt_pence(rr["per_household_per_year_gbp"]),
          "label": "per household per year in direct subsidy "
-                  "to renewable electricity generators",
+                  "to renewable electricity generators, in today’s money",
          "anchor": None, "stub": True},
         {"slug": "site", "figure": total_figure,
          "label": "the running total of direct UK renewable-energy subsidy "
-                  f"since {r['since_year']}, counted live",
+                  f"since {r['since_year']}, counted live, in today’s money",
          "anchor": None, "stub": False},
     ]
 
@@ -159,9 +171,11 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
     if "constraints" in by_id:
         con = by_id["constraints"]
         first = _first_year(timeseries, "constraints")
-        facts.append({"slug": "switch-off", "figure": fmt_full(con["cumulative_gbp"]),
+        figure = fmt_full(_real_cum("constraints", con["cumulative_gbp"]))
+        facts.append({"slug": "switch-off", "figure": figure,
                       "label": "paid to wind farms to reduce output when the grid "
-                               f"could not carry their electricity, since {first or 2010}",
+                               f"could not carry their electricity, since {first or 2010}, "
+                               "in today’s money",
                       "anchor": "switch-off", "stub": True})
 
     for scheme_id, (slug, name) in EXPLAINERS.items():
@@ -171,8 +185,9 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
         first = _first_year(timeseries, scheme_id)
         since = f" since {first}" if first else ""
         estimated = ", estimated" if s["layer"] == "indirect" else ""
-        facts.append({"slug": slug, "figure": fmt_full(s["cumulative_gbp"]),
-                      "label": f"{name} — cumulative cost{since}{estimated}",
+        figure = fmt_full(_real_cum(scheme_id, s["cumulative_gbp"]))
+        facts.append({"slug": slug, "figure": figure,
+                      "label": f"{name} — cumulative cost{since}{estimated}, in today’s money",
                       "anchor": None, "stub": False})
     indirect = totals.get("indirect")
     if indirect:
