@@ -145,84 +145,98 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
     def _real_cum(scheme_id: str, nominal: float) -> float:
         return real_cum[scheme_id] if scheme_id in real_cum else nominal
 
-    total_figure = fmt_full(rr["cumulative_gbp"])
-    facts = [
-        # headline facts carry no anchor: their stubs bounce to the page top
-        # so first-time visitors arrive with the masthead visible
-        {"slug": "total", "figure": total_figure,
-         "label": "paid to renewable electricity generators by Great Britain's "
-                  f"bill-payers since {r['since_year']}, in today’s money (2024 prices)",
-         "anchor": None, "stub": True},
-        {"slug": "run-rate", "figure": fmt_full(rr["runrate_gbp_per_year"]),
-         "label": "a year — the current run-rate of direct subsidy "
-                  "to renewable electricity generators, in today’s money",
-         "anchor": None, "stub": True},
-        {"slug": "household", "figure": fmt_pence(rr["per_household_per_year_gbp"]),
-         "label": "per household per year in direct subsidy "
-                  "to renewable electricity generators, in today’s money",
-         "anchor": None, "stub": True},
-        {"slug": "site", "figure": total_figure,
-         "label": "the running total of direct UK renewable-energy subsidy "
-                  f"since {r['since_year']}, counted live, in today’s money",
-         "anchor": None, "stub": False},
-    ]
+    ir = (totals.get("indirect") or {}).get("real_2024")
+    yr = r["since_year"]
+    HEAD = "Headline figures"
+    facts = []
 
+    # Headline metrics in two scopes, real (today's money): each appears as a
+    # Direct (measured) card and a full-cost (direct + estimated indirect) card,
+    # so the /share page can lay them out in two columns.
+    facts += [
+        {"slug": "total", "figure": fmt_full(rr["cumulative_gbp"]),
+         "label": "paid in direct, measured subsidy to renewable electricity "
+                  f"generators since {yr}, in today’s money",
+         "anchor": None, "stub": True, "group": HEAD, "scope": "direct"},
+        {"slug": "run-rate", "figure": fmt_full(rr["runrate_gbp_per_year"]),
+         "label": "a year — the current run-rate of direct subsidy to "
+                  "renewable generators, in today’s money",
+         "anchor": None, "stub": True, "group": HEAD, "scope": "direct"},
+        {"slug": "household", "figure": fmt_pence(rr["per_household_per_year_gbp"]),
+         "label": "per household per year in direct subsidy to renewable "
+                  "generators, in today’s money",
+         "anchor": None, "stub": True, "group": HEAD, "scope": "direct"},
+        {"slug": "per-mwh", "figure": fmt_pence(rr["per_mwh_delivered_gbp"]),
+         "label": "of direct subsidy on every MWh of electricity delivered "
+                  "in the UK, in today’s money",
+         "anchor": None, "stub": True, "group": HEAD, "scope": "direct"},
+    ]
+    if ir:
+        facts += [
+            {"slug": "headline",
+             "figure": fmt_full(rr["cumulative_gbp"] + ir["cumulative_gbp"]),
+             "label": "the full cost of subsidising UK renewables since "
+                      f"{yr}, including estimated indirect costs, in today’s money",
+             "anchor": None, "stub": True, "group": HEAD, "scope": "full"},
+            {"slug": "run-rate-full",
+             "figure": fmt_full(rr["runrate_gbp_per_year"] + ir["runrate_gbp_per_year"]),
+             "label": "a year — the full cost of UK renewable subsidy including "
+                      "estimated indirect costs, in today’s money",
+             "anchor": None, "stub": True, "group": HEAD, "scope": "full"},
+            {"slug": "household-full",
+             "figure": fmt_pence(rr["per_household_per_year_gbp"] + ir["per_household_per_year_gbp"]),
+             "label": "per household per year — the full cost including "
+                      "estimated indirect costs, in today’s money",
+             "anchor": None, "stub": True, "group": HEAD, "scope": "full"},
+            {"slug": "per-mwh-full",
+             "figure": fmt_pence(rr["per_mwh_delivered_gbp"] + ir["per_mwh_delivered_gbp"]),
+             "label": "on every MWh of electricity delivered — the full cost "
+                      "including estimated indirect costs, in today’s money",
+             "anchor": None, "stub": True, "group": HEAD, "scope": "full"},
+            # the cumulative graph: the ninth headline card, terminating at the
+            # full-cost total
+            {"slug": "the-bill",
+             "figure": fmt_full(rr["cumulative_gbp"] + ir["cumulative_gbp"]),
+             "label": "the cumulative cost of direct and estimated indirect "
+                      f"subsidy to renewables since {yr}, in today’s money",
+             "anchor": "cost-per-year", "stub": True, "chart": True,
+             "group": HEAD, "scope": "graph"},
+        ]
+
+    # By scheme, real cumulative, split into direct and indirect (estimated).
     by_id = {s["id"]: s for s in breakdown["schemes"]}
+    DIRECT_G, INDIRECT_G = "Direct schemes", "Indirect schemes (estimated)"
     if "constraints" in by_id:
         con = by_id["constraints"]
         first = _first_year(timeseries, "constraints")
-        figure = fmt_full(_real_cum("constraints", con["cumulative_gbp"]))
-        facts.append({"slug": "switch-off", "figure": figure,
+        facts.append({"slug": "switch-off",
+                      "figure": fmt_full(_real_cum("constraints", con["cumulative_gbp"])),
                       "label": "paid to wind farms to reduce output when the grid "
                                f"could not carry their electricity, since {first or 2010}, "
                                "in today’s money",
-                      "anchor": "switch-off", "stub": True})
-
+                      "anchor": "switch-off", "stub": True, "group": DIRECT_G})
     for scheme_id, (slug, name) in EXPLAINERS.items():
         s = by_id.get(scheme_id)
         if not s:
             continue
         first = _first_year(timeseries, scheme_id)
         since = f" since {first}" if first else ""
-        estimated = ", estimated" if s["layer"] == "indirect" else ""
-        figure = fmt_full(_real_cum(scheme_id, s["cumulative_gbp"]))
-        facts.append({"slug": slug, "figure": figure,
-                      "label": f"{name} — cumulative cost{since}{estimated}, in today’s money",
-                      "anchor": None, "stub": False})
-    indirect = totals.get("indirect")
-    if indirect:
-        # real-basis so the figure matches the chart's wedge terminus and the
-        # hero's "£220bn+ in today's money" lead-in; KeyError on a missing
-        # real_2024 block fails the build loudly rather than publishing a
-        # silently nominal card
-        combined = (r["real_2024"]["cumulative_gbp"]
-                    + indirect["real_2024"]["cumulative_gbp"])
-        facts.append({"slug": "the-bill", "figure": fmt_full(combined),
-                      "label": "the cumulative cost of direct and estimated indirect "
-                               f"subsidy to renewables since {r['since_year']}, "
-                               "in today’s money (2024 prices)",
-                      "anchor": "cost-per-year", "stub": True, "chart": True})
+        indirect = s["layer"] == "indirect"
+        est = ", estimated" if indirect else ""
+        facts.append({"slug": slug,
+                      "figure": fmt_full(_real_cum(scheme_id, s["cumulative_gbp"])),
+                      "label": f"{name} — cumulative cost{since}{est}, in today’s money",
+                      "anchor": None, "stub": False,
+                      "group": INDIRECT_G if indirect else DIRECT_G})
 
-    # Factoid figures are pre-composed by sitedata.py (floored divisions,
-    # deflation) and published in meta.json - reading them here keeps card,
-    # stub and dashboard wording identical without re-running the maths.
+    # Equivalences (real), composed in sitedata.py.
     meta_path = data / "meta.json"
     if meta_path.is_file():
         meta = json.loads(meta_path.read_text())
-        headline = meta.get("headline")
-        if headline and headline.get("combined_real_gbp"):
-            # lead the grid: the full combined figure is the site's headline, so
-            # it goes first in the "Headline figures" group (insert at front).
-            # Shown in full (every significant figure) — the impact is the number.
-            facts.insert(0, {
-                "slug": "headline", "figure": fmt_full(headline["combined_real_gbp"]),
-                "label": "the full cost of subsidising UK renewables since "
-                         f"{r['since_year']}, including estimated indirect costs, "
-                         "in today’s money (2024 prices)",
-                "anchor": None, "stub": True})
         for f in meta.get("factoids", []):
-            facts.append({"slug": f["slug"], "figure": f["figure"],
-                          "label": f["label"], "anchor": None, "stub": True})
+            facts.append({"slug": f["slug"], "figure": f["figure"], "label": f["label"],
+                          "anchor": None, "stub": True,
+                          "group": "What it could have bought"})
     return facts, asof, datestr
 
 
@@ -257,24 +271,17 @@ STUB_TEMPLATE = """<!DOCTYPE html>
 
 def write_manifest(facts: list[dict], out_dir: Path | str, asof: str, datestr: str) -> None:
     """Write share/cards.json — the manifest the /share media-kit page reads to
-    build its download grid, so the page always lists exactly the cards that
-    were rendered (no hand-maintained list to drift)."""
-    scheme_slugs = {slug for slug, _ in EXPLAINERS.values()}
-    equivalence = {"nurses", "homes", "hinkley"}
-
-    def group(slug: str) -> str:
-        if slug in scheme_slugs:
-            return "By scheme"
-        if slug in equivalence:
-            return "What it could have bought"
-        return "Headline figures"
-
+    build its grid, so the page always lists exactly the cards that were
+    rendered (no hand-maintained list to drift). Each card carries its group
+    and, for headline cards, its scope (direct/full/graph) so the page can lay
+    the headline group out in two columns."""
     cards = [{
         "slug": f["slug"],
         "figure": f["figure"],
         "label": f["label"],
         "png": f"/share/{f['slug']}.png?d={datestr}",
-        "group": group(f["slug"]),
+        "group": f.get("group", "Headline figures"),
+        "scope": f.get("scope"),
     } for f in facts]
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)

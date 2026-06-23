@@ -26,6 +26,11 @@
     letter-spacing: 0.08em; color: var(--faint); }
   .kit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 22px; margin: 14px 0 8px; padding: 0; list-style: none; }
+  .kit-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin: 14px 0 8px; }
+  .kit-col { display: flex; flex-direction: column; gap: 18px; }
+  .kit-subgroup { margin: 0; font-size: 0.74rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--muted); }
+  @media (max-width: 700px) { .kit-cols { grid-template-columns: 1fr; } }
   .kit-card { background: var(--card); border: 1px solid var(--line); border-radius: 6px;
     overflow: hidden; display: flex; flex-direction: column; }
   .kit-card img { display: block; width: 100%; height: auto; background: var(--paper-dim, #f2ede3);
@@ -129,19 +134,43 @@
     return li;
   }
 
+  function grid(cards) {
+    var g = document.createElement('div'); g.className = 'kit-grid';
+    cards.forEach(function (c) { g.appendChild(card(c)); });
+    return g;
+  }
+
   fetch('/share/cards.json').then(function (r) { return r.json(); }).then(function (data) {
     root.innerHTML = '';
-    var order = ['Headline figures', 'What it could have bought', 'By scheme'];
+    var order = ['Headline figures', 'Direct schemes',
+                 'Indirect schemes (estimated)', 'What it could have bought'];
     var byGroup = {};
     data.cards.forEach(function (c) { (byGroup[c.group] = byGroup[c.group] || []).push(c); });
     order.concat(Object.keys(byGroup).filter(function (g) { return order.indexOf(g) === -1; }))
       .forEach(function (g) {
-        if (!byGroup[g]) return;
+        var cards = byGroup[g];
+        if (!cards) return;
         var h = document.createElement('p'); h.className = 'kit-group'; h.textContent = g;
         root.appendChild(h);
-        var grid = document.createElement('div'); grid.className = 'kit-grid';
-        byGroup[g].forEach(function (c) { grid.appendChild(card(c)); });
-        root.appendChild(grid);
+        if (g === 'Headline figures') {
+          // two columns: Direct (measured) | Direct + indirect (full cost)
+          var cols = document.createElement('div'); cols.className = 'kit-cols';
+          [['direct', 'Direct (measured)'],
+           ['full', 'Direct + indirect (full cost)']].forEach(function (p) {
+            var col = document.createElement('div'); col.className = 'kit-col';
+            var sh = document.createElement('p'); sh.className = 'kit-subgroup';
+            sh.textContent = p[1]; col.appendChild(sh);
+            cards.filter(function (c) { return c.scope === p[0]; })
+              .forEach(function (c) { col.appendChild(card(c)); });
+            cols.appendChild(col);
+          });
+          root.appendChild(cols);
+          // the cumulative graph spans full width beneath the two columns
+          var graph = cards.filter(function (c) { return c.scope === 'graph'; });
+          if (graph.length) root.appendChild(grid(graph));
+        } else {
+          root.appendChild(grid(cards));
+        }
       });
   }).catch(function () {
     root.innerHTML = '<p class="kit-cap">Couldn’t load the card list. The images are still ' +

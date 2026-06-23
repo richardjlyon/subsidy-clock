@@ -18,12 +18,16 @@ TOTALS = {
             # the cards read the real basis, not the as-paid figures
             "real_2024": {"cumulative_gbp": 130_000_000_000.0,
                           "runrate_gbp_per_year": 11_800_000_000.0,
-                          "per_household_per_year_gbp": 415.40},
+                          "per_household_per_year_gbp": 415.40,
+                          "per_mwh_delivered_gbp": 45.00},
         },
         "low_carbon": {"cumulative_gbp": 1.2e11, "since_year": 2002},
     },
     "indirect": {"cumulative_gbp": 77.5e9,
-                 "real_2024": {"cumulative_gbp": 90_000_000_000.0}},
+                 "real_2024": {"cumulative_gbp": 90_000_000_000.0,
+                               "runrate_gbp_per_year": 7_000_000_000.0,
+                               "per_household_per_year_gbp": 250.00,
+                               "per_mwh_delivered_gbp": 25.00}},
 }
 
 BREAKDOWN = {
@@ -93,11 +97,23 @@ def test_load_facts_headline_set(data_dir):
     assert not by_slug["renewables-obligation"]["stub"]
     # indirect scheme cards label themselves estimated
     assert "estimated" in by_slug["bsuos"]["label"]
-    # generic brand card for non-dashboard pages
-    assert by_slug["site"]["figure"] == by_slug["total"]["figure"]
-    assert not by_slug["site"]["stub"]
+    # the 'site' brand duplicate is gone
+    assert "site" not in by_slug
     # constraints explainer reuses switch-off.png: no separate 'constraints' card
     assert "constraints" not in by_slug
+    # per-MWh direct card + full-cost (direct + indirect) counterparts
+    assert by_slug["per-mwh"]["figure"] == "£45.00"
+    assert by_slug["headline"]["figure"] == "£220,000,000,000"      # full-cost total
+    assert by_slug["run-rate-full"]["figure"] == "£18,800,000,000"
+    assert by_slug["household-full"]["figure"] == "£665.40"
+    assert by_slug["per-mwh-full"]["figure"] == "£70.00"
+    # group + scope drive the two-column /share layout
+    assert by_slug["total"]["group"] == "Headline figures"
+    assert by_slug["total"]["scope"] == "direct"
+    assert by_slug["headline"]["scope"] == "full"
+    # schemes split by layer into two titled groups
+    assert by_slug["renewables-obligation"]["group"] == "Direct schemes"
+    assert by_slug["bsuos"]["group"] == "Indirect schemes (estimated)"
 
 
 def test_compose_substitutes_all_tokens():
@@ -119,9 +135,12 @@ def test_write_stubs(data_dir, tmp_path):
     facts, asof, datestr = sharecards.load_facts(data_dir)
     out = tmp_path / "s"
     sharecards.write_stubs(facts, out, asof, datestr)
-    # one stub per stub-flagged fact, none for explainer/site cards
+    # one stub per stub-flagged fact (headline figures + switch-off), none for
+    # the per-scheme explainer cards
     assert sorted(p.name for p in out.glob("*.html")) == [
-        "household.html", "run-rate.html", "switch-off.html", "the-bill.html", "total.html"]
+        "headline.html", "household-full.html", "household.html",
+        "per-mwh-full.html", "per-mwh.html", "run-rate-full.html", "run-rate.html",
+        "switch-off.html", "the-bill.html", "total.html"]
     html = (out / "switch-off.html").read_text()
     # per-fact OG tags with a dated image URL (defeats platform preview caching)
     assert 'property="og:image" content="https://subsidyclock.co.uk/share/switch-off.png?d=2026-06-11"' in html
@@ -244,14 +263,13 @@ def test_render_produces_1200x630_pngs(data_dir, tmp_path):
     assert _png_size(out / "total.png") == (1200, 630)
 
 
-def test_load_facts_includes_headline_card(data_dir):
-    (data_dir / "meta.json").write_text(json.dumps(
-        {"headline": {"combined_real_gbp": 226_966_081_251.12},
-         "factoids": []}))
+def test_load_facts_headline_card_is_full_cost_total(data_dir):
+    # the full-cost total is computed from totals (real direct + real indirect),
+    # shown at full precision; it is the slug the homepage OG points at
     facts, _, _ = sharecards.load_facts(data_dir)
-    # headline leads the grid and shows the FULL figure (every significant figure)
-    assert facts[0]["slug"] == "headline"
-    headline = facts[0]
-    assert headline["figure"] == sharecards.fmt_full(226_966_081_251.12)  # "£226,966,081,251"
+    by_slug = {f["slug"]: f for f in facts}
+    headline = by_slug["headline"]
+    assert headline["figure"] == sharecards.fmt_full(130_000_000_000.0 + 90_000_000_000.0)
     assert headline["stub"] is True
+    assert headline["scope"] == "full"
     assert headline.get("chart") is not True

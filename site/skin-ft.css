@@ -102,10 +102,10 @@ html[data-skin="ft"] .brand {
 }
 /* live indicator: keep the brand-tick square with its clock-tick blink
    (claret in FT via --amber); the "LIVE" pill is retired for the ticking look */
-/* hang the ticking square in the gutter so the wordmark TEXT sits on the column
-   edge, level with the hero headline. The −24px outdent = square (12) + its 12px
-   gap; the column padding below grows to 28px so the square never clips. */
-html[data-skin="ft"] .brand-tick { display: inline-block; width: 12px; height: 12px; margin-left: -24px; }
+/* the ticking square sits flush on the column edge (level with the body
+   content), with a snug gap to the wordmark (tightened from the 28px column
+   padding). */
+html[data-skin="ft"] .brand-tick { display: inline-block; width: 12px; height: 12px; margin-left: 0; margin-right: 19px; }
 html[data-skin="ft"] .container { padding-left: 28px; padding-right: 28px; }
 html[data-skin="ft"] .brand-tag  { display: none; }   /* subtitle hidden */
 html[data-skin="ft"] .ft-live     { display: none; }

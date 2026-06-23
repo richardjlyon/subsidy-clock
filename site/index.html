@@ -44,14 +44,14 @@
 
     <div class="ft-hero-head ft-only">
       <p class="ft-title">What UK energy subsidies cost</p>
-      <p class="ft-subtitle">A live, sourced tally of payments to renewable and low-carbon electricity generators — traced to the official registers, restated in 2024 prices.</p>
+      <p class="ft-subtitle">A live, sourced tally of payments to renewable and low-carbon electricity generators — traced to the official registers.</p>
     </div>
 
     <p class="hero-leadin" id="hero-leadin" hidden></p>
 
     <div class="ft-hero-grid">
       <div class="ft-col ft-col-left">
-        <p class="ft-eyebrow ft-only">Total paid since 2002 · 2024 prices</p>
+        <p class="ft-eyebrow ft-only">Total paid since 2002</p>
         <p class="hero-figure">
           <span class="hero-value money num" id="hero-value">&nbsp;</span>
         </p>
@@ -69,18 +69,29 @@
       </div>
     </div>
 
+    <!-- ============ Display mode controls (basis + scope) ============ -->
+    <div class="display-toggles" id="display-toggles">
+      <div class="view-toggle" id="basis-toggle" role="group" aria-label="Price basis">
+        <button type="button" data-basis="real" aria-pressed="true">Real</button>
+        <button type="button" data-basis="nominal" aria-pressed="false">Nominal</button>
+      </div>
+      <div class="view-toggle" id="scope-toggle" role="group" aria-label="What is counted">
+        <button type="button" data-scope="combined" aria-pressed="true">Direct + indirect</button>
+        <button type="button" data-scope="direct" aria-pressed="false">Direct only</button>
+      </div>
+    </div>
+
     <!-- ============ Timeframe strip (run-rate estimates) ============ -->
     <div class="strip" id="strip" aria-label="Run-rate estimates over different timeframes">
-      <div class="strip-cell"><span class="strip-label">Every hour</span><span class="strip-value money num" id="strip-hour"></span><span class="strip-sub">at the current rate</span></div>
+      <div class="strip-cell"><span class="strip-label">Every month</span><span class="strip-value money num" id="strip-month"></span><span class="strip-sub">at the current rate</span></div>
       <div class="strip-cell"><span class="strip-label">Today so far</span><span class="strip-value money num" id="strip-today"></span><span class="strip-sub">since midnight</span></div>
       <div class="strip-cell"><span class="strip-label">This year</span><span class="strip-value money num" id="strip-year"></span><span class="strip-sub">since 1 January</span></div>
-      <div class="strip-cell"><span class="strip-label">All-time</span><span class="strip-value money num" id="strip-alltime"></span><span class="strip-sub" id="strip-alltime-since"></span></div>
-      <div class="strip-cell"><span class="strip-label">Your household</span><span class="strip-value money num" id="strip-household"></span><span class="strip-sub">per year, direct (with estimated indirect)</span></div>
+      <div class="strip-cell"><span class="strip-label">Per MWh</span><span class="strip-value money num" id="strip-permwh"></span><span class="strip-sub">of electricity delivered</span></div>
+      <div class="strip-cell"><span class="strip-label">Household</span><span class="strip-value money num" id="strip-household"></span><span class="strip-sub">per year</span></div>
       <div class="strip-cell"><span class="strip-label">Share of bill</span><span class="strip-value num" id="strip-share"></span><span class="strip-sub" id="strip-share-sub"></span></div>
     </div>
-    <p class="strip-caption">Timeframe figures are run-rate estimates: 'Every hour' projects the current rate over one hour; 'Today so far' and 'This year' apply it to time elapsed since midnight and 1 January. The all-time, household and bill-share chips show the direct subsidy first, then in brackets the total with estimated indirect costs — for all-time, the full cost in 2024 prices; the household figure is at the current run-rate; the bill share is for the latest complete year shown.</p>
-
     <!-- ============ Equivalences ============ -->
+    <p class="eq-eyebrow" id="eq-eyebrow" hidden>Equivalences shown at full cost, in today’s money.</p>
     <ul class="equivalences" id="equivalences"></ul>
   </section>
 
@@ -110,8 +121,9 @@
 
     <section class="card" id="by-technology" aria-labelledby="tech-h">
       <h2 id="tech-h">By technology <span class="h-note">CfD schemes only</span></h2>
-      <p class="card-intro">Net Contracts for Difference payments by technology. Negative values are net paybacks: market prices exceeded the strike price.</p>
+      <p class="card-intro">Net Contracts for Difference payments by technology.</p>
       <div class="bars" id="tech-bars"></div>
+      <p class="card-foot">Negative values are net paybacks: market prices exceeded the strike price.</p>
     </section>
   </div>
 

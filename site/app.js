@@ -68,7 +68,7 @@
   // ---------- state ----------
   var motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var rafId;
-  var state = { perspective: 'renewables', real: true, trendView: 'cumulative' };
+  var state = { perspective: 'renewables', real: true, combined: true, trendView: 'cumulative' };
   // SITE_URL/SHARE_URL live with the state - renderEquivalences needs them at first paint.
   var SITE_URL = 'https://subsidyclock.co.uk';
   var SHARE_URL = SITE_URL + '/';
@@ -96,10 +96,37 @@
     if (!indirectTotals) return null;
     return state.real ? indirectTotals.real_2024 : indirectTotals;
   }
-  function liveCumulative(t) {
-    var p = pv();
-    return p.cumulative_gbp + p.rate_gbp_per_sec * (t - generatedAt) / 1000;
+  // active(): the headline aggregate for the current basis AND scope - direct
+  // only, or direct + estimated indirect when state.combined. Every headline
+  // surface (hero, all-time, household, timeframes) reads this so they agree.
+  function active() {
+    var d = pv(), i = state.combined ? iv() : null;
+    if (!i) return {
+      cumulative_gbp: d.cumulative_gbp,
+      rate_gbp_per_sec: d.rate_gbp_per_sec,
+      runrate_gbp_per_year: d.runrate_gbp_per_year,
+      per_household_per_year_gbp: d.per_household_per_year_gbp,
+      per_mwh_delivered_gbp: d.per_mwh_delivered_gbp
+    };
+    return {
+      cumulative_gbp: d.cumulative_gbp + i.cumulative_gbp,
+      rate_gbp_per_sec: d.rate_gbp_per_sec + i.rate_gbp_per_sec,
+      runrate_gbp_per_year: d.runrate_gbp_per_year + i.runrate_gbp_per_year,
+      per_household_per_year_gbp: d.per_household_per_year_gbp + i.per_household_per_year_gbp,
+      per_mwh_delivered_gbp: d.per_mwh_delivered_gbp + i.per_mwh_delivered_gbp
+    };
   }
+  function liveCumulative(t) {
+    var a = active();
+    return a.cumulative_gbp + a.rate_gbp_per_sec * (t - generatedAt) / 1000;
+  }
+  // floor to the nearest £10bn STRICTLY below - the "over £Nbn" claim always
+  // understates by construction, in every basis/scope state.
+  function floorStepBelow(v) {
+    var f = Math.floor(v / 1e10) * 1e10;
+    return f === v ? f - 1e10 : f;
+  }
+  function flooredActiveGbp() { return floorStepBelow(active().cumulative_gbp); }
   function schemeCumulative(s) {
     return state.real && realCumById[s.id] != null ? realCumById[s.id] : s.cumulative_gbp;
   }
@@ -128,34 +155,42 @@
               totals.perspectives.renewables.real_2024);
   }
 
+  var FN = '<sup class="hero-fn" title="Estimated between official updates: the counter ' +
+    'advances at each scheme’s most recent published run-rate.">†</sup>';
   function renderHeroStatic() {
     var sinceYear = persp().since_year;
     document.getElementById('hero-value').textContent = fmtFull(liveCumulative(Date.now()));
-    if (hasCombinedReal()) {
-      var leadin = document.getElementById('hero-leadin');
-      leadin.innerHTML =
-        'Subsidising renewables has cost Great Britain over ' +
-        '<a href="/methodology#ref-reconciliation"><strong class="money num">£' +
-        (combinedRealFlooredGbp() / 1e9) + '&nbsp;billion</strong></a> in today\u2019s money, ' +
-        'including estimated indirect costs. This much is measured to the penny:';
+    var basisClause = state.real ? 'in today’s money' : 'as actually paid (cash terms)';
+    var bn = flooredActiveGbp() / 1e9;
+    var leadin = document.getElementById('hero-leadin');
+    if (leadin) {
+      leadin.innerHTML = (state.combined && hasCombinedReal())
+        ? 'Subsidising renewables has cost Great Britain over ' +
+          '<a href="/methodology#ref-reconciliation"><strong class="money num">£' +
+          bn + '&nbsp;billion</strong></a> ' + basisClause +
+          ', including estimated indirect costs:'
+        : 'Direct UK renewable subsidy has cost Great Britain over ' +
+          '<a href="/methodology#ref-reconciliation"><strong class="money num">£' +
+          bn + '&nbsp;billion</strong></a> ' + basisClause + ', measured to the penny:';
       leadin.hidden = false;
     }
-    document.getElementById('hero-sub').innerHTML =
-      'paid directly to renewable generators <span class="nowrap">since ' + sinceYear +
-      '<sup class="hero-fn" title="Estimated between official updates: the counter ' +
-      'advances at each scheme\u2019s most recent published run-rate.">†</sup></span>';
-    document.getElementById('strip-alltime-since').textContent =
-      'since ' + sinceYear + ', direct (full cost, 2024 prices)';
+    document.getElementById('hero-sub').innerHTML = (state.combined
+      ? 'paid to renewable generators, plus estimated indirect system costs, '
+      : 'paid directly to renewable generators ') +
+      '<span class="nowrap">since ' + sinceYear + FN + '</span>';
     // FT skin: left-box descriptive paragraph (inert markup in other skins).
     // Uses the same floored combined total as the lead-in so the figures can't drift.
     var ftLead = document.getElementById('ft-lead');
     if (ftLead) {
+      // When indirect is OFF the counter is direct-only, so name what the full
+      // picture would be; when ON the counter already IS the combined figure.
+      var ftInd = iv();
+      var combinedBn = ftInd ? floorStepBelow(pv().cumulative_gbp + ftInd.cumulative_gbp) / 1e9 : null;
       ftLead.innerHTML =
         'Paid to renewable &amp; low-carbon generators through the Renewables ' +
         'Obligation, Contracts for Difference, Feed-in Tariffs and constraint payments.' +
-        (hasCombinedReal()
-          ? ' With estimated indirect costs, <strong>£' +
-            (combinedRealFlooredGbp() / 1e9) + 'bn</strong>.'
+        ((!state.combined && combinedBn != null)
+          ? ' With estimated indirect costs, <strong>£' + combinedBn + 'bn+</strong>.'
           : '');
     }
   }
@@ -167,31 +202,21 @@
   var els = {
     heroValue: document.getElementById('hero-value'),
     sinceOpened: document.getElementById('since-opened'),
-    hour: document.getElementById('strip-hour'),
+    month: document.getElementById('strip-month'),
     today: document.getElementById('strip-today'),
     year: document.getElementById('strip-year'),
-    alltime: document.getElementById('strip-alltime'),
     ftRate: document.getElementById('ft-rate')   // FT skin per-day descriptor
   };
-
-  // The all-time bracket is the same combined real-2024 £10bn floor the
-  // lead-in and Full-cost chip quote - the three must match. Computed once:
-  // the tick stays on the measured direct figure only - no ticking
-  // estimate, ever.
-  var alltimeSuffix = hasCombinedReal()
-    ? ' (£' + (combinedRealFlooredGbp() / 1e9) + 'bn+)'
-    : '';
 
   function tick() {
     var t = Date.now();
     var d = new Date(t);
-    var rate = pv().rate_gbp_per_sec;
+    var rate = active().rate_gbp_per_sec;
     els.heroValue.textContent = fmtFull(liveCumulative(t));
     els.sinceOpened.textContent = fmtPence(rate * (t - openedAt) / 1000);
-    els.hour.textContent = fmtCompact(rate * 3600);
+    els.month.textContent = fmtCompact(rate * 2629800); // avg month = 365.25/12 days
     els.today.textContent = fmtFull(rate * (t - startOfToday(d)) / 1000);
     els.year.textContent = fmtCompact(rate * (t - startOfYear(d)) / 1000);
-    els.alltime.textContent = fmtCompact(liveCumulative(t)) + alltimeSuffix;
     if (els.ftRate) els.ftRate.textContent = 'and counting, at ' + fmtCompact(rate * 86400) + ' a day';
     if (motionOK) {
       rafId = requestAnimationFrame(tick);
@@ -350,19 +375,18 @@
   }
 
   // ---------- strip extras: household & share-of-bill chips ----------
-  // Direct figure first; the combined direct+indirect follows in brackets,
-  // and the sub names the brackets so the estimate stays labelled.
+  // Single value per the active basis + scope (no brackets); the switches
+  // carry the basis/scope meaning.
   function renderStripExtras() {
-    var hh = fmtPence(pv().per_household_per_year_gbp);
-    var ind = iv();
-    if (ind) {
-      hh += ' (' + fmtPence(pv().per_household_per_year_gbp + ind.per_household_per_year_gbp) + ')';
-    }
-    document.getElementById('strip-household').textContent = hh;
+    document.getElementById('strip-household').textContent =
+      fmtPence(active().per_household_per_year_gbp);
+    document.getElementById('strip-permwh').textContent =
+      fmtPence(active().per_mwh_delivered_gbp);
 
     var bill = timeseries.electricity_bill;
-    var share = null, combinedShare = null, year = null;
+    var share = null, year = null;
     if (bill && bill.annual && bill.annual.length) {
+      var billCost = function (a) { return state.real ? a.total_bill_gbp_2024 : a.total_bill_gbp; };
       var directBy = {}, indirectBy = {};
       timeseries.perspectives[state.perspective].annual.forEach(function (a) { directBy[a.year] = annualCost(a); });
       if (timeseries.indirect) {
@@ -373,18 +397,15 @@
       var last = complete[complete.length - 1];
       if (last) {
         year = last.year;
-        share = Math.max(0, directBy[year] || 0) / last.total_bill_gbp;
-        if (timeseries.indirect) {
-          combinedShare = share + Math.max(0, indirectBy[year] || 0) / last.total_bill_gbp;
-        }
+        var num = Math.max(0, directBy[year] || 0) +
+          (state.combined ? Math.max(0, indirectBy[year] || 0) : 0);
+        share = num / billCost(last);
       }
     }
-    document.getElementById('strip-share').textContent = share != null
-      ? Math.round(100 * share) + '%' +
-        (combinedShare != null ? ' (' + Math.round(100 * combinedShare) + '%)' : '')
-      : '\u2014';
+    document.getElementById('strip-share').textContent =
+      share != null ? Math.round(100 * share) + '%' : '\u2014';
     document.getElementById('strip-share-sub').textContent =
-      year != null ? 'of ' + year + ' spend, direct (with estimated indirect)' : '';
+      year != null ? 'of ' + year + ' spend' : '';
   }
 
   // ---------- technology breakdown (CfD only) ----------
@@ -511,7 +532,7 @@
     var memberIds = STACK_ORDER.filter(function (id) {
       var s = schemesById[id];
       if (!s || !timeseries.schemes[id]) return false;
-      if (s.layer === 'indirect') return true; // estimated indirect costs join every perspective
+      if (s.layer === 'indirect') return state.combined; // indirect bars only when combined
       return s.perspectives.indexOf(state.perspective) !== -1;
     });
 
@@ -535,13 +556,20 @@
     function isPartialYear(yr) { return yr > lastCompleteYear; }
 
     var cumulative = state.trendView === 'cumulative';
+    var basisShort = state.real ? 'in today’s money' : 'as paid (cash terms)';
+    var basisLong = state.real
+      ? 'All years in 2024 prices — the as-paid figures are on the <a href="/data">data page</a>.'
+      : 'All years as actually paid (cash terms) — the inflation-adjusted figures are the default view.';
+    var layerWords = state.combined ? 'direct and estimated indirect' : 'direct only';
+    var layerNote = state.combined
+      ? 'Warm bars are measured direct schemes; cool blue bars are estimated indirect costs. '
+      : 'Measured direct subsidy schemes only. ';
     var valueBySchemeYear = {};
     memberIds.forEach(function (id) {
       var m = {};
-      // always real-2024, regardless of state.real: the wedge terminus must
-      // equal the hero's combined "in today's money" figure (annualCost
-      // stays nominal for the share-of-bill chart and the strip)
-      timeseries.schemes[id].annual.forEach(function (a) { m[a.year] = a.cost_gbp_2024; });
+      // basis follows the Real/Nominal switch (annualCost), so the wedge
+      // terminus tracks the hero's active total in either basis
+      timeseries.schemes[id].annual.forEach(function (a) { m[a.year] = annualCost(a); });
       if (cumulative) {
         var run = 0, c = {};
         years.forEach(function (yr) { run += m[yr] || 0; c[yr] = run; });
@@ -576,7 +604,7 @@
     var barW = bandW * 0.72;
 
     var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' +
-      (cumulative ? 'Cumulative' : 'Annual') + ' subsidy cost by scheme, direct and estimated indirect, ' + firstYear + ' to ' + currentYear + ', in 2024 prices">';
+      (cumulative ? 'Cumulative' : 'Annual') + ' subsidy cost by scheme, ' + layerWords + ', ' + firstYear + ' to ' + currentYear + ', ' + basisShort + '">';
 
     var indirectIds = memberIds.filter(isIndirectScheme);
 
@@ -630,11 +658,10 @@
       : '';
     document.getElementById('trend-chart').innerHTML = svg;
     document.getElementById('trend-h').textContent =
-      cumulative ? 'The bill since 2002, in today’s money' : 'Cost per year, by scheme, in today’s money';
+      cumulative ? 'The bill since 2002, ' + basisShort : 'Cost per year, by scheme, ' + basisShort;
     document.getElementById('trend-note').innerHTML = cumulative
-      ? 'Cumulative cost by scheme since ' + firstYear + '; the most recent bars include years still being reported. Warm bars are measured direct schemes; cool blue bars are estimated indirect costs. All years in 2024 prices — the as-paid figures are on the <a href="/data">data page</a>.'
-      : 'Annual cost by scheme, ' + firstYear + '–' + currentYear +
-        '. Warm bars are measured direct schemes; cool blue bars are estimated indirect costs. All years in 2024 prices — the as-paid figures are on the <a href="/data">data page</a>.' +
+      ? 'Cumulative cost by scheme since ' + firstYear + '; the most recent bars include years still being reported. ' + layerNote + basisLong
+      : 'Annual cost by scheme, ' + firstYear + '–' + currentYear + '. ' + layerNote + basisLong +
         partialNote;
     var directIds = memberIds.filter(function (id) { return !isIndirectScheme(id); });
     function legendItem(id) {
@@ -643,8 +670,10 @@
     }
     document.getElementById('trend-legend').innerHTML =
       '<span class="legend-group">Direct (measured)</span>' + directIds.map(legendItem).join('') +
-      '<span class="legend-break" aria-hidden="true"></span>' +
-      '<span class="legend-group">Indirect (estimated)</span>' + indirectIds.map(legendItem).join('');
+      (indirectIds.length
+        ? '<span class="legend-break" aria-hidden="true"></span>' +
+          '<span class="legend-group">Indirect (estimated)</span>' + indirectIds.map(legendItem).join('')
+        : '');
   }
 
   // ---------- share-of-bill chart (subsidy stacked under "all other costs") ----------
@@ -796,7 +825,10 @@
     // never visibly disagree with the daily card's full-precision snapshot.
     // The bracketed full-cost figure is the same I1 real-2024 floor the hero
     // lead-in quotes - 'in today's money' travels with it (integrity rule).
-    var bn = Math.floor(liveCumulative(Date.now()) / 1e8) / 10;
+    // anchored to the default real-direct headline (not the live switches) so
+    // the shared text always matches the OG card
+    var rDef = totals.perspectives.renewables.real_2024;
+    var bn = Math.floor((rDef.cumulative_gbp + rDef.rate_gbp_per_sec * (Date.now() - generatedAt) / 1000) / 1e8) / 10;
     var full = hasCombinedReal()
       ? ' (over £' + (combinedRealFlooredGbp() / 1e9) +
         ' billion in today\u2019s money with estimated indirect costs)'
@@ -924,7 +956,38 @@
     renderStripExtras();
   }
 
-  // ---------- trend toggle ----------
+  // Everything the basis/scope switches touch (recipients & technology bars
+  // are nominal-only station data, so they don't change with the switches).
+  function rerender() {
+    renderHeroStatic();
+    renderStripExtras();
+    renderCategoryCards();
+    renderSchemeBars();
+    renderSwitchOff();
+    renderChart();
+    renderShareChart();
+  }
+
+  // ---------- mode controls: segmented [A | B] pills ----------
+  // Each is a mutually-exclusive choice (not on/off), so both options stay
+  // labelled with the active one filled.
+  function wireSegmented(groupId, key, attr, onValue, render) {
+    document.querySelectorAll('#' + groupId + ' button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var val = b.getAttribute(attr) === onValue;
+        if (state[key] === val) return;
+        state[key] = val;
+        document.querySelectorAll('#' + groupId + ' button').forEach(function (x) {
+          x.setAttribute('aria-pressed', String(x === b));
+        });
+        render();
+      });
+    });
+  }
+  wireSegmented('basis-toggle', 'real', 'data-basis', 'real', rerender);
+  wireSegmented('scope-toggle', 'combined', 'data-scope', 'combined', rerender);
+
+  // chart view: trendView is a string ('cumulative' | 'annual')
   document.querySelectorAll('#trend-toggle button').forEach(function (b) {
     b.addEventListener('click', function () {
       var v = b.getAttribute('data-view');
@@ -938,6 +1001,10 @@
   });
 
   // ---------- first paint ----------
+  if (meta.factoids && meta.factoids.length) {
+    var eb = document.getElementById('eq-eyebrow');
+    if (eb) eb.hidden = false;
+  }
   renderAll();
   renderSwitchOff();
   renderTechBars();

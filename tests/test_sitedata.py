@@ -76,7 +76,7 @@ def test_factoids_floored_figures_and_sentences(tmp_path):
                    deflator_info=DEFLATOR_INFO, deflators=DEFLATORS)
     meta = json.loads((tmp_path / "meta.json").read_text())
     by_slug = {f["slug"]: f for f in meta["factoids"]}
-    assert list(by_slug) == ["nurses", "homes", "hinkley", "per-mwh", "per-person"]
+    assert list(by_slug) == ["nurses", "homes", "hinkley"]
 
     # nurses: real 11.9e9 / 39043 = 304,791.6 -> floored to 1,000 -> 304,000
     assert by_slug["nurses"]["figure"] == "304,000"
@@ -100,10 +100,6 @@ def test_factoids_floored_figures_and_sentences(tmp_path):
     assert "4 Hinkley Point C-scale nuclear stations in the UK" in by_slug["hinkley"]["sentence"]
     assert "UK renewables" in by_slug["hinkley"]["label"]
 
-    # per-mwh: real 11.9e9 / 266e6 = 44.736... -> floored to 2dp -> £44.73
-    assert by_slug["per-mwh"]["figure"] == "£44.73"
-    # per-person: real 11.9e9 / 68.3e6 = 174.231 -> £174.23
-    assert by_slug["per-person"]["figure"] == "£174.23"
 
     for f in meta["factoids"]:
         assert f["source_url"], f["slug"]
@@ -262,8 +258,6 @@ def test_factoid_divisions_floor_not_round(tmp_path):
     m = big_model()
     # factoids read the real (2024-price) run-rate, so drive that:
     # nurses: 12.4e9 / 39043 = 317,598.5... -> floor 317,000 (round would give 318,000)
-    # per-mwh: 12.4e9 / 266e6 = 46.616... -> floor £46.61 (round would give £46.62)
-    # per-person: 12.4e9 / 68.3e6 = 181.552... -> floor £181.55 (round same here)
     for p in m["perspectives"].values():
         p["runrate_gbp_per_year_2024"] = 12.4e9
     sitedata.build(m, CTX, {}, tmp_path,
@@ -273,9 +267,6 @@ def test_factoid_divisions_floor_not_round(tmp_path):
     by_slug = {f["slug"]: f for f in meta["factoids"]}
     # floor-vs-round distinguishing: fraction >= 0.5 at floored precision
     assert by_slug["nurses"]["figure"] == "317,000"    # round would give 318,000
-    assert by_slug["per-mwh"]["figure"] == "£46.61"    # round would give £46.62
-    # correct floor value (fraction < 0.5 so floor == round here)
-    assert by_slug["per-person"]["figure"] == "£181.55"
 
 
 def test_per_unit_floored_and_agrees_across_surfaces(tmp_path):
@@ -283,7 +274,6 @@ def test_per_unit_floored_and_agrees_across_surfaces(tmp_path):
                    generated_at="2026-06-15T00:00:00+00:00",
                    deflator_info=DEFLATOR_INFO, deflators=DEFLATORS)
     totals = json.loads((tmp_path / "totals.json").read_text())
-    meta = json.loads((tmp_path / "meta.json").read_text())
     r = totals["perspectives"]["renewables"]
 
     import math
@@ -296,10 +286,7 @@ def test_per_unit_floored_and_agrees_across_surfaces(tmp_path):
     assert rr["per_person_per_year_gbp"] == math.floor(
         rr["runrate_gbp_per_year"] / CTX["population"]["value"] * 100) / 100
 
-    # the factoids quote the REAL (today's-money) per-unit, not the as-paid one
-    by_slug = {f["slug"]: f for f in meta["factoids"]}
-    assert float(by_slug["per-mwh"]["figure"].lstrip("£")) == rr["per_mwh_delivered_gbp"]
-    assert float(by_slug["per-person"]["figure"].lstrip("£")) == rr["per_person_per_year_gbp"]
+    # real and nominal per-unit figures are genuinely distinct
     assert rr["per_mwh_delivered_gbp"] != r["per_mwh_delivered_gbp"]
 
 

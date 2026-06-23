@@ -338,10 +338,17 @@ main > .card-pair { margin: 24px 0; }
 /* ---------- card head row + view toggle ---------- */
 .card-head-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .card-head-row h2 { margin: 0; }
-.view-toggle { display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
-.view-toggle button { background: none; border: 0; font: inherit; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.24rem 0.7rem; color: var(--muted); cursor: pointer; }
+/* segmented control: a rounded pill with both options labelled, the active
+   half filled. Used for every mode choice (basis, scope, chart view) so the
+   current state is always visible - no on/off ambiguity. */
+.view-toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 9999px; overflow: hidden; }
+.view-toggle button { background: none; border: 0; font: inherit; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.3rem 0.85rem; color: var(--muted); cursor: pointer; }
 .view-toggle button + button { border-left: 1px solid var(--line); }
 .view-toggle button[aria-pressed="true"] { background: var(--navy); color: var(--paper); }
+.view-toggle button:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+
+.display-toggles { display: flex; align-items: center; gap: 12px 30px; flex-wrap: wrap; margin: 28px 0 18px; }
+.eq-eyebrow { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 18px 0 6px; }
 
 /* ---------- chart ---------- */
 .chart svg { width: 100%; height: auto; display: block; }

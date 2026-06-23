@@ -157,30 +157,6 @@ def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[di
                 "source_name": hpc["source"], "source_url": hpc["source_url"],
             })
 
-    demand = ctx.get("annual_demand_twh")
-    if demand:
-        per_mwh = _floor2(runrate / (demand["value"] * 1_000_000))
-        fig = f"£{per_mwh:,.2f}"
-        out.append({
-            "slug": "per-mwh", "figure": fig,
-            "sentence": f"Direct renewable subsidy adds {fig} to every MWh of electricity delivered in the UK, in today’s money.",
-            "display_html": (f'That is <span class="money num">{fig}</span> on every '
-                             f'{src(demand, "MWh of electricity delivered")}, in today’s money'),
-            "label": "added to every MWh of electricity delivered in the UK by direct renewable subsidy, in today’s money",
-            "source_name": demand["source"], "source_url": demand["source_url"],
-        })
-    pop = ctx.get("population")
-    if pop:
-        per_person = _floor2(runrate / pop["value"])
-        fig = f"£{per_person:,.2f}"
-        out.append({
-            "slug": "per-person", "figure": fig,
-            "sentence": f"Direct renewable subsidy costs every UK person {fig} a year, in today’s money.",
-            "display_html": (f'Per person, it is <span class="money num">{fig}</span> a year '
-                             f'{src(pop, "(UK population)")}, in today’s money'),
-            "label": "per person per year — the direct cost of renewable subsidy to every UK resident, in today’s money",
-            "source_name": pop["source"], "source_url": pop["source_url"],
-        })
     return out
 
 
