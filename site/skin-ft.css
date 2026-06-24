@@ -160,6 +160,7 @@ html[data-skin="ft"] .ft-divider {
 
 /* reveal the additive FT elements */
 html[data-skin="ft"] .ft-hero-head,
+html[data-skin="ft"] .ft-subtitle,
 html[data-skin="ft"] .ft-eyebrow,
 html[data-skin="ft"] .ft-lead,
 html[data-skin="ft"] .ft-rate,
@@ -168,7 +169,11 @@ html[data-skin="ft"] .ft-divider { display: block; }
 /* hero title + subtitle, above the clock card.
    padding-right reserves a lane for the absolutely-positioned share strip so
    the headline can never wrap under it (see the share-strip block below). */
-html[data-skin="ft"] .ft-hero-head { margin: 0 0 26px; padding-right: 390px; }
+html[data-skin="ft"] .ft-hero-head { margin: 0; }
+html[data-skin="ft"] .ft-subhead {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 28px; margin: 14px 0 26px;
+}
 html[data-skin="ft"] .ft-title {
   margin: 0;
   font-family: var(--serif); font-weight: 700;
@@ -178,7 +183,8 @@ html[data-skin="ft"] .ft-title {
   color: var(--ink);
 }
 html[data-skin="ft"] .ft-subtitle {
-  margin: 14px 0 0;
+  flex: 1 1 auto; min-width: 0;
+  margin: 0;
   font-family: var(--serif);
   font-size: 1.18rem; line-height: 1.4;
   color: var(--muted); max-width: 34em;
@@ -228,8 +234,8 @@ html[data-skin="ft"] .ft-rate {
 /* social share strip — floated top-right of the hero, aligned with the title;
    shares the whole page (figure + site URL), not the since-opened number */
 html[data-skin="ft"] .hero-share {
-  position: absolute; top: 6px; right: 0;
-  margin: 0; gap: 8px; justify-content: flex-end;
+  flex: 0 0 auto;
+  margin: 0 0 4px; gap: 8px; justify-content: flex-end;
 }
 html[data-skin="ft"] .hero-share-lead { display: none; }
 html[data-skin="ft"] .hero-share-pill {
@@ -245,12 +251,12 @@ html[data-skin="ft"] .hero-share-pill:hover {
 /* narrow screens: stack the two-box card and drop the share strip into normal
    flow (left-aligned, below the card content) so it can't overlap the title */
 @media (max-width: 760px) {
-  html[data-skin="ft"] .ft-hero-head { padding-right: 0; }
+  html[data-skin="ft"] .ft-subhead { flex-direction: column; align-items: flex-start; gap: 14px; }
   html[data-skin="ft"] .ft-hero-grid { grid-template-columns: 1fr; row-gap: 24px; }
   html[data-skin="ft"] .ft-divider { display: none; }
   html[data-skin="ft"] .ft-col-right { grid-column: 1; }
   html[data-skin="ft"] .hero-share {
-    position: static; justify-content: flex-start; margin: 16px 0 0;
+    justify-content: flex-start; margin: 0;
   }
 }
 
@@ -305,7 +311,6 @@ html[data-skin="ft"] .eq-foot .eq-cardlink {
    DATA SECTIONS — the cream cards already inherit the tokens;
    only a couple of accents need nudging for the claret/white look
    ============================================================ */
-html[data-skin="ft"] .view-toggle button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
 html[data-skin="ft"] .card-foot a { color: var(--amber-dark); }
 /* by-scheme & by-technology bars in the claret accent; net-payback (neg) bars
    keep the contrasting blue so the sign still reads */

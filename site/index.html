@@ -44,7 +44,13 @@
 
     <div class="ft-hero-head ft-only">
       <p class="ft-title">What UK energy subsidies cost</p>
-      <p class="ft-subtitle">A live, sourced tally of payments to renewable and low-carbon electricity generators — traced to the official registers.</p>
+    </div>
+
+    <div class="ft-subhead">
+      <p class="ft-subtitle ft-only">A live, sourced tally of payments to renewable and low-carbon electricity generators — traced to the official registers.</p>
+      <div class="hero-share" id="hero-share" aria-label="Share this figure">
+        <span class="hero-share-lead">Share this number:</span>
+      </div>
     </div>
 
     <p class="hero-leadin" id="hero-leadin" hidden></p>
@@ -63,22 +69,19 @@
         <p class="ft-eyebrow ft-only">Since you opened this page</p>
         <p class="since-opened">Since you opened this page: <span class="money num" id="since-opened">£0.00</span></p>
         <p class="ft-rate ft-only" id="ft-rate"></p>
-        <div class="hero-share" id="hero-share" aria-label="Share this figure">
-          <span class="hero-share-lead">Share this number:</span>
-        </div>
       </div>
     </div>
 
     <!-- ============ Display mode controls (basis + scope) ============ -->
     <div class="display-toggles" id="display-toggles">
-      <div class="view-toggle" id="basis-toggle" role="group" aria-label="Price basis">
-        <button type="button" data-basis="real" aria-pressed="true">Real</button>
-        <button type="button" data-basis="nominal" aria-pressed="false">Nominal</button>
-      </div>
-      <div class="view-toggle" id="scope-toggle" role="group" aria-label="What is counted">
-        <button type="button" data-scope="combined" aria-pressed="true">Direct + indirect</button>
-        <button type="button" data-scope="direct" aria-pressed="false">Direct only</button>
-      </div>
+      <span class="switch-field" id="basis-field">
+        <button type="button" class="switch" id="basis-switch" role="switch" aria-checked="true" aria-label="Adjust for inflation"><span class="switch-knob"></span></button>
+        <span class="switch-label">Adjust for inflation</span>
+      </span>
+      <span class="switch-field" id="scope-field">
+        <button type="button" class="switch" id="scope-switch" role="switch" aria-checked="true" aria-label="Include indirect costs"><span class="switch-knob"></span></button>
+        <span class="switch-label">Include indirect costs</span>
+      </span>
     </div>
 
     <!-- ============ Timeframe strip (run-rate estimates) ============ -->
@@ -160,10 +163,10 @@
   <section class="card" id="cost-per-year" aria-labelledby="trend-h">
     <div class="card-head-row">
       <h2 id="trend-h">The bill since 2002, in today&rsquo;s money</h2>
-      <div class="view-toggle" id="trend-toggle" role="group" aria-label="Chart view">
-        <button type="button" data-view="cumulative" aria-pressed="true">Cumulative</button>
-        <button type="button" data-view="annual" aria-pressed="false">By year</button>
-      </div>
+      <span class="switch-field" id="trend-field">
+        <button type="button" class="switch" id="trend-switch" role="switch" aria-checked="false" aria-label="Show the bill year by year"><span class="switch-knob"></span></button>
+        <span class="switch-label">By year</span>
+      </span>
     </div>
     <p class="card-intro" id="trend-note"></p>
     <div class="chart" id="trend-chart"></div>

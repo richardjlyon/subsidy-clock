@@ -1002,36 +1002,31 @@
     renderShareChart();
   }
 
-  // ---------- mode controls: segmented [A | B] pills ----------
-  // Each is a mutually-exclusive choice (not on/off), so both options stay
-  // labelled with the active one filled.
-  function wireSegmented(groupId, key, attr, onValue, render) {
-    document.querySelectorAll('#' + groupId + ' button').forEach(function (b) {
-      b.addEventListener('click', function () {
-        var val = b.getAttribute(attr) === onValue;
-        if (state[key] === val) return;
-        state[key] = val;
-        document.querySelectorAll('#' + groupId + ' button').forEach(function (x) {
-          x.setAttribute('aria-pressed', String(x === b));
-        });
-        render();
-      });
+  // ---------- mode controls: sliding toggle switches ----------
+  // Each binary choice is a switch; ON is the default/primary state. Clicking
+  // anywhere on the field (switch or its label) flips it.
+  function wireSwitch(fieldId, onToggle) {
+    var field = document.getElementById(fieldId);
+    if (!field) return;
+    var btn = field.querySelector('.switch');
+    field.addEventListener('click', function () {
+      var on = btn.getAttribute('aria-checked') !== 'true';
+      btn.setAttribute('aria-checked', String(on));
+      onToggle(on);
     });
   }
-  wireSegmented('basis-toggle', 'real', 'data-basis', 'real', rerender);
-  wireSegmented('scope-toggle', 'combined', 'data-scope', 'combined', rerender);
-
-  // chart view: trendView is a string ('cumulative' | 'annual')
-  document.querySelectorAll('#trend-toggle button').forEach(function (b) {
-    b.addEventListener('click', function () {
-      var v = b.getAttribute('data-view');
-      if (state.trendView === v) return;
-      state.trendView = v;
-      document.querySelectorAll('#trend-toggle button').forEach(function (x) {
-        x.setAttribute('aria-pressed', String(x === b));
-      });
-      renderChart();
-    });
+  wireSwitch('basis-field', function (on) {     // ON = real (today's money)
+    if (state.real === on) return;
+    state.real = on; rerender();
+  });
+  wireSwitch('scope-field', function (on) {     // ON = direct + indirect
+    if (state.combined === on) return;
+    state.combined = on; rerender();
+  });
+  wireSwitch('trend-field', function (on) {     // ON = annual, OFF = cumulative
+    var v = on ? 'annual' : 'cumulative';
+    if (state.trendView === v) return;
+    state.trendView = v; renderChart();
   });
 
   // ---------- first paint ----------

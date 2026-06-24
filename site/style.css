@@ -117,7 +117,7 @@ a:hover { color: var(--amber-dark); }
 .brand, .card h2, .card h3, .prose h1, .prose h2, .prose h3,
 .kfigure, .hero-value, .stat-value, .strip-value, .bar-amount, .bar-name,
 .brand-tag, .masthead nav a, .strip-label, .strip-sub, .badge, .h-note,
-.data-table, .legend, .view-toggle button, .hero-share-lead, .hero-share-pill,
+.data-table, .legend, .switch-label, .hero-share-lead, .hero-share-pill,
 .eq-src, .freshness, .stale-warning, .footer-links {
   font-family: var(--sans);
 }
@@ -342,17 +342,26 @@ main > .card-pair { margin: 24px 0; }
 .contract-list li { display: flex; justify-content: space-between; gap: 1em; padding: 2px 0; font-size: 0.85rem; color: var(--muted); }
 .contract-list .money { font-weight: 700; color: var(--navy); }
 
-/* ---------- card head row + view toggle ---------- */
+/* ---------- card head row + mode switches ---------- */
 .card-head-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .card-head-row h2 { margin: 0; }
-/* segmented control: a rounded pill with both options labelled, the active
-   half filled. Used for every mode choice (basis, scope, chart view) so the
-   current state is always visible - no on/off ambiguity. */
-.view-toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 9999px; overflow: hidden; }
-.view-toggle button { background: none; border: 0; font: inherit; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.3rem 0.85rem; color: var(--muted); cursor: pointer; }
-.view-toggle button + button { border-left: 1px solid var(--line); }
-.view-toggle button[aria-pressed="true"] { background: var(--navy); color: var(--paper); }
-.view-toggle button:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+/* toggle switch: a sliding pill (Tailwind-style) for each binary mode choice
+   (basis, scope, chart view). The label says what turning it ON does. */
+.switch-field { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; }
+.switch-label { font-size: 0.82rem; color: var(--ink); user-select: none; }
+.switch {
+  position: relative; flex: none; display: inline-block;
+  width: 44px; height: 24px; padding: 0; border: 0; border-radius: 9999px;
+  background: var(--line); cursor: pointer; transition: background-color 0.18s ease;
+}
+.switch[aria-checked="true"] { background: var(--navy); }
+.switch-knob {
+  position: absolute; top: 2px; left: 2px; width: 20px; height: 20px;
+  border-radius: 9999px; background: var(--paper);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); transition: transform 0.18s ease;
+}
+.switch[aria-checked="true"] .switch-knob { transform: translateX(20px); }
+.switch:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
 
 .display-toggles { display: flex; align-items: center; gap: 12px 30px; flex-wrap: wrap; margin: 28px 0 18px; }
 .eq-eyebrow { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 18px 0 6px; }
