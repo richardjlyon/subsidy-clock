@@ -85,6 +85,16 @@ def _combined_real_floored_gbp(model: dict) -> float | None:
     return _floor_step_below(combined, 1e10) if combined is not None else None
 
 
+_BAKED_FIGURE = re.compile(r"£\s*\d")
+
+
+def _check_no_baked_figures(rec: dict) -> None:
+    for field in ("frame", "sentence", "label"):
+        if _BAKED_FIGURE.search(rec.get(field, "")):
+            raise ValueError(
+                f"{rec['slug']}: baked £ figure in {field!r}; use {{full}}")
+
+
 def _subst(template: str, tokens: dict[str, str]) -> str:
     """Fill {key} placeholders from tokens; raise if any {…} survives so a
     typo'd or unresolved token never reaches the page."""
@@ -111,6 +121,7 @@ def _factoids(model: dict, equivalences: list[dict],
 
     out: list[dict] = []
     for rec in equivalences:
+        _check_no_baked_figures(rec)
         basis = rec["basis"]
         numerator = full_floor if basis == "full" else runrate
         if numerator is None:        # full unavailable (no indirect) -> skip full items

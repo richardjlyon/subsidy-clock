@@ -121,6 +121,15 @@ def test_factoids_absent_without_equivalences(tmp_path):
     assert meta["factoids"] == []
 
 
+def test_factoids_reject_baked_figure(tmp_path):
+    bad = [{"slug": "x", "unit_gbp": 1e9, "basis": "full", "round_to": 1,
+            "figure_label": "things", "frame": "the £220bn would have built",
+            "sentence": "The £220bn would have built {n} things.",
+            "label": "{n} things", "source": "s", "source_url": "https://s"}]
+    with pytest.raises(ValueError, match="baked"):
+        _factoids_by_slug(tmp_path, big_model(), bad)
+
+
 def test_build_writes_all_files(tmp_path):
     freshness = {"cfd": {"retrieved_at": "2026-06-09T06:00:00+00:00",
                          "source_date": None, "source_url": "https://lccc"}}
