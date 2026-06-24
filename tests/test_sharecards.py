@@ -160,6 +160,36 @@ def test_write_stubs(data_dir, tmp_path):
     assert 'location.replace("https://subsidyclock.co.uk/")' in total
 
 
+def test_stamp_index_og_dates_homepage_image(tmp_path):
+    index = tmp_path / "index.html"
+    index.write_text(
+        '<meta property="og:image" '
+        'content="https://subsidyclock.co.uk/share/headline.png">\n')
+    sharecards.stamp_index_og(index, "2026-06-24")
+    assert ('property="og:image" content='
+            '"https://subsidyclock.co.uk/share/headline.png?d=2026-06-24"'
+            in index.read_text())
+
+
+def test_stamp_index_og_is_idempotent(tmp_path):
+    # re-running just restamps the date rather than stacking query strings
+    index = tmp_path / "index.html"
+    index.write_text(
+        '<meta property="og:image" '
+        'content="https://subsidyclock.co.uk/share/headline.png?d=2026-06-23">\n')
+    sharecards.stamp_index_og(index, "2026-06-24")
+    text = index.read_text()
+    assert "headline.png?d=2026-06-24" in text
+    assert "2026-06-23" not in text
+
+
+def test_stamp_index_og_requires_one_tag(tmp_path):
+    index = tmp_path / "index.html"
+    index.write_text("<html>no og image here</html>")
+    with pytest.raises(ValueError):
+        sharecards.stamp_index_og(index, "2026-06-24")
+
+
 def _png_size(path):
     data = path.read_bytes()
     assert data[:8] == b"\x89PNG\r\n\x1a\n"

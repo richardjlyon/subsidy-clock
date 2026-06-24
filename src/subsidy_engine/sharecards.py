@@ -10,6 +10,7 @@ from __future__ import annotations
 import html as _html
 import json
 import math
+import re
 from datetime import datetime
 from pathlib import Path
 
@@ -308,6 +309,23 @@ def write_stubs(facts: list[dict], out_dir: Path | str, asof: str, datestr: str)
             asof=asof,
         )
         (out / f"{fact['slug']}.html").write_text(html)
+
+
+def stamp_index_og(index_path: Path | str, datestr: str) -> None:
+    """Rewrite the homepage og:image with a dated ?d= query string, exactly as
+    the stubs do, so social-platform preview caches refetch headline.png after
+    each nightly rebuild instead of serving a stale total. Idempotent: any
+    existing query string is replaced, so re-running just restamps the date."""
+    index = Path(index_path)
+    base = f"{SITE_URL}/share/headline.png"
+    pattern = re.compile(
+        rf'(<meta property="og:image" content="){re.escape(base)}(?:\?[^"]*)?(">)'
+    )
+    html, n = pattern.subn(rf'\g<1>{base}?d={datestr}\g<2>', index.read_text())
+    if n != 1:
+        raise ValueError(
+            f"expected exactly one og:image headline tag in {index}, found {n}")
+    index.write_text(html)
 
 
 def render(facts: list[dict], asof: str, out_dir: Path | str) -> None:
