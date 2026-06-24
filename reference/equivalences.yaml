@@ -1,0 +1,50 @@
+# Equivalence factoid pool. Records carry ONLY a unit cost and text tokens —
+# never the subsidy total or a count. {full} = the live "£NNNbn+" full-cost
+# string; {n} = the live count. Unit costs are high-end published figures so
+# counts round DOWN. price_base (optional) must be a year in reference/
+# deflators.yaml (2002–2025); omit it for figures already in today's money.
+#
+# basis: full    -> compares the £NNNbn+ combined real cumulative
+# basis: runrate -> compares the annual real-2024 run-rate
+- slug: nurses
+  unit_gbp: 39043
+  basis: runrate
+  round_to: 1000
+  figure_label: NHS nurses
+  frame: a year of this subsidy pays
+  sentence: >-
+    A year of direct UK renewable subsidy pays the salaries of {n} NHS
+    nurses, in today's money.
+  label: NHS nurses' annual salaries paid by one year of direct renewable subsidy, in today's money
+  source: NHS Employers, Agenda for Change pay scales 2026/27
+  source_url: https://www.nhsemployers.org/articles/pay-scales-202627
+  as_of: 2026
+- slug: homes
+  unit_gbp: 393333
+  basis: full
+  round_to: 1000
+  figure_label: social homes
+  frame: the {full} full cost would have built
+  sentence: >-
+    The {full} full cost of subsidising UK renewables, including estimated
+    indirect costs, would have built {n} social homes — land included — in
+    today's money.
+  label: social homes (land included) the {full} full UK renewables cost would have built, in today's money
+  source: Cebr for Shelter and the National Housing Federation (2024)
+  source_url: https://england.shelter.org.uk/professional_resources/policy_and_research/policy_library/economic_impact_social_housing
+  as_of: 2024
+- slug: hinkley
+  unit_gbp: 35000000000
+  price_base: 2015
+  basis: full
+  round_to: 1
+  figure_label: Hinkley Point C-scale nuclear stations
+  frame: the {full} full cost would have built
+  sentence: >-
+    The {full} full cost of subsidising UK renewables, including estimated
+    indirect costs, would have built {n} Hinkley Point C-scale nuclear
+    stations in the UK, in today's money.
+  label: Hinkley Point C-scale nuclear stations the {full} full UK renewables cost would have built, in today's money
+  source: New Civil Engineer, reporting EDF's 2025 annual results (20 February 2026)
+  source_url: https://www.newcivilengineer.com/latest/hinkley-point-cs-cost-climbs-to-35bn-with-confirmation-unit-1-will-power-up-in-2030-20-02-2026/
+  as_of: 2026

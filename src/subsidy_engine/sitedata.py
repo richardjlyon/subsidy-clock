@@ -6,6 +6,7 @@ from __future__ import annotations
 import html
 import json
 import math
+import re
 from datetime import datetime
 from pathlib import Path
 
@@ -84,79 +85,57 @@ def _combined_real_floored_gbp(model: dict) -> float | None:
     return _floor_step_below(combined, 1e10) if combined is not None else None
 
 
-def _factoids(model: dict, ctx: dict, deflators: pl.DataFrame | None) -> list[dict]:
-    """The equivalence factoids (impact I4/I5), composed once here so the
-    dashboard, the share-card PNGs and the /s/ stubs can never disagree.
-    Integrity rules: every division floors; the combined figure is the
-    real-2024 £10bn floor and carries 'in today's money' wherever it appears.
-    app.js renders display_html verbatim; sharecards.py uses figure+label."""
-    eq = ctx.get("equivalences") or {}
-    if not eq:
+def _subst(template: str, tokens: dict[str, str]) -> str:
+    """Fill {key} placeholders from tokens; raise if any {…} survives so a
+    typo'd or unresolved token never reaches the page."""
+    out = template.format(**tokens)
+    if "{" in out or "}" in out:
+        raise ValueError(f"unfilled token in: {template!r}")
+    return out
+
+
+def _factoids(model: dict, equivalences: list[dict],
+              deflators: pl.DataFrame | None) -> list[dict]:
+    """Generic equivalence factoids: each record divides a live numerator by a
+    high-end unit cost, floors the count, and resolves {full}/{n} tokens. All
+    records are emitted; the client shows a random three. Integrity: real-2024
+    basis, every division floors, full-basis counts divide the quoted £NNNbn+
+    floor. See reference/equivalences.yaml for the record schema."""
+    if not equivalences:
         return []
     r = model["perspectives"]["renewables"]
-    # Real-2024 basis: the whole site quotes today's-money figures (the strip,
-    # the household chip and the homes/Hinkley factoids all do), so the
-    # equivalence run-rate must match. Falls back to nominal only if no
-    # deflated series exists.
     runrate = r.get("runrate_gbp_per_year_2024", r["runrate_gbp_per_year"])
+    full_floor = _combined_real_floored_gbp(model)
+    full_str = f"£{int(full_floor / 1e9)}bn+" if full_floor is not None else None
+    idx = dict(deflators.iter_rows()) if deflators is not None else None
+
     out: list[dict] = []
-
-    def src(entry: dict, text: str) -> str:
-        return (f'<a class="eq-src" href="{html.escape(entry["source_url"])}" '
-                f'title="{html.escape(entry["source"])}">{text}</a>')
-
-    nurse = eq.get("nurse_salary_gbp")
-    if nurse:
-        fig = f"{int(_floor_to(runrate / nurse['value'], 1000)):,}"
+    for rec in equivalences:
+        basis = rec["basis"]
+        numerator = full_floor if basis == "full" else runrate
+        if numerator is None:        # full unavailable (no indirect) -> skip full items
+            continue
+        unit = float(rec["unit_gbp"])
+        base = rec.get("price_base")
+        if base is not None:
+            if idx is None or base not in idx:
+                raise ValueError(
+                    f"{rec['slug']}: price_base {base} not in deflator index")
+            unit *= idx[2024] / idx[base]
+        n = int(_floor_to(numerator / unit, rec.get("round_to", 1)))
+        figure = f"{n:,}"
+        tokens = {"n": figure, "full": full_str or ""}
         out.append({
-            "slug": "nurses", "figure": fig,
-            "sentence": f"A year of direct UK renewable subsidy pays the salaries of {fig} NHS nurses, in today’s money.",
-            "display_html": ('A year of this pays the salaries of '
-                             f'<span class="money num">{fig}</span> {src(nurse, "NHS nurses")}, in today’s money'),
-            "label": "NHS nurses' annual salaries paid by one year of direct renewable subsidy, in today’s money",
-            "source_name": nurse["source"], "source_url": nurse["source_url"],
+            "slug": rec["slug"],
+            "figure": figure,
+            "basis": basis,
+            "figure_label": rec["figure_label"],
+            "frame": _subst(rec["frame"], tokens),
+            "sentence": _subst(rec["sentence"], tokens),
+            "label": _subst(rec["label"], tokens),
+            "source_name": rec["source"],
+            "source_url": rec["source_url"],
         })
-
-    # counts divide the quoted £10bn floor, not the raw total, so a reader
-    # checking the sentence's own arithmetic can only get MORE than we claim —
-    # self-consistent and stricter
-    combined_floor = _combined_real_floored_gbp(model)
-    if combined_floor is not None:
-        floored_bn = int(combined_floor / 1e9)
-        full = f"£{floored_bn}bn+"
-        home = eq.get("social_home_gbp")
-        if home:
-            fig = f"{int(_floor_to(combined_floor / home['value'], 1000)):,}"
-            out.append({
-                "slug": "homes", "figure": fig,
-                "sentence": (f"The {full} full cost of subsidising UK renewables, including "
-                             f"estimated indirect costs, would have built "
-                             f"{fig} social homes — land included — in today’s money."),
-                "display_html": (f'The {full} full cost would have built '
-                                 f'<span class="money num">{fig}</span> {src(home, "social homes")}, '
-                                 'land included — in today’s money'),
-                "label": (f"social homes (land included) the {full} full UK renewables cost "
-                          "would have built, in today's money"),
-                "source_name": home["source"], "source_url": home["source_url"],
-            })
-        hpc = eq.get("hinkley_point_c_gbp")
-        if hpc and deflators is not None:
-            idx = dict(deflators.iter_rows())
-            base = hpc.get("price_base")
-            unit = hpc["value"] * (idx[2024] / idx[base]) if base else hpc["value"]
-            n = int(combined_floor // unit)
-            out.append({
-                "slug": "hinkley", "figure": str(n),
-                "sentence": (f"The {full} full cost of subsidising UK renewables, including "
-                             f"estimated indirect costs, would have built "
-                             f"{n} Hinkley Point C-scale nuclear stations in the UK, in today’s money."),
-                "display_html": (f'— or <span class="money num">{n}</span> '
-                                 f'{src(hpc, "Hinkley Point C")}-scale nuclear stations'),
-                "label": (f"Hinkley Point C-scale nuclear stations the {full} full UK renewables "
-                          "cost would have built, in today's money"),
-                "source_name": hpc["source"], "source_url": hpc["source_url"],
-            })
-
     return out
 
 
@@ -227,7 +206,8 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
           bill_annual: pl.DataFrame | None = None,
           bill_info: dict | None = None,
           deflators: pl.DataFrame | None = None,
-          coords: dict | None = None, basemap: dict | None = None) -> None:
+          coords: dict | None = None, basemap: dict | None = None,
+          equivalences: list[dict] | None = None) -> None:
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     households = ctx["households"]["value"]
@@ -298,7 +278,7 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
         "deflator": deflator_info,
         "bill": bill_info,
         "headline": headline,
-        "factoids": _factoids(model, ctx, deflators),
+        "factoids": _factoids(model, equivalences or [], deflators),
     }, indent=1, allow_nan=False))
 
     if coords is not None and basemap is not None:

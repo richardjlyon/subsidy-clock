@@ -1,8 +1,10 @@
 import json
 import math
 from datetime import date
+from pathlib import Path
 
 import pytest
+import yaml
 
 import polars as pl
 
@@ -13,13 +15,9 @@ CTX = {
     "households": {"value": 28_400_000, "source": "ONS", "source_url": "https://ons", "as_of": 2023},
     "population": {"value": 68_300_000, "source": "ONS", "source_url": "https://ons", "as_of": 2023},
     "annual_demand_twh": {"value": 266, "source": "DESNZ", "source_url": "https://desnz", "as_of": 2024},
-    "equivalences": {
-        "nurse_salary_gbp": {"value": 39043, "source": "NHS Employers", "source_url": "https://nhse", "as_of": 2026},
-        "social_home_gbp": {"value": 393000, "source": "Cebr/Shelter/NHF", "source_url": "https://shelter", "as_of": 2024},
-        "hinkley_point_c_gbp": {"value": 35_000_000_000, "price_base": 2015,
-                                "source": "EDF", "source_url": "https://edf", "as_of": 2026},
-    },
 }
+
+EQUIV = yaml.safe_load(Path("reference/equivalences.yaml").read_text())
 
 DEFLATOR_INFO = {"source": "ONS CPIH L522", "source_url": "https://ons", "base_year": 2024}
 
@@ -70,62 +68,56 @@ def big_model():
     return m
 
 
-def test_factoids_floored_figures_and_sentences(tmp_path):
-    sitedata.build(big_model(), CTX, {}, tmp_path,
+def _factoids_by_slug(tmp_path, model, equivalences=EQUIV):
+    sitedata.build(model, CTX, {}, tmp_path,
                    generated_at="2026-06-12T07:00:00+00:00",
-                   deflator_info=DEFLATOR_INFO, deflators=DEFLATORS)
+                   deflator_info=DEFLATOR_INFO, deflators=DEFLATORS,
+                   equivalences=equivalences)
     meta = json.loads((tmp_path / "meta.json").read_text())
-    by_slug = {f["slug"]: f for f in meta["factoids"]}
-    assert list(by_slug) == ["nurses", "homes", "hinkley"]
+    return {f["slug"]: f for f in meta["factoids"]}, meta
+
+
+def test_factoids_floored_figures_and_sentences(tmp_path):
+    by_slug, meta = _factoids_by_slug(tmp_path, big_model(),
+        [r for r in EQUIV if r["slug"] in ("nurses", "homes", "hinkley")])
+    assert set(by_slug) == {"nurses", "homes", "hinkley"}
 
     # nurses: real 11.9e9 / 39043 = 304,791.6 -> floored to 1,000 -> 304,000
     assert by_slug["nurses"]["figure"] == "304,000"
     assert "304,000 NHS nurses" in by_slug["nurses"]["sentence"]
     assert by_slug["nurses"]["sentence"].startswith("A year of direct UK renewable subsidy")
-    assert "in today’s money" in by_slug["nurses"]["sentence"]
+    assert "in today's money" in by_slug["nurses"]["sentence"]
+    assert by_slug["nurses"]["frame"] == "a year of this subsidy pays"
+    assert by_slug["nurses"]["figure_label"] == "NHS nurses"
 
-    # combined real 223.35e9 -> £10bn floor strictly below -> 220
-    # counts divide the quoted floor: homes = 220e9 / 393000 = 559,796.4 -> 559,000
+    # combined real 223.35e9 -> £10bn floor strictly below -> £220bn+
+    # homes = 220e9 / 393333 = 559,322.0 -> 559,000
     assert by_slug["homes"]["figure"] == "559,000"
-    assert "£220bn+" in by_slug["homes"]["sentence"]
-    assert "subsidising UK renewables, including estimated indirect costs" \
-        in by_slug["homes"]["sentence"]
-    assert "UK renewables" in by_slug["homes"]["label"]
-    assert "in today" in by_slug["homes"]["sentence"]  # 'in today’s money' label
+    assert by_slug["homes"]["frame"] == "the £220bn+ full cost would have built"
+    assert "£220bn+ full cost" in by_slug["homes"]["sentence"]
+    assert "social homes" in by_slug["homes"]["label"]
 
     # hinkley: 35e9 * 132.9/100 = 46.515e9; 220 / 46.515 = 4.73 -> 4
     assert by_slug["hinkley"]["figure"] == "4"
-    assert "subsidising UK renewables, including estimated indirect costs" \
-        in by_slug["hinkley"]["sentence"]
     assert "4 Hinkley Point C-scale nuclear stations in the UK" in by_slug["hinkley"]["sentence"]
-    assert "UK renewables" in by_slug["hinkley"]["label"]
-
 
     for f in meta["factoids"]:
         assert f["source_url"], f["slug"]
-        assert f["label"], f["slug"]
-        assert f["display_html"], f["slug"]
+        assert f["label"] and "{" not in f["label"], f["slug"]
+        assert "{" not in f["sentence"] and "{" not in f["frame"], f["slug"]
 
 
 def test_factoids_exact_floor_steps_down(tmp_path):
     m = big_model()
-    # combined real exactly 230e9: the floor must step DOWN to 220 (never sit on the boundary)
     m["perspectives"]["renewables"]["cumulative_gbp_2024"] = 130.0e9
-    m["indirect"]["cumulative_gbp_2024"] = 100.0e9
-    sitedata.build(m, CTX, {}, tmp_path,
-                   generated_at="2026-06-12T07:00:00+00:00",
-                   deflator_info=DEFLATOR_INFO, deflators=DEFLATORS)
-    meta = json.loads((tmp_path / "meta.json").read_text())
-    homes = next(f for f in meta["factoids"] if f["slug"] == "homes")
-    assert "£220bn+" in homes["sentence"]
+    m["indirect"]["cumulative_gbp_2024"] = 100.0e9   # combined exactly 230e9
+    by_slug, _ = _factoids_by_slug(tmp_path, m,
+        [r for r in EQUIV if r["slug"] == "homes"])
+    assert by_slug["homes"]["frame"] == "the £220bn+ full cost would have built"
 
 
 def test_factoids_absent_without_equivalences(tmp_path):
-    ctx = {k: v for k, v in CTX.items() if k != "equivalences"}
-    sitedata.build(big_model(), ctx, {}, tmp_path,
-                   generated_at="2026-06-12T07:00:00+00:00",
-                   deflator_info=DEFLATOR_INFO, deflators=DEFLATORS)
-    meta = json.loads((tmp_path / "meta.json").read_text())
+    _, meta = _factoids_by_slug(tmp_path, big_model(), [])
     assert meta["factoids"] == []
 
 
@@ -253,20 +245,12 @@ def test_write_csvs_no_restatements_writes_header_only(tmp_path):
 
 
 def test_factoid_divisions_floor_not_round(tmp_path):
-    """Every equivalence division must FLOOR - rounding to nearest would
-    overstate, which the conservative-number rule forbids."""
     m = big_model()
-    # factoids read the real (2024-price) run-rate, so drive that:
-    # nurses: 12.4e9 / 39043 = 317,598.5... -> floor 317,000 (round would give 318,000)
-    for p in m["perspectives"].values():
-        p["runrate_gbp_per_year_2024"] = 12.4e9
-    sitedata.build(m, CTX, {}, tmp_path,
-                   generated_at="2026-06-12T07:00:00+00:00",
-                   deflator_info=DEFLATOR_INFO, deflators=DEFLATORS)
-    meta = json.loads((tmp_path / "meta.json").read_text())
-    by_slug = {f["slug"]: f for f in meta["factoids"]}
-    # floor-vs-round distinguishing: fraction >= 0.5 at floored precision
-    assert by_slug["nurses"]["figure"] == "317,000"    # round would give 318,000
+    m["perspectives"]["renewables"]["runrate_gbp_per_year_2024"] = 12.4e9
+    by_slug, _ = _factoids_by_slug(tmp_path, m,
+        [r for r in EQUIV if r["slug"] == "nurses"])
+    # 12.4e9 / 39043 = 317,598.5 -> floor 317,000 (round would give 318,000)
+    assert by_slug["nurses"]["figure"] == "317,000"
 
 
 def test_per_unit_floored_and_agrees_across_surfaces(tmp_path):
