@@ -48,9 +48,11 @@
     color: #fff;
     font-variant-numeric: tabular-nums lining-nums; font-feature-settings: "tnum" 1, "lnum" 1;
   }
+  /* full-width descriptive line; JS auto-fits 40px -> 30px floor so the
+     longest label never overflows (see fitLabel below). */
   .label {
-    margin: 26px 0 0; max-width: 26ch;
-    font-family: "Equity", Georgia, serif; font-size: 30px; line-height: 1.34; color: rgba(255,255,255,0.88);
+    margin: 22px 0 0; max-width: none;
+    font-family: "Equity", Georgia, serif; font-size: 40px; line-height: 1.3; color: rgba(255,255,255,0.94);
   }
 
   .foot { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
@@ -71,5 +73,21 @@
     <span class="asof">as of {{ASOF}}</span>
     <span class="trace">Every figure traces to an official source</span>
   </div>
+  <script>
+    // Shrink the descriptive line only as far as needed so the longest label
+    // stays clear of the foot hairline; never below the 30px brand floor.
+    function fitLabel() {
+      var label = document.querySelector('.label');
+      var mid = document.querySelector('.mid');
+      var maxBottom = 630 - 116 - 18;
+      var size = 40, min = 30;
+      label.style.fontSize = size + 'px';
+      while (size > min && mid.getBoundingClientRect().bottom > maxBottom) {
+        size -= 1; label.style.fontSize = size + 'px';
+      }
+    }
+    window.__fitLabel = fitLabel;
+    document.fonts.ready.then(fitLabel);
+  </script>
 </body>
 </html>

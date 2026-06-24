@@ -95,7 +95,7 @@ def test_factoids_floored_figures_and_sentences(tmp_path):
     # combined real 223.35e9 -> £10bn floor strictly below -> £220bn+
     # homes = 220e9 / 393333 = 559,322.0 -> 559,000
     assert by_slug["homes"]["figure"] == "559,000"
-    assert by_slug["homes"]["frame"] == "the £220bn+ full cost would have built"
+    assert by_slug["homes"]["frame"] == "the current £220bn+ full cost would have built"
     assert "£220bn+ full cost" in by_slug["homes"]["sentence"]
     assert "social homes" in by_slug["homes"]["label"]
 
@@ -115,7 +115,7 @@ def test_factoids_exact_floor_steps_down(tmp_path):
     m["indirect"]["cumulative_gbp_2024"] = 100.0e9   # combined exactly 230e9
     by_slug, _ = _factoids_by_slug(tmp_path, m,
         [r for r in EQUIV if r["slug"] == "homes"])
-    assert by_slug["homes"]["frame"] == "the £220bn+ full cost would have built"
+    assert by_slug["homes"]["frame"] == "the current £220bn+ full cost would have built"
 
 
 def test_factoids_absent_without_equivalences(tmp_path):
@@ -382,7 +382,7 @@ def test_write_corrections_empty_log(tmp_path):
 
 def test_full_pool_resolves(tmp_path):
     _, meta = _factoids_by_slug(tmp_path, big_model(), EQUIV)
-    assert len(meta["factoids"]) == 12
+    assert len(meta["factoids"]) == 11
     for f in meta["factoids"]:
         assert int(f["figure"].replace(",", "")) > 0, f["slug"]
         assert f["source_url"].startswith("http"), f["slug"]

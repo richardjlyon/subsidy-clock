@@ -134,7 +134,8 @@ def test_compose_rejects_unfilled_tokens():
 def test_write_stubs(data_dir, tmp_path):
     facts, asof, datestr = sharecards.load_facts(data_dir)
     out = tmp_path / "s"
-    sharecards.write_stubs(facts, out, asof, datestr)
+    versions = {f["slug"]: "abc1234567" for f in facts}
+    sharecards.write_stubs(facts, out, asof, versions)
     # one stub per stub-flagged fact (headline figures + switch-off), none for
     # the per-scheme explainer cards
     assert sorted(p.name for p in out.glob("*.html")) == [
@@ -142,8 +143,8 @@ def test_write_stubs(data_dir, tmp_path):
         "per-mwh-full.html", "per-mwh.html", "run-rate-full.html", "run-rate.html",
         "switch-off.html", "the-bill.html", "total.html"]
     html = (out / "switch-off.html").read_text()
-    # per-fact OG tags with a dated image URL (defeats platform preview caching)
-    assert 'property="og:image" content="https://subsidyclock.co.uk/share/switch-off.png?d=2026-06-11"' in html
+    # per-fact OG tags with a content-hash image URL (defeats platform preview caching)
+    assert 'property="og:image" content="https://subsidyclock.co.uk/share/switch-off.png?v=abc1234567"' in html
     assert 'name="twitter:card" content="summary_large_image"' in html
     assert 'property="og:url" content="https://subsidyclock.co.uk/s/switch-off"' in html
     # redirect shim: noindex, meta refresh and JS bounce to the dashboard anchor
@@ -160,34 +161,34 @@ def test_write_stubs(data_dir, tmp_path):
     assert 'location.replace("https://subsidyclock.co.uk/")' in total
 
 
-def test_stamp_index_og_dates_homepage_image(tmp_path):
+def test_stamp_index_og_versions_homepage_image(tmp_path):
     index = tmp_path / "index.html"
     index.write_text(
         '<meta property="og:image" '
         'content="https://subsidyclock.co.uk/share/headline.png">\n')
-    sharecards.stamp_index_og(index, "2026-06-24")
+    sharecards.stamp_index_og(index, "abc1234567")
     assert ('property="og:image" content='
-            '"https://subsidyclock.co.uk/share/headline.png?d=2026-06-24"'
+            '"https://subsidyclock.co.uk/share/headline.png?v=abc1234567"'
             in index.read_text())
 
 
 def test_stamp_index_og_is_idempotent(tmp_path):
-    # re-running just restamps the date rather than stacking query strings
+    # re-running just restamps the hash rather than stacking query strings
     index = tmp_path / "index.html"
     index.write_text(
         '<meta property="og:image" '
-        'content="https://subsidyclock.co.uk/share/headline.png?d=2026-06-23">\n')
-    sharecards.stamp_index_og(index, "2026-06-24")
+        'content="https://subsidyclock.co.uk/share/headline.png?v=0000000000">\n')
+    sharecards.stamp_index_og(index, "abc1234567")
     text = index.read_text()
-    assert "headline.png?d=2026-06-24" in text
-    assert "2026-06-23" not in text
+    assert "headline.png?v=abc1234567" in text
+    assert "0000000000" not in text
 
 
 def test_stamp_index_og_requires_one_tag(tmp_path):
     index = tmp_path / "index.html"
     index.write_text("<html>no og image here</html>")
     with pytest.raises(ValueError):
-        sharecards.stamp_index_og(index, "2026-06-24")
+        sharecards.stamp_index_og(index, "abc1234567")
 
 
 def _png_size(path):
@@ -214,7 +215,7 @@ def test_load_facts_includes_factoids(data_dir, tmp_path):
     assert h["anchor"] is None
     assert h["label"].startswith("Hinkley Point C-scale")
     out = tmp_path / "s"
-    sharecards.write_stubs(facts, out, asof, datestr)
+    sharecards.write_stubs(facts, out, asof, {f["slug"]: "abc1234567" for f in facts})
     assert (out / "hinkley.html").is_file()
 
 

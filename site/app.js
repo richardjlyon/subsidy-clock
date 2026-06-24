@@ -264,8 +264,17 @@
       src.rel = 'noopener noreferrer';
       src.title = f.source_name;
       src.textContent = 'source';
+      // discreet link to this factoid's card on the /share media kit
+      var cardlink = document.createElement('a');
+      cardlink.className = 'eq-cardlink';
+      cardlink.href = '/share#' + f.slug;
+      cardlink.target = '_blank';
+      cardlink.rel = 'noopener';
+      cardlink.title = 'Find this card on the share page to download or post';
+      cardlink.textContent = 'share card';
       var share = document.createElement('span');
       foot.appendChild(src);
+      foot.appendChild(cardlink);
       foot.appendChild(share);
 
       card.appendChild(fig);

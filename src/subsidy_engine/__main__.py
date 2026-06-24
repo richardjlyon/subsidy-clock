@@ -171,9 +171,11 @@ def cmd_build_cards(args: argparse.Namespace) -> int:
     for fact in facts:
         if fact.get("chart"):
             sharecards.render_chart_card(timeseries, member_ids, fact, asof, site / "share")
-    sharecards.write_stubs(facts, site / "s", asof, datestr)
-    sharecards.write_manifest(facts, site / "share", asof, datestr)
-    sharecards.stamp_index_og(site / "index.html", datestr)
+    versions = sharecards.png_versions(site / "share")
+    sharecards.write_stubs(facts, site / "s", asof, versions)
+    sharecards.write_manifest(facts, site / "share", asof, versions)
+    if versions.get("headline"):
+        sharecards.stamp_index_og(site / "index.html", versions["headline"])
     n_stubs = sum(1 for f in facts if f.get("stub"))
     print(f"[ok] {len(facts)} share cards and {n_stubs} share stubs written (as of {asof})")
     return 0

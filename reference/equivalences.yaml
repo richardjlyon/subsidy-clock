@@ -24,12 +24,12 @@
   basis: full
   round_to: 1000
   figure_label: social homes
-  frame: the {full} full cost would have built
+  frame: the current {full} full cost would have built
   sentence: >-
-    The {full} full cost of subsidising UK renewables, including estimated
-    indirect costs, would have built {n} social homes — land included — in
-    today's money.
-  label: social homes (land included) the {full} full UK renewables cost would have built, in today's money
+    The current {full} full cost of subsidising UK renewables, including
+    estimated indirect costs, would have built {n} social homes — land
+    included — in today's money.
+  label: social homes (land included) the current {full} full UK renewables cost would have built, in today's money
   source: Cebr for Shelter and the National Housing Federation (2024)
   source_url: https://england.shelter.org.uk/professional_resources/policy_and_research/policy_library/economic_impact_social_housing
   as_of: 2024
@@ -39,12 +39,12 @@
   basis: full
   round_to: 1
   figure_label: Hinkley Point C-scale nuclear stations
-  frame: the {full} full cost would have built
+  frame: the current {full} full cost would have built
   sentence: >-
-    The {full} full cost of subsidising UK renewables, including estimated
-    indirect costs, would have built {n} Hinkley Point C-scale nuclear
-    stations in the UK, in today's money.
-  label: Hinkley Point C-scale nuclear stations the {full} full UK renewables cost would have built, in today's money
+    The current {full} full cost of subsidising UK renewables, including
+    estimated indirect costs, would have built {n} Hinkley Point C-scale
+    nuclear stations in the UK, in today's money.
+  label: Hinkley Point C-scale nuclear stations the current {full} full UK renewables cost would have built, in today's money
   source: New Civil Engineer, reporting EDF's 2025 annual results (20 February 2026)
   source_url: https://www.newcivilengineer.com/latest/hinkley-point-cs-cost-climbs-to-35bn-with-confirmation-unit-1-will-power-up-in-2030-20-02-2026/
   as_of: 2026
@@ -53,25 +53,25 @@
   basis: full
   round_to: 100
   figure_label: large secondary schools
-  frame: the {full} full cost would have built
+  frame: the current {full} full cost would have built
   sentence: >-
-    The {full} full cost of subsidising UK renewables would have built
-    {n} large new secondary schools, in today's money.
-  label: large new secondary schools the {full} full UK renewables cost would have built, in today's money
-  source: National Audit Office, Condition of school buildings (2023)
-  source_url: https://www.nao.org.uk/reports/condition-of-school-buildings/
-  as_of: 2023
+    The current {full} full cost of subsidising UK renewables would have
+    built {n} large new secondary schools, in today's money.
+  label: large new secondary schools the current {full} full UK renewables cost would have built, in today's money
+  source: DfE, School Rebuilding Programme — actual scheme costs for new large secondary schools
+  source_url: https://www.gov.uk/government/publications/school-rebuilding-programme
+  as_of: 2024
 - slug: hospitals
   unit_gbp: 2000000000
   basis: full
   round_to: 1
-  figure_label: new general hospitals
-  frame: the {full} full cost would have built
+  figure_label: the largest new NHS hospitals
+  frame: the current {full} full cost would have built
   sentence: >-
-    The {full} full cost of subsidising UK renewables would have built
-    {n} new acute general hospitals, in today's money.
-  label: new acute general hospitals the {full} full UK renewables cost would have built, in today's money
-  source: National Audit Office, Update on the New Hospital Programme (2026)
+    The current {full} full cost of subsidising UK renewables would have
+    built {n} of the largest new NHS hospitals, in today's money.
+  label: the largest new NHS hospitals the current {full} full UK renewables cost would have built, in today's money
+  source: National Audit Office, Update on the New Hospital Programme (2026) — largest schemes about £2bn each
   source_url: https://www.nao.org.uk/reports/update-on-the-new-hospital-programme/
   as_of: 2026
 - slug: aircraft-carriers
@@ -80,53 +80,39 @@
   basis: full
   round_to: 1
   figure_label: aircraft carriers
-  frame: the {full} full cost would have built
+  frame: the current {full} full cost would have built
   sentence: >-
-    The {full} full cost of subsidising UK renewables would have built
-    {n} Queen Elizabeth-class aircraft carriers, in today's money.
-  label: Queen Elizabeth-class aircraft carriers the {full} full UK renewables cost would have built, in today's money
-  source: National Audit Office, Carrier Strike — the 2012 reversion decision
-  source_url: https://www.nao.org.uk/reports/carrier-strike-the-2012-reversion-decision/
+    The current {full} full cost of subsidising UK renewables would have
+    built {n} Queen Elizabeth-class aircraft carriers, in today's money.
+  label: Queen Elizabeth-class aircraft carriers the current {full} full UK renewables cost would have built, in today's money
+  source: National Audit Office, Delivering Carrier Strike (2017) — £6.212bn for both ships
+  source_url: https://www.nao.org.uk/reports/delivering-carrier-strike/
   as_of: 2014
 - slug: crossrail
-  unit_gbp: 18800000000
+  unit_gbp: 18900000000
   price_base: 2022
   basis: full
   round_to: 1
   figure_label: Elizabeth Lines (Crossrail)
-  frame: the {full} full cost would have built
+  frame: the current {full} full cost would have built
   sentence: >-
-    The {full} full cost of subsidising UK renewables would have built
-    {n} Elizabeth Lines — London's Crossrail — in today's money.
-  label: Crossrail / Elizabeth Lines the {full} full UK renewables cost would have built, in today's money
-  source: National Audit Office, Crossrail — a progress update (2021)
+    The current {full} full cost of subsidising UK renewables would have
+    built {n} Elizabeth Lines — London's Crossrail — in today's money.
+  label: Crossrail / Elizabeth Lines the current {full} full UK renewables cost would have built, in today's money
+  source: National Audit Office, Crossrail — a progress update (2021); £18.9bn cost estimate
   source_url: https://www.nao.org.uk/reports/crossrail-progress-update/
   as_of: 2022
-- slug: olympics
-  unit_gbp: 8770000000
-  price_base: 2012
-  basis: full
-  round_to: 1
-  figure_label: London 2012 Olympic Games
-  frame: the {full} full cost would have paid for
-  sentence: >-
-    The {full} full cost of subsidising UK renewables would have paid for
-    {n} London 2012 Olympic Games, in today's money.
-  label: London 2012 Olympic Games the {full} full UK renewables cost would have paid for, in today's money
-  source: National Audit Office, The London 2012 Olympic and Paralympic Games — post-Games review
-  source_url: https://www.nao.org.uk/reports/the-london-2012-olympic-games-and-paralympic-games-post-games-review/
-  as_of: 2012
 - slug: stadiums
   unit_gbp: 1000000000
   basis: full
   round_to: 1
   figure_label: Premier League stadiums
-  frame: the {full} full cost would have built
+  frame: the current {full} full cost would have built
   sentence: >-
-    The {full} full cost of subsidising UK renewables would have built
-    {n} billion-pound football stadiums, in today's money.
-  label: billion-pound football stadiums the {full} full UK renewables cost would have built, in today's money
-  source: Tottenham Hotspur Stadium reported build cost (Wikipedia)
+    The current {full} full cost of subsidising UK renewables would have
+    built {n} billion-pound football stadiums, in today's money.
+  label: billion-pound football stadiums the current {full} full UK renewables cost would have built, in today's money
+  source: Tottenham Hotspur Stadium reported build cost (about £1.2bn, 2019-20)
   source_url: https://en.wikipedia.org/wiki/Tottenham_Hotspur_Stadium
   as_of: 2019
 - slug: teachers
@@ -139,11 +125,11 @@
     A year of UK renewable subsidy pays the salaries of {n} experienced
     schoolteachers, in today's money.
   label: experienced schoolteachers' annual salaries paid by one year of UK renewable subsidy, in today's money
-  source: NASUWT, School teachers' pay scales England — upper pay range UPS3 (2025-26)
-  source_url: https://www.nasuwt.org.uk/advice/pay-pensions/pay-scales/pay-scales-england.html
+  source: STPCD 2025, Upper Pay Range UPS3, England excluding London (2025-26)
+  source_url: https://www.gov.uk/government/publications/school-teachers-pay-and-conditions
   as_of: 2025
 - slug: police
-  unit_gbp: 48231
+  unit_gbp: 50256
   basis: runrate
   round_to: 1000
   figure_label: police officers
@@ -152,19 +138,19 @@
     A year of UK renewable subsidy pays the salaries of {n} police
     officers, in today's money.
   label: police officers' annual salaries paid by one year of UK renewable subsidy, in today's money
-  source: PolicePay, police constable pay scales 2025-26 (top of scale, PP7)
-  source_url: https://www.policepay.co.uk/guides/police-pay-scales/
+  source: Police Federation of England & Wales, constable pay scales (top of scale, from 1 September 2025)
+  source_url: https://polfed.org/resources/pay-scales/constable-pay-scales/
   as_of: 2025
 - slug: free-school-meals
-  unit_gbp: 505
+  unit_gbp: 5390800260
   basis: runrate
-  round_to: 100000
-  figure_label: children fed at school for a year
-  frame: a year of this subsidy could give free school meals to
+  round_to: 1
+  figure_label: years of free school meals for every UK schoolchild
+  frame: a year of this subsidy could fund
   sentence: >-
-    A year of UK renewable subsidy could give free school meals to {n}
-    children for a year, in today's money.
-  label: children given free school meals for a year by one year of UK renewable subsidy, in today's money
-  source: DfE, free school meals expansion grant methodology — £505 per pupil per annum (2026-27)
+    A year of UK renewable subsidy could fund free school meals for every
+    UK schoolchild for more than {n} years, in today's money.
+  label: years of free school meals for every UK schoolchild, funded by one year of UK renewable subsidy, in today's money
+  source: DfE free school meals funding (£505/pupil/year); UK pupil population ~10.67m (DfE, StatsWales, Scottish Government, DENI 2024-25)
   source_url: https://www.gov.uk/government/publications/free-school-meals-expansion-grant-2026-to-2027/free-school-meals-expansion-grant-methodology
   as_of: 2026

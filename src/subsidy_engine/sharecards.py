@@ -7,6 +7,7 @@ The as-paid (nominal) figures live on the /data page."""
 
 from __future__ import annotations
 
+import hashlib
 import html as _html
 import json
 import math
@@ -270,17 +271,30 @@ STUB_TEMPLATE = """<!DOCTYPE html>
 """
 
 
-def write_manifest(facts: list[dict], out_dir: Path | str, asof: str, datestr: str) -> None:
+def png_versions(share_dir: Path | str) -> dict[str, str]:
+    """A short content hash per rendered share PNG, keyed by slug (file stem).
+    Used to cache-bust the OG image URLs: because the token is the image's own
+    content, any card whose pixels change gets a fresh URL immediately — so a
+    same-day redeploy busts social-preview caches, which a dated token (one
+    value per day) would not."""
+    out: dict[str, str] = {}
+    for p in sorted(Path(share_dir).glob("*.png")):
+        out[p.stem] = hashlib.sha256(p.read_bytes()).hexdigest()[:10]
+    return out
+
+
+def write_manifest(facts: list[dict], out_dir: Path | str, asof: str,
+                   versions: dict[str, str]) -> None:
     """Write share/cards.json — the manifest the /share media-kit page reads to
     build its grid, so the page always lists exactly the cards that were
     rendered (no hand-maintained list to drift). Each card carries its group
     and, for headline cards, its scope (direct/full/graph) so the page can lay
-    the headline group out in two columns."""
+    the headline group out in two columns. The png URL is content-hash busted."""
     cards = [{
         "slug": f["slug"],
         "figure": f["figure"],
         "label": f["label"],
-        "png": f"/share/{f['slug']}.png?d={datestr}",
+        "png": f"/share/{f['slug']}.png?v={versions.get(f['slug'], '')}",
         "group": f.get("group", "Headline figures"),
         "scope": f.get("scope"),
     } for f in facts]
@@ -289,7 +303,8 @@ def write_manifest(facts: list[dict], out_dir: Path | str, asof: str, datestr: s
     (out / "cards.json").write_text(json.dumps({"asof": asof, "cards": cards}, indent=2))
 
 
-def write_stubs(facts: list[dict], out_dir: Path | str, asof: str, datestr: str) -> None:
+def write_stubs(facts: list[dict], out_dir: Path | str, asof: str,
+                versions: dict[str, str]) -> None:
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     for fact in facts:
@@ -300,7 +315,7 @@ def write_stubs(facts: list[dict], out_dir: Path | str, asof: str, datestr: str)
             title=_html.escape(f"{fact['figure']} {fact['label']}"),
             description=_html.escape(f"As of {asof}. Every figure traces to an official source."),
             stub_url=f"{SITE_URL}/s/{fact['slug']}",
-            image_url=f"{SITE_URL}/share/{fact['slug']}.png?d={datestr}",
+            image_url=f"{SITE_URL}/share/{fact['slug']}.png?v={versions.get(fact['slug'], '')}",
             site_url=SITE_URL,
             target=target,
             target_js=json.dumps(target),
@@ -311,17 +326,17 @@ def write_stubs(facts: list[dict], out_dir: Path | str, asof: str, datestr: str)
         (out / f"{fact['slug']}.html").write_text(html)
 
 
-def stamp_index_og(index_path: Path | str, datestr: str) -> None:
-    """Rewrite the homepage og:image with a dated ?d= query string, exactly as
-    the stubs do, so social-platform preview caches refetch headline.png after
-    each nightly rebuild instead of serving a stale total. Idempotent: any
-    existing query string is replaced, so re-running just restamps the date."""
+def stamp_index_og(index_path: Path | str, version: str) -> None:
+    """Rewrite the homepage og:image with a content-hash ?v= query string, the
+    same token the stubs use, so social-platform preview caches refetch
+    headline.png whenever its pixels change (a new total, a restyle) rather than
+    serving a stale image. Idempotent: any existing query string is replaced."""
     index = Path(index_path)
     base = f"{SITE_URL}/share/headline.png"
     pattern = re.compile(
         rf'(<meta property="og:image" content="){re.escape(base)}(?:\?[^"]*)?(">)'
     )
-    html, n = pattern.subn(rf'\g<1>{base}?d={datestr}\g<2>', index.read_text())
+    html, n = pattern.subn(rf'\g<1>{base}?v={version}\g<2>', index.read_text())
     if n != 1:
         raise ValueError(
             f"expected exactly one og:image headline tag in {index}, found {n}")
@@ -353,6 +368,7 @@ def render(facts: list[dict], asof: str, out_dir: Path | str) -> None:
                 src.write_text(compose(template, fact, asof))
                 page.goto(src.as_uri(), wait_until="networkidle")
                 page.evaluate("() => document.fonts.ready")
+                page.evaluate("() => window.__fitLabel && window.__fitLabel()")
                 page.screenshot(path=str(out / f"{fact['slug']}.png"))
             browser.close()
 

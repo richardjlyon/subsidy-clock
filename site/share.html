@@ -32,7 +32,8 @@
     letter-spacing: 0.06em; color: var(--muted); }
   @media (max-width: 700px) { .kit-cols { grid-template-columns: 1fr; } }
   .kit-card { background: var(--card); border: 1px solid var(--line); border-radius: 6px;
-    overflow: hidden; display: flex; flex-direction: column; }
+    overflow: hidden; display: flex; flex-direction: column; scroll-margin-top: 24px; }
+  .kit-card.kit-target { outline: 2px solid var(--money); outline-offset: 3px; }
   .kit-card img { display: block; width: 100%; height: auto; background: var(--paper-dim, #f2ede3);
     border-bottom: 1px solid var(--line-soft); }
   .kit-meta { padding: 11px 14px 13px; display: flex; flex-direction: column; gap: 9px; flex: 1; }
@@ -117,6 +118,7 @@
   function card(c) {
     var li = document.createElement('div');
     li.className = 'kit-card';
+    li.id = c.slug;                                  // deep-link target (e.g. /share#hospitals)
     var clean = c.png.split('?')[0];                 // /share/total.png
     var name = clean.split('/').pop();               // total.png
     li.innerHTML =
@@ -172,6 +174,12 @@
           root.appendChild(grid(cards));
         }
       });
+    // cards render async, so the browser's native #anchor jump misses them;
+    // scroll to the deep-linked card (e.g. /share#hospitals) once it exists.
+    if (location.hash) {
+      var tgt = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (tgt) { tgt.scrollIntoView({ block: 'center' }); tgt.classList.add('kit-target'); }
+    }
   }).catch(function () {
     root.innerHTML = '<p class="kit-cap">Couldn’t load the card list. The images are still ' +
       'available directly under <span class="num">/share/&lt;name&gt;.png</span>.</p>';

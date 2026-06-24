@@ -295,7 +295,8 @@ html[data-skin="ft"] .eq-card {
 html[data-skin="ft"] .eq-figure { color: var(--amber); }
 html[data-skin="ft"] .eq-noun   { color: var(--ink); }
 html[data-skin="ft"] .eq-frame  { color: var(--muted); }
-html[data-skin="ft"] .eq-foot .eq-src {
+html[data-skin="ft"] .eq-foot .eq-src,
+html[data-skin="ft"] .eq-foot .eq-cardlink {
   color: var(--faint);
   border-bottom-color: var(--faint);
 }
