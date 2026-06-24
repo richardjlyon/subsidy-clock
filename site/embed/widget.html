@@ -38,7 +38,7 @@
 <body>
   <div class="fig" id="fig">£108,770,329,350</div>
   <div class="meta">
-    <div class="what">paid to UK renewable generators since 2002 · as of <span id="asof">24 June 2026</span></div>
+    <div class="what"><span id="what">paid to UK renewable generators plus estimated indirect system costs since 2002</span> · as of <span id="asof">24 June 2026</span></div>
     <div class="attr"><a href="https://subsidyclock.co.uk" target="_blank" rel="noopener">The Subsidy Clock — subsidyclock.co.uk</a></div>
   </div>
 <script>
@@ -53,6 +53,24 @@
   if (size === 'banner' || size === 'card' || size === 'strip') document.body.classList.add(size);
   if (q.get('theme') === 'dark') document.body.classList.add('dark');
 
+  var basis = q.get('basis') === 'nominal' ? 'nominal' : 'real';
+  var scope = q.get('scope') === 'direct' ? 'direct' : 'combined';
+  document.getElementById('what').textContent = scope === 'combined'
+    ? 'paid to UK renewable generators plus estimated indirect system costs since 2002'
+    : 'paid to UK renewable generators since 2002';
+
+  function pick(t) {
+    var p = t.perspectives.renewables;
+    var d = basis === 'real' ? p.real_2024 : p;
+    var cum = d.cumulative_gbp, rate = d.rate_gbp_per_sec;
+    if (scope === 'combined' && t.indirect) {
+      var iv = basis === 'real' ? t.indirect.real_2024 : t.indirect;
+      cum += iv.cumulative_gbp;
+      rate += iv.rate_gbp_per_sec;
+    }
+    return { cum: cum, rate: rate };
+  }
+
   function fmtFull(v) { return '£' + Math.floor(v).toLocaleString('en-GB'); }
   function start(cum, rate, generatedIso) {
     var generated = Date.parse(generatedIso);
@@ -65,11 +83,11 @@
   }
 
   fetch('../data/totals.json').then(function (r) { return r.json(); }).then(function (t) {
-    var r = t.perspectives.renewables;
+    var v = pick(t);
     var d = new Date(t.generated_at);
     document.getElementById('asof').textContent = d.getUTCDate() + ' ' +
       d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
-    start(r.cumulative_gbp, r.rate_gbp_per_sec, t.generated_at);
+    start(v.cum, v.rate, t.generated_at);
   }).catch(function () {
     start(stamped.cum, stamped.rate, stamped.generated);
   });
