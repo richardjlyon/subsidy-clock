@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-06-24T06:50:13.650074+00:00",
+ "generated_at": "2026-06-24T12:13:55.803857+00:00",
  "freshness": {
   "cfd": {
    "retrieved_at": "2026-06-24T06:49:12.047297+00:00",
@@ -47,30 +47,6 @@
    "source": "DESNZ Energy Trends, March 2026 statistical release (2025 annual data, section 5 / table 5.2)",
    "source_url": "https://www.gov.uk/government/statistics/electricity-section-5-energy-trends",
    "as_of": 2025
-  },
-  "equivalences": {
-   "nurse_salary_gbp": {
-    "value": 39043,
-    "description": "NHS Band 5 nurse annual salary, top of band (Agenda for Change, England, 2026-27). Top of band is used so nurse-equivalent counts are conservative.",
-    "source": "NHS Employers, Agenda for Change pay scales 2026/27",
-    "source_url": "https://www.nhsemployers.org/articles/pay-scales-202627",
-    "as_of": 2026
-   },
-   "social_home_gbp": {
-    "value": 393333,
-    "description": "Gross upfront cost of building one social-rent home in England, including land (\u00a335.4bn for 90,000 homes \u2014 \u00a3393,333 each). A full-cost figure is used rather than the much lower grant-per-home, so home counts round down.",
-    "source": "Cebr for Shelter and the National Housing Federation, \"The economic impact of building social housing\" (2024)",
-    "source_url": "https://england.shelter.org.uk/professional_resources/policy_and_research/policy_library/economic_impact_social_housing",
-    "as_of": 2024
-   },
-   "hinkley_point_c_gbp": {
-    "value": 35000000000,
-    "price_base": 2015,
-    "description": "EDF's latest published cost estimate for Hinkley Point C (3.26 GW), \u00a335bn in 2015 prices (2025 annual results, February 2026). The engine converts to 2024 prices with its own CPIH deflator series so the comparison shares the price basis of the numerator.",
-    "source": "New Civil Engineer, reporting EDF's 2025 annual results (20 February 2026)",
-    "source_url": "https://www.newcivilengineer.com/latest/hinkley-point-cs-cost-climbs-to-35bn-with-confirmation-unit-1-will-power-up-in-2030-20-02-2026/",
-    "as_of": 2026
-   }
   }
  },
  "deflator": {
@@ -91,29 +67,134 @@
   {
    "slug": "nurses",
    "figure": "315,000",
-   "sentence": "A year of direct UK renewable subsidy pays the salaries of 315,000 NHS nurses, in today\u2019s money.",
-   "display_html": "A year of this pays the salaries of <span class=\"money num\">315,000</span> <a class=\"eq-src\" href=\"https://www.nhsemployers.org/articles/pay-scales-202627\" title=\"NHS Employers, Agenda for Change pay scales 2026/27\">NHS nurses</a>, in today\u2019s money",
-   "label": "NHS nurses' annual salaries paid by one year of direct renewable subsidy, in today\u2019s money",
+   "basis": "runrate",
+   "figure_label": "NHS nurses",
+   "frame": "a year of this subsidy pays",
+   "sentence": "A year of direct UK renewable subsidy pays the salaries of 315,000 NHS nurses, in today's money.",
+   "label": "NHS nurses' annual salaries paid by one year of direct renewable subsidy, in today's money",
    "source_name": "NHS Employers, Agenda for Change pay scales 2026/27",
    "source_url": "https://www.nhsemployers.org/articles/pay-scales-202627"
   },
   {
    "slug": "homes",
    "figure": "559,000",
-   "sentence": "The \u00a3220bn+ full cost of subsidising UK renewables, including estimated indirect costs, would have built 559,000 social homes \u2014 land included \u2014 in today\u2019s money.",
-   "display_html": "The \u00a3220bn+ full cost would have built <span class=\"money num\">559,000</span> <a class=\"eq-src\" href=\"https://england.shelter.org.uk/professional_resources/policy_and_research/policy_library/economic_impact_social_housing\" title=\"Cebr for Shelter and the National Housing Federation, &quot;The economic impact of building social housing&quot; (2024)\">social homes</a>, land included \u2014 in today\u2019s money",
+   "basis": "full",
+   "figure_label": "social homes",
+   "frame": "the \u00a3220bn+ full cost would have built",
+   "sentence": "The \u00a3220bn+ full cost of subsidising UK renewables, including estimated indirect costs, would have built 559,000 social homes \u2014 land included \u2014 in today's money.",
    "label": "social homes (land included) the \u00a3220bn+ full UK renewables cost would have built, in today's money",
-   "source_name": "Cebr for Shelter and the National Housing Federation, \"The economic impact of building social housing\" (2024)",
+   "source_name": "Cebr for Shelter and the National Housing Federation (2024)",
    "source_url": "https://england.shelter.org.uk/professional_resources/policy_and_research/policy_library/economic_impact_social_housing"
   },
   {
    "slug": "hinkley",
    "figure": "4",
-   "sentence": "The \u00a3220bn+ full cost of subsidising UK renewables, including estimated indirect costs, would have built 4 Hinkley Point C-scale nuclear stations in the UK, in today\u2019s money.",
-   "display_html": "\u2014 or <span class=\"money num\">4</span> <a class=\"eq-src\" href=\"https://www.newcivilengineer.com/latest/hinkley-point-cs-cost-climbs-to-35bn-with-confirmation-unit-1-will-power-up-in-2030-20-02-2026/\" title=\"New Civil Engineer, reporting EDF&#x27;s 2025 annual results (20 February 2026)\">Hinkley Point C</a>-scale nuclear stations",
+   "basis": "full",
+   "figure_label": "Hinkley Point C-scale nuclear stations",
+   "frame": "the \u00a3220bn+ full cost would have built",
+   "sentence": "The \u00a3220bn+ full cost of subsidising UK renewables, including estimated indirect costs, would have built 4 Hinkley Point C-scale nuclear stations in the UK, in today's money.",
    "label": "Hinkley Point C-scale nuclear stations the \u00a3220bn+ full UK renewables cost would have built, in today's money",
    "source_name": "New Civil Engineer, reporting EDF's 2025 annual results (20 February 2026)",
    "source_url": "https://www.newcivilengineer.com/latest/hinkley-point-cs-cost-climbs-to-35bn-with-confirmation-unit-1-will-power-up-in-2030-20-02-2026/"
+  },
+  {
+   "slug": "secondary-schools",
+   "figure": "4,400",
+   "basis": "full",
+   "figure_label": "large secondary schools",
+   "frame": "the \u00a3220bn+ full cost would have built",
+   "sentence": "The \u00a3220bn+ full cost of subsidising UK renewables would have built 4,400 large new secondary schools, in today's money.",
+   "label": "large new secondary schools the \u00a3220bn+ full UK renewables cost would have built, in today's money",
+   "source_name": "National Audit Office, Condition of school buildings (2023)",
+   "source_url": "https://www.nao.org.uk/reports/condition-of-school-buildings/"
+  },
+  {
+   "slug": "hospitals",
+   "figure": "110",
+   "basis": "full",
+   "figure_label": "new general hospitals",
+   "frame": "the \u00a3220bn+ full cost would have built",
+   "sentence": "The \u00a3220bn+ full cost of subsidising UK renewables would have built 110 new acute general hospitals, in today's money.",
+   "label": "new acute general hospitals the \u00a3220bn+ full UK renewables cost would have built, in today's money",
+   "source_name": "National Audit Office, Update on the New Hospital Programme (2026)",
+   "source_url": "https://www.nao.org.uk/reports/update-on-the-new-hospital-programme/"
+  },
+  {
+   "slug": "aircraft-carriers",
+   "figure": "53",
+   "basis": "full",
+   "figure_label": "aircraft carriers",
+   "frame": "the \u00a3220bn+ full cost would have built",
+   "sentence": "The \u00a3220bn+ full cost of subsidising UK renewables would have built 53 Queen Elizabeth-class aircraft carriers, in today's money.",
+   "label": "Queen Elizabeth-class aircraft carriers the \u00a3220bn+ full UK renewables cost would have built, in today's money",
+   "source_name": "National Audit Office, Carrier Strike \u2014 the 2012 reversion decision",
+   "source_url": "https://www.nao.org.uk/reports/carrier-strike-the-2012-reversion-decision/"
+  },
+  {
+   "slug": "crossrail",
+   "figure": "10",
+   "basis": "full",
+   "figure_label": "Elizabeth Lines (Crossrail)",
+   "frame": "the \u00a3220bn+ full cost would have built",
+   "sentence": "The \u00a3220bn+ full cost of subsidising UK renewables would have built 10 Elizabeth Lines \u2014 London's Crossrail \u2014 in today's money.",
+   "label": "Crossrail / Elizabeth Lines the \u00a3220bn+ full UK renewables cost would have built, in today's money",
+   "source_name": "National Audit Office, Crossrail \u2014 a progress update (2021)",
+   "source_url": "https://www.nao.org.uk/reports/crossrail-progress-update/"
+  },
+  {
+   "slug": "olympics",
+   "figure": "18",
+   "basis": "full",
+   "figure_label": "London 2012 Olympic Games",
+   "frame": "the \u00a3220bn+ full cost would have paid for",
+   "sentence": "The \u00a3220bn+ full cost of subsidising UK renewables would have paid for 18 London 2012 Olympic Games, in today's money.",
+   "label": "London 2012 Olympic Games the \u00a3220bn+ full UK renewables cost would have paid for, in today's money",
+   "source_name": "National Audit Office, The London 2012 Olympic and Paralympic Games \u2014 post-Games review",
+   "source_url": "https://www.nao.org.uk/reports/the-london-2012-olympic-games-and-paralympic-games-post-games-review/"
+  },
+  {
+   "slug": "stadiums",
+   "figure": "220",
+   "basis": "full",
+   "figure_label": "Premier League stadiums",
+   "frame": "the \u00a3220bn+ full cost would have built",
+   "sentence": "The \u00a3220bn+ full cost of subsidising UK renewables would have built 220 billion-pound football stadiums, in today's money.",
+   "label": "billion-pound football stadiums the \u00a3220bn+ full UK renewables cost would have built, in today's money",
+   "source_name": "Tottenham Hotspur Stadium reported build cost (Wikipedia)",
+   "source_url": "https://en.wikipedia.org/wiki/Tottenham_Hotspur_Stadium"
+  },
+  {
+   "slug": "teachers",
+   "figure": "241,000",
+   "basis": "runrate",
+   "figure_label": "schoolteachers",
+   "frame": "a year of this subsidy pays",
+   "sentence": "A year of UK renewable subsidy pays the salaries of 241,000 experienced schoolteachers, in today's money.",
+   "label": "experienced schoolteachers' annual salaries paid by one year of UK renewable subsidy, in today's money",
+   "source_name": "NASUWT, School teachers' pay scales England \u2014 upper pay range UPS3 (2025-26)",
+   "source_url": "https://www.nasuwt.org.uk/advice/pay-pensions/pay-scales/pay-scales-england.html"
+  },
+  {
+   "slug": "police",
+   "figure": "255,000",
+   "basis": "runrate",
+   "figure_label": "police officers",
+   "frame": "a year of this subsidy pays",
+   "sentence": "A year of UK renewable subsidy pays the salaries of 255,000 police officers, in today's money.",
+   "label": "police officers' annual salaries paid by one year of UK renewable subsidy, in today's money",
+   "source_name": "PolicePay, police constable pay scales 2025-26 (top of scale, PP7)",
+   "source_url": "https://www.policepay.co.uk/guides/police-pay-scales/"
+  },
+  {
+   "slug": "free-school-meals",
+   "figure": "24,400,000",
+   "basis": "runrate",
+   "figure_label": "children fed at school for a year",
+   "frame": "a year of this subsidy could give free school meals to",
+   "sentence": "A year of UK renewable subsidy could give free school meals to 24,400,000 children for a year, in today's money.",
+   "label": "children given free school meals for a year by one year of UK renewable subsidy, in today's money",
+   "source_name": "DfE, free school meals expansion grant methodology \u2014 \u00a3505 per pupil per annum (2026-27)",
+   "source_url": "https://www.gov.uk/government/publications/free-school-meals-expansion-grant-2026-to-2027/free-school-meals-expansion-grant-methodology"
   }
  ]
 }
