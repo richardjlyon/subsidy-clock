@@ -21,8 +21,10 @@ EQUIV = yaml.safe_load(Path("reference/equivalences.yaml").read_text())
 
 DEFLATOR_INFO = {"source": "ONS CPIH L522", "source_url": "https://ons", "base_year": 2024}
 
-DEFLATORS = pl.DataFrame({"year": [2015, 2024], "index": [100.0, 132.9]},
-                         schema={"year": pl.Int64, "index": pl.Float64})
+DEFLATORS = pl.DataFrame(
+    {"year": [2012, 2014, 2015, 2022, 2024],
+     "index": [96.0, 99.6, 100.0, 120.5, 132.9]},
+    schema={"year": pl.Int64, "index": pl.Float64})
 
 
 def model():
@@ -376,6 +378,17 @@ def test_write_corrections_empty_log(tmp_path):
     lines = (tmp_path / "out" / "corrections.csv").read_text().splitlines()
     assert lines[3] == "date,figure,figure_label,was,now,cause,credit"
     assert len(lines) == 4
+
+
+def test_full_pool_resolves(tmp_path):
+    by_slug, meta = _factoids_by_slug(tmp_path, big_model(), EQUIV)
+    assert len(meta["factoids"]) == 12
+    for f in meta["factoids"]:
+        assert int(f["figure"].replace(",", "")) > 0, f["slug"]
+        assert f["source_url"].startswith("http"), f["slug"]
+        for field in ("frame", "sentence", "label"):
+            assert "{" not in f[field], (f["slug"], field)
+        assert f["basis"] in ("full", "runrate")
 
 
 def test_floor2_floors_does_not_round():
