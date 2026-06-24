@@ -54,6 +54,8 @@ def cmd_build_site(args: argparse.Namespace) -> int:
     refs = reference.load_annual_costs(args.root / "reference" / "annual_scheme_costs.yaml")
     refs.update(reference.load_annual_costs(args.root / "reference" / "indirect_annual.yaml"))
     ctx = reference.load_context(args.root / "reference" / "context.yaml")
+    equivalences = yaml.safe_load(
+        (args.root / "reference" / "equivalences.yaml").read_text())
     deflators = reference.load_deflators(args.root / "reference" / "deflators.yaml")
     bill_raw = reference.load_electricity_bill(args.root / "reference" / "electricity_bill.yaml")
     bill = (money.add_real(bill_raw.rename({"total_bill_gbp": "cost_gbp"}), deflators)
@@ -87,7 +89,8 @@ def cmd_build_site(args: argparse.Namespace) -> int:
                    generated_at=generated_at,
                    deflator_info=deflator_info,
                    bill_annual=bill, bill_info=bill_info, deflators=deflators,
-                   coords=station_coords, basemap=basemap)
+                   coords=station_coords, basemap=basemap,
+                   equivalences=equivalences)
     sitedata.write_csvs(model, out_dir, restatements=store.all_restatements(),
                         generated=generated_at)
     corrections = sitedata.load_corrections(args.root / "corrections.jsonl")
