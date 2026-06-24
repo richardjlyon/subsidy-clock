@@ -226,35 +226,60 @@
   }
 
   // ---------- equivalences (impact I4/I5) ----------
-  // Sentences are composed once, in the engine (sitedata.py _factoids) and
-  // rendered verbatim here - figure, card PNG and /s/ stub can never disagree.
+  // Fisher-Yates pick of n distinct items (client-side; each load differs).
+  function pickN(arr, n) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a.slice(0, Math.min(n, a.length));
+  }
+
   function renderEquivalences() {
-    var ul = document.getElementById('equivalences');
-    ul.innerHTML = '';
-    (meta.factoids || []).forEach(function (f) {
-      var li = document.createElement('li');
-      // display_html is engine-authored (sitedata.py escapes attrs with
-      // html.escape) - the only innerHTML the page takes from data.
-      li.innerHTML = f.display_html;
-      // bind the glyph to the last word so it can never wrap alone
-      var tail = document.createElement('span');
-      tail.className = 'nowrap';
-      var last = li.lastChild;
-      if (last && last.nodeType === 3) {
-        var m = last.textContent.match(/^(.*\s)(\S+)\s*$/);
-        if (m) {
-          last.textContent = m[1];
-          tail.textContent = m[2];
-        }
-      }
-      li.appendChild(tail);
-      SCShare.attachFactoid(tail, {
+    var wrap = document.getElementById('equivalences');
+    wrap.innerHTML = '';
+    pickN(meta.factoids || [], 3).forEach(function (f) {
+      var card = document.createElement('div');
+      card.className = 'eq-card';
+
+      var fig = document.createElement('div');
+      fig.className = 'eq-figure num';      // static count - NOT wired to the ticker
+      fig.textContent = f.figure;
+
+      var noun = document.createElement('div');
+      noun.className = 'eq-noun';
+      noun.textContent = f.figure_label;
+
+      var frame = document.createElement('div');
+      frame.className = 'eq-frame';
+      frame.textContent = f.frame;
+
+      var foot = document.createElement('div');
+      foot.className = 'eq-foot';
+      var src = document.createElement('a');
+      src.className = 'eq-src';
+      src.href = f.source_url;
+      src.target = '_blank';
+      src.rel = 'noopener';
+      src.title = f.source_name;
+      src.textContent = 'source';
+      var share = document.createElement('span');
+      foot.appendChild(src);
+      foot.appendChild(share);
+
+      card.appendChild(fig);
+      card.appendChild(noun);
+      card.appendChild(frame);
+      card.appendChild(foot);
+      wrap.appendChild(card);
+
+      SCShare.attachFactoid(share, {
         slug: f.slug,
         sentence: f.sentence,
         png: 'share/' + f.slug + '.png',
         url: SITE_URL + '/s/' + f.slug
       });
-      ul.appendChild(li);
     });
   }
 

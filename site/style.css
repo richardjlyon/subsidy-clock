@@ -230,16 +230,23 @@ a:hover { color: var(--amber-dark); }
 .strip-sub { font-size: 0.68rem; color: var(--on-navy-3); }
 .strip-caption { margin: 10px 2px 0; font-size: 0.78rem; color: var(--on-navy-2); text-align: left; font-family: var(--serif); }
 
-/* ---------- equivalences ---------- */
-.equivalences {
-  list-style: none; margin: 30px 0 6px; padding: 0;
-  display: flex; flex-wrap: wrap; gap: 10px 26px; justify-content: center;
-  font-size: 0.96rem; color: var(--on-navy-1);
+/* ---------- equivalence cards ---------- */
+.eq-cards {
+  margin: 30px 0 6px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
 }
-.equivalences li { max-width: 21em; }
-.equivalences .money { color: var(--amber); font-weight: 700; }
-.equivalences .eq-src { border-bottom: 1px dotted var(--on-navy-3); cursor: help; text-decoration: none; color: inherit; font-family: var(--serif); }
-.equivalences a.eq-src { color: inherit; }
+.eq-card {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 18px 18px 14px;
+  border: 1px solid var(--on-navy-line); border-radius: var(--radius);
+  background: rgba(7, 13, 24, 0.35);
+}
+.eq-figure { font-weight: 700; font-size: 1.9rem; line-height: 1; color: var(--amber); }
+.eq-noun { font-size: 0.96rem; font-weight: 600; color: var(--on-navy); }
+.eq-frame { font-size: 0.8rem; color: var(--on-navy-2); font-family: var(--serif); }
+.eq-foot { margin-top: auto; padding-top: 8px; display: flex; align-items: center; gap: 12px; }
+.eq-foot .eq-src { font-size: 0.72rem; border-bottom: 1px dotted var(--on-navy-3); text-decoration: none; color: var(--on-navy-3); }
+@media (max-width: 720px) { .eq-cards { grid-template-columns: 1fr; } }
 
 /* ============================================================
    DATA SECTIONS — cream cards, navy text & charts
