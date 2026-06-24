@@ -261,7 +261,7 @@
       src.className = 'eq-src';
       src.href = f.source_url;
       src.target = '_blank';
-      src.rel = 'noopener';
+      src.rel = 'noopener noreferrer';
       src.title = f.source_name;
       src.textContent = 'source';
       var share = document.createElement('span');

@@ -3,7 +3,6 @@ phase-2 spec section 5). This module is the engine<->dashboard contract."""
 
 from __future__ import annotations
 
-import html
 import json
 import math
 import re

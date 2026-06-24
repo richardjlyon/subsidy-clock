@@ -381,7 +381,7 @@ def test_write_corrections_empty_log(tmp_path):
 
 
 def test_full_pool_resolves(tmp_path):
-    by_slug, meta = _factoids_by_slug(tmp_path, big_model(), EQUIV)
+    _, meta = _factoids_by_slug(tmp_path, big_model(), EQUIV)
     assert len(meta["factoids"]) == 12
     for f in meta["factoids"]:
         assert int(f["figure"].replace(",", "")) > 0, f["slug"]

@@ -281,30 +281,24 @@ html[data-skin="ft"] .strip-cell:nth-child(5) .strip-label { color: var(--amber)
 
 html[data-skin="ft"] .strip-caption { color: var(--muted); }
 
-/* equivalences ("what this buys") — a flat tinted aside that sets the
-   editorial colour apart from the white data cards; no shadow (broadsheet flat) */
-html[data-skin="ft"] .equivalences {
-  color: var(--ink);
-  margin: 22px 0 6px;
-  padding: 20px 8px;
-  background: var(--paper-dim);
+/* equivalence cards ("what this buys") — three white cards on the oat ground,
+   matching the chip strip treatment (white card, hairline border, 3px radius) */
+html[data-skin="ft"] .eq-cards {
+  margin: 16px 0 0;
+  gap: 14px;
+}
+html[data-skin="ft"] .eq-card {
+  background: var(--card);
   border: 1px solid var(--line);
   border-radius: 3px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18em, 1fr));
-  gap: 16px 0;
-  align-items: stretch;
-  font-size: 1.02rem;
 }
-html[data-skin="ft"] .equivalences li {
-  max-width: none;
-  padding: 0 28px;
-  line-height: 1.45;
-  border-left: 1px solid var(--line);
+html[data-skin="ft"] .eq-figure { color: var(--amber); }
+html[data-skin="ft"] .eq-noun   { color: var(--ink); }
+html[data-skin="ft"] .eq-frame  { color: var(--muted); }
+html[data-skin="ft"] .eq-foot .eq-src {
+  color: var(--faint);
+  border-bottom-color: var(--faint);
 }
-html[data-skin="ft"] .equivalences li:first-child { border-left: 0; }
-html[data-skin="ft"] .equivalences .money { color: var(--amber); font-weight: 700; }
-html[data-skin="ft"] .equivalences .eq-src { border-bottom-color: var(--faint); }
 
 /* ============================================================
    DATA SECTIONS — the cream cards already inherit the tokens;
