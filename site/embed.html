@@ -80,6 +80,16 @@
   <p>Add <code>&amp;theme=dark</code> to the URL for the dark variant. If JavaScript is
   blocked, the widget shows the figure stamped at the most recent daily build, with its
   date.</p>
+
+  <p>Two more flags match the controls on the front page. <code>&amp;basis=real</code>
+  shows today's money (the default); <code>&amp;basis=nominal</code> shows cash as paid.
+  <code>&amp;scope=combined</code> includes estimated indirect system costs (the default);
+  <code>&amp;scope=direct</code> counts subsidies paid to generators only. For example,
+  a nominal, direct-only banner:</p>
+  <div class="embed-block">
+    <pre><code>&lt;iframe src="https://subsidyclock.co.uk/embed/widget?size=banner&amp;basis=nominal&amp;scope=direct" width="728" height="90" title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy" style="border:0"&gt;&lt;/iframe&gt;</code></pre>
+    <button class="copy-snippet" type="button">Copy snippet</button>
+  </div>
 </main>
 
 <footer class="footer">
