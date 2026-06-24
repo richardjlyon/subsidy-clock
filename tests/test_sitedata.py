@@ -292,15 +292,29 @@ def test_write_widget_stamps_figure_and_rate(tmp_path):
             "cumulative_gbp": 108_634_210_556.78,
             "rate_gbp_per_sec": 385.72,
             "since_year": 2002,
+            "real_2024": {
+                "cumulative_gbp": 130_000_000_000.0,
+                "rate_gbp_per_sec": 390.0,
+            },
         }},
+        "indirect": {
+            "cumulative_gbp": 78_000_000_000.0,
+            "rate_gbp_per_sec": 253.0,
+            "real_2024": {
+                "cumulative_gbp": 95_000_000_000.0,
+                "rate_gbp_per_sec": 244.0,
+            },
+        },
     }
     out = tmp_path / "widget.html"
     sitedata.write_widget(totals, out)
     html = out.read_text()
-    assert "£108,634,210,556" in html          # static fallback figure
+    # default = real + combined: 130bn + 95bn = 225bn, 390 + 244 = 634
+    assert "£225,000,000,000" in html          # static fallback figure
     assert "11 June 2026" in html               # as-of date always visible
-    assert '"rate": 385.72' in html             # ticking parameters
-    assert '"cum": 108634210556.78' in html
+    assert '"rate": 634.0' in html              # ticking parameters
+    assert '"cum": 225000000000.0' in html
+    assert "plus estimated indirect system costs" in html  # combined descriptor
     assert "{{" not in html                     # no unfilled tokens
     assert "subsidyclock.co.uk" in html         # locked attribution
 

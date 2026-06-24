@@ -439,15 +439,20 @@ WIDGET_TEMPLATE = Path(__file__).parent / "templates" / "widget.html"
 
 def write_widget(totals: dict, out_path: Path | str) -> None:
     """Render the embeddable widget (distribution F5), stamping the latest
-    figure so a JS-blocked iframe still shows a dated number."""
-    r = totals["perspectives"]["renewables"]
+    figure so a JS-blocked iframe still shows a dated number. The stamped
+    fallback uses the default embed state: real (2024 prices) + combined
+    (direct + estimated indirect), matching the front page."""
+    rr = totals["perspectives"]["renewables"]["real_2024"]
+    ii = totals["indirect"]["real_2024"]
+    cum = rr["cumulative_gbp"] + ii["cumulative_gbp"]
+    rate = rr["rate_gbp_per_sec"] + ii["rate_gbp_per_sec"]
     d = datetime.fromisoformat(totals["generated_at"])
     asof = f"{d.day} {d.strftime('%B %Y')}"
     html = (WIDGET_TEMPLATE.read_text()
-            .replace("{{CUM}}", repr(r["cumulative_gbp"]))
-            .replace("{{RATE}}", repr(r["rate_gbp_per_sec"]))
+            .replace("{{CUM}}", repr(cum))
+            .replace("{{RATE}}", repr(rate))
             .replace("{{GENERATED}}", totals["generated_at"])
-            .replace("{{FIGURE}}", f"£{int(r['cumulative_gbp']):,}")
+            .replace("{{FIGURE}}", f"£{int(cum):,}")
             .replace("{{ASOF}}", asof))
     if "{{" in html:
         raise ValueError("unfilled token in widget template")
