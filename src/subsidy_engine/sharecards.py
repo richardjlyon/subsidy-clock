@@ -187,8 +187,9 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
              "anchor": None, "stub": True, "group": HEAD, "scope": "full"},
             {"slug": "household-full",
              "figure": fmt_pence(rr["per_household_per_year_gbp"] + ir["per_household_per_year_gbp"]),
-             "label": "per household per year — the full cost including "
-                      "estimated indirect costs, in today’s money",
+             "label": "per household per year in subsidy to renewable generators "
+                      "— the full cost including estimated indirect costs, in "
+                      "today’s money",
              "anchor": None, "stub": True, "group": HEAD, "scope": "full"},
             {"slug": "per-mwh-full",
              "figure": fmt_pence(rr["per_mwh_delivered_gbp"] + ir["per_mwh_delivered_gbp"]),
