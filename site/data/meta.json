@@ -1,26 +1,26 @@
 {
- "generated_at": "2026-07-03T08:37:00.301732+00:00",
+ "generated_at": "2026-07-04T08:13:21.828288+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-07-03T08:36:02.554680+00:00",
+   "retrieved_at": "2026-07-04T08:11:50.371688+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
-   "row_count": 109688
+   "row_count": 109764
   },
   "constraints": {
-   "retrieved_at": "2026-07-03T08:36:59.737434+00:00",
-   "source_date": "2025-10-23",
+   "retrieved_at": "2026-07-04T08:13:21.266285+00:00",
+   "source_date": "2025-10-16",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 9
+   "row_count": 0
   },
   "capacity_market": {
-   "retrieved_at": "2026-07-03T08:36:20.581361+00:00",
+   "retrieved_at": "2026-07-04T08:12:20.445804+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 744
   },
   "bsuos": {
-   "retrieved_at": "2026-07-03T08:36:22.190089+00:00",
+   "retrieved_at": "2026-07-04T08:12:22.732891+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/daily-balancing-costs-balancing-services-use-system",
    "row_count": 86
@@ -61,16 +61,16 @@
   "verified": true
  },
  "headline": {
-  "combined_real_gbp": 227702430443.39667
+  "combined_real_gbp": 227702748286.61295
  },
  "factoids": [
   {
    "slug": "nurses",
-   "figure": "316,000",
+   "figure": "315,000",
    "basis": "runrate",
    "figure_label": "NHS nurses",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of direct UK renewable subsidy pays the salaries of 316,000 NHS nurses, in today's money.",
+   "sentence": "A year of direct UK renewable subsidy pays the salaries of 315,000 NHS nurses, in today's money.",
    "label": "NHS nurses' annual salaries paid by one year of direct renewable subsidy, in today's money",
    "source_name": "NHS Employers, Agenda for Change pay scales 2026/27",
    "source_url": "https://www.nhsemployers.org/articles/pay-scales-202627"
