@@ -272,8 +272,14 @@ a:hover { color: var(--amber-dark); }
 .ksub { font-size: 0.74rem; color: var(--muted); font-family: var(--serif); }
 .krow { display: flex; align-items: center; gap: 9px; padding: 7px 2px;
   border-top: 1px solid var(--line-soft); font-size: 0.92rem;
-  color: var(--ink); text-decoration: none; }
+  color: var(--ink); text-decoration: none; scroll-margin-top: 5rem; }
 .krow:hover { background: var(--paper-dim); }
+/* deep-link target flash: pulse the row once when reached via #<scheme-slug> */
+.krow.anchor-flash { animation: anchor-flash 1.6s ease-out; }
+@keyframes anchor-flash {
+  0%, 15% { background: color-mix(in srgb, var(--amber) 22%, transparent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--amber) 22%, transparent); }
+  100% { background: transparent; box-shadow: 0 0 0 4px transparent; }
+}
 .krow .dot { width: 11px; height: 11px; border-radius: 2px; flex: none; }
 .krow .nm { flex: 1; }
 .krow .amt { font-weight: 700; font-family: var(--sans); }

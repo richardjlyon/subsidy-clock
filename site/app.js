@@ -375,7 +375,8 @@
       var m = SCHEME_META[s.id];
       var v = schemeCumulative(s);
       var pct = grand > 0 ? Math.round(100 * v / grand) : 0;
-      return '<a class="krow" href="/explainers/' + m.slug + '">' +
+      // id="<slug>" makes each entity a deep-link target (#<slug>).
+      return '<a class="krow" id="' + m.slug + '" href="/explainers/' + m.slug + '">' +
         '<span class="dot" style="background:' + m.color + '"></span>' +
         '<span class="nm">' + esc(m.name) + '</span>' +
         '<span class="amt money num">' + fmtCompact(v) + '</span>' +
@@ -1029,6 +1030,21 @@
     state.trendView = v; renderChart();
   });
 
+  // ---------- deep links to a scheme (#<explainer-slug>) ----------
+  // Category-card rows render after data loads, so the initial hash can't rely
+  // on the browser's native jump — scroll to the row and flash it once it exists.
+  function focusScheme(slug) {
+    var el = slug && document.getElementById(slug);
+    if (!el || !el.classList.contains('krow')) return;   // category-card rows only
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.remove('anchor-flash');   // restart the animation on repeat hits
+    void el.offsetWidth;
+    el.classList.add('anchor-flash');
+  }
+  window.addEventListener('hashchange', function () {
+    focusScheme(decodeURIComponent(location.hash.slice(1)));
+  });
+
   // ---------- first paint ----------
   if (meta.factoids && meta.factoids.length) {
     var eb = document.getElementById('eq-eyebrow');
@@ -1041,6 +1057,7 @@
   renderFooter();
   initHeroShare();
   initReports();
+  focusScheme(decodeURIComponent(location.hash.slice(1)));
   rafId = requestAnimationFrame(tick);
 
 })();
