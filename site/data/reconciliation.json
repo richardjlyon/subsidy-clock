@@ -1,12 +1,12 @@
 {
  "comparison": "Per-contract daily CfD payments (bottom-up) vs LCCC In-period Tracking daily totals, summed over settlement dates present in both series",
- "matched_days": 556,
+ "matched_days": 563,
  "excluded_recent_days": 45,
  "settlement_lag_days": 45,
  "overall": {
-  "bottom_up_gbp": 4138813339.2,
-  "official_gbp": 4145204370.62,
-  "divergence_pct": -0.1542
+  "bottom_up_gbp": 4162912116.73,
+  "official_gbp": 4169302763.62,
+  "divergence_pct": -0.1533
  },
  "months": [
   {
@@ -68,10 +68,10 @@
   {
    "month": "2025-05",
    "days_compared": 31,
-   "bottom_up_gbp": 215559717.63,
+   "bottom_up_gbp": 215560164.93,
    "official_gbp": 214078903.88,
-   "abs_divergence_gbp": 1480813.75,
-   "divergence_pct": 0.6917
+   "abs_divergence_gbp": 1481261.05,
+   "divergence_pct": 0.6919
   },
   {
    "month": "2025-06",
@@ -116,9 +116,9 @@
   {
    "month": "2025-11",
    "days_compared": 30,
-   "bottom_up_gbp": 310547304.41,
+   "bottom_up_gbp": 310547316.77,
    "official_gbp": 310960772.0,
-   "abs_divergence_gbp": -413467.59,
+   "abs_divergence_gbp": -413455.23,
    "divergence_pct": -0.133
   },
   {
@@ -148,9 +148,9 @@
   {
    "month": "2026-03",
    "days_compared": 29,
-   "bottom_up_gbp": 238373677.52,
+   "bottom_up_gbp": 238373602.38,
    "official_gbp": 238539927.88,
-   "abs_divergence_gbp": -166250.36,
+   "abs_divergence_gbp": -166325.5,
    "divergence_pct": -0.0697
   },
   {
@@ -163,10 +163,10 @@
   },
   {
    "month": "2026-05",
-   "days_compared": 2,
-   "bottom_up_gbp": 8242197.42,
-   "official_gbp": 8242197.25,
-   "abs_divergence_gbp": 0.17,
+   "days_compared": 9,
+   "bottom_up_gbp": 32340590.43,
+   "official_gbp": 32340590.25,
+   "abs_divergence_gbp": 0.18,
    "divergence_pct": 0.0
   }
  ],
