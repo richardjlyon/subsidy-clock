@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-08T07:56:15.362882+00:00",
+ "generated_at": "2026-07-09T08:57:55.716552+00:00",
  "schemes": [
   {
    "id": "cfd_renewable",
@@ -13,32 +13,32 @@
    "attribution_pct": 1.0,
    "attribution_note": "",
    "attribution_confidence": "",
-   "cumulative_gbp": 13455439992.13,
-   "runrate_gbp_per_year": 2854957580.654856,
-   "data_to": "2026-06-28",
-   "gross_gbp": 14688890028.53,
-   "net_gbp": 13455439992.130001,
-   "mwh": 203868883.093,
+   "cumulative_gbp": 13458523107.82,
+   "runrate_gbp_per_year": 2853545085.3345003,
+   "data_to": "2026-06-29",
+   "gross_gbp": 14692299927.019999,
+   "net_gbp": 13458523107.82,
+   "mwh": 203920638.107,
    "by_technology": [
     {
      "technology": "Offshore Wind",
-     "cost_gbp": 10070578995.390007,
-     "generation_mwh": 134920986.99699995
+     "cost_gbp": 10073342223.529995,
+     "generation_mwh": 134956951.40299994
     },
     {
      "technology": "Biomass Conversion",
-     "cost_gbp": 2914269104.300003,
-     "generation_mwh": 52951916.40899998
+     "cost_gbp": 2914705811.5300016,
+     "generation_mwh": 52957477.711
     },
     {
      "technology": "Dedicated Biomass",
-     "cost_gbp": 265554882.55000007,
-     "generation_mwh": 3053240.2770000016
+     "cost_gbp": 265577437.99,
+     "generation_mwh": 3053447.727000002
     },
     {
      "technology": "Onshore Wind",
-     "cost_gbp": 220725590.78000018,
-     "generation_mwh": 11131192.083999993
+     "cost_gbp": 220757408.99000055,
+     "generation_mwh": 11135084.450999992
     },
     {
      "technology": "Advanced Conversion Technology",
@@ -47,549 +47,549 @@
     },
     {
      "technology": "Solar PV",
-     "cost_gbp": -6253064.260000012,
-     "generation_mwh": 1029596.7170000026
+     "cost_gbp": -6431006.320000012,
+     "generation_mwh": 1035568.2280000043
     },
     {
      "technology": "Energy from Waste",
-     "cost_gbp": -9435516.630000003,
-     "generation_mwh": 781950.609
+     "cost_gbp": -9428767.9,
+     "generation_mwh": 782108.5870000002
     }
    ],
    "by_recipient": [
     {
      "unit_name": "Drax 3rd conversion unit (unit 1)",
      "technology": "Biomass Conversion",
-     "cost_gbp": 1978100050.0799987
+     "cost_gbp": 1978098962.0499985
     },
     {
      "unit_name": "Walney Extension Offshore Wind Farm Phase 1",
      "technology": "Offshore Wind",
-     "cost_gbp": 1142711931.7800002
+     "cost_gbp": 1143039580.6
     },
     {
      "unit_name": "Walney Extension Offshore Wind Farm Phase 2",
      "technology": "Offshore Wind",
-     "cost_gbp": 1131672103.84
+     "cost_gbp": 1132057547.6799998
     },
     {
      "unit_name": "Hornsea Offshore Wind Farm Phase 1",
      "technology": "Offshore Wind",
-     "cost_gbp": 1061360425.17
+     "cost_gbp": 1061428952.76
     },
     {
      "unit_name": "Lynemouth Power Station",
      "technology": "Biomass Conversion",
-     "cost_gbp": 936169054.22
+     "cost_gbp": 936606849.48
     },
     {
      "unit_name": "Burbo Bank Extension Offshore Wind Farm",
      "technology": "Offshore Wind",
-     "cost_gbp": 882401481.9500005
+     "cost_gbp": 882530227.1600007
     },
     {
      "unit_name": "Hornsea Offshore Wind Farm Phase 2",
      "technology": "Offshore Wind",
-     "cost_gbp": 838953079.89
+     "cost_gbp": 839013569.5
     },
     {
      "unit_name": "Dudgeon Phase 2",
      "technology": "Offshore Wind",
-     "cost_gbp": 805896752.4799998
+     "cost_gbp": 805977668.0899997
     },
     {
      "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 2)",
      "technology": "Offshore Wind",
-     "cost_gbp": 776778599.9299998
-    },
-    {
-     "unit_name": "Hornsea Offshore Wind Farm Phase 3",
-     "technology": "Offshore Wind",
-     "cost_gbp": 629631530.09
+     "cost_gbp": 777220068.4699998
     },
     {
      "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 1)",
      "technology": "Offshore Wind",
-     "cost_gbp": 629563029.0299997
+     "cost_gbp": 629949523.9999998
+    },
+    {
+     "unit_name": "Hornsea Offshore Wind Farm Phase 3",
+     "technology": "Offshore Wind",
+     "cost_gbp": 629705863.85
     },
     {
      "unit_name": "EA 1, Phase 2",
      "technology": "Offshore Wind",
-     "cost_gbp": 420291686.7400001
+     "cost_gbp": 420381854.96000004
     },
     {
      "unit_name": "Dudgeon Phase 3",
      "technology": "Offshore Wind",
-     "cost_gbp": 390794984.4499998
+     "cost_gbp": 390834990.18999976
     },
     {
      "unit_name": "Dudgeon Phase 1",
      "technology": "Offshore Wind",
-     "cost_gbp": 360020459.11000013
+     "cost_gbp": 360058089.74000007
     },
     {
      "unit_name": "EA 1, Phase 3",
      "technology": "Offshore Wind",
-     "cost_gbp": 353140395.2800001
+     "cost_gbp": 353219396.78000003
     },
     {
      "unit_name": "EA 1, Phase 1",
      "technology": "Offshore Wind",
-     "cost_gbp": 291857996.0200002
+     "cost_gbp": 291912101.5600002
     },
     {
      "unit_name": "Teesside Renewable Energy Project",
      "technology": "Dedicated Biomass",
-     "cost_gbp": 265554882.55000007
+     "cost_gbp": 265577437.99
     },
     {
      "unit_name": "Neart na Gaoithe",
      "technology": "Offshore Wind",
-     "cost_gbp": 186343012.46999988
+     "cost_gbp": 186984720.10999987
     },
     {
      "unit_name": "Triton Knoll Offshore Wind Farm Phase 3",
      "technology": "Offshore Wind",
-     "cost_gbp": 134563996.9199999
+     "cost_gbp": 134561415.0699999
     },
     {
      "unit_name": "Dorenell Wind Farm",
      "technology": "Onshore Wind",
-     "cost_gbp": 62909947.860000044
+     "cost_gbp": 62924566.750000045
     },
     {
      "unit_name": "Kype Muir Wind Farm",
      "technology": "Onshore Wind",
-     "cost_gbp": 34258562.51999997
+     "cost_gbp": 34270415.869999975
     },
     {
      "unit_name": "Clocaenog Forest Wind Farm",
      "technology": "Onshore Wind",
-     "cost_gbp": 29496076.84999997
+     "cost_gbp": 29496592.04999998
     },
     {
      "unit_name": "Middle Muir Wind Farm",
      "technology": "Onshore Wind",
-     "cost_gbp": 18684325.279999997
+     "cost_gbp": 18688692.409999996
     },
     {
      "unit_name": "Brenig Wind Farm",
      "technology": "Onshore Wind",
-     "cost_gbp": 14093940.90000002
+     "cost_gbp": 14092758.30000002
     },
     {
      "unit_name": "Hornsea Project 2 Phase 2",
      "technology": "Offshore Wind",
-     "cost_gbp": 14016991.659999996
+     "cost_gbp": 13981018.429999998
     }
    ],
    "by_station": [
     {
      "station": "Hornsea 1",
      "technology": "Offshore Wind",
-     "cost_gbp": 2529945035.15,
+     "cost_gbp": 2530148386.11,
      "contracts": [
       {
        "cfd_id": "INV-HOR-001",
        "unit_name": "Hornsea Offshore Wind Farm Phase 1",
        "technology": "Offshore Wind",
-       "cost_gbp": 1061360425.17
+       "cost_gbp": 1061428952.76
       },
       {
        "cfd_id": "INV-HOR-002",
        "unit_name": "Hornsea Offshore Wind Farm Phase 2",
        "technology": "Offshore Wind",
-       "cost_gbp": 838953079.89
+       "cost_gbp": 839013569.5
       },
       {
        "cfd_id": "INV-HOR-003",
        "unit_name": "Hornsea Offshore Wind Farm Phase 3",
        "technology": "Offshore Wind",
-       "cost_gbp": 629631530.09
+       "cost_gbp": 629705863.85
       }
      ]
     },
     {
      "station": "Walney Ext",
      "technology": "Offshore Wind",
-     "cost_gbp": 2274384035.62,
+     "cost_gbp": 2275097128.2799997,
      "contracts": [
       {
        "cfd_id": "INV-WAL-001",
        "unit_name": "Walney Extension Offshore Wind Farm Phase 1",
        "technology": "Offshore Wind",
-       "cost_gbp": 1142711931.78
+       "cost_gbp": 1143039580.6
       },
       {
        "cfd_id": "INV-WAL-002",
        "unit_name": "Walney Extension Offshore Wind Farm Phase 2",
        "technology": "Offshore Wind",
-       "cost_gbp": 1131672103.84
+       "cost_gbp": 1132057547.68
       }
      ]
     },
     {
      "station": "Drax",
      "technology": "Biomass Conversion",
-     "cost_gbp": 1978100050.08,
+     "cost_gbp": 1978098962.05,
      "contracts": [
       {
        "cfd_id": "INV-DRX-001",
        "unit_name": "Drax 3rd conversion unit (unit 1)",
        "technology": "Biomass Conversion",
-       "cost_gbp": 1978100050.08
+       "cost_gbp": 1978098962.05
       }
      ]
     },
     {
      "station": "Dudgeon",
      "technology": "Offshore Wind",
-     "cost_gbp": 1556712196.04,
+     "cost_gbp": 1556870748.02,
      "contracts": [
       {
        "cfd_id": "INV-DUD-002",
        "unit_name": "Dudgeon Phase 2",
        "technology": "Offshore Wind",
-       "cost_gbp": 805896752.48
+       "cost_gbp": 805977668.09
       },
       {
        "cfd_id": "INV-DUD-003",
        "unit_name": "Dudgeon Phase 3",
        "technology": "Offshore Wind",
-       "cost_gbp": 390794984.45
+       "cost_gbp": 390834990.19
       },
       {
        "cfd_id": "INV-DUD-001",
        "unit_name": "Dudgeon Phase 1",
        "technology": "Offshore Wind",
-       "cost_gbp": 360020459.11
+       "cost_gbp": 360058089.74
       }
      ]
     },
     {
      "station": "Beatrice",
      "technology": "Offshore Wind",
-     "cost_gbp": 1406341628.96,
+     "cost_gbp": 1407169592.47,
      "contracts": [
       {
        "cfd_id": "INV-BEA-002",
        "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 2)",
        "technology": "Offshore Wind",
-       "cost_gbp": 776778599.93
+       "cost_gbp": 777220068.47
       },
       {
        "cfd_id": "INV-BEA-001",
        "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 1)",
        "technology": "Offshore Wind",
-       "cost_gbp": 629563029.03
+       "cost_gbp": 629949524.0
       }
      ]
     },
     {
      "station": "EA 1",
      "technology": "Offshore Wind",
-     "cost_gbp": 1065290078.04,
+     "cost_gbp": 1065513353.3,
      "contracts": [
       {
        "cfd_id": "CAA-EAS-167",
        "unit_name": "EA 1, Phase 2",
        "technology": "Offshore Wind",
-       "cost_gbp": 420291686.74
+       "cost_gbp": 420381854.96
       },
       {
        "cfd_id": "CAA-EAS-168",
        "unit_name": "EA 1, Phase 3",
        "technology": "Offshore Wind",
-       "cost_gbp": 353140395.28000003
+       "cost_gbp": 353219396.78000003
       },
       {
        "cfd_id": "CAA-EAS-166",
        "unit_name": "EA 1, Phase 1",
        "technology": "Offshore Wind",
-       "cost_gbp": 291857996.02
+       "cost_gbp": 291912101.56
       }
      ]
     },
     {
      "station": "Lynemouth",
      "technology": "Biomass Conversion",
-     "cost_gbp": 936169054.22,
+     "cost_gbp": 936606849.48,
      "contracts": [
       {
        "cfd_id": "INV-LYN-001",
        "unit_name": "Lynemouth Power Station",
        "technology": "Biomass Conversion",
-       "cost_gbp": 936169054.22
+       "cost_gbp": 936606849.48
       }
      ]
     },
     {
      "station": "Burbo Bank Ext",
      "technology": "Offshore Wind",
-     "cost_gbp": 882401481.95,
+     "cost_gbp": 882530227.16,
      "contracts": [
       {
        "cfd_id": "INV-BUR-001",
        "unit_name": "Burbo Bank Extension Offshore Wind Farm",
        "technology": "Offshore Wind",
-       "cost_gbp": 882401481.95
+       "cost_gbp": 882530227.16
       }
      ]
     },
     {
      "station": "Teesside",
      "technology": "Dedicated Biomass",
-     "cost_gbp": 265554882.55,
+     "cost_gbp": 265577437.99,
      "contracts": [
       {
        "cfd_id": "INV-TEE-001",
        "unit_name": "Teesside Renewable Energy Project",
        "technology": "Dedicated Biomass",
-       "cost_gbp": 265554882.55
+       "cost_gbp": 265577437.99
       }
      ]
     },
     {
      "station": "NNG",
      "technology": "Offshore Wind",
-     "cost_gbp": 186343012.47,
+     "cost_gbp": 186984720.10999998,
      "contracts": [
       {
        "cfd_id": "AAA-NEA-195",
        "unit_name": "Neart na Gaoithe",
        "technology": "Offshore Wind",
-       "cost_gbp": 186343012.47
+       "cost_gbp": 186984720.10999998
       }
      ]
     },
     {
      "station": "Triton Knoll",
      "technology": "Offshore Wind",
-     "cost_gbp": 127457372.67999999,
+     "cost_gbp": 127452259.33999999,
      "contracts": [
       {
        "cfd_id": "AR2-TKN-303",
        "unit_name": "Triton Knoll Offshore Wind Farm Phase 3",
        "technology": "Offshore Wind",
-       "cost_gbp": 134563996.92
+       "cost_gbp": 134561415.07
       },
       {
        "cfd_id": "AR2-TKN-203",
        "unit_name": "Triton Knoll Offshore Wind Farm Phase 2",
        "technology": "Offshore Wind",
-       "cost_gbp": -2857091.18
+       "cost_gbp": -2858387.0100000002
       },
       {
        "cfd_id": "AR2-TKN-103",
        "unit_name": "Triton Knoll Offshore Wind Farm Phase 1",
        "technology": "Offshore Wind",
-       "cost_gbp": -4249533.0600000005
+       "cost_gbp": -4250768.720000001
       }
      ]
     },
     {
      "station": "Dorenell",
      "technology": "Onshore Wind",
-     "cost_gbp": 62909947.86,
+     "cost_gbp": 62924566.75,
      "contracts": [
       {
        "cfd_id": "AAA-DOR-182",
        "unit_name": "Dorenell Wind Farm",
        "technology": "Onshore Wind",
-       "cost_gbp": 62909947.86
+       "cost_gbp": 62924566.75
       }
      ]
     },
     {
      "station": "Hornsea 2",
      "technology": "Offshore Wind",
-     "cost_gbp": 34882684.980000004,
+     "cost_gbp": 34780858.0,
      "contracts": [
       {
        "cfd_id": "AR2-HRN-206",
        "unit_name": "Hornsea Project 2 Phase 2",
        "technology": "Offshore Wind",
-       "cost_gbp": 14016991.66
+       "cost_gbp": 13981018.43
       },
       {
        "cfd_id": "AR2-HRN-106",
        "unit_name": "Hornsea Project 2 Phase 1",
        "technology": "Offshore Wind",
-       "cost_gbp": 11254084.89
+       "cost_gbp": 11230689.42
       },
       {
        "cfd_id": "AR2-HRN-306",
        "unit_name": "Hornsea Project 2 Phase 3",
        "technology": "Offshore Wind",
-       "cost_gbp": 9611608.43
+       "cost_gbp": 9569150.15
       }
      ]
     },
     {
      "station": "Kype Muir",
      "technology": "Onshore Wind",
-     "cost_gbp": 34258562.52,
+     "cost_gbp": 34270415.87,
      "contracts": [
       {
        "cfd_id": "AAA-BAN-189",
        "unit_name": "Kype Muir Wind Farm",
        "technology": "Onshore Wind",
-       "cost_gbp": 34258562.52
+       "cost_gbp": 34270415.87
       }
      ]
     },
     {
      "station": "Clocaenog",
      "technology": "Onshore Wind",
-     "cost_gbp": 29496076.85,
+     "cost_gbp": 29496592.05,
      "contracts": [
       {
        "cfd_id": "AAA-CLO-186",
        "unit_name": "Clocaenog Forest Wind Farm",
        "technology": "Onshore Wind",
-       "cost_gbp": 29496076.85
+       "cost_gbp": 29496592.05
       }
      ]
     },
     {
      "station": "Middle Muir",
      "technology": "Onshore Wind",
-     "cost_gbp": 18684325.28,
+     "cost_gbp": 18688692.41,
      "contracts": [
       {
        "cfd_id": "AAA-BAN-192",
        "unit_name": "Middle Muir Wind Farm",
        "technology": "Onshore Wind",
-       "cost_gbp": 18684325.28
+       "cost_gbp": 18688692.41
       }
      ]
     },
     {
      "station": "Brenig",
      "technology": "Onshore Wind",
-     "cost_gbp": 14093940.9,
+     "cost_gbp": 14092758.3,
      "contracts": [
       {
        "cfd_id": "AAA-BRE-177",
        "unit_name": "Brenig Wind Farm",
        "technology": "Onshore Wind",
-       "cost_gbp": 14093940.9
+       "cost_gbp": 14092758.3
       }
      ]
     },
     {
      "station": "Bad A Cheo",
      "technology": "Onshore Wind",
-     "cost_gbp": 13650330.12,
+     "cost_gbp": 13656656.78,
      "contracts": [
       {
        "cfd_id": "AAA-BAD-185",
        "unit_name": "Bad A Cheo Wind Farm",
        "technology": "Onshore Wind",
-       "cost_gbp": 13650330.12
+       "cost_gbp": 13656656.78
       }
      ]
     },
     {
      "station": "Mynydd",
      "technology": "Onshore Wind",
-     "cost_gbp": 10373290.68,
+     "cost_gbp": 10376009.53,
      "contracts": [
       {
        "cfd_id": "AAA-MYN-178",
        "unit_name": "Mynydd Y Gwair Wind Farm",
        "technology": "Onshore Wind",
-       "cost_gbp": 10373290.68
+       "cost_gbp": 10376009.53
       }
      ]
     },
     {
      "station": "Coire",
      "technology": "Onshore Wind",
-     "cost_gbp": 7760356.91,
+     "cost_gbp": 7760220.96,
      "contracts": [
       {
        "cfd_id": "AAA-COI-196",
        "unit_name": "Coire Na Cloiche Windfarm",
        "technology": "Onshore Wind",
-       "cost_gbp": 7760356.91
+       "cost_gbp": 7760220.96
       }
      ]
     },
     {
      "station": "Sneddon",
      "technology": "Onshore Wind",
-     "cost_gbp": 7532516.7,
+     "cost_gbp": 7531255.27,
      "contracts": [
       {
        "cfd_id": "AAA-SNE-179",
        "unit_name": "Sneddon Law Community Wind Farm",
        "technology": "Onshore Wind",
-       "cost_gbp": 7532516.7
+       "cost_gbp": 7531255.27
       }
      ]
     },
     {
      "station": "Moray East",
      "technology": "Offshore Wind",
-     "cost_gbp": 6821469.5,
+     "cost_gbp": 6794950.74,
      "contracts": [
       {
        "cfd_id": "AR2-MRY-107",
        "unit_name": "Moray Offshore Windfarm (East) Phase 1",
        "technology": "Offshore Wind",
-       "cost_gbp": 2570448.3200000003
+       "cost_gbp": 2561559.29
       },
       {
        "cfd_id": "AR2-MRY-207",
        "unit_name": "Moray Offshore Windfarm (East) Phase 2",
        "technology": "Offshore Wind",
-       "cost_gbp": 2194204.13
+       "cost_gbp": 2185463.34
       },
       {
        "cfd_id": "AR2-MRY-307",
        "unit_name": "Moray Offshore Windfarm (East) Phase 3",
        "technology": "Offshore Wind",
-       "cost_gbp": 2056817.05
+       "cost_gbp": 2047928.11
       }
      ]
     },
     {
      "station": "Moor House",
      "technology": "Onshore Wind",
-     "cost_gbp": 6347776.82,
+     "cost_gbp": 6348196.42,
      "contracts": [
       {
        "cfd_id": "AAA-BAN-190",
        "unit_name": "Moor House Wind Farm",
        "technology": "Onshore Wind",
-       "cost_gbp": 6347776.82
+       "cost_gbp": 6348196.42
       }
      ]
     },
     {
      "station": "Nanclach",
      "technology": "Onshore Wind",
-     "cost_gbp": 3941023.32,
+     "cost_gbp": 3942163.6999999997,
      "contracts": [
       {
        "cfd_id": "AAA-NAN-184",
        "unit_name": "Nanclach Wind Farm",
        "technology": "Onshore Wind",
-       "cost_gbp": 3941023.32
+       "cost_gbp": 3942163.6999999997
       }
      ]
     },
     {
      "station": "Achlachan",
      "technology": "Onshore Wind",
-     "cost_gbp": 3522703.7,
+     "cost_gbp": 3522727.77,
      "contracts": [
       {
        "cfd_id": "AAA-ACH-183",
        "unit_name": "Achlachan Wind Farm",
        "technology": "Onshore Wind",
-       "cost_gbp": 3522703.7
+       "cost_gbp": 3522727.77
       }
      ]
     }
@@ -607,109 +607,109 @@
    "attribution_pct": 1.0,
    "attribution_note": "",
    "attribution_confidence": "",
-   "cumulative_gbp": 2558426709.0224333,
-   "runrate_gbp_per_year": 417645462.2509508,
-   "data_to": "2026-07-07",
+   "cumulative_gbp": 2558463515.31085,
+   "runrate_gbp_per_year": 422548885.1472908,
+   "data_to": "2026-07-08",
    "by_recipient": [
     {
      "lead_party": "Moray Offshore Wind East Ltd",
-     "cost_gbp": 64244143.964020185,
-     "volume_mwh": -1882324.739383303
+     "cost_gbp": 67282320.6975476,
+     "volume_mwh": -1932846.5716412198
     },
     {
      "lead_party": "Moray Offshore Wind West Ltd",
-     "cost_gbp": 48966046.1777056,
-     "volume_mwh": -1455145.9714891629
+     "cost_gbp": 51776777.7741346,
+     "volume_mwh": -1512895.5589683454
     },
     {
      "lead_party": "Seagreen Wind Energy Limited",
-     "cost_gbp": 30711689.540973436,
-     "volume_mwh": -2773051.809839963
+     "cost_gbp": 31834885.357765812,
+     "volume_mwh": -2837671.7743316297
     },
     {
      "lead_party": "SP Renewables (UK) Limited",
-     "cost_gbp": 22235958.343493015,
-     "volume_mwh": -399224.49988325
+     "cost_gbp": 22576467.476854127,
+     "volume_mwh": -406757.58043880557
     },
     {
      "lead_party": "Viking Energy Wind Farm LLP",
-     "cost_gbp": 13459605.216356426,
-     "volume_mwh": -1151892.2151336868
-    },
-    {
-     "lead_party": "Stronelairg Windfarm Limited",
-     "cost_gbp": 12245520.84368585,
-     "volume_mwh": -138415.27044583333
+     "cost_gbp": 13757078.69177676,
+     "volume_mwh": -1177850.9188109091
     },
     {
      "lead_party": "Statkraft Markets Gmbh",
-     "cost_gbp": 11904268.157816289,
-     "volume_mwh": -155584.21760628454
+     "cost_gbp": 12630181.367710734,
+     "volume_mwh": -164570.5020479512
+    },
+    {
+     "lead_party": "Stronelairg Windfarm Limited",
+     "cost_gbp": 12363405.93568585,
+     "volume_mwh": -139723.07044583332
     },
     {
      "lead_party": "SSE Generation Ltd",
-     "cost_gbp": 11885550.276310096,
-     "volume_mwh": -215265.38653656832
-    },
-    {
-     "lead_party": "Eneco Energy Trade",
-     "cost_gbp": 10974354.416783515,
-     "volume_mwh": -124052.89775805316
+     "cost_gbp": 12348164.518462872,
+     "volume_mwh": -222777.1427267072
     },
     {
      "lead_party": "Dorenell Windfarm Limited",
-     "cost_gbp": 10888077.929089753,
-     "volume_mwh": -248098.95075699556
+     "cost_gbp": 11584382.180311974,
+     "volume_mwh": -258201.54659032892
+    },
+    {
+     "lead_party": "Eneco Energy Trade",
+     "cost_gbp": 11387409.235394627,
+     "volume_mwh": -128764.62942471982
     },
     {
      "lead_party": "Neart Na Gaoithe Offshore Wind",
-     "cost_gbp": 8360989.538997172,
-     "volume_mwh": -78730.89041058323
+     "cost_gbp": 8538496.286755506,
+     "volume_mwh": -79811.6784661388
     },
     {
      "lead_party": "EDF Energy Customers Limited",
-     "cost_gbp": 7597411.61648865,
-     "volume_mwh": -123298.80365689727
+     "cost_gbp": 7862639.398408094,
+     "volume_mwh": -127807.78199023062
     },
     {
      "lead_party": "South Kyle Wind Farm Limited",
-     "cost_gbp": 6856958.996831918,
-     "volume_mwh": -191947.84871933272
-    },
-    {
-     "lead_party": "Limekiln Extension Ltd",
-     "cost_gbp": 6286367.056526574,
-     "volume_mwh": -165509.48491063912
+     "cost_gbp": 6949402.996831918,
+     "volume_mwh": -195029.3153859994
     },
     {
      "lead_party": "Greater Gabbard Offshore Winds",
-     "cost_gbp": 5574353.458000738,
-     "volume_mwh": -33540.54916027778
+     "cost_gbp": 6533773.414000738,
+     "volume_mwh": -39322.97416027778
+    },
+    {
+     "lead_party": "Limekiln Extension Ltd",
+     "cost_gbp": 6527600.023193241,
+     "volume_mwh": -171540.30907730578
     },
     {
      "lead_party": "Dunmaglass Wind Farm Limited",
-     "cost_gbp": 4431261.620657408,
-     "volume_mwh": -49309.04641203704
+     "cost_gbp": 4604644.81599074,
+     "volume_mwh": -51238.3130787037
     },
     {
      "lead_party": "Creag Riabhach Wind Farm Ltd",
-     "cost_gbp": 4145683.393421947,
-     "volume_mwh": -77560.92484663894
-    },
-    {
-     "lead_party": "Beatrice Offshore Windfarm Ltd",
-     "cost_gbp": 4052242.413624203,
-     "volume_mwh": -27881.956683055556
+     "cost_gbp": 4263062.969013217,
+     "volume_mwh": -79743.93845489291
     },
     {
      "lead_party": "Strathy Wind Farm Limited",
-     "cost_gbp": 3954153.6769999997,
-     "volume_mwh": -46562.558333333334
+     "cost_gbp": 4137419.4736666665,
+     "volume_mwh": -48705.51666666667
+    },
+    {
+     "lead_party": "Beatrice Offshore Windfarm Ltd",
+     "cost_gbp": 4066622.5376242027,
+     "volume_mwh": -27956.57334972222
     },
     {
      "lead_party": "Griffin Wind Farm Ltd",
-     "cost_gbp": 3305213.018508958,
-     "volume_mwh": -35867.91784472222
+     "cost_gbp": 3311353.427508958,
+     "volume_mwh": -35933.90117805555
     },
     {
      "lead_party": "Fallago Rig Wind Farm Limited",
@@ -718,29 +718,29 @@
     },
     {
      "lead_party": "Clyde Windfarm (Scotland) Ltd",
-     "cost_gbp": 2821969.061731858,
-     "volume_mwh": -29809.278805833335
+     "cost_gbp": 2880450.4244818585,
+     "volume_mwh": -30423.887139166665
     },
     {
      "lead_party": "Corriegarth Wind Energy LTD",
-     "cost_gbp": 2805697.9664892047,
-     "volume_mwh": -34711.65968165069
+     "cost_gbp": 2872724.7861558716,
+     "volume_mwh": -35542.227459428475
     },
     {
      "lead_party": "AIK2A Sustainable Energy Ltd",
-     "cost_gbp": 2659915.536994547,
-     "volume_mwh": -39907.9007992635
+     "cost_gbp": 2716011.2114389916,
+     "volume_mwh": -40732.83718815239
     },
     {
      "lead_party": "Smartestenergy Limited",
-     "cost_gbp": 2519809.8003819445,
-     "volume_mwh": -40341.333402777775
+     "cost_gbp": 2540347.8728819443,
+     "volume_mwh": -40740.16923611111
     }
    ],
-   "curtailed_mwh": 10298870.809221376,
+   "curtailed_mwh": 10578646.940189242,
    "history_source_url": "https://www.ref.org.uk/constraints/index.php?tab=yr",
-   "bottom_up_from": "2025-09-12",
-   "bottom_up_to": "2026-07-07"
+   "bottom_up_from": "2025-09-05",
+   "bottom_up_to": "2026-07-08"
   },
   {
    "id": "capacity_market",
@@ -751,9 +751,9 @@
    "attribution_pct": 1.0,
    "attribution_note": "Capacity Market levy counted in full: availability payments procure backup for intermittent generation",
    "attribution_confidence": "medium",
-   "cumulative_gbp": 8616803761.9,
-   "runrate_gbp_per_year": 1662260685.84,
-   "data_to": "2026-04-01",
+   "cumulative_gbp": 8753849965.5,
+   "runrate_gbp_per_year": 1706034466.01,
+   "data_to": "2026-05-01",
    "source": "LCCC data portal, capacity market payments",
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction"
   },
@@ -1071,11 +1071,11 @@
    "perspectives": [],
    "cadence": "daily",
    "layer": "indirect",
-   "attribution_pct": 0.44028661196331986,
+   "attribution_pct": 0.44028527046547955,
    "attribution_note": "Raw totals stored; attribution happens in the money model. Only the increase above the CPIH-indexed 2002-05 baseline (GBP 0.4bn/yr) is attributed, NET of wind constraint payments already counted in the direct layer, floored at zero.",
    "attribution_confidence": "low",
-   "cumulative_gbp": 12080016485.498085,
-   "runrate_gbp_per_year": 1449984401.4633079,
+   "cumulative_gbp": 12079979679.209667,
+   "runrate_gbp_per_year": 1445080978.566968,
    "data_to": "2026-06-25",
    "raw_annual": [
     {
