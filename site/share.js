@@ -1,9 +1,9 @@
 /* The Subsidy Clock — share/cite component (distribution F2+F3).
    NOTE (share-UX rework, 2026-06-12): attach() is currently unwired - the
    per-card menus were removed in favour of the hero share row. The module
-   still owns GoatCounter and the copy/track helpers; re-attach per card
+   still owns event tracking and the copy/track helpers; re-attach per card
    with SCShare.attach(container, fact, asof) if a card needs a menu again.
-   Self-contained: injects its own styles; owns GoatCounter tracking.
+   Self-contained: injects its own styles; owns Matomo event tracking.
    A "fact" is {id, title, anchor, url, png, csv, label, figure()}:
      id     stable card id (event taxonomy share:{id}:{action})
      title  card title for citations
@@ -17,24 +17,16 @@
 var SCShare = (function () {
   'use strict';
 
-  // ---- GoatCounter. Set to your code (e.g. "subsidyclock") to enable; "" = silent no-op.
-  var GOATCOUNTER_CODE = 'richlyon';
+  // ---- Matomo events. The page tracker is loaded in each page's <head>;
+  // share/cite actions land as events (category "share", action = eventPath).
   var SITE = 'https://subsidyclock.co.uk';
 
   function initTracking() {
-    if (!GOATCOUNTER_CODE) return;
-    window.goatcounter = { no_onload: true };
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://gc.zgo.at/count.js';
-    s.setAttribute('data-goatcounter', 'https://' + GOATCOUNTER_CODE + '.goatcounter.com/count');
-    document.head.appendChild(s);
+    // no-op: the Matomo tracker is loaded from the page head.
   }
   function track(eventPath) {
-    if (!GOATCOUNTER_CODE) return;
-    if (window.goatcounter && window.goatcounter.count) {
-      window.goatcounter.count({ path: eventPath, event: true });
-    }
+    var _paq = (window._paq = window._paq || []);
+    _paq.push(['trackEvent', 'share', eventPath]);
   }
 
   function esc(s) {

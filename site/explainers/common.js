@@ -1,4 +1,4 @@
-/* Grid variant shared helpers: data load, formatting, ticking, GoatCounter tracking. */
+/* Grid variant shared helpers: data load, formatting, ticking, Matomo event tracking. */
 /* exported SC */
 var SC = (function () {
   'use strict';
@@ -64,7 +64,7 @@ var SC = (function () {
     loop();
   }
 
-  // ---- tracking: delegated to the shared share.js component (single GC owner)
+  // ---- tracking: delegated to the shared share.js component (single tracking owner)
   function initTracking() {
     if (window.SCShare) SCShare.initTracking();
   }

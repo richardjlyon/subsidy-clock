@@ -840,7 +840,7 @@
   // The viral unit is fact + picture + link. Intents carry the live figure
   // (floored to £0.1bn) and the bare site URL - the clean link a reader
   // trusts; the homepage's own OG tags serve the daily total card.
-  // share.js still owns GoatCounter and the copy/track helpers; its attach()
+  // share.js still owns event tracking and the copy/track helpers; its attach()
   // per-card component is deliberately unwired (share-UX rework, 2026-06-12).
   // SITE_URL/SHARE_URL live with the state - renderEquivalences needs them at first paint.
 

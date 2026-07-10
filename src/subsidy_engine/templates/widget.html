@@ -46,7 +46,6 @@
   'use strict';
   // stamped at build time; the fetch below refreshes them if this file is cached
   var stamped = { "cum": {{CUM}}, "rate": {{RATE}}, "generated": "{{GENERATED}}" };
-  var GOATCOUNTER_CODE = 'richlyon'; // set with the site's code to log embed loads
 
   var q = new URLSearchParams(location.search);
   var size = q.get('size');
@@ -92,13 +91,14 @@
     start(stamped.cum, stamped.rate, stamped.generated);
   });
 
-  if (GOATCOUNTER_CODE) {
+  // log embed loads as Matomo events (image tracker: no script, no cookies)
+  (function () {
     var ref = '';
     try { ref = new URL(document.referrer).hostname; } catch (e) { ref = 'direct'; }
     var img = new Image();
-    img.src = 'https://' + GOATCOUNTER_CODE + '.goatcounter.com/count?p=' +
-      encodeURIComponent('embed:load:' + ref) + '&e=true';
-  }
+    img.src = 'https://stats.kwlan.net/matomo.php?idsite=2&rec=1&e_c=embed&e_a=load&e_n=' +
+      encodeURIComponent(ref) + '&url=' + encodeURIComponent(location.href);
+  })();
 })();
 </script>
 <noscript><style>.fig::after{content:" (static figure)"}</style></noscript>
