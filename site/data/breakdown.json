@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-11T07:26:08.418318+00:00",
+ "generated_at": "2026-07-12T07:42:41.408435+00:00",
  "schemes": [
   {
    "id": "cfd_renewable",
@@ -22,13 +22,13 @@
    "by_technology": [
     {
      "technology": "Offshore Wind",
-     "cost_gbp": 10075959188.42002,
-     "generation_mwh": 135002302.8080004
+     "cost_gbp": 10075959188.419994,
+     "generation_mwh": 135002302.80799994
     },
     {
      "technology": "Biomass Conversion",
-     "cost_gbp": 2915929375.780001,
-     "generation_mwh": 52973072.10899994
+     "cost_gbp": 2915929375.7800016,
+     "generation_mwh": 52973072.109000005
     },
     {
      "technology": "Dedicated Biomass",
@@ -37,8 +37,8 @@
     },
     {
      "technology": "Onshore Wind",
-     "cost_gbp": 220818350.58999977,
-     "generation_mwh": 11140318.572999984
+     "cost_gbp": 220818350.5900005,
+     "generation_mwh": 11140318.572999991
     },
     {
      "technology": "Advanced Conversion Technology",
@@ -47,13 +47,13 @@
     },
     {
      "technology": "Solar PV",
-     "cost_gbp": -6770407.780000044,
-     "generation_mwh": 1045519.7840000044
+     "cost_gbp": -6770407.780000014,
+     "generation_mwh": 1045519.7840000043
     },
     {
      "technology": "Energy from Waste",
-     "cost_gbp": -9381931.829999968,
-     "generation_mwh": 783203.3299999998
+     "cost_gbp": -9381931.83,
+     "generation_mwh": 783203.3300000001
     }
    ],
    "by_recipient": [
@@ -607,34 +607,34 @@
    "attribution_pct": 1.0,
    "attribution_note": "",
    "attribution_confidence": "",
-   "cumulative_gbp": 2558470473.2386003,
-   "runrate_gbp_per_year": 421648885.92108077,
-   "data_to": "2026-07-10",
+   "cumulative_gbp": 2558476128.5486,
+   "runrate_gbp_per_year": 407762941.3831026,
+   "data_to": "2026-07-11",
    "by_recipient": [
     {
      "lead_party": "Moray Offshore Wind East Ltd",
-     "cost_gbp": 70848389.22850166,
-     "volume_mwh": -1990515.7943281177
+     "cost_gbp": 70853433.31341833,
+     "volume_mwh": -1990629.4193281177
     },
     {
      "lead_party": "Moray Offshore Wind West Ltd",
-     "cost_gbp": 53898083.67205677,
-     "volume_mwh": -1556901.4140161232
+     "cost_gbp": 53900095.52072344,
+     "volume_mwh": -1556947.4306827898
     },
     {
      "lead_party": "Seagreen Wind Energy Limited",
-     "cost_gbp": 33057871.575303808,
-     "volume_mwh": -2908327.1897816295
+     "cost_gbp": 33063526.885303807,
+     "volume_mwh": -2908714.5397816296
     },
     {
      "lead_party": "SP Renewables (UK) Limited",
-     "cost_gbp": 22902318.326104127,
-     "volume_mwh": -414638.9887721389
+     "cost_gbp": 22903308.917854127,
+     "volume_mwh": -414789.76377213886
     },
     {
      "lead_party": "Viking Energy Wind Farm LLP",
-     "cost_gbp": 14155676.545360094,
-     "volume_mwh": -1212498.0104775757
+     "cost_gbp": 14172687.792582316,
+     "volume_mwh": -1213977.2493664646
     },
     {
      "lead_party": "Statkraft Markets Gmbh",
@@ -643,8 +643,8 @@
     },
     {
      "lead_party": "SSE Generation Ltd",
-     "cost_gbp": 12776373.933629539,
-     "volume_mwh": -230017.97606004056
+     "cost_gbp": 12777190.81337954,
+     "volume_mwh": -230118.70106004056
     },
     {
      "lead_party": "Stronelairg Windfarm Limited",
@@ -668,8 +668,8 @@
     },
     {
      "lead_party": "Greater Gabbard Offshore Winds",
-     "cost_gbp": 8349436.989145005,
-     "volume_mwh": -50269.65783347222
+     "cost_gbp": 8377096.807811672,
+     "volume_mwh": -50436.52450013889
     },
     {
      "lead_party": "EDF Energy Customers Limited",
@@ -737,10 +737,10 @@
      "volume_mwh": -42695.82701388889
     }
    ],
-   "curtailed_mwh": 10869730.915395772,
+   "curtailed_mwh": 10872482.47928466,
    "history_source_url": "https://www.ref.org.uk/constraints/index.php?tab=yr",
-   "bottom_up_from": "2025-08-25",
-   "bottom_up_to": "2026-07-10"
+   "bottom_up_from": "2025-08-15",
+   "bottom_up_to": "2026-07-11"
   },
   {
    "id": "capacity_market",
@@ -1071,11 +1071,11 @@
    "perspectives": [],
    "cadence": "daily",
    "layer": "indirect",
-   "attribution_pct": 0.4402850168662863,
+   "attribution_pct": 0.4402848107442763,
    "attribution_note": "Raw totals stored; attribution happens in the money model. Only the increase above the CPIH-indexed 2002-05 baseline (GBP 0.4bn/yr) is attributed, NET of wind constraint payments already counted in the direct layer, floored at zero.",
    "attribution_confidence": "low",
-   "cumulative_gbp": 12079972721.281918,
-   "runrate_gbp_per_year": 1445980977.7931778,
+   "cumulative_gbp": 12079967065.971918,
+   "runrate_gbp_per_year": 1459866922.331156,
    "data_to": "2026-06-25",
    "raw_annual": [
     {
