@@ -57,9 +57,9 @@ def cfd_monthly(
             months.append({
                 "month": r["month"],
                 "days_compared": r["days_compared"],
-                "bottom_up_gbp": round(r["bu"], 2),
-                "official_gbp": round(r["of"], 2),
-                "abs_divergence_gbp": round(r["bu"] - r["of"], 2),
+                "bottom_up": round(r["bu"], 2),
+                "official": round(r["of"], 2),
+                "abs_divergence": round(r["bu"] - r["of"], 2),
                 "divergence_pct": pct,
             })
 
@@ -73,8 +73,8 @@ def cfd_monthly(
         "excluded_recent_days": excluded_recent_days,
         "settlement_lag_days": settlement_lag_days,
         "overall": {
-            "bottom_up_gbp": round(overall_bu, 2),
-            "official_gbp": round(overall_of, 2),
+            "bottom_up": round(overall_bu, 2),
+            "official": round(overall_of, 2),
             "divergence_pct": overall_pct,
         },
         "months": months,
@@ -104,8 +104,8 @@ def indirect_crosscheck(ours: dict[str, float], ref: dict,
             unexplained += 1
         components.append({
             "component": name,
-            "ours_gbp": round(our_value, 2),
-            "ref_gbp": float(ref_value),
+            "ours": round(our_value, 2),
+            "ref": float(ref_value),
             "divergence_pct": pct,
             "note": note,
             "explained": explained,
@@ -129,8 +129,8 @@ def ref_reconciliation(ours: dict[str, float], ours_real_total: float, ref: dict
     deliberate attribution choice - their summed gap is the headline of the
     methodology table.
 
-    ref_total_gbp is the sum of REF's published component rows (the
-    like-for-like table denominator); ref_total_published_gbp is REF's own
+    ref_total is the sum of REF's published component rows (the
+    like-for-like table denominator); ref_total_published is REF's own
     rounded headline — the two may differ by REF's rounding.
     """
     components = []
@@ -143,8 +143,8 @@ def ref_reconciliation(ours: dict[str, float], ours_real_total: float, ref: dict
             stricter_gap += ref_v - our_v
         components.append({
             "component": name,
-            "ours_gbp": round(our_v, 2),
-            "ref_gbp": float(ref_v),
+            "ours": round(our_v, 2),
+            "ref": float(ref_v),
             "divergence_pct": pct,
             "note": (ref.get("notes") or {}).get(name, ""),
             "stricter": is_stricter,
@@ -162,12 +162,12 @@ def ref_reconciliation(ours: dict[str, float], ours_real_total: float, ref: dict
         "ours_through_year": ref["ours_through_year"],
         "ref_source": ref["source"],
         "ref_source_url": ref["source_url"],
-        "ours_total_gbp": round(ours_total, 2),
-        "ref_total_gbp": round(ref_total, 2),          # component-row sum
-        "ref_total_published_gbp": float(ref["total_nominal_gbp"]),  # REF's own headline
-        "gap_gbp": round(ref_total - ours_total, 2),
-        "stricter_gap_gbp": round(stricter_gap, 2),
-        "ours_real_2024_gbp": round(ours_real_total, 2),
-        "ref_real_2024_gbp": float(ref["total_real_2024_gbp"]),
+        "ours_total": round(ours_total, 2),
+        "ref_total": round(ref_total, 2),          # component-row sum
+        "ref_total_published": float(ref["total_nominal_gbp"]),  # REF's own headline
+        "gap": round(ref_total - ours_total, 2),
+        "stricter_gap": round(stricter_gap, 2),
+        "ours_real": round(ours_real_total, 2),
+        "ref_real": float(ref["total_real_2024_gbp"]),
         "components": components,
     }

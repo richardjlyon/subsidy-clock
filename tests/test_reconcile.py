@@ -14,8 +14,8 @@ def test_matched_day_overall_divergence():
                              "payment_gbp": [1.01e6, 1.01e6, 5.0e6]})
     report = reconcile.cfd_monthly(bottom_up, official)
     assert report["matched_days"] == 2
-    assert report["overall"]["bottom_up_gbp"] == 2.0e6
-    assert report["overall"]["official_gbp"] == 2.02e6
+    assert report["overall"]["bottom_up"] == 2.0e6
+    assert report["overall"]["official"] == 2.02e6
     assert abs(report["overall"]["divergence_pct"] - (-0.9901)) < 0.001
     assert report["within_tolerance"] is True  # within the 2% tolerance
     assert report["months"][0]["month"] == "2025-01"
@@ -105,18 +105,18 @@ def test_ref_reconciliation_components_and_gap():
 
     by_name = {c["component"]: c for c in out["components"]}
     assert by_name["ro"]["divergence_pct"] == -0.1
-    assert by_name["rego"]["ours_gbp"] == 0.0
+    assert by_name["rego"]["ours"] == 0.0
     assert by_name["ets"]["stricter"] is True
     assert by_name["ro"]["stricter"] is False
 
-    assert out["ours_total_gbp"] == 76.6e9
-    assert out["ref_total_gbp"] == 87.7e9
-    assert out["ref_total_published_gbp"] == 87.7e9
-    assert out["gap_gbp"] == 11.1e9
+    assert out["ours_total"] == 76.6e9
+    assert out["ref_total"] == 87.7e9
+    assert out["ref_total_published"] == 87.7e9
+    assert out["gap"] == 11.1e9
     # the stricter components account for (19.0-9.7) + (1.7-0) = 11.0bn
-    assert out["stricter_gap_gbp"] == 11.0e9
-    assert out["ours_real_2024_gbp"] == 200.0e9
-    assert out["ref_real_2024_gbp"] == 223.0e9
+    assert out["stricter_gap"] == 11.0e9
+    assert out["ours_real"] == 200.0e9
+    assert out["ref_real"] == 223.0e9
     assert out["ours_through_year"] == 2023
 
 

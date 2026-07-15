@@ -39,7 +39,7 @@
   var markers = data.markers || [];
   if (!markers.length) { frame.style.display = 'none'; return; }
   var W = bm.width, H = bm.height;
-  var costMax = markers.reduce(function (m, k) { return Math.max(m, k.cost_gbp); }, 0);
+  var costMax = markers.reduce(function (m, k) { return Math.max(m, k.cost); }, 0);
 
   // basemap image (served by Mapbox per their ToS), behind the SVG overlay.
   // The access token is injected at deploy (site/mapbox-token.js, from the Vercel
@@ -64,9 +64,9 @@
   // Web-Mercator-projected (x, y) sit exactly on the coastline
   var svg = '<svg class="map-overlay" viewBox="0 0 ' + W + ' ' + H + '" ' +
     'role="img" aria-label="Recipient bubbles, area proportional to cumulative payment, coloured by scheme">';
-  markers.slice().sort(function (a, b) { return b.cost_gbp - a.cost_gbp; })
+  markers.slice().sort(function (a, b) { return b.cost - a.cost; })
     .forEach(function (k, i) {
-      var r = costMax > 0 ? RMAX * Math.sqrt(k.cost_gbp / costMax) : RMIN;
+      var r = costMax > 0 ? RMAX * Math.sqrt(k.cost / costMax) : RMIN;
       if (r < RMIN) r = RMIN;
       svg += '<circle class="map-marker" data-i="' + i + '" tabindex="0" ' +
         'cx="' + k.x.toFixed(1) + '" cy="' + k.y.toFixed(1) + '" r="' + r.toFixed(1) + '" ' +
@@ -76,14 +76,14 @@
   // insert overlay between the image and the popup
   popup.insertAdjacentHTML('beforebegin', svg);
 
-  var sorted = markers.slice().sort(function (a, b) { return b.cost_gbp - a.cost_gbp; });
+  var sorted = markers.slice().sort(function (a, b) { return b.cost - a.cost; });
 
   function showPopup(i, circle) {
     var k = sorted[i];
     popup.innerHTML =
       '<span class="pop-name"><span class="pop-dot" style="background:' + (COLOURS[k.scheme] || '#888') + '"></span>' +
       esc(k.name) + '</span>' +
-      '<span class="pop-cost">' + fmtCompact(k.cost_gbp) + '</span>' +
+      '<span class="pop-cost">' + fmtCompact(k.cost) + '</span>' +
       '<span class="pop-meta"> · ' + esc(LABELS[k.scheme] || k.scheme) + ' · ' + esc(k.technology) + '</span>';
     popup.classList.add('is-visible');
     // position relative to the frame, scaled from logical px to rendered px

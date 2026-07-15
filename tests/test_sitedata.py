@@ -37,7 +37,7 @@ def model():
         perspectives=["renewables", "low_carbon"], cadence="daily",
         annual=annual, cumulative_gbp=4.0e9, runrate_gbp_per_year=2.0e9,
         data_to=date(2026, 6, 1),
-        extras={"by_technology": [], "by_recipient": [], "gross_gbp": 4.1e9, "net_gbp": 4.0e9},
+        extras={"by_technology": [], "by_recipient": [], "gross": 4.1e9, "net": 4.0e9},
     )
     indirect = SchemeResult(
         scheme_id="bsuos", label="Balancing costs (BSUoS uplift)",
@@ -143,19 +143,19 @@ def test_build_writes_all_files(tmp_path):
 
     totals = json.loads((tmp_path / "totals.json").read_text())
     r = totals["perspectives"]["renewables"]
-    assert r["cumulative_gbp"] == 4.0e9
+    assert r["cumulative"] == 4.0e9
     import math
-    assert r["per_household_per_year_gbp"] == math.floor(2.0e9 / 28_400_000 * 100) / 100
-    assert r["real_2024"]["cumulative_gbp"] == 3.85e9
-    assert r["real_2024"]["per_household_per_year_gbp"] == math.floor(1.94e9 / 28_400_000 * 100) / 100
+    assert r["per_household_per_year"] == math.floor(2.0e9 / 28_400_000 * 100) / 100
+    assert r["real"]["cumulative"] == 3.85e9
+    assert r["real"]["per_household_per_year"] == math.floor(1.94e9 / 28_400_000 * 100) / 100
     assert "all_levy" not in totals["perspectives"]
     ind = totals["indirect"]
-    assert ind["runrate_gbp_per_year"] == 1.0e9
-    assert ind["real_2024"]["cumulative_gbp"] == 3.85e9
+    assert ind["runrate_per_year"] == 1.0e9
+    assert ind["real"]["cumulative"] == 3.85e9
 
     ts = json.loads((tmp_path / "timeseries.json").read_text())
     assert ts["schemes"]["bsuos"]["annual"][0] == {
-        "year": 2025, "cost_gbp": 3.0e9, "cost_gbp_2024": 2.9e9}
+        "year": 2025, "cost": 3.0e9, "cost_real": 2.9e9}
 
     breakdown = json.loads((tmp_path / "breakdown.json").read_text())
     by_id = {s["id"]: s for s in breakdown["schemes"]}
@@ -185,7 +185,7 @@ def test_build_writes_electricity_bill(tmp_path):
                               "verified": True})
     ts = json.loads((tmp_path / "timeseries.json").read_text())
     assert ts["electricity_bill"]["annual"][0] == {
-        "year": 2023, "total_bill_gbp": 71.2e9, "total_bill_gbp_2024": 72.0e9}
+        "year": 2023, "total_bill": 71.2e9, "total_bill_real": 72.0e9}
     meta = json.loads((tmp_path / "meta.json").read_text())
     assert meta["bill"]["source_url"] == "https://gov.uk/dukes"
 
@@ -212,7 +212,7 @@ def test_write_csvs(tmp_path):
     # third line: measured vs estimated must travel with the file
     assert cfd[2] == ("# Measured payments — derivation: "
                       "subsidyclock.co.uk/explainers/contracts-for-difference")
-    assert cfd[3] == "year,cost_gbp,cost_gbp_2024"
+    assert cfd[3] == "year,cost,cost_real"
     # money columns print at fixed 2 dp - real pennies kept, float noise cut
     assert cfd[4] == "2025,3000000000.00,2900000000.00"
     bsuos = (tmp_path / "bsuos.csv").read_text().splitlines()
@@ -223,7 +223,7 @@ def test_write_csvs(tmp_path):
     assert combined[0].startswith("# The Subsidy Clock")
     assert combined[2] == ("# Mixes measured and estimated series — see "
                            "subsidyclock.co.uk/methodology#indirect")
-    assert combined[3] == "year,cfd_renewable_gbp,bsuos_gbp"
+    assert combined[3] == "year,cfd_renewable,bsuos"
     assert combined[4] == "2025,3000000000.00,3000000000.00"
     # restatements published alongside, same header
     rst = (tmp_path / "restatements.csv").read_text().splitlines()
@@ -272,37 +272,37 @@ def test_per_unit_floored_and_agrees_across_surfaces(tmp_path):
     r = totals["perspectives"]["renewables"]
 
     import math
-    rr = r["real_2024"]
+    rr = r["real"]
     # _block derives each per-unit figure from its own basis run-rate
-    assert r["per_mwh_delivered_gbp"] == math.floor(
-        r["runrate_gbp_per_year"] / (CTX["annual_demand_twh"]["value"] * 1_000_000) * 100) / 100
-    assert rr["per_mwh_delivered_gbp"] == math.floor(
-        rr["runrate_gbp_per_year"] / (CTX["annual_demand_twh"]["value"] * 1_000_000) * 100) / 100
-    assert rr["per_person_per_year_gbp"] == math.floor(
-        rr["runrate_gbp_per_year"] / CTX["population"]["value"] * 100) / 100
+    assert r["per_mwh_delivered"] == math.floor(
+        r["runrate_per_year"] / (CTX["annual_demand_twh"]["value"] * 1_000_000) * 100) / 100
+    assert rr["per_mwh_delivered"] == math.floor(
+        rr["runrate_per_year"] / (CTX["annual_demand_twh"]["value"] * 1_000_000) * 100) / 100
+    assert rr["per_person_per_year"] == math.floor(
+        rr["runrate_per_year"] / CTX["population"]["value"] * 100) / 100
 
     # real and nominal per-unit figures are genuinely distinct
-    assert rr["per_mwh_delivered_gbp"] != r["per_mwh_delivered_gbp"]
+    assert rr["per_mwh_delivered"] != r["per_mwh_delivered"]
 
 
 def test_write_widget_stamps_figure_and_rate(tmp_path):
     totals = {
         "generated_at": "2026-06-11T05:45:00+00:00",
         "perspectives": {"renewables": {
-            "cumulative_gbp": 108_634_210_556.78,
-            "rate_gbp_per_sec": 385.72,
+            "cumulative": 108_634_210_556.78,
+            "rate_per_sec": 385.72,
             "since_year": 2002,
-            "real_2024": {
-                "cumulative_gbp": 130_000_000_000.0,
-                "rate_gbp_per_sec": 390.0,
+            "real": {
+                "cumulative": 130_000_000_000.0,
+                "rate_per_sec": 390.0,
             },
         }},
         "indirect": {
-            "cumulative_gbp": 78_000_000_000.0,
-            "rate_gbp_per_sec": 253.0,
-            "real_2024": {
-                "cumulative_gbp": 95_000_000_000.0,
-                "rate_gbp_per_sec": 244.0,
+            "cumulative": 78_000_000_000.0,
+            "rate_per_sec": 253.0,
+            "real": {
+                "cumulative": 95_000_000_000.0,
+                "rate_per_sec": 244.0,
             },
         },
     }
@@ -419,10 +419,10 @@ def test_meta_publishes_full_combined_real_headline(tmp_path):
                    deflator_info=DEFLATOR_INFO, deflators=DEFLATORS)
     totals = json.loads((tmp_path / "totals.json").read_text())
     meta = json.loads((tmp_path / "meta.json").read_text())
-    combined = (totals["perspectives"]["renewables"]["real_2024"]["cumulative_gbp"]
-                + totals["indirect"]["real_2024"]["cumulative_gbp"])
+    combined = (totals["perspectives"]["renewables"]["real"]["cumulative"]
+                + totals["indirect"]["real"]["cumulative"])
     # the headline card shows the FULL figure (every significant figure), not a floor
-    assert meta["headline"]["combined_real_gbp"] == combined
+    assert meta["headline"]["combined_real"] == combined
 
 
 # ---- recipients map (map.json) ----
@@ -457,11 +457,11 @@ def _map_model():
         cumulative_gbp=1.0, runrate_gbp_per_year=1.0, data_to=date(2025, 1, 1),
         extras={"by_station": [
             {"station": "Hornsea 1", "technology": "Offshore Wind",
-             "cost_gbp": 2.5e9},
+             "cost": 2.5e9},
             {"station": "Drax", "technology": "Biomass Conversion",
-             "cost_gbp": 1.9e9},
+             "cost": 1.9e9},
             {"station": "No Coord Farm", "technology": "Onshore Wind",
-             "cost_gbp": 1.0e9},
+             "cost": 1.0e9},
         ]},
     )
     ro = SchemeResult(
@@ -472,7 +472,7 @@ def _map_model():
         cumulative_gbp=1.0, runrate_gbp_per_year=1.0, data_to=date(2025, 1, 1),
         extras={"by_station": [
             {"station": "Drax Power Station", "technology": "Biomass",
-             "cost_gbp": 6.4e9},
+             "cost": 6.4e9},
         ]},
     )
     return {"schemes": [cfdr, ro],
@@ -506,7 +506,7 @@ def test_map_data_carries_cost_technology_and_scheme():
     hornsea = next(mk for mk in m["markers"] if mk["name"] == "Hornsea 1")
     assert hornsea["scheme"] == "cfd_renewable"
     assert hornsea["technology"] == "Offshore Wind"
-    assert hornsea["cost_gbp"] == 2.5e9
+    assert hornsea["cost"] == 2.5e9
 
 
 def test_map_data_projection_matches_web_mercator():
@@ -539,7 +539,7 @@ def test_build_writes_map_json(tmp_path):
     # cfd_renewable scheme a by_station list so a marker is emitted
     full = model()
     full["schemes"][0].extras["by_station"] = [
-        {"station": "Hornsea 1", "technology": "Offshore Wind", "cost_gbp": 2.5e9},
+        {"station": "Hornsea 1", "technology": "Offshore Wind", "cost": 2.5e9},
     ]
     sitedata.build(full, CTX, {}, tmp_path,
                    generated_at="2026-06-17T07:00:00+00:00",

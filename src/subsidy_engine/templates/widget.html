@@ -60,12 +60,12 @@
 
   function pick(t) {
     var p = t.perspectives.renewables;
-    var d = basis === 'real' ? p.real_2024 : p;
-    var cum = d.cumulative_gbp, rate = d.rate_gbp_per_sec;
+    var d = basis === 'real' ? p.real : p;
+    var cum = d.cumulative, rate = d.rate_per_sec;
     if (scope === 'combined' && t.indirect) {
-      var iv = basis === 'real' ? t.indirect.real_2024 : t.indirect;
-      cum += iv.cumulative_gbp;
-      rate += iv.rate_gbp_per_sec;
+      var iv = basis === 'real' ? t.indirect.real : t.indirect;
+      cum += iv.cumulative;
+      rate += iv.rate_per_sec;
     }
     return { cum: cum, rate: rate };
   }

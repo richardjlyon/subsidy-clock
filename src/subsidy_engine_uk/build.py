@@ -107,18 +107,18 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
                 cumulative_gbp=cumulative(daily),
                 runrate_gbp_per_year=trailing_runrate(daily),
                 data_to=daily["date"].max() if daily.height else None,
-                extras={"gross_gbp": gross, "net_gbp": net,
+                extras={"gross": gross, "net": net,
                         "mwh": float(sub["generation_mwh"].sum() or 0.0),
                         "by_technology": sub.group_by("technology")
-                            .agg(pl.col("payment_gbp").sum().alias("cost_gbp"),
+                            .agg(pl.col("payment_gbp").sum().alias("cost"),
                                  pl.col("generation_mwh").sum())
-                            .sort("cost_gbp", descending=True).to_dicts(),
+                            .sort("cost", descending=True).to_dicts(),
                         "by_recipient": sub.group_by("unit_name", "technology")
-                            .agg(pl.col("payment_gbp").sum().alias("cost_gbp"))
-                            .sort("cost_gbp", descending=True).head(25).to_dicts(),
+                            .agg(pl.col("payment_gbp").sum().alias("cost"))
+                            .sort("cost", descending=True).head(25).to_dicts(),
                         "by_station": group_by_station(
                             sub.group_by("cfd_id", "unit_name", "technology")
-                               .agg(pl.col("payment_gbp").sum().alias("cost_gbp"))
+                               .agg(pl.col("payment_gbp").sum().alias("cost"))
                                .to_dicts(),
                             station_map or {})[:25]},
             ))
@@ -143,9 +143,9 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         runrate = trailing_runrate(daily)
         data_to = daily["date"].max()
         by_recipient = (con_daily.group_by("lead_party")
-                        .agg(pl.col("cost_gbp").sum(),
+                        .agg(pl.col("cost_gbp").sum().alias("cost"),
                              pl.col("volume_mwh").sum())
-                        .sort("cost_gbp", descending=True).head(25).to_dicts())
+                        .sort("cost", descending=True).head(25).to_dicts())
         curtailed_mwh = float(-con_daily["volume_mwh"].sum())
         bottom_up_from = daily["date"].min().isoformat()
         bottom_up_to = daily["date"].max().isoformat()
@@ -220,7 +220,7 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         result.runrate_gbp_per_year = float(
             attributed.filter(pl.col("year") == latest)["cost_gbp"][0])
         result.attribution_pct = (result.cumulative_gbp / raw_total) if raw_total else 0.0
-        result.extras["raw_annual"] = ref.annual.to_dicts()
+        result.extras["raw_annual"] = ref.annual.rename({"cost_gbp": "cost"}).to_dicts()
         schemes.append(result)
 
     if "bsuos_history" in refs and "bsuos" in baselines:
@@ -263,7 +263,7 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
             attribution_pct=(cum / raw_total) if raw_total else 0.0,
             attribution_note=hist.attribution_rule,
             attribution_confidence=hist.attribution_confidence or "low",
-            extras={"raw_annual": raw_annual.to_dicts(),
+            extras={"raw_annual": raw_annual.rename({"cost_gbp": "cost"}).to_dicts(),
                     "source": hist.source, "source_url": hist.source_url,
                     "verified": hist.verified},
         ))

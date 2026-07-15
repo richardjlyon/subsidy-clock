@@ -47,9 +47,9 @@ def test_load_ro_stations_reads_named_stations_with_buyout_value(tmp_path):
     rows = load_ro_stations(csv)
 
     assert rows == [
-        {"station": "Drax Power Station", "technology": "Biomass", "cost_gbp": 6480000000.0},
+        {"station": "Drax Power Station", "technology": "Biomass", "cost": 6480000000.0},
         {"station": "London Array Offshore Windfarm", "technology": "Offshore Wind",
-         "cost_gbp": 2920000000.0},
+         "cost": 2920000000.0},
     ]
 
 
@@ -71,9 +71,9 @@ def test_groups_phased_contracts_into_one_station():
     # Keyed on cfd_id, not name (names differ by phase; ids are exact).
     recipients = [
         {"cfd_id": "WAL-001", "unit_name": "Walney Extension Offshore Wind Farm Phase 1",
-         "technology": "Offshore Wind", "cost_gbp": 300.0},
+         "technology": "Offshore Wind", "cost": 300.0},
         {"cfd_id": "WAL-002", "unit_name": "Walney Extension Offshore Wind Farm Phase 2",
-         "technology": "Offshore Wind", "cost_gbp": 200.0},
+         "technology": "Offshore Wind", "cost": 200.0},
     ]
     station_map = {"WAL-001": "Walney Extension", "WAL-002": "Walney Extension"}
 
@@ -83,7 +83,7 @@ def test_groups_phased_contracts_into_one_station():
     row = rows[0]
     assert row["station"] == "Walney Extension"
     assert row["technology"] == "Offshore Wind"
-    assert row["cost_gbp"] == 500.0
+    assert row["cost"] == 500.0
     # the per-contract phases are preserved, sorted by cost descending
     assert [c["unit_name"] for c in row["contracts"]] == [
         "Walney Extension Offshore Wind Farm Phase 1",
@@ -94,7 +94,7 @@ def test_groups_phased_contracts_into_one_station():
 def test_unmapped_unit_falls_back_to_its_own_name():
     # cfd_id absent from the map -> the contract stands alone under its unit name.
     recipients = [{"cfd_id": "HOR-XX", "unit_name": "Hornsea Project Two",
-                   "technology": "Offshore Wind", "cost_gbp": 100.0}]
+                   "technology": "Offshore Wind", "cost": 100.0}]
 
     rows = group_by_station(recipients, station_map={})
 
@@ -105,11 +105,11 @@ def test_unmapped_unit_falls_back_to_its_own_name():
 def test_stations_sorted_by_total_cost_descending():
     recipients = [
         {"cfd_id": "S-1", "unit_name": "Small A", "technology": "Onshore Wind",
-         "cost_gbp": 50.0},
+         "cost": 50.0},
         {"cfd_id": "B-1", "unit_name": "Big P1", "technology": "Offshore Wind",
-         "cost_gbp": 300.0},
+         "cost": 300.0},
         {"cfd_id": "B-2", "unit_name": "Big P2", "technology": "Offshore Wind",
-         "cost_gbp": 300.0},
+         "cost": 300.0},
     ]
     station_map = {"B-1": "Big", "B-2": "Big"}
 
@@ -122,9 +122,9 @@ def test_stations_sorted_by_total_cost_descending():
 def test_mixed_technology_station_labelled_mixed():
     recipients = [
         {"cfd_id": "C-1", "unit_name": "Combo Wind", "technology": "Offshore Wind",
-         "cost_gbp": 10.0},
+         "cost": 10.0},
         {"cfd_id": "C-2", "unit_name": "Combo Solar", "technology": "Solar PV",
-         "cost_gbp": 10.0},
+         "cost": 10.0},
     ]
     station_map = {"C-1": "Combo", "C-2": "Combo"}
 

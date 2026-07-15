@@ -59,7 +59,7 @@ def cumulative_svg(timeseries: dict, member_ids: list[str],
     years = sorted({a["year"] for sid, _ in member for a in schemes[sid]["annual"]})
     cum: dict[str, dict[int, float]] = {}
     for sid, _ in member:
-        by_year = {a["year"]: a["cost_gbp_2024"] for a in schemes[sid]["annual"]}
+        by_year = {a["year"]: a["cost_real"] for a in schemes[sid]["annual"]}
         run, series = 0.0, {}
         for y in years:
             run += by_year.get(y, 0.0)
@@ -121,7 +121,7 @@ def fmt_asof(iso: str) -> str:
 
 def _first_year(timeseries: dict, scheme_id: str) -> int | None:
     annual = timeseries.get("schemes", {}).get(scheme_id, {}).get("annual", [])
-    years = [a["year"] for a in annual if a.get("cost_gbp")]
+    years = [a["year"] for a in annual if a.get("cost")]
     return min(years) if years else None
 
 
@@ -137,17 +137,17 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
     datestr = datetime.fromisoformat(totals["generated_at"]).strftime("%Y-%m-%d")
 
     # Real-2024 basis throughout (matches the dashboard). KeyError on a missing
-    # real_2024 block fails the build loudly rather than publishing silently
+    # real block fails the build loudly rather than publishing silently
     # nominal cards. Per-scheme real cumulatives are the sum of the deflated
     # annual series (mirrors realCumById in site/app.js and the chart card).
-    rr = r["real_2024"]
-    real_cum = {sid: float(sum(a.get("cost_gbp_2024", 0.0) for a in s["annual"]))
+    rr = r["real"]
+    real_cum = {sid: float(sum(a.get("cost_real", 0.0) for a in s["annual"]))
                 for sid, s in timeseries.get("schemes", {}).items()}
 
     def _real_cum(scheme_id: str, nominal: float) -> float:
         return real_cum[scheme_id] if scheme_id in real_cum else nominal
 
-    ir = (totals.get("indirect") or {}).get("real_2024")
+    ir = (totals.get("indirect") or {}).get("real")
     yr = r["since_year"]
     HEAD = "Headline figures"
     facts = []
@@ -156,19 +156,19 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
     # Direct (measured) card and a full-cost (direct + estimated indirect) card,
     # so the /share page can lay them out in two columns.
     facts += [
-        {"slug": "total", "figure": fmt_full(rr["cumulative_gbp"]),
+        {"slug": "total", "figure": fmt_full(rr["cumulative"]),
          "label": "paid in direct, measured subsidy to renewable electricity "
                   f"generators since {yr}, in today’s money",
          "anchor": None, "stub": True, "group": HEAD, "scope": "direct"},
-        {"slug": "run-rate", "figure": fmt_full(rr["runrate_gbp_per_year"]),
+        {"slug": "run-rate", "figure": fmt_full(rr["runrate_per_year"]),
          "label": "a year — the current run-rate of direct subsidy to "
                   "renewable generators, in today’s money",
          "anchor": None, "stub": True, "group": HEAD, "scope": "direct"},
-        {"slug": "household", "figure": fmt_pence(rr["per_household_per_year_gbp"]),
+        {"slug": "household", "figure": fmt_pence(rr["per_household_per_year"]),
          "label": "per household per year in direct subsidy to renewable "
                   "generators, in today’s money",
          "anchor": None, "stub": True, "group": HEAD, "scope": "direct"},
-        {"slug": "per-mwh", "figure": fmt_pence(rr["per_mwh_delivered_gbp"]),
+        {"slug": "per-mwh", "figure": fmt_pence(rr["per_mwh_delivered"]),
          "label": "of direct subsidy on every MWh of electricity delivered "
                   "in the UK, in today’s money",
          "anchor": None, "stub": True, "group": HEAD, "scope": "direct"},
@@ -176,30 +176,30 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
     if ir:
         facts += [
             {"slug": "headline",
-             "figure": fmt_full(rr["cumulative_gbp"] + ir["cumulative_gbp"]),
+             "figure": fmt_full(rr["cumulative"] + ir["cumulative"]),
              "label": "the full cost of subsidising UK renewables since "
                       f"{yr}, including estimated indirect costs, in today’s money",
              "anchor": None, "stub": True, "group": HEAD, "scope": "full"},
             {"slug": "run-rate-full",
-             "figure": fmt_full(rr["runrate_gbp_per_year"] + ir["runrate_gbp_per_year"]),
+             "figure": fmt_full(rr["runrate_per_year"] + ir["runrate_per_year"]),
              "label": "a year — the full cost of UK renewable subsidy including "
                       "estimated indirect costs, in today’s money",
              "anchor": None, "stub": True, "group": HEAD, "scope": "full"},
             {"slug": "household-full",
-             "figure": fmt_pence(rr["per_household_per_year_gbp"] + ir["per_household_per_year_gbp"]),
+             "figure": fmt_pence(rr["per_household_per_year"] + ir["per_household_per_year"]),
              "label": "per household per year in subsidy to renewable generators "
                       "— the full cost including estimated indirect costs, in "
                       "today’s money",
              "anchor": None, "stub": True, "group": HEAD, "scope": "full"},
             {"slug": "per-mwh-full",
-             "figure": fmt_pence(rr["per_mwh_delivered_gbp"] + ir["per_mwh_delivered_gbp"]),
+             "figure": fmt_pence(rr["per_mwh_delivered"] + ir["per_mwh_delivered"]),
              "label": "on every MWh of electricity delivered — the full cost "
                       "including estimated indirect costs, in today’s money",
              "anchor": None, "stub": True, "group": HEAD, "scope": "full"},
             # the cumulative graph: the ninth headline card, terminating at the
             # full-cost total
             {"slug": "the-bill",
-             "figure": fmt_full(rr["cumulative_gbp"] + ir["cumulative_gbp"]),
+             "figure": fmt_full(rr["cumulative"] + ir["cumulative"]),
              "label": "the cumulative cost of direct and estimated indirect "
                       f"subsidy to renewables since {yr}, in today’s money",
              "anchor": "cost-per-year", "stub": True, "chart": True,
@@ -213,7 +213,7 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
         con = by_id["constraints"]
         first = _first_year(timeseries, "constraints")
         facts.append({"slug": "switch-off",
-                      "figure": fmt_full(_real_cum("constraints", con["cumulative_gbp"])),
+                      "figure": fmt_full(_real_cum("constraints", con["cumulative"])),
                       "label": "paid to wind farms to reduce output when the grid "
                                f"could not carry their electricity, since {first or 2010}, "
                                "in today’s money",
@@ -227,7 +227,7 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
         indirect = s["layer"] == "indirect"
         est = ", estimated" if indirect else ""
         facts.append({"slug": slug,
-                      "figure": fmt_full(_real_cum(scheme_id, s["cumulative_gbp"])),
+                      "figure": fmt_full(_real_cum(scheme_id, s["cumulative"])),
                       "label": f"{name} — cumulative cost{since}{est}, in today’s money",
                       "anchor": None, "stub": False,
                       "group": INDIRECT_G if indirect else DIRECT_G})

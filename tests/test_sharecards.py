@@ -9,44 +9,44 @@ TOTALS = {
     "generated_at": "2026-06-11T05:45:00+00:00",
     "perspectives": {
         "renewables": {
-            "cumulative_gbp": 108_634_210_556.78,
-            "runrate_gbp_per_year": 12_172_272_576.69,
-            "rate_gbp_per_sec": 385.72,
-            "per_household_per_year_gbp": 428.60,
+            "cumulative": 108_634_210_556.78,
+            "runrate_per_year": 12_172_272_576.69,
+            "rate_per_sec": 385.72,
+            "per_household_per_year": 428.60,
             "since_year": 2002,
-            # real_2024 deliberately distinct from nominal so the tests prove
+            # real deliberately distinct from nominal so the tests prove
             # the cards read the real basis, not the as-paid figures
-            "real_2024": {"cumulative_gbp": 130_000_000_000.0,
-                          "runrate_gbp_per_year": 11_800_000_000.0,
-                          "per_household_per_year_gbp": 415.40,
-                          "per_mwh_delivered_gbp": 45.00},
+            "real": {"cumulative": 130_000_000_000.0,
+                          "runrate_per_year": 11_800_000_000.0,
+                          "per_household_per_year": 415.40,
+                          "per_mwh_delivered": 45.00},
         },
-        "low_carbon": {"cumulative_gbp": 1.2e11, "since_year": 2002},
+        "low_carbon": {"cumulative": 1.2e11, "since_year": 2002},
     },
-    "indirect": {"cumulative_gbp": 77.5e9,
-                 "real_2024": {"cumulative_gbp": 90_000_000_000.0,
-                               "runrate_gbp_per_year": 7_000_000_000.0,
-                               "per_household_per_year_gbp": 250.00,
-                               "per_mwh_delivered_gbp": 25.00}},
+    "indirect": {"cumulative": 77.5e9,
+                 "real": {"cumulative": 90_000_000_000.0,
+                               "runrate_per_year": 7_000_000_000.0,
+                               "per_household_per_year": 250.00,
+                               "per_mwh_delivered": 25.00}},
 }
 
 BREAKDOWN = {
     "schemes": [
         {"id": "ro", "label": "Renewables Obligation", "layer": "direct",
-         "cumulative_gbp": 45.0e9},
+         "cumulative": 45.0e9},
         {"id": "constraints", "label": "Paid to switch off (constraints)",
-         "layer": "direct", "cumulative_gbp": 2.51e9},
+         "layer": "direct", "cumulative": 2.51e9},
         {"id": "bsuos", "label": "Balancing the grid (BSUoS)", "layer": "indirect",
-         "cumulative_gbp": 9.9e9},
+         "cumulative": 9.9e9},
     ],
 }
 
 TIMESERIES = {
     "schemes": {
-        "ro": {"annual": [{"year": 2002, "cost_gbp": 0.0, "cost_gbp_2024": 0.0},
-                          {"year": 2003, "cost_gbp": 3.1e8, "cost_gbp_2024": 48.0e9}]},
-        "constraints": {"annual": [{"year": 2010, "cost_gbp": 1.7e8, "cost_gbp_2024": 2.7e9}]},
-        "bsuos": {"annual": [{"year": 2018, "cost_gbp": 4.0e8, "cost_gbp_2024": 11.0e9}]},
+        "ro": {"annual": [{"year": 2002, "cost": 0.0, "cost_real": 0.0},
+                          {"year": 2003, "cost": 3.1e8, "cost_real": 48.0e9}]},
+        "constraints": {"annual": [{"year": 2010, "cost": 1.7e8, "cost_real": 2.7e9}]},
+        "bsuos": {"annual": [{"year": 2018, "cost": 4.0e8, "cost_real": 11.0e9}]},
     },
 }
 
@@ -79,7 +79,7 @@ def test_load_facts_headline_set(data_dir):
     # the four stubbed dashboard facts
     for slug in ("total", "run-rate", "household", "switch-off"):
         assert by_slug[slug]["stub"], slug
-    # real-basis (2024 prices): the real_2024 cumulative, NOT the nominal 108.6bn
+    # real-basis (2024 prices): the real cumulative, NOT the nominal 108.6bn
     assert by_slug["total"]["figure"] == "£130,000,000,000"
     assert by_slug["run-rate"]["figure"] == "£11,800,000,000"
     assert "today’s money" in by_slug["total"]["label"]
@@ -221,9 +221,9 @@ def test_load_facts_includes_factoids(data_dir, tmp_path):
 
 def test_cumulative_svg_stacks_and_is_monotonic():
     timeseries = {"schemes": {
-        "ro": {"annual": [{"year": 2002, "cost_gbp": 0.8e9, "cost_gbp_2024": 1.0e9},
-                          {"year": 2003, "cost_gbp": 1.7e9, "cost_gbp_2024": 2.0e9}]},
-        "bsuos": {"annual": [{"year": 2003, "cost_gbp": 0.4e9, "cost_gbp_2024": 0.5e9}]},
+        "ro": {"annual": [{"year": 2002, "cost": 0.8e9, "cost_real": 1.0e9},
+                          {"year": 2003, "cost": 1.7e9, "cost_real": 2.0e9}]},
+        "bsuos": {"annual": [{"year": 2003, "cost": 0.4e9, "cost_real": 0.5e9}]},
     }}
     svg = sharecards.cumulative_svg(timeseries, ["ro", "bsuos"])
     assert svg.startswith("<svg")
@@ -234,10 +234,10 @@ def test_cumulative_svg_stacks_and_is_monotonic():
 
 
 def test_cumulative_svg_uses_real_2024_series():
-    # nominal kept tiny: if the svg stacked cost_gbp the £40bn gridline
+    # nominal kept tiny: if the svg stacked cost the £40bn gridline
     # could not exist
     timeseries = {"schemes": {
-        "ro": {"annual": [{"year": 2002, "cost_gbp": 1.0e9, "cost_gbp_2024": 60.0e9}]},
+        "ro": {"annual": [{"year": 2002, "cost": 1.0e9, "cost_real": 60.0e9}]},
     }}
     svg = sharecards.cumulative_svg(timeseries, ["ro"])
     assert "£40bn" in svg
@@ -245,8 +245,8 @@ def test_cumulative_svg_uses_real_2024_series():
 
 def test_cumulative_svg_excludes_non_member_schemes():
     timeseries = {"schemes": {
-        "ro": {"annual": [{"year": 2002, "cost_gbp": 1.0e9, "cost_gbp_2024": 1.1e9}]},
-        "cfd_low_carbon": {"annual": [{"year": 2002, "cost_gbp": 9.0e9, "cost_gbp_2024": 9.9e9}]},
+        "ro": {"annual": [{"year": 2002, "cost": 1.0e9, "cost_real": 1.1e9}]},
+        "cfd_low_carbon": {"annual": [{"year": 2002, "cost": 9.0e9, "cost_real": 9.9e9}]},
     }}
     svg = sharecards.cumulative_svg(timeseries, ["ro"])
     assert svg.count("<rect") == 1
@@ -267,8 +267,8 @@ def test_load_facts_includes_the_bill_chart_fact(data_dir):
 def test_render_chart_card_produces_1200x630_png(tmp_path):
     pytest.importorskip("playwright.sync_api")
     timeseries = {"schemes": {
-        "ro": {"annual": [{"year": 2002, "cost_gbp": 1.0e9, "cost_gbp_2024": 1.2e9},
-                          {"year": 2003, "cost_gbp": 2.0e9, "cost_gbp_2024": 2.3e9}]},
+        "ro": {"annual": [{"year": 2002, "cost": 1.0e9, "cost_real": 1.2e9},
+                          {"year": 2003, "cost": 2.0e9, "cost_real": 2.3e9}]},
     }}
     fact = {"slug": "the-bill", "chart": True}
     sharecards.render_chart_card(timeseries, ["ro"], fact, "12 June 2026", tmp_path)

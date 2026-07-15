@@ -15,32 +15,33 @@ from subsidy_engine.sharecards import EXPLAINERS
 
 
 def _annual_records(annual: pl.DataFrame) -> list[dict]:
-    cols = [pl.col("year").cast(pl.Int64), pl.col("cost_gbp").cast(pl.Float64)]
+    cols = [pl.col("year").cast(pl.Int64),
+            pl.col("cost_gbp").cast(pl.Float64).alias("cost")]
     if "cost_gbp_2024" in annual.columns:
-        cols.append(pl.col("cost_gbp_2024").cast(pl.Float64))
+        cols.append(pl.col("cost_gbp_2024").cast(pl.Float64).alias("cost_real"))
     return annual.select(cols).to_dicts()
 
 
 def _money_block(p: dict, households: int, population: int, demand_mwh: float) -> dict:
     runrate = p["runrate_gbp_per_year"]
     block = {
-        "cumulative_gbp": p["cumulative_gbp"],
-        "runrate_gbp_per_year": runrate,
-        "rate_gbp_per_sec": p["rate_gbp_per_sec"],
-        "per_household_per_year_gbp": _floor2(runrate / households),
-        "per_person_per_year_gbp": _floor2(runrate / population),
-        "per_mwh_delivered_gbp": _floor2(runrate / demand_mwh),
+        "cumulative": p["cumulative_gbp"],
+        "runrate_per_year": runrate,
+        "rate_per_sec": p["rate_gbp_per_sec"],
+        "per_household_per_year": _floor2(runrate / households),
+        "per_person_per_year": _floor2(runrate / population),
+        "per_mwh_delivered": _floor2(runrate / demand_mwh),
         "since_year": p["since_year"],
     }
     if "cumulative_gbp_2024" in p:
         real_run = p["runrate_gbp_per_year_2024"]
-        block["real_2024"] = {
-            "cumulative_gbp": p["cumulative_gbp_2024"],
-            "runrate_gbp_per_year": real_run,
-            "rate_gbp_per_sec": p["rate_gbp_per_sec_2024"],
-            "per_household_per_year_gbp": _floor2(real_run / households),
-            "per_person_per_year_gbp": _floor2(real_run / population),
-            "per_mwh_delivered_gbp": _floor2(real_run / demand_mwh),
+        block["real"] = {
+            "cumulative": p["cumulative_gbp_2024"],
+            "runrate_per_year": real_run,
+            "rate_per_sec": p["rate_gbp_per_sec_2024"],
+            "per_household_per_year": _floor2(real_run / households),
+            "per_person_per_year": _floor2(real_run / population),
+            "per_mwh_delivered": _floor2(real_run / demand_mwh),
         }
     return block
 
@@ -196,7 +197,7 @@ def _map_data(model: dict, coords: dict, basemap: dict) -> dict:
                 "name": st["station"],
                 "scheme": scheme_id,
                 "technology": st["technology"],
-                "cost_gbp": st["cost_gbp"],
+                "cost": st["cost"],
                 "x": x,
                 "y": y,
             })
@@ -252,8 +253,8 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
     if bill_annual is not None:
         ts["electricity_bill"] = {"annual": bill_annual.select(
             pl.col("year").cast(pl.Int64),
-            pl.col("total_bill_gbp").cast(pl.Float64),
-            pl.col("total_bill_gbp_2024").cast(pl.Float64),
+            pl.col("total_bill_gbp").cast(pl.Float64).alias("total_bill"),
+            pl.col("total_bill_gbp_2024").cast(pl.Float64).alias("total_bill_real"),
         ).to_dicts()}
     (out / "timeseries.json").write_text(json.dumps(ts, indent=1, allow_nan=False))
 
@@ -269,8 +270,8 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
                 "attribution_pct": s.attribution_pct,
                 "attribution_note": s.attribution_note,
                 "attribution_confidence": s.attribution_confidence,
-                "cumulative_gbp": s.cumulative_gbp,
-                "runrate_gbp_per_year": s.runrate_gbp_per_year,
+                "cumulative": s.cumulative_gbp,
+                "runrate_per_year": s.runrate_gbp_per_year,
                 "data_to": s.data_to.isoformat() if s.data_to else None,
                 **{k: v for k, v in s.extras.items()},
             }
@@ -279,7 +280,7 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
     }, indent=1, default=str, allow_nan=False))
 
     combined_real = _combined_real_gbp(model)
-    headline = ({"combined_real_gbp": combined_real}
+    headline = ({"combined_real": combined_real}
                 if combined_real is not None else None)
     (out / "meta.json").write_text(json.dumps({
         "generated_at": generated_at,
@@ -417,9 +418,10 @@ def write_csvs(model: dict, out_dir: Path | str,
     for s in model["schemes"]:
         name = CSV_NAMES.get(s.scheme_id, s.scheme_id)
         df = s.annual.sort("year")
-        write(df, f"{name}.csv", _series_note(s))
+        write(df.rename({"cost_gbp": "cost", "cost_gbp_2024": "cost_real"},
+                        strict=False), f"{name}.csv", _series_note(s))
         col = df.select(pl.col("year"),
-                        pl.col("cost_gbp").alias(f"{s.scheme_id}_gbp"))
+                        pl.col("cost_gbp").alias(s.scheme_id))
         combined = col if combined is None else combined.join(
             col, on="year", how="full", coalesce=True)
     if combined is not None:
@@ -442,10 +444,10 @@ def write_widget(totals: dict, out_path: Path | str) -> None:
     figure so a JS-blocked iframe still shows a dated number. The stamped
     fallback uses the default embed state: real (2024 prices) + combined
     (direct + estimated indirect), matching the front page."""
-    rr = totals["perspectives"]["renewables"]["real_2024"]
-    ii = totals["indirect"]["real_2024"]
-    cum = rr["cumulative_gbp"] + ii["cumulative_gbp"]
-    rate = rr["rate_gbp_per_sec"] + ii["rate_gbp_per_sec"]
+    rr = totals["perspectives"]["renewables"]["real"]
+    ii = totals["indirect"]["real"]
+    cum = rr["cumulative"] + ii["cumulative"]
+    rate = rr["rate_per_sec"] + ii["rate_per_sec"]
     d = datetime.fromisoformat(totals["generated_at"])
     asof = f"{d.day} {d.strftime('%B %Y')}"
     html = (WIDGET_TEMPLATE.read_text()

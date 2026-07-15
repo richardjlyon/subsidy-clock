@@ -43,15 +43,15 @@ def load_station_coords(path):
 def load_ro_stations(path):
     """Load named RO recipients from the reference CSV, valued at buy-out.
 
-    Returns a list of ``{station, technology, cost_gbp}`` dicts, sorted as the
-    file is. ``cost_gbp`` is the buy-out value (the directly-sourced per-generator
+    Returns a list of ``{station, technology, cost}`` dicts, sorted as the
+    file is. ``cost`` is the buy-out value (the directly-sourced per-generator
     basis); the RO scheme total additionally includes recycle value, so these
     per-station figures understate the full cost by the recycle element.
     """
     with Path(path).open(newline="") as f:
         return [
             {"station": row["station"], "technology": row["technology"],
-             "cost_gbp": float(row["buyout_gbp"])}
+             "cost": float(row["buyout_gbp"])}
             for row in csv.DictReader(f)
         ]
 
@@ -60,7 +60,7 @@ def group_by_station(recipients, station_map):
     """Collapse per-contract recipient rows into per-station rows.
 
     ``recipients`` is a list of dicts with ``cfd_id``, ``unit_name``,
-    ``technology`` and ``cost_gbp``. ``station_map`` maps a ``cfd_id`` to its
+    ``technology`` and ``cost``. ``station_map`` maps a ``cfd_id`` to its
     physical-station short name; a contract whose id is absent from the map
     stands alone under its own ``unit_name``. Joining on ``cfd_id`` (not name)
     is exact — phased farms whose unit names differ still collapse correctly.
@@ -74,13 +74,13 @@ def group_by_station(recipients, station_map):
 
     rows = []
     for station, contracts in stations.items():
-        contracts = sorted(contracts, key=lambda c: c["cost_gbp"], reverse=True)
+        contracts = sorted(contracts, key=lambda c: c["cost"], reverse=True)
         techs = {c["technology"] for c in contracts}
         rows.append({
             "station": station,
             "technology": next(iter(techs)) if len(techs) == 1 else "Mixed",
-            "cost_gbp": sum(c["cost_gbp"] for c in contracts),
+            "cost": sum(c["cost"] for c in contracts),
             "contracts": contracts,
         })
-    rows.sort(key=lambda s: s["cost_gbp"], reverse=True)
+    rows.sort(key=lambda s: s["cost"], reverse=True)
     return rows

@@ -30,12 +30,12 @@
   var realCumById = {};
   Object.keys((timeseries && timeseries.schemes) || {}).forEach(function (id) {
     var sum = 0;
-    timeseries.schemes[id].annual.forEach(function (a) { sum += a.cost_gbp_2024; });
+    timeseries.schemes[id].annual.forEach(function (a) { sum += a.cost_real; });
     realCumById[id] = sum;
   });
-  var REAL_RUNRATE_FACTOR = totals.perspectives.renewables.runrate_gbp_per_year
-    ? totals.perspectives.renewables.real_2024.runrate_gbp_per_year /
-      totals.perspectives.renewables.runrate_gbp_per_year
+  var REAL_RUNRATE_FACTOR = totals.perspectives.renewables.runrate_per_year
+    ? totals.perspectives.renewables.real.runrate_per_year /
+      totals.perspectives.renewables.runrate_per_year
     : 1;
 
   // ---------- formatting ----------
@@ -90,11 +90,11 @@
   function persp() { return totals.perspectives[state.perspective]; }
   function pv() { // perspective values on the selected price basis
     var p = persp();
-    return state.real ? p.real_2024 : p;
+    return state.real ? p.real : p;
   }
   function iv() { // indirect values on the selected price basis
     if (!indirectTotals) return null;
-    return state.real ? indirectTotals.real_2024 : indirectTotals;
+    return state.real ? indirectTotals.real : indirectTotals;
   }
   // active(): the headline aggregate for the current basis AND scope - direct
   // only, or direct + estimated indirect when state.combined. Every headline
@@ -102,23 +102,23 @@
   function active() {
     var d = pv(), i = state.combined ? iv() : null;
     if (!i) return {
-      cumulative_gbp: d.cumulative_gbp,
-      rate_gbp_per_sec: d.rate_gbp_per_sec,
-      runrate_gbp_per_year: d.runrate_gbp_per_year,
-      per_household_per_year_gbp: d.per_household_per_year_gbp,
-      per_mwh_delivered_gbp: d.per_mwh_delivered_gbp
+      cumulative: d.cumulative,
+      rate_per_sec: d.rate_per_sec,
+      runrate_per_year: d.runrate_per_year,
+      per_household_per_year: d.per_household_per_year,
+      per_mwh_delivered: d.per_mwh_delivered
     };
     return {
-      cumulative_gbp: d.cumulative_gbp + i.cumulative_gbp,
-      rate_gbp_per_sec: d.rate_gbp_per_sec + i.rate_gbp_per_sec,
-      runrate_gbp_per_year: d.runrate_gbp_per_year + i.runrate_gbp_per_year,
-      per_household_per_year_gbp: d.per_household_per_year_gbp + i.per_household_per_year_gbp,
-      per_mwh_delivered_gbp: d.per_mwh_delivered_gbp + i.per_mwh_delivered_gbp
+      cumulative: d.cumulative + i.cumulative,
+      rate_per_sec: d.rate_per_sec + i.rate_per_sec,
+      runrate_per_year: d.runrate_per_year + i.runrate_per_year,
+      per_household_per_year: d.per_household_per_year + i.per_household_per_year,
+      per_mwh_delivered: d.per_mwh_delivered + i.per_mwh_delivered
     };
   }
   function liveCumulative(t) {
     var a = active();
-    return a.cumulative_gbp + a.rate_gbp_per_sec * (t - generatedAt) / 1000;
+    return a.cumulative + a.rate_per_sec * (t - generatedAt) / 1000;
   }
   // floor to the nearest £10bn STRICTLY below - the "over £Nbn" claim always
   // understates by construction, in every basis/scope state.
@@ -126,15 +126,15 @@
     var f = Math.floor(v / 1e10) * 1e10;
     return f === v ? f - 1e10 : f;
   }
-  function flooredActiveGbp() { return floorStepBelow(active().cumulative_gbp); }
+  function flooredActiveGbp() { return floorStepBelow(active().cumulative); }
   function schemeCumulative(s) {
-    return state.real && realCumById[s.id] != null ? realCumById[s.id] : s.cumulative_gbp;
+    return state.real && realCumById[s.id] != null ? realCumById[s.id] : s.cumulative;
   }
   function schemeRunrate(s) {
-    return state.real ? s.runrate_gbp_per_year * REAL_RUNRATE_FACTOR : s.runrate_gbp_per_year;
+    return state.real ? s.runrate_per_year * REAL_RUNRATE_FACTOR : s.runrate_per_year;
   }
   function annualCost(a) {
-    return state.real ? a.cost_gbp_2024 : a.cost_gbp;
+    return state.real ? a.cost_real : a.cost;
   }
 
   // ---------- hero (static parts) ----------
@@ -145,14 +145,14 @@
   // same rule to the factoid sentences (_floor_step_below); they must never
   // disagree.
   function combinedRealFlooredGbp() {
-    var combined = totals.perspectives.renewables.real_2024.cumulative_gbp +
-                   indirectTotals.real_2024.cumulative_gbp;
+    var combined = totals.perspectives.renewables.real.cumulative +
+                   indirectTotals.real.cumulative;
     var floored = Math.floor(combined / 1e10) * 1e10;
     return floored === combined ? floored - 1e10 : floored; // exact boundary: step down
   }
   function hasCombinedReal() {
-    return !!(indirectTotals && indirectTotals.real_2024 &&
-              totals.perspectives.renewables.real_2024);
+    return !!(indirectTotals && indirectTotals.real &&
+              totals.perspectives.renewables.real);
   }
 
   var FN = '<sup class="hero-fn" title="Estimated between official updates: the counter ' +
@@ -185,7 +185,7 @@
       // When indirect is OFF the counter is direct-only, so name what the full
       // picture would be; when ON the counter already IS the combined figure.
       var ftInd = iv();
-      var combinedBn = ftInd ? floorStepBelow(pv().cumulative_gbp + ftInd.cumulative_gbp) / 1e9 : null;
+      var combinedBn = ftInd ? floorStepBelow(pv().cumulative + ftInd.cumulative) / 1e9 : null;
       ftLead.innerHTML =
         'Paid to renewable &amp; low-carbon generators through the Renewables ' +
         'Obligation, Contracts for Difference, Feed-in Tariffs and constraint payments.' +
@@ -211,7 +211,7 @@
   function tick() {
     var t = Date.now();
     var d = new Date(t);
-    var rate = active().rate_gbp_per_sec;
+    var rate = active().rate_per_sec;
     els.heroValue.textContent = fmtFull(liveCumulative(t));
     els.sinceOpened.textContent = fmtPence(rate * (t - openedAt) / 1000);
     els.month.textContent = fmtCompact(rate * 2629800); // avg month = 365.25/12 days
@@ -307,7 +307,7 @@
       c.bottom_up_from ? fmtDate(c.bottom_up_from) + ' – ' + fmtDate(c.bottom_up_to) : '';
     var rows = (c.by_recipient || []).slice(0, 8).map(function (r) {
       return '<tr><td>' + esc(r.lead_party) + '</td>' +
-        '<td class="num-col money">' + fmtCompact(r.cost_gbp) + '</td>' +
+        '<td class="num-col money">' + fmtCompact(r.cost) + '</td>' +
         '<td class="num-col cell-dim">' + fmtInt(Math.abs(r.volume_mwh)) + '</td></tr>';
     }).join('');
     document.querySelector('#con-table tbody').innerHTML = rows;
@@ -370,7 +370,7 @@
     }).sort(bySize);
 
     var ind = iv();
-    var grand = pv().cumulative_gbp + (ind ? ind.cumulative_gbp : 0);
+    var grand = pv().cumulative + (ind ? ind.cumulative : 0);
     function rowHtml(s) {
       var m = SCHEME_META[s.id];
       var v = schemeCumulative(s);
@@ -383,20 +383,20 @@
         '<span class="pct num">' + pct + '%</span></a>';
     }
 
-    document.getElementById('direct-card-total').textContent = fmtCompact(pv().cumulative_gbp);
+    document.getElementById('direct-card-total').textContent = fmtCompact(pv().cumulative);
     document.getElementById('direct-card-sub').textContent =
       'paid through electricity bills and taxes since ' + persp().since_year +
-      ' · adding ' + fmtPence(pv().rate_gbp_per_sec) + ' a second';
+      ' · adding ' + fmtPence(pv().rate_per_sec) + ' a second';
     document.getElementById('direct-card-rows').innerHTML = direct.map(rowHtml).join('');
 
-    document.getElementById('indirect-card-total').textContent = ind ? fmtCompact(ind.cumulative_gbp) : '—';
+    document.getElementById('indirect-card-total').textContent = ind ? fmtCompact(ind.cumulative) : '—';
     document.getElementById('indirect-card-sub').textContent = ind ?
-      'adding ' + fmtPence(ind.rate_gbp_per_sec) + ' a second at the current run-rate' : '';
+      'adding ' + fmtPence(ind.rate_per_sec) + ' a second at the current run-rate' : '';
     document.getElementById('indirect-card-rows').innerHTML = indirect.map(rowHtml).join('');
 
     var lc = totals.perspectives.low_carbon;
     if (lc) {
-      var delta = lc.cumulative_gbp - totals.perspectives.renewables.cumulative_gbp;
+      var delta = lc.cumulative - totals.perspectives.renewables.cumulative;
       // Biomass is counted in the renewable headline; the only thing the
       // low-carbon view adds is nuclear, which is £0 until Hinkley generates.
       document.getElementById('direct-card-foot').innerHTML = delta > 1e6
@@ -414,21 +414,21 @@
   // carry the basis/scope meaning.
   function renderStripExtras() {
     document.getElementById('strip-household').textContent =
-      fmtPence(active().per_household_per_year_gbp);
+      fmtPence(active().per_household_per_year);
     document.getElementById('strip-permwh').textContent =
-      fmtPence(active().per_mwh_delivered_gbp);
+      fmtPence(active().per_mwh_delivered);
 
     var bill = timeseries.electricity_bill;
     var share = null, year = null;
     if (bill && bill.annual && bill.annual.length) {
-      var billCost = function (a) { return state.real ? a.total_bill_gbp_2024 : a.total_bill_gbp; };
+      var billCost = function (a) { return state.real ? a.total_bill_real : a.total_bill; };
       var directBy = {}, indirectBy = {};
       timeseries.perspectives[state.perspective].annual.forEach(function (a) { directBy[a.year] = annualCost(a); });
       if (timeseries.indirect) {
         timeseries.indirect.annual.forEach(function (a) { indirectBy[a.year] = annualCost(a); });
       }
       // same complete-year rule as renderShareChart
-      var complete = bill.annual.filter(function (a) { return a.total_bill_gbp > 0; });
+      var complete = bill.annual.filter(function (a) { return a.total_bill > 0; });
       var last = complete[complete.length - 1];
       if (last) {
         year = last.year;
@@ -451,7 +451,7 @@
       if (!s || !s.by_technology) return;
       s.by_technology.forEach(function (t) {
         if (!combined[t.technology]) combined[t.technology] = { cost: 0, mwh: 0 };
-        combined[t.technology].cost += t.cost_gbp;
+        combined[t.technology].cost += t.cost;
         combined[t.technology].mwh += t.generation_mwh;
       });
     });
@@ -483,7 +483,7 @@
       var stations = (s && s.by_station) || [];
       stations.forEach(function (r) {
         rows.push({
-          name: r.station, tech: r.technology, scheme: 'CfD', cost: r.cost_gbp,
+          name: r.station, tech: r.technology, scheme: 'CfD', cost: r.cost,
           detail: null, contracts: (r.contracts && r.contracts.length > 1) ? r.contracts : null
         });
       });
@@ -491,14 +491,14 @@
     var ro = schemesById.ro;
     (ro && ro.by_station || []).forEach(function (r) {
       rows.push({
-        name: r.station, tech: r.technology, scheme: 'RO', cost: r.cost_gbp,
+        name: r.station, tech: r.technology, scheme: 'RO', cost: r.cost,
         detail: 'buy-out basis', contracts: null
       });
     });
     var c = schemesById.constraints;
     (c && c.by_recipient || []).forEach(function (r) {
       rows.push({
-        name: r.lead_party, tech: 'Wind (curtailed)', scheme: 'Constraints', cost: r.cost_gbp,
+        name: r.lead_party, tech: 'Wind (curtailed)', scheme: 'Constraints', cost: r.cost,
         detail: fmtInt(Math.abs(r.volume_mwh)) + ' MWh curtailed', contracts: null
       });
     });
@@ -525,7 +525,7 @@
           '<td colspan="4"><ul class="contract-list">' +
           r.contracts.map(function (ct) {
             return '<li>' + esc(ct.unit_name) +
-              ' <span class="num-col money">' + fmtCompact(ct.cost_gbp) + '</span></li>';
+              ' <span class="num-col money">' + fmtCompact(ct.cost) + '</span></li>';
           }).join('') + '</ul></td></tr>';
       }
     });
@@ -721,7 +721,7 @@
     }
     section.hidden = false;
 
-    function billCost(a) { return state.real ? a.total_bill_gbp_2024 : a.total_bill_gbp; }
+    function billCost(a) { return state.real ? a.total_bill_real : a.total_bill; }
     var billByYear = {}, directByYear = {}, indirectByYear = {};
     bill.annual.forEach(function (a) { billByYear[a.year] = billCost(a); });
     timeseries.perspectives[state.perspective].annual.forEach(function (a) {
@@ -862,8 +862,8 @@
     // lead-in quotes - 'in today's money' travels with it (integrity rule).
     // anchored to the default real-direct headline (not the live switches) so
     // the shared text always matches the OG card
-    var rDef = totals.perspectives.renewables.real_2024;
-    var bn = Math.floor((rDef.cumulative_gbp + rDef.rate_gbp_per_sec * (Date.now() - generatedAt) / 1000) / 1e8) / 10;
+    var rDef = totals.perspectives.renewables.real;
+    var bn = Math.floor((rDef.cumulative + rDef.rate_per_sec * (Date.now() - generatedAt) / 1000) / 1e8) / 10;
     var full = hasCombinedReal()
       ? ' (over £' + (combinedRealFlooredGbp() / 1e9) +
         ' billion in today\u2019s money with estimated indirect costs)'

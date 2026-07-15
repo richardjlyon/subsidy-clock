@@ -48,8 +48,8 @@ var SC = (function () {
     var r = totals.perspectives.renewables;
     return {
       generatedAt: Date.parse(totals.generated_at),
-      secsPerYear: r.runrate_gbp_per_year / r.rate_gbp_per_sec,
-      households: r.runrate_gbp_per_year / r.per_household_per_year_gbp
+      secsPerYear: r.runrate_per_year / r.rate_per_sec,
+      households: r.runrate_per_year / r.per_household_per_year
     };
   }
 

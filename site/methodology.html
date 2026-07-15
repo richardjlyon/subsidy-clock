@@ -312,16 +312,16 @@
   (function () {
     var r = totals.perspectives.renewables, lc = totals.perspectives.low_carbon;
     if (!lc) return;
-    document.getElementById('persp-renewables').textContent = fmtBn(r.cumulative_gbp);
-    document.getElementById('persp-lowcarbon').textContent = fmtBn(lc.cumulative_gbp);
-    document.getElementById('persp-delta').textContent = fmtBn(lc.cumulative_gbp - r.cumulative_gbp);
+    document.getElementById('persp-renewables').textContent = fmtBn(r.cumulative);
+    document.getElementById('persp-lowcarbon').textContent = fmtBn(lc.cumulative);
+    document.getElementById('persp-delta').textContent = fmtBn(lc.cumulative - r.cumulative);
   })();
 
   // the lead-in figure's parents, beside the table its link lands on (audit 7a)
   (function () {
     var r = totals.perspectives.renewables, ind = totals.indirect;
-    if (!r.real_2024 || !ind || !ind.real_2024) return;
-    var direct = r.real_2024.cumulative_gbp, indirect = ind.real_2024.cumulative_gbp;
+    if (!r.real || !ind || !ind.real) return;
+    var direct = r.real.cumulative, indirect = ind.real.cumulative;
     var combined = direct + indirect;
     var floored = Math.floor(combined / 1e10) * 1e10;
     if (floored === combined) floored -= 1e10;
@@ -339,19 +339,19 @@
     var totN = 0, totR = 0;
     var ind = totals.indirect;
     document.querySelector('#prices-table tbody').innerHTML = annual.map(function (a) {
-      totN += a.cost_gbp; totR += a.cost_gbp_2024;
+      totN += a.cost; totR += a.cost_real;
       return '<tr><td class="num">' + a.year + '</td>' +
-        '<td class="num-col num">' + fmtBn(a.cost_gbp) + '</td>' +
-        '<td class="num-col num">' + fmtBn(a.cost_gbp_2024) + '</td></tr>';
+        '<td class="num-col num">' + fmtBn(a.cost) + '</td>' +
+        '<td class="num-col num">' + fmtBn(a.cost_real) + '</td></tr>';
     }).join('') +
       '<tr><td><strong>Total</strong></td>' +
       '<td class="num-col num"><strong>' + fmtBn(totN) + '</strong></td>' +
       '<td class="num-col num"><strong>' + fmtBn(totR) + '</strong></td></tr>' +
       // the combined-nominal figure's one public appearance (audit 7b)
-      (ind && ind.real_2024
+      (ind && ind.real
         ? '<tr><td><strong>Total incl. estimated indirect</strong></td>' +
-          '<td class="num-col num"><strong>' + fmtBn(totN + ind.cumulative_gbp) + '</strong></td>' +
-          '<td class="num-col num"><strong>' + fmtBn(totR + ind.real_2024.cumulative_gbp) + '</strong></td></tr>'
+          '<td class="num-col num"><strong>' + fmtBn(totN + ind.cumulative) + '</strong></td>' +
+          '<td class="num-col num"><strong>' + fmtBn(totR + ind.real.cumulative) + '</strong></td></tr>'
         : '');
     document.getElementById('prices-note').textContent =
       'Renewables-only direct schemes; the final year is partial; the last row adds the estimated indirect layer. Deflated with ONS CPIH (series L522) — see reference inputs in the repository.';
@@ -382,7 +382,7 @@
   // CfD gross vs net summary
   var cfdIds = ['cfd_renewable', 'cfd_low_carbon'];
   var grossSum = 0, netSum = 0, cfdOk = true;
-  cfdIds.forEach(function (id) { var s = byId[id]; if (s && s.gross_gbp != null && s.net_gbp != null) { grossSum += s.gross_gbp; netSum += s.net_gbp; } else { cfdOk = false; } });
+  cfdIds.forEach(function (id) { var s = byId[id]; if (s && s.gross != null && s.net != null) { grossSum += s.gross; netSum += s.net; } else { cfdOk = false; } });
   if (cfdOk) {
     var tobn = function (v) { return (v / 1e9).toFixed(2); };
     document.getElementById('cfd-gross-net').textContent =
@@ -426,11 +426,11 @@
     var s = byId[id];
     if (!s || !s.raw_annual) return;
     var raw = 0;
-    s.raw_annual.forEach(function (a) { raw += a.cost_gbp; });
+    s.raw_annual.forEach(function (a) { raw += a.cost; });
     var firstYr = s.raw_annual[0].year, lastYr = s.raw_annual[s.raw_annual.length - 1].year;
     document.getElementById('raw-' + id).innerHTML =
       'Raw ' + (id === 'tnuos' ? 'TNUoS revenue' : 'BSUoS cost') + ' ' + firstYr + '–' + lastYr +
-      ' totals <strong class="num">' + gbp(raw) + '</strong>; <strong class="num">' + gbp(s.cumulative_gbp) +
+      ' totals <strong class="num">' + gbp(raw) + '</strong>; <strong class="num">' + gbp(s.cumulative) +
       '</strong> (<span class="num">' + (s.attribution_pct * 100).toFixed(1) + '%</span>) is attributed.';
   });
 
@@ -449,8 +449,8 @@
   document.querySelector('#crosscheck-table tbody').innerHTML = xcheck.components.map(function (c) {
     return '<tr>' +
       '<td>' + esc(XCHECK_LABELS[c.component] || c.component) + '</td>' +
-      '<td class="num-col">' + gbp(c.ours_gbp) + '</td>' +
-      '<td class="num-col">' + gbp(c.ref_gbp) + '</td>' +
+      '<td class="num-col">' + gbp(c.ours) + '</td>' +
+      '<td class="num-col">' + gbp(c.ref) + '</td>' +
       '<td class="num-col">' + (c.divergence_pct != null ? c.divergence_pct.toFixed(1) + '%' : 'n/a') + '</td>' +
       '<td class="cell-dim">' + (c.note ? esc(c.note) : '—') + '</td>' +
     '</tr>';
@@ -463,41 +463,41 @@
       tnuos: 'Transmission (TNUoS)', bsuos: 'Balancing (BSUoS)', ets: 'Emissions trading',
       capacity_market: 'Capacity Market' };
     var refBn = function (v) { return '£' + (v / 1e9).toFixed(1) + 'bn'; };
-    var totalPct = (refRecon.ours_total_gbp - refRecon.ref_total_gbp) / refRecon.ref_total_gbp * 100;
+    var totalPct = (refRecon.ours_total - refRecon.ref_total) / refRecon.ref_total * 100;
     document.querySelector('#ref-recon-table tbody').innerHTML =
       refRecon.components.map(function (c) {
         var div = c.divergence_pct == null ? '—'
           : (c.divergence_pct > 0 ? '+' : '') + c.divergence_pct.toFixed(1) + '%';
         return '<tr><td>' + (REF_NAMES[c.component] || c.component) + '</td>' +
-          '<td class="num-col money">' + (c.ours_gbp === 0 ? 'not counted' : refBn(c.ours_gbp)) + '</td>' +
-          '<td class="num-col money">' + refBn(c.ref_gbp) + '</td>' +
+          '<td class="num-col money">' + (c.ours === 0 ? 'not counted' : refBn(c.ours)) + '</td>' +
+          '<td class="num-col money">' + refBn(c.ref) + '</td>' +
           '<td class="num-col">' + div + '</td>' +
           '<td class="cell-dim">' + (c.note ? esc(c.note) : '—') + '</td></tr>';
       }).join('') +
       (function () {
-        var rowsStr = refBn(refRecon.ref_total_gbp);
-        var pubStr = refBn(refRecon.ref_total_published_gbp || refRecon.ref_total_gbp);
+        var rowsStr = refBn(refRecon.ref_total);
+        var pubStr = refBn(refRecon.ref_total_published || refRecon.ref_total);
         var nomNote = 'REF’s rows sum to ' + rowsStr +
           (pubStr !== rowsStr ? '; its published headline is ' + pubStr : '');
         return '<tr class="total-row"><td>Total (nominal)</td>' +
-          '<td class="num-col money">' + refBn(refRecon.ours_total_gbp) + '</td>' +
-          '<td class="num-col money">' + refBn(refRecon.ref_total_gbp) + '</td>' +
+          '<td class="num-col money">' + refBn(refRecon.ours_total) + '</td>' +
+          '<td class="num-col money">' + refBn(refRecon.ref_total) + '</td>' +
           '<td class="num-col">' + totalPct.toFixed(1) + '%</td>' +
           '<td class="cell-dim">' + nomNote + '</td></tr>';
       })() +
       '<tr class="total-row"><td>Total (2024 prices), to ' + refRecon.ours_through_year + '</td>' +
-      '<td class="num-col money">' + refBn(refRecon.ours_real_2024_gbp) + '</td>' +
-      '<td class="num-col money">' + refBn(refRecon.ref_real_2024_gbp) + '</td>' +
+      '<td class="num-col money">' + refBn(refRecon.ours_real) + '</td>' +
+      '<td class="num-col money">' + refBn(refRecon.ref_real) + '</td>' +
       '<td class="num-col"></td>' +
       '<td class="cell-dim">REF’s real total spans its full window and uses REF’s own deflation; ours is CPIH</td></tr>';
-    var coverage = refRecon.stricter_gap_gbp >= refRecon.gap_gbp
-      ? ', more than the whole ' + refBn(refRecon.gap_gbp) + ' gap'
-      : ' of the ' + refBn(refRecon.gap_gbp) + ' gap';
+    var coverage = refRecon.stricter_gap >= refRecon.gap
+      ? ', more than the whole ' + refBn(refRecon.gap) + ' gap'
+      : ' of the ' + refBn(refRecon.gap) + ' gap';
     document.getElementById('ref-recon-summary').innerHTML =
       'Like-for-like, the Clock lands <strong>' + Math.abs(totalPct).toFixed(0) +
       (totalPct < 0 ? '% below' : '% above') + ' REF’s total</strong>. The components its attributions deliberately count more ' +
       'strictly — the power-sector-only ETS and CCL shares, BSUoS with constraint payments ' +
-      'netted off — or decline to count at all (REGO) remove ' + refBn(refRecon.stricter_gap_gbp) +
+      'netted off — or decline to count at all (REGO) remove ' + refBn(refRecon.stricter_gap) +
       coverage + '; everywhere else the two ' +
       'reconstructions agree within ten per cent.';
   }
@@ -514,8 +514,8 @@
   document.getElementById('recon-summary').innerHTML =
     'Across <strong class="num">' + recon.matched_days + '</strong> matched days (' +
     recon.excluded_recent_days + ' recent days excluded for the ' + recon.settlement_lag_days +
-    '-day settlement lag), the bottom-up total is <strong class="num">' + gbp(o.bottom_up_gbp) +
-    '</strong> against an official <strong class="num">' + gbp(o.official_gbp) +
+    '-day settlement lag), the bottom-up total is <strong class="num">' + gbp(o.bottom_up) +
+    '</strong> against an official <strong class="num">' + gbp(o.official) +
     '</strong> — an overall divergence of <strong class="num">' + (o.divergence_pct != null ? o.divergence_pct.toFixed(2) : 'n/a') +
     '%</strong>. The tolerance is ±' + recon.tolerance_pct + '%, and the overall result is <strong>' +
     (recon.within_tolerance ? 'within tolerance' : 'outside tolerance') + '</strong>.';
@@ -525,9 +525,9 @@
     return '<tr' + (out ? ' class="out-of-tolerance"' : '') + '>' +
       '<td class="num">' + esc(m.month) + '</td>' +
       '<td class="num-col">' + m.days_compared + '</td>' +
-      '<td class="num-col">' + gbp(m.bottom_up_gbp) + '</td>' +
-      '<td class="num-col">' + gbp(m.official_gbp) + '</td>' +
-      '<td class="num-col">' + gbp(m.abs_divergence_gbp) + '</td>' +
+      '<td class="num-col">' + gbp(m.bottom_up) + '</td>' +
+      '<td class="num-col">' + gbp(m.official) + '</td>' +
+      '<td class="num-col">' + gbp(m.abs_divergence) + '</td>' +
       '<td class="num-col">' + (m.divergence_pct != null ? m.divergence_pct.toFixed(2) + '%' : 'n/a') + '</td>' +
     '</tr>';
   }).join('');

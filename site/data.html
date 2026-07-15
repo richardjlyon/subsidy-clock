@@ -62,8 +62,12 @@
 
   <p>Per-scheme files share one schema: <code>year</code> (the calendar year for
   daily-settled schemes — CfD, constraints, BSUoS — and the published scheme or levy year,
-  labelled by its starting year, for the rest), <code>cost_gbp</code> (nominal pounds, as
-  paid), <code>cost_gbp_2024</code> (the same series in 2024 prices, ONS CPIH, series L522).
+  labelled by its starting year, for the rest), <code>cost</code> (as paid, in the currency
+  of publication), <code>cost_real</code> (the same series restated in the price basis of a
+  single base year, using ONS CPIH, series L522). Column names carry no currency or base
+  year: both are settings rather than facts about the column, so they are published as
+  metadata in <a href="data/meta.json"><code>meta.json</code></a> — read
+  <code>deflator.base_year</code> for the base year <code>cost_real</code> is expressed in.
   The current year is a partial year. Amounts for indirect schemes are the estimated share
   attributed to renewables — the attribution rules are
   <a href="/methodology#indirect">on the methodology page</a>.
@@ -84,7 +88,7 @@
       <tr><td><a href="data/emissions-trading.csv" download>emissions-trading.csv</a></td><td>Emissions trading</td><td>HMRC / DESNZ</td><td>indirect, estimated</td></tr>
       <tr><td><a href="data/tnuos.csv" download>tnuos.csv</a></td><td>Grid upgrades for renewables (TNUoS)</td><td>NESO</td><td>indirect, estimated</td></tr>
       <tr><td><a href="data/bsuos.csv" download>bsuos.csv</a></td><td>Balancing the grid (BSUoS)</td><td>NESO / Elexon</td><td>indirect, estimated</td></tr>
-      <tr><td><a href="data/combined-annual.csv" download>combined-annual.csv</a></td><td>All schemes, one column each, nominal £ — direct columns are measured, indirect columns estimated (layers as above)</td><td>—</td><td>both</td></tr>
+      <tr><td><a href="data/combined-annual.csv" download>combined-annual.csv</a></td><td>All schemes, one column each named for its scheme id, as paid — direct columns are measured, indirect columns estimated (layers as above)</td><td>—</td><td>both</td></tr>
       <tr><td><a href="data/restatements.csv" download>restatements.csv</a></td><td>Every source revision the engine has recorded: when a publisher restates history, it is logged here, never silently overwritten</td><td>—</td><td>—</td></tr>
       <tr><td><a href="data/corrections.csv" download>corrections.csv</a></td><td>Corrections to our own published figures — every confirmed error: what was shown, what it now shows, and who found it</td><td>—</td><td>—</td></tr>
     </tbody>
