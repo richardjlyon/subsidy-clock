@@ -6,40 +6,40 @@
  "components": [
   {
    "component": "capacity_market",
-   "ours_gbp": 898210217.37,
-   "ref_gbp": 1000000000.0,
+   "ours": 898210217.37,
+   "ref": 1000000000.0,
    "divergence_pct": -10.179,
    "note": "",
    "explained": true
   },
   {
    "component": "ccl",
-   "ours_gbp": 1465000000.0,
-   "ref_gbp": 1900000000.0,
+   "ours": 1465000000.0,
+   "ref": 1900000000.0,
    "divergence_pct": -22.8947,
    "note": "REF counts total CCL receipts (OBR series, all fuels); we count electricity's share of main-rate receipts plus Carbon Price Support. Our figure is expected to be lower.",
    "explained": true
   },
   {
    "component": "ets",
-   "ours_gbp": 1305800000.0,
-   "ref_gbp": 6100000000.0,
+   "ours": 1305800000.0,
+   "ref": 6100000000.0,
    "divergence_pct": -78.5934,
    "note": "REF counts total ETS receipts (OBR series, all sectors); we count only the power-sector share of auctioned allowance revenue. Our figure is expected to be much lower.",
    "explained": true
   },
   {
    "component": "bsuos",
-   "ours_gbp": 981488223.89,
-   "ref_gbp": 2200000000.0,
+   "ours": 981488223.89,
+   "ref": 2200000000.0,
    "divergence_pct": -55.3869,
    "note": "REF does not net off direct constraint payments; we do. Our figure is expected to be lower.",
    "explained": true
   },
   {
    "component": "tnuos",
-   "ours_gbp": 2921051162.79,
-   "ref_gbp": 2900000000.0,
+   "ours": 2921051162.79,
+   "ref": 2900000000.0,
    "divergence_pct": 0.7259,
    "note": "",
    "explained": true
