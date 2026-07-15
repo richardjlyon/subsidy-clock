@@ -3,8 +3,8 @@ from datetime import date
 import httpx
 import polars as pl
 
-from subsidy_engine.elexon import wind_bmu_map
-from subsidy_engine.schemes import constraints
+from subsidy_engine_uk.elexon import wind_bmu_map
+from subsidy_engine_uk.schemes import constraints
 
 WIND = {"T_ABRBO-1": "Aberdeen Offshore Wind Farm"}
 

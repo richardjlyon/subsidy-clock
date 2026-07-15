@@ -17,7 +17,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/subsidy_engine"]
+packages = ["src/subsidy_engine", "src/subsidy_engine_uk"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

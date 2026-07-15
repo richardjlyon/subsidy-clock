@@ -1,6 +1,6 @@
 from datetime import date
 
-from subsidy_engine.schemes import cfd
+from subsidy_engine_uk.schemes import cfd
 
 GENERATION_RECORDS = [
     {

@@ -16,7 +16,7 @@ from datetime import date, datetime, timedelta, timezone
 import httpx
 import polars as pl
 
-from subsidy_engine import elexon
+from subsidy_engine_uk import elexon
 from subsidy_engine.store import SnapshotStore
 
 SOURCE_URL = elexon.API_BASE + "/balancing/settlement/stack/all/bid"

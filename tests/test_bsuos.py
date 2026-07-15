@@ -2,7 +2,7 @@ from datetime import date
 
 import httpx
 
-from subsidy_engine.schemes import bsuos
+from subsidy_engine_uk.schemes import bsuos
 from subsidy_engine.store import SnapshotStore
 
 RECORDS = [

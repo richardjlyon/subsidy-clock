@@ -1,6 +1,6 @@
 from datetime import date
 
-from subsidy_engine.schemes import capacity_market as cm
+from subsidy_engine_uk.schemes import capacity_market as cm
 
 RECORDS = [
     {
