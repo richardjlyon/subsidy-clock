@@ -58,6 +58,20 @@
   Each file's derivation is on the <a href="/methodology">methodology page</a>;
   citation formats are under <a href="/methodology#citing">Citing this site</a>.</p>
 
+  <p><strong>The column names changed on 15 July 2026.</strong> Currency and base year have
+  been dropped from every published column and JSON key: <code>cost_gbp</code> is now
+  <code>cost</code>, <code>cost_gbp_2024</code> is now <code>cost_real</code>,
+  <code>real_2024</code> is now <code>real</code>, and the same rule runs throughout —
+  <code>cumulative_gbp</code> became <code>cumulative</code>, <code>rate_gbp_per_sec</code>
+  became <code>rate_per_sec</code>. The rename moved no figure — it was verified as a change
+  of names and nothing else before it was published. (The series themselves keep changing
+  daily, as they always have; that is the data updating, not this.) A column name is the
+  wrong place to keep a currency or a price basis — the base year moves whenever the series
+  is rebased, and a name that hard-codes it has to break its readers every time that
+  happens. Both are published as metadata instead, in
+  <a href="data/meta.json"><code>meta.json</code></a>. If a script of yours broke, that is
+  the whole of it, and it was better done now than later.</p>
+
   <h2>Files</h2>
 
   <p>Per-scheme files share one schema: <code>year</code> (the calendar year for
