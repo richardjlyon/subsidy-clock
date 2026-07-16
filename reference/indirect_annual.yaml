@@ -22,6 +22,7 @@ schemes:
       Sums rounded down to the nearest GBP 0.1m.
     source_url: https://www.gov.uk/government/statistics/climate-change-levy-and-carbon-price-floor-bulletin
     verified: true
+    expected_next_update: 2027-03-31   # HMRC Environmental Taxes Bulletin, March edition
     attribution:
       rule: >-
         Electricity's share of CCL main-rate liabilities (HMRC's published
@@ -80,6 +81,7 @@ schemes:
       37.1/96.8, 30.4/85.6 MtCO2e); 2009-2020 a flat 0.5 estimate.
     source_url: https://www.gov.uk/government/publications/desnz-annual-report-and-accounts-2023-to-2024/trust-statement
     verified: false
+    expected_next_update: 2027-03-31   # UK ETS auction results, calendar-year sums
     attribution:
       rule: >-
         Power-sector share of AUCTIONED allowance revenue only; free
@@ -139,6 +141,7 @@ schemes:
       confirmation (not reached by the Turver/NESO series).
     source_url: https://www.neso.energy/industry-information/charging/tnuos-charges
     verified: false
+    expected_next_update: 2027-02-28   # NESO TNUoS charging statements
     attribution:
       rule: >-
         Raw totals stored; attribution happens in the money model. Only the
@@ -191,6 +194,7 @@ schemes:
       against National Grid Monthly Balancing Services Summary archives.
     source_url: https://www.nao.org.uk/wp-content/uploads/2014/05/Electricity-Balancing-Services.pdf
     verified: false
+    # expected_next_update: none — static: series ends 2016, where the fetched BSUoS data takes over. No refresh.
     attribution:
       rule: >-
         Raw totals stored; attribution happens in the money model. Only the

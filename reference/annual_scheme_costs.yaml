@@ -22,6 +22,7 @@ schemes:
       RO Annual Report 2010-11 (Mar 2012).
     source_url: https://www.ofgem.gov.uk/publications/renewables-obligation-ro-annual-report-scheme-year-22-april-2023-march-2024
     verified: true
+    expected_next_update: 2027-03-01   # Ofgem RO Annual Report, published ~March; SY24 (2025) needs compliance to complete autumn 2026
     note: >-
       Scheme value = ROCs presented for compliance x notional worth of a ROC
       (buy-out price + recycle value), Ofgem's own definition of the annual
@@ -68,6 +69,7 @@ schemes:
       GBP 1,844m in SY15, which fixes the year order of the charted values.
     source_url: https://www.ofgem.gov.uk/transparency-document/feed-tariffs-annual-report-scheme-year-15-april-2024-march-2025
     verified: true
+    expected_next_update: 2027-01-31   # Ofgem FiT Annual Report, one scheme year behind
     note: >-
       FIT scheme value per Ofgem: generation payments + export payments +
       qualifying FIT costs (the SY15 value of GBP 1,844m comprises
@@ -101,6 +103,7 @@ schemes:
       acceptance data), retrieved 9 June 2026.
     source_url: https://www.ref.org.uk/constraints/index.php?tab=yr
     verified: true
+    expected_next_update: 2027-02-01   # REF database is rolling; refresh once the prior calendar year is complete
     note: >-
       Calendar-year wind curtailment cost for years before the bottom-up
       Elexon backfill window. The money model uses these only for years not
