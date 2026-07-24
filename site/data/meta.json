@@ -1,26 +1,26 @@
 {
- "generated_at": "2026-07-23T07:59:02.071624+00:00",
+ "generated_at": "2026-07-24T07:56:32.778328+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-07-23T07:57:35.509733+00:00",
+   "retrieved_at": "2026-07-24T07:54:58.588250+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
-   "row_count": 111286
+   "row_count": 111367
   },
   "constraints": {
-   "retrieved_at": "2026-07-23T07:59:01.528273+00:00",
-   "source_date": "2025-06-05",
+   "retrieved_at": "2026-07-24T07:56:32.096525+00:00",
+   "source_date": "2025-05-29",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 26
+   "row_count": 85
   },
   "capacity_market": {
-   "retrieved_at": "2026-07-23T07:58:00.500246+00:00",
+   "retrieved_at": "2026-07-24T07:55:26.241304+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 758
   },
   "bsuos": {
-   "retrieved_at": "2026-07-23T07:58:02.942535+00:00",
+   "retrieved_at": "2026-07-24T07:55:28.468942+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/daily-balancing-costs-balancing-services-use-system",
    "row_count": 104
@@ -61,7 +61,7 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 228105960690.929
+  "combined_real": 228108905140.38208
  },
  "factoids": [
   {
@@ -165,11 +165,11 @@
   },
   {
    "slug": "police",
-   "figure": "245,000",
+   "figure": "244,000",
    "basis": "runrate",
    "figure_label": "police officers",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of UK renewable subsidy pays the salaries of 245,000 police officers, in today's money.",
+   "sentence": "A year of UK renewable subsidy pays the salaries of 244,000 police officers, in today's money.",
    "label": "police officers' annual salaries paid by one year of UK renewable subsidy, in today's money",
    "source_name": "Police Federation of England & Wales, constable pay scales (top of scale, from 1 September 2025)",
    "source_url": "https://polfed.org/resources/pay-scales/constable-pay-scales/"
