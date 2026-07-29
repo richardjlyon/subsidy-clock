@@ -31,10 +31,10 @@ justified in the commit message.
 - [x] 3.1 Vendor MapLibre GL JS + CSS + LICENSE into `site/assets/vendor/` with
       pinned version note and re-vendor procedure; add long-max-age header rule
       for `site/assets/vendor/` to `vercel.json`
-- [ ] 3.2 Rewrite `site/map.js`: boot MapLibre with OpenFreeMap style, terrain
+- [x] 3.2 Rewrite `site/map.js`: boot MapLibre with OpenFreeMap style, terrain
       enhancement (if 1.1 passed), pinned attribution, pinned boot-failure
       fallback, reduced-motion handling
-- [ ] 3.3 GeoJSON marker layer: area ∝ cost, scheme colours, zoom-interpolated
+- [x] 3.3 GeoJSON marker layer: area ∝ cost, scheme colours, zoom-interpolated
       radius, hover tooltip parity with today; visually-hidden focusable
       station list driving the panel (a11y path — canvas circles can't focus)
 - Gate: full suite green; manual QA desktop + iOS Safari/FxiOS; page weight

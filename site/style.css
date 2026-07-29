@@ -379,12 +379,15 @@ main > .card-pair { margin: 24px 0; }
 .chart .zeroline { stroke: var(--line); stroke-width: 1; }
 .chart rect.partial { opacity: 0.5; }
 
-/* ---------- recipients map (Mapbox basemap + jewel SVG markers) ---------- */
-.map-frame { position: relative; max-width: 480px; margin: 8px auto 0; }
-.map-frame img.map-base { display: block; width: 100%; height: auto; border-radius: 8px; }
-.map-overlay { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.map-marker { cursor: pointer; fill-opacity: 0.85; stroke: #fff; stroke-width: 1; paint-order: stroke; transition: fill-opacity 0.12s ease; }
-.map-marker:hover, .map-marker.is-active { fill-opacity: 1; stroke-width: 1.6; }
+/* ---------- recipients map (interactive MapLibre + jewel markers) ---------- */
+.map-frame { position: relative; margin: 8px auto 0; height: min(72vh, 640px); }
+.map-frame #map-canvas { position: absolute; inset: 0; border-radius: 8px; overflow: hidden; }
+/* keyboard path to the canvas markers: buttons hidden visually (not from
+   screen readers or tab order), shown while focused */
+#map-station-list button { position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+#map-station-list button:focus-visible { position: fixed; left: 8px; top: 8px;
+  width: auto; height: auto; clip-path: none; z-index: 20; padding: 6px 10px; }
 .map-popup {
   position: absolute; z-index: 5; pointer-events: none; display: none;
   min-width: 150px; max-width: 230px; padding: 8px 10px;

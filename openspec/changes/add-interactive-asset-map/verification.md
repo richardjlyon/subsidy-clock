@@ -26,6 +26,18 @@ the full list on the methodology page.
 credit; graceful-fallback requirement unchanged (terrain failure never breaks
 the map).
 
+## Task 3 page QA (2026-07-29, desktop Playwright)
+
+Local serve + rebuilt map.json: map boots keyless (positron style), 50 markers,
+jewel colours read from the CSS vars, hillshade renders beneath labels, both
+pinned attribution strings placed, legend + note intact, zero console errors.
+Keyboard path verified: hidden station list button (focus-visible reveal) →
+flyTo → popup with correct figures. Boot fallback text pinned via map.json
+(tiles.fallback). Page weight: maplibre-gl.js 276 KB gzipped (1.0 MB raw),
+css 10 KB gzipped, map.json 10 KB — /map only, immutable-cached under
+/assets/vendor/. iOS Safari/FxiOS QA outstanding → folded into the 4.2
+post-deploy smoke check.
+
 ## Golden-master note (2026-07-29)
 
 The archived harness (`~/Archive/pre-vault/.../golden_master.py`) targets the
