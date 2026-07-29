@@ -23,7 +23,7 @@ def main(argv: list[str] | None = None) -> int:
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_update = sub.add_parser("update", help="fetch latest data for scheme(s)")
-    p_update.add_argument("scheme", choices=["all", "cfd", "constraints", "cm", "bsuos"],
+    p_update.add_argument("scheme", choices=["all", "cfd", "constraints", "cm", "bsuos", "remit"],
                           nargs="?", default="all")
     p_update.set_defaults(fn=cli.cmd_update)
 

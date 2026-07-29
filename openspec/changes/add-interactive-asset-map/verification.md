@@ -38,6 +38,26 @@ css 10 KB gzipped, map.json 10 KB — /map only, immutable-cached under
 /assets/vendor/. iOS Safari/FxiOS QA outstanding → folded into the 4.2
 post-deploy smoke check.
 
+## Task 7.1 GO/NO-GO — LCCC contract-portfolio join (2026-07-29): GO
+
+Dataset `cfd-contract-portfolio-status` (resource fdaf09d2-8cff-4799-a5b0-
+1c59444e492b, 612 rows) carries CFD_ID, Status (enum: Live (Post-FIC) /
+Live (Pre-FIC) / Pre-MDD / Pre-Start Date / Terminated), plus allocation
+round and max contract capacity. Join measured against the settlement
+snapshot: all 82 settlement CfD ids present — 100% coverage, including every
+mapped-station contract. 48 terminated contracts in the portfolio.
+
+## Task 7.3 GO/NO-GO — REMIT history depth (2026-07-29): GO
+
+Elexon Insights REMIT (keyless) carries the historical archive, not just
+post-migration data: platform-wide events from 2016 (344 in H1-2016; 2014-15
+negligible), and per-BMU filtering works via `assetId` (e.g. T_HOWAO-1:
+events in 2019, 2021, 2023 — Hornsea 1's whole operating life, including the
+2021-22 payback period the chart showcases). The stream endpoint accepts
+6-month windows; `latestRevisionOnly=true` handles revision collapse
+server-side (still re-collapsed defensively in the engine). coverage_from is
+stamped per station regardless.
+
 ## Golden-master note (2026-07-29)
 
 The archived harness (`~/Archive/pre-vault/.../golden_master.py`) targets the

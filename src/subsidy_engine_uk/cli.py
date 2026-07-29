@@ -18,7 +18,7 @@ from subsidy_engine import money, reconcile, reference, sitedata
 from subsidy_engine.store import SnapshotStore
 from subsidy_engine_uk import build as uk_build
 from subsidy_engine_uk import stations
-from subsidy_engine_uk.schemes import bsuos, capacity_market, cfd, constraints
+from subsidy_engine_uk.schemes import bsuos, capacity_market, cfd, constraints, remit
 
 
 def make_store(root: Path) -> SnapshotStore:
@@ -33,6 +33,11 @@ def cmd_update(args: argparse.Namespace) -> int:
         "constraints": lambda: constraints.update(store),
         "cm": lambda: capacity_market.update(store),
         "bsuos": lambda: bsuos.update(store),
+        "remit": lambda: remit.update(
+            store,
+            sorted({b for ids in stations.load_station_bmus(
+                args.root / "reference" / "station_bmu_map.csv").values()
+                for b in ids})),
     }
     chosen = targets if args.scheme == "all" else {args.scheme: targets[args.scheme]}
     for name, fn in chosen.items():
@@ -71,9 +76,12 @@ def cmd_build_site(args: argparse.Namespace) -> int:
     station_map = stations.load_station_map(args.root / "reference" / "cfd_stations.csv")
     ro_stations = stations.load_ro_stations(args.root / "reference" / "ro_stations.csv")
     station_coords = stations.load_station_coords(args.root / "reference" / "station_coords.csv")
+    station_bmus = stations.load_station_bmus(args.root / "reference" / "station_bmu_map.csv")
+    enforcement_notes = stations.load_enforcement_notes(args.root / "reference" / "enforcement_notes.csv")
     map_tiles = json.loads((args.root / "reference" / "map_tiles.json").read_text())
     model = uk_build.build(store, refs, deflators=deflators, baselines=baselines,
-                           station_map=station_map, ro_stations=ro_stations)
+                           station_map=station_map, ro_stations=ro_stations,
+                           bmu_map=station_bmus)
     freshness = {}
     for scheme_id, table in [("cfd", "generation"), ("constraints", "daily"),
                               ("capacity_market", "payments"), ("bsuos", "daily")]:
@@ -94,6 +102,7 @@ def cmd_build_site(args: argparse.Namespace) -> int:
                    deflator_info=deflator_info,
                    bill_annual=bill, bill_info=bill_info, deflators=deflators,
                    coords=station_coords, tiles=map_tiles,
+                   notes=enforcement_notes,
                    equivalences=equivalences)
     sitedata.write_csvs(model, out_dir, restatements=store.all_restatements(),
                         generated=generated_at)

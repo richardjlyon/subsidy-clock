@@ -2,6 +2,7 @@ import pytest
 
 from subsidy_engine_uk.stations import (
     group_by_station,
+    load_enforcement_notes,
     load_ro_stations,
     load_station_coords,
     load_station_map,
@@ -156,3 +157,27 @@ def test_mixed_technology_station_labelled_mixed():
     rows = group_by_station(recipients, station_map)
 
     assert rows[0]["technology"] == "Mixed"
+
+
+def test_load_enforcement_notes_rejects_unofficial_domain(tmp_path):
+    p = tmp_path / "n.csv"
+    p.write_text('station,date,text,source_url\n'
+                 'Farm,2024-08-29,Text.,https://example.com/blog\n')
+    with pytest.raises(ValueError, match="allowlist"):
+        load_enforcement_notes(p)
+
+
+def test_load_enforcement_notes_empty_file_is_valid(tmp_path):
+    p = tmp_path / "n.csv"
+    p.write_text("station,date,text,source_url\n")
+    assert load_enforcement_notes(p) == {}
+
+
+def test_reference_enforcement_notes_load_and_cite_ofgem():
+    notes = load_enforcement_notes("reference/enforcement_notes.csv")
+    n = notes["Drax Power Station"]
+    assert n["source_url"].startswith("https://www.ofgem.gov.uk/")
+    # the note must carry Ofgem's balancing findings, not just the redress
+    assert "no evidence that ROCs were issued incorrectly" in n["text"]
+    assert "would not have affected the level of subsidy" in n["text"]
+    assert "£25m" in n["text"]

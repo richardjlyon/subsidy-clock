@@ -78,20 +78,20 @@ justified in the commit message.
 
 ## 7. Phase C — context layers (each behind go/no-go)
 
-- [ ] 7.1 GO/NO-GO: fetch LCCC contract-portfolio dataset; measure CfD_ID join
+- [x] 7.1 GO/NO-GO: fetch LCCC contract-portfolio dataset; measure CfD_ID join
       coverage against `cfd_stations.csv`; record result in the change. If NO:
       skip 7.2
-- [ ] 7.2 Portfolio-status fetcher + snapshot store + status join (pinned
+- [x] 7.2 Portfolio-status fetcher + snapshot store + status join (pinned
       "unknown" fallback) + panel status column; ship data + rendering together
-- [ ] 7.3 GO/NO-GO: measure REMIT history depth for a sample of mapped BMUs;
+- [x] 7.3 GO/NO-GO: measure REMIT history depth for a sample of mapped BMUs;
       record coverage window in the change; Richard decides ship/cut. If NO:
       skip 7.4–7.5
-- [ ] 7.4 Curate `reference/station_bmu_map.csv` from the Elexon BMU register,
+- [x] 7.4 Curate `reference/station_bmu_map.csv` from the Elexon BMU register,
       one source-cited row per BMU; loader + fixture tests
 - [ ] 7.5 REMIT fetcher (latest-revision-per-mRID collapse, window aggregation,
       coverage_from stamp) + outage strip rendering with pinned
       coverage-window wording; ship data + rendering together
-- [ ] 7.6 Enforcement notes: schema + loader (allowlist, station check,
+- [x] 7.6 Enforcement notes: schema + loader (allowlist, station check,
       fail-loud) + the Drax 2024 row drafted as close paraphrase, passed
       through the prepublication fact-check gate before commit + panel note
       rendering; ship together

@@ -67,7 +67,8 @@ def baseline_uplift(
             .select("year", "cost_gbp"))
 
 
-def _station_detail(sub: pl.DataFrame, station_rows: list) -> list:
+def _station_detail(sub: pl.DataFrame, station_rows: list,
+                    statuses: dict | None = None) -> list:
     """Per-station panel detail for the mapped CfD recipients.
 
     For each grouped station: the quarterly net payment/generation series
@@ -96,6 +97,9 @@ def _station_detail(sub: pl.DataFrame, station_rows: list) -> list:
                 "cfd_id": c["cfd_id"],
                 "unit_name": c["unit_name"],
                 "technology": c["technology"],
+                # LCCC lifecycle status placed verbatim; None -> the pinned
+                # "unknown" wording at site-data build, never a guess
+                "status": (statuses or {}).get(c["cfd_id"]),
                 "cumulative_gbp": c["cost"],
                 "first_settlement": cd["date"].min().isoformat() if cd.height else None,
                 "latest_strike_gbp_mwh": (float(strikes["strike_price_gbp_mwh"][-1])
@@ -113,10 +117,58 @@ def _station_detail(sub: pl.DataFrame, station_rows: list) -> list:
     return out
 
 
+# Outage-strip significance filter, disclosed in the panel's pinned wording
+# (sitedata.ASSET_STRINGS["outages_label"]): a REMIT message becomes a panel
+# window only if it ran >= 24h with >= 20% of the unit's normal capacity
+# unavailable. Big thermal units publish hundreds of small redeclarations a
+# year; without a disclosed threshold the strip is noise.
+OUTAGE_MIN_HOURS = 24
+OUTAGE_MIN_SHARE = 0.20
+
+
+def _attach_outages(station_detail: list, bmu_map: dict,
+                    outages: pl.DataFrame) -> None:
+    """Attach significant REMIT outage windows to each mapped station's detail.
+
+    Stations absent from ``bmu_map`` are left untouched — the panel renders
+    the pinned unavailable wording (unknown, never zero)."""
+    from subsidy_engine_uk.schemes.remit import COVERAGE_FROM
+    df = (outages
+          .with_columns(
+              pl.col("event_start").str.to_datetime("%Y-%m-%dT%H:%M:%S%#z",
+                                                    strict=False).alias("start_dt"),
+              pl.col("event_end").str.to_datetime("%Y-%m-%dT%H:%M:%S%#z",
+                                                  strict=False).alias("end_dt"))
+          .drop_nulls(["start_dt", "end_dt", "unavailable_mw", "normal_mw"])
+          .filter(
+              ((pl.col("end_dt") - pl.col("start_dt"))
+               >= pl.duration(hours=OUTAGE_MIN_HOURS))
+              & (pl.col("normal_mw") > 0)
+              & (pl.col("unavailable_mw")
+                 >= OUTAGE_MIN_SHARE * pl.col("normal_mw"))))
+    for d in station_detail:
+        ids = bmu_map.get(d["station"])
+        if not ids:
+            continue
+        w = df.filter(pl.col("bmu").is_in(ids)).sort("start_dt")
+        d["outages"] = {
+            "coverage_from": COVERAGE_FROM.isoformat(),
+            "windows": [
+                {"start": r["start_dt"].date().isoformat(),
+                 "end": r["end_dt"].date().isoformat(),
+                 "type": ("Planned" if (r["unavailability_type"] or "")
+                          .lower().startswith("plan") else "Unplanned"),
+                 "mw_lost": r["unavailable_mw"]}
+                for r in w.to_dicts()
+            ],
+        }
+
+
 def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
           *, deflators: pl.DataFrame, baselines: dict | None = None,
           station_map: dict | None = None,
-          ro_stations: list | None = None) -> dict:
+          ro_stations: list | None = None,
+          bmu_map: dict | None = None) -> dict:
     """Assemble every scheme result plus perspective totals and the indirect layer total.
 
     ``station_map`` (cfd_id -> physical-station short name) collapses phased CfD
@@ -164,7 +216,16 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
                       "by_station": by_station}
             if flag:
                 # renewables carry the mapped stations' panel detail
-                extras["station_detail"] = _station_detail(sub, by_station)
+                port = store.latest("cfd", "portfolio")
+                statuses = (dict(zip(port["cfd_id"], port["status"]))
+                            if port is not None and port.height else {})
+                extras["station_detail"] = _station_detail(sub, by_station,
+                                                           statuses)
+                if bmu_map:
+                    remit_df = store.latest("remit", "outages")
+                    if remit_df is not None and remit_df.height:
+                        _attach_outages(extras["station_detail"], bmu_map,
+                                        remit_df)
             schemes.append(SchemeResult(
                 scheme_id=part, label=label, perspectives=perspectives, cadence="daily",
                 annual=annualise_daily(daily),

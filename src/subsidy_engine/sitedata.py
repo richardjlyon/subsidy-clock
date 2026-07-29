@@ -163,11 +163,15 @@ ASSET_STRINGS = {
                  "station's receipts. Ofgem publishes richer per-station ROC "
                  "data; it is not yet shown here."),
     "hero_label_cfd": "cumulative payments",
+    "status_unknown": "unknown",
     "hero_label_ro": "cumulative buy-out value",
     "rate_label": "payment per subsidised MWh",
     "rate_not_shown": ("Payment per MWh is not shown: it is only computed when "
                        "cumulative payment and generation are both positive."),
     "outages_unavailable": "Outage history is not available for this station.",
+    "outages_label": ("Major outages (Elexon REMIT): periods of at least 24 "
+                      "hours with at least 20% of unit capacity unavailable. "
+                      "Records from {year}; earlier periods are not covered."),
     "source_cfd": ("Source: LCCC actual CfD generation and payments, daily "
                    "settlement."),
     "source_ro": ("Source: Ofgem Renewables Obligation annual reports "
@@ -175,7 +179,8 @@ ASSET_STRINGS = {
 }
 
 
-def _asset_data(model: dict, map_data: dict) -> dict:
+def _asset_data(model: dict, map_data: dict,
+                notes: dict | None = None) -> dict:
     """One JSON object per map marker: the asset X-ray panel's whole content.
 
     CfD markers carry the quarterly series, contract rows and stat tiles from
@@ -192,6 +197,12 @@ def _asset_data(model: dict, map_data: dict) -> dict:
     ro = by_id.get("ro")
     ro_data_to = (ro.data_to.isoformat()
                   if ro is not None and ro.data_to is not None else None)
+    notes = notes or {}
+    marker_names = {m["name"] for m in map_data["markers"]}
+    unknown = set(notes) - marker_names
+    if unknown:
+        raise ValueError("enforcement note(s) for station(s) not on the map: "
+                         + ", ".join(sorted(unknown)))
     out = {}
     for m in map_data["markers"]:
         if m["scheme"] == "cfd_renewable":
@@ -215,7 +226,12 @@ def _asset_data(model: dict, map_data: dict) -> dict:
                 "hero_gbp": d["cost"],
                 "hero_label": ASSET_STRINGS["hero_label_cfd"],
                 "quarters": d["quarters"],
-                "contracts": d["contracts"],
+                # LCCC lifecycle status verbatim; absent -> pinned "unknown"
+                "contracts": [
+                    dict(c, status=c.get("status")
+                         or ASSET_STRINGS["status_unknown"])
+                    for c in d["contracts"]
+                ],
                 "strings": {
                     "basis": ASSET_STRINGS["cfd_basis"],
                     "outages_unavailable": ASSET_STRINGS["outages_unavailable"],
@@ -223,6 +239,12 @@ def _asset_data(model: dict, map_data: dict) -> dict:
                 "provenance": {"source": ASSET_STRINGS["source_cfd"],
                                "data_to": d["data_to"]},
             }
+            if d.get("outages") is not None:
+                asset["outages"] = d["outages"]
+                asset["strings"]["outages_label"] = (
+                    ASSET_STRINGS["outages_label"].format(
+                        year=d["outages"]["coverage_from"][:4]))
+                del asset["strings"]["outages_unavailable"]
             if d["cost"] > 0 and d["generation_mwh"] > 0:
                 asset["tiles"] = {
                     "generation_mwh": d["generation_mwh"],
@@ -246,6 +268,8 @@ def _asset_data(model: dict, map_data: dict) -> dict:
                 "provenance": {"source": ASSET_STRINGS["source_ro"],
                                "data_to": ro_data_to},
             }
+        if m["name"] in notes:
+            asset["note"] = notes[m["name"]]
         out[m["slug"]] = asset
     return out
 
@@ -289,6 +313,7 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
           bill_info: dict | None = None,
           deflators: pl.DataFrame | None = None,
           coords: dict | None = None, tiles: dict | None = None,
+          notes: dict | None = None,
           equivalences: list[dict] | None = None) -> None:
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
@@ -375,7 +400,7 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
               f"{len(wanted - located)} stations missing coords")
         # per-asset X-ray JSONs, one per marker; dir cleared first so a
         # renamed slug can't leave a stale orphan behind
-        assets = _asset_data(model, map_data)
+        assets = _asset_data(model, map_data, notes)
         assets_dir = out / "assets"
         assets_dir.mkdir(exist_ok=True)
         for stale in assets_dir.glob("*.json"):

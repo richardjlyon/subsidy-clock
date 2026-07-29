@@ -91,6 +91,33 @@
     return t + '</tbody></table>';
   }
 
+  /* compact outage timeline: one lane, planned in muted blue, unplanned in
+     the payback copper; coverage window stated by the pinned label */
+  function outageStrip(o, dataTo) {
+    var W = 360, H = 22;
+    var t0 = Date.parse(o.coverage_from);
+    var t1 = dataTo ? Date.parse(dataTo) : t0;
+    o.windows.forEach(function (w) {
+      var e = Date.parse(w.end);
+      if (e > t1) t1 = e;
+    });
+    if (t1 <= t0) return '';
+    var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" ' +
+      'aria-label="Outage periods on a timeline">' +
+      '<line x1="0" x2="' + W + '" y1="' + (H - 4) + '" y2="' + (H - 4) +
+      '" stroke="#d8d2c4" stroke-width="2"/>';
+    o.windows.forEach(function (w) {
+      var x = (Date.parse(w.start) - t0) / (t1 - t0) * W;
+      var x2 = (Date.parse(w.end) - t0) / (t1 - t0) * W;
+      s += '<rect x="' + x.toFixed(1) + '" y="4" width="' +
+        Math.max(x2 - x, 1.5).toFixed(1) + '" height="' + (H - 8) + '" rx="1.5" ' +
+        'fill="' + (w.type === 'Planned' ? '#7ba6c9' : 'var(--xray-neg)') + '">' +
+        '<title>' + esc(w.type) + ': ' + esc(w.start) + ' → ' + esc(w.end) +
+        ' (' + Math.round(w.mw_lost) + ' MW)</title></rect>';
+    });
+    return s + '</svg>';
+  }
+
   var assetCache = {};
   var panelInvoker = null;
 
@@ -120,12 +147,26 @@
         '<div class="asset-chart">' + chartSVG(a.quarters) + '</div>' +
         chartTable(a.quarters);
     }
+    if (a.outages && a.outages.windows.length) {
+      var np = a.outages.windows.filter(function (w) {
+        return w.type === 'Planned';
+      }).length;
+      h += '<p class="asset-chart-title">Outages · ' + np + ' planned, ' +
+        (a.outages.windows.length - np) + ' unplanned</p>' +
+        '<div class="asset-chart">' +
+        outageStrip(a.outages, a.provenance.data_to) + '</div>' +
+        '<p class="asset-note">' + esc(a.strings.outages_label) + '</p>';
+    } else if (a.strings.outages_unavailable) {
+      h += '<p class="asset-note">' + esc(a.strings.outages_unavailable) + '</p>';
+    }
     if (a.contracts && a.contracts.length) {
       h += '<table class="asset-contracts"><thead><tr><th scope="col">Contract</th>' +
-        '<th scope="col">Since</th><th class="num" scope="col">Strike £/MWh</th>' +
+        '<th scope="col">Status</th><th scope="col">Since</th>' +
+        '<th class="num" scope="col">Strike £/MWh</th>' +
         '<th class="num" scope="col">Paid</th></tr></thead><tbody>';
       a.contracts.forEach(function (c) {
         h += '<tr><td>' + esc(c.cfd_id) + '</td>' +
+          '<td>' + esc(c.status) + '</td>' +
           '<td>' + (c.first_settlement ? esc(c.first_settlement.slice(0, 4)) : '—') + '</td>' +
           '<td class="num">' + (c.latest_strike_gbp_mwh != null
             ? c.latest_strike_gbp_mwh.toFixed(2) : '—') + '</td>' +
@@ -134,8 +175,11 @@
       });
       h += '</tbody></table>';
     }
+    if (a.note) {
+      h += '<p class="asset-note asset-regnote">' + esc(a.note.text) +
+        ' <a href="' + esc(a.note.source_url) + '" rel="noopener">Source</a>.</p>';
+    }
     h += '<p class="asset-note">' + esc(a.strings.basis) + '</p>';
-    h += '<p class="asset-note">' + esc(a.strings.outages_unavailable) + '</p>';
     h += '<p class="asset-prov">' + esc(a.provenance.source) +
       (a.provenance.data_to
         ? ' Data to ' + esc(fmtDate(a.provenance.data_to)) + '.' : '') + '</p>';

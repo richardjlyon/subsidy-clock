@@ -594,6 +594,8 @@ def test_asset_cfd_carries_quarters_contracts_tiles():
     q4 = next(q for q in a["quarters"] if q["q"] == "2021-Q4")
     assert q4["payment_gbp"] == -2.0e8
     assert a["contracts"][0]["cfd_id"] == "HOR-1"
+    # no portfolio status in the fixture -> pinned unknown, never a guess
+    assert a["contracts"][0]["status"] == "unknown"
     assert a["contracts"][0]["latest_strike_gbp_mwh"] == 158.0
     assert a["tiles"]["generation_mwh"] == 18e6
     assert a["tiles"]["rate_gbp_per_mwh"] == 2.5e9 / 18e6
@@ -655,3 +657,15 @@ def test_build_omits_map_json_without_coords(tmp_path):
     sitedata.build(model(), CTX, {}, tmp_path,
                    generated_at="2026-06-17T07:00:00+00:00")
     assert not (tmp_path / "map.json").exists()
+
+
+def test_asset_note_attached_and_unknown_station_fails():
+    mm = _map_model()
+    md = sitedata._map_data(mm, COORDS, TILES)
+    notes = {"Drax Power Station": {"date": "2024-08-29", "text": "Pinned text.",
+                                    "source_url": "https://www.ofgem.gov.uk/x"}}
+    assets = sitedata._asset_data(mm, md, notes)
+    assert assets["drax-power-station"]["note"]["text"] == "Pinned text."
+    assert "note" not in assets["hornsea-1"]
+    with pytest.raises(ValueError, match="Unknown Farm"):
+        sitedata._asset_data(mm, md, {"Unknown Farm": notes["Drax Power Station"]})
