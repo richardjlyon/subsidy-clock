@@ -1,0 +1,24 @@
+schema: spec-driven
+
+context: |
+  The Subsidy Clock — subsidyclock.co.uk, live. Python 3.13 + uv + polars engine
+  (src/subsidy_engine core, subsidy_engine_uk adapter); static site (vanilla JS,
+  no framework) rendered from engine-built JSON+CSV in site/. Vercel serves the
+  committed files — no build step.
+
+  Non-negotiables:
+  - Unimpeachable: every figure defensible to a hostile expert from primary sources.
+    Nulls render as unknown, never interpolated.
+  - The clock is live and must not move: the full test suite gates every change.
+  - Tests: `uv run --group dev python -m pytest -q` (NOT `uv run pytest`).
+  - Code and data land in ONE push (Vercel serves committed files; no build step).
+  - Page wording that matters is ENGINE-PINNED (ships in the JSON, test-pinned);
+    pages place strings, they do not author them.
+  - Voice: restrained, data-led, British English; facts stated from strength,
+    the reader concludes.
+
+rules:
+  proposal:
+    - Always include a Non-goals section - scope creep is the house failure mode
+  tasks:
+    - Every task block ends with its gate (tests / rebuild committed)

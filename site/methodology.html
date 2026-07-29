@@ -60,6 +60,7 @@
     <a href="#ref-reconciliation">Comparison with REF</a> ·
     <a href="#prices">Nominal &amp; 2024 prices</a> ·
     <a href="#equivalences">Equivalences</a> ·
+    <a href="#map">Map &amp; asset panels</a> ·
     <a href="#freshness">Data freshness</a> ·
     <a href="#corrections">Corrections</a> ·
     <a href="#citing">Citing this site</a></p>
@@ -196,6 +197,43 @@
     <li>Transport: the Renewable Transport Fuel Obligation (RTFO)</li>
     <li>Energy-efficiency obligations (ECO)</li>
   </ul>
+
+  <h2 id="map">The recipients map and asset panels</h2>
+  <p>The <a href="/map">map</a> shows one marker per station per scheme (a plant paid
+  under both CfD and RO appears once per scheme), positioned by the station’s
+  coordinates, with marker area proportional to cumulative payment. Clicking a
+  marker opens that asset’s panel. Definitions used in the panel:</p>
+  <ul>
+    <li><strong>Payment per subsidised MWh</strong> is cumulative CfD payment divided by
+    cumulative CfD generation — the average realised top-up per megawatt-hour. It is
+    <em>not</em> a levelised cost. It is only shown when cumulative payment and
+    generation are both positive.</li>
+    <li><strong>Quarterly chart</strong>: LCCC daily per-contract settlement summed by
+    calendar quarter across the station’s contracts. Negative quarters are real:
+    the market price exceeded the strike price and the generator paid back.</li>
+    <li><strong>Contract status</strong> comes from the <a href="https://dp.lowcarboncontracts.uk/dataset/cfd-contract-portfolio-status">LCCC
+    CfD Contract Portfolio Status</a> dataset, placed verbatim.</li>
+    <li><strong>Outage history</strong> comes from <a href="https://bmrs.elexon.co.uk/remit">Elexon’s REMIT transparency feed</a>,
+    matched to each station’s registered Balancing Mechanism units. Only sustained,
+    material outages are drawn: at least 24 hours with at least 20% of the unit’s
+    normal capacity unavailable. Records begin in 2016; earlier periods are not
+    covered, and stations without a registered BM unit (smaller,
+    distribution-connected farms) show no outage history rather than a false
+    “none”.</li>
+    <li><strong>Regulatory notes</strong> appear only where an official document exists
+    (Ofgem, LCCC), are close paraphrases of that document, and link to it.</li>
+  </ul>
+  <p class="caveat">Basemap: <a href="https://openfreemap.org">OpenFreeMap</a>
+  (© <a href="https://www.openmaptiles.org/">OpenMapTiles</a>, data from
+  <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>). Terrain:
+  <a href="https://registry.opendata.aws/terrain-tiles/">Terrain Tiles on AWS</a>
+  (Mapzen/Tilezen Joerd), which incorporates among others Copernicus EU-DEM
+  (produced using Copernicus data and information funded by the European Union),
+  United Kingdom terrain data © Environment Agency copyright and/or database right
+  2015, and USGS SRTM/GMTED2010 data —
+  <a href="https://github.com/tilezen/joerd/blob/master/docs/attribution.md">full
+  attribution list</a>. Map tiles are fetched by your browser directly from those
+  providers; no identifier beyond the tile request itself is sent.</p>
 
   <h2>Run-rate semantics</h2>
   <p>The per-second rates that drive the live counter are derived from each scheme’s recent run-rate: the trailing 365 days for daily schemes (CfD and constraints), the last 12 months for the Capacity Market, and the latest completed scheme year for RO and FIT. Values shown between official data updates are therefore <strong>estimates</strong>, and are replaced by official figures as they are published.</p>

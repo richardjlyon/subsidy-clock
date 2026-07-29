@@ -1,410 +1,473 @@
 {
- "basemap": {
-  "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/-3.05,54.45,4.72,0/480x640@2x",
-  "width": 480,
-  "height": 640,
-  "attribution": "\u00a9 Mapbox \u00a9 OpenStreetMap"
+ "tiles": {
+  "style_url": "https://tiles.openfreemap.org/styles/positron",
+  "center": [
+   -3.05,
+   54.45
+  ],
+  "zoom": 4.9,
+  "terrain": {
+   "tiles": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png",
+   "encoding": "terrarium",
+   "tile_size": 256,
+   "max_zoom": 15,
+   "exaggeration": 1.5
+  },
+  "attribution": "OpenFreeMap \u00a9 OpenMapTiles Data from OpenStreetMap",
+  "fallback": "The interactive map could not be loaded in this browser. Every recipient shown on it is listed in the data tables.",
+  "terrain_attribution": "Terrain: Mapzen/Tilezen Joerd (Copernicus EU-DEM, UK Environment Agency, USGS) \u2014 full credits on the methodology page",
+  "note": "Keyless tile sources, verified 2026-07-29 (openspec change add-interactive-asset-map, verification.md): OpenFreeMap public instance \u2014 no keys, no limits, commercial use permitted, no SLA; AWS Terrain Tiles via the AWS Open Data registry. Both attribution strings are engine-pinned into map.json; the page places them, never authors them. Swapping providers = edit this file + rebuild. The old Mapbox Static Images basemap (and its deploy-injected token) is gone."
  },
  "markers": [
   {
+   "slug": "hornsea-1",
    "name": "Hornsea 1",
    "scheme": "cfd_renewable",
    "technology": "Offshore Wind",
    "cost": 2554733803.5299997,
-   "x": 417.29242506470473,
-   "y": 356.49391926092176
+   "lat": 53.88,
+   "lon": 1.68
   },
   {
+   "slug": "walney-extension",
    "name": "Walney Ext",
    "scheme": "cfd_renewable",
    "technology": "Offshore Wind",
    "cost": 2283805478.2799997,
-   "x": 214.2494934419774,
-   "y": 343.2989087371707
+   "lat": 54.087,
+   "lon": -3.737
   },
   {
+   "slug": "drax",
    "name": "Drax",
    "scheme": "cfd_renewable",
    "technology": "Biomass Conversion",
    "cost": 1977955439.54,
-   "x": 316.84670821726377,
-   "y": 365.50783563954974
+   "lat": 53.738,
+   "lon": -0.9998
   },
   {
+   "slug": "dudgeon",
    "name": "Dudgeon",
    "scheme": "cfd_renewable",
    "technology": "Offshore Wind",
    "cost": 1565312495.78,
-   "x": 406.42248779858073,
-   "y": 396.323969406536
+   "lat": 53.2489,
+   "lon": 1.39
   },
   {
+   "slug": "beatrice",
    "name": "Beatrice",
    "scheme": "cfd_renewable",
    "technology": "Offshore Wind",
    "cost": 1412969243.55,
-   "x": 246.3720321904866,
-   "y": 62.69412400310512
+   "lat": 58.25,
+   "lon": -2.88
   },
   {
+   "slug": "east-anglia-1",
    "name": "EA 1",
    "scheme": "cfd_renewable",
    "technology": "Offshore Wind",
    "cost": 1074789031.6399999,
-   "x": 447.2784589022858,
-   "y": 459.40729812463815
+   "lat": 52.23,
+   "lon": 2.48
   },
   {
+   "slug": "lynemouth",
    "name": "Lynemouth",
    "scheme": "cfd_renewable",
    "technology": "Biomass Conversion",
    "cost": 949470047.21,
-   "x": 297.2883176467003,
-   "y": 270.9102764582494
+   "lat": 55.2044,
+   "lon": -1.5216
   },
   {
+   "slug": "burbo-bank-extension",
    "name": "Burbo Bank Ext",
    "scheme": "cfd_renewable",
    "technology": "Offshore Wind",
    "cost": 886716145.25,
-   "x": 231.64139306777452,
-   "y": 381.61865047208175
+   "lat": 53.483,
+   "lon": -3.273
   },
   {
+   "slug": "teesside",
    "name": "Teesside",
    "scheme": "cfd_renewable",
    "technology": "Dedicated Biomass",
    "cost": 278645899.01,
-   "x": 310.45593475562964,
-   "y": 310.4737909503483
+   "lat": 54.5975,
+   "lon": -1.1703
   },
   {
+   "slug": "neart-na-gaoithe",
    "name": "NNG",
    "scheme": "cfd_renewable",
    "technology": "Offshore Wind",
    "cost": 191447227.19,
-   "x": 270.1734465490672,
-   "y": 199.62213341736424
+   "lat": 56.275,
+   "lon": -2.245
   },
   {
+   "slug": "triton-knoll",
    "name": "Triton Knoll",
    "scheme": "cfd_renewable",
    "technology": "Offshore Wind",
    "cost": 129523775.42,
-   "x": 385.74336921333907,
-   "y": 381.90208766393243
+   "lat": 53.4785,
+   "lon": 0.8383
   },
   {
+   "slug": "dorenell",
    "name": "Dorenell",
    "scheme": "cfd_renewable",
    "technology": "Onshore Wind",
    "cost": 63420778.54,
-   "x": 238.68811101960637,
-   "y": 121.10135269019156
+   "lat": 57.4205,
+   "lon": -3.085
   },
   {
+   "slug": "kype-muir",
    "name": "Kype Muir",
    "scheme": "cfd_renewable",
    "technology": "Onshore Wind",
    "cost": 34610276.58,
-   "x": 202.58867453338735,
-   "y": 242.65175538107178
+   "lat": 55.6323,
+   "lon": -4.0481
   },
   {
+   "slug": "hornsea-2",
    "name": "Hornsea 2",
    "scheme": "cfd_renewable",
    "technology": "Offshore Wind",
    "cost": 33187070.23,
-   "x": 412.79451998906643,
-   "y": 353.94926361576563
+   "lat": 53.92,
+   "lon": 1.56
   },
   {
+   "slug": "clocaenog",
    "name": "Clocaenog",
    "scheme": "cfd_renewable",
    "technology": "Onshore Wind",
    "cost": 29774772.73,
-   "x": 223.5826464739239,
-   "y": 407.37042659032613
+   "lat": 53.0722,
+   "lon": -3.488
   },
   {
+   "slug": "middle-muir",
    "name": "Middle Muir",
    "scheme": "cfd_renewable",
    "technology": "Onshore Wind",
    "cost": 18839032.97,
-   "x": 211.57698817620258,
-   "y": 250.7398956806437
+   "lat": 55.5103,
+   "lon": -3.8083
   },
   {
+   "slug": "brenig",
    "name": "Brenig",
    "scheme": "cfd_renewable",
    "technology": "Onshore Wind",
    "cost": 14198182.77,
-   "x": 223.54516393162794,
-   "y": 405.9975646415778
+   "lat": 53.0942,
+   "lon": -3.489
   },
   {
+   "slug": "bad-a-cheo",
    "name": "Bad A Cheo",
    "scheme": "cfd_renewable",
    "technology": "Onshore Wind",
    "cost": 13736562.14,
-   "x": 225.95903965555317,
-   "y": 50.00459717730064
+   "lat": 58.4277,
+   "lon": -3.4246
   },
   {
+   "slug": "mynydd",
    "name": "Mynydd",
    "scheme": "cfd_renewable",
    "technology": "Onshore Wind",
    "cost": 10459141.94,
-   "x": 214.2195074081401,
-   "y": 445.9105299198627
+   "lat": 52.45,
+   "lon": -3.7378
   },
   {
+   "slug": "coire",
    "name": "Coire",
    "scheme": "cfd_renewable",
    "technology": "Onshore Wind",
    "cost": 7760510.19,
-   "x": 190.1294774738717,
-   "y": 95.29904618166984
+   "lat": 57.7893,
+   "lon": -4.3805
   },
   {
+   "slug": "sneddon",
    "name": "Sneddon",
    "scheme": "cfd_renewable",
    "technology": "Onshore Wind",
    "cost": 7660699.49,
-   "x": 191.60254138614346,
-   "y": 241.18391604103545
+   "lat": 55.6544,
+   "lon": -4.3412
   },
   {
+   "slug": "moray-east",
    "name": "Moray East",
    "scheme": "cfd_renewable",
    "technology": "Offshore Wind",
    "cost": 6459214.6899999995,
-   "x": 253.1751136173889,
-   "y": 68.5922515772686
+   "lat": 58.1671,
+   "lon": -2.6985
   },
   {
+   "slug": "moor-house",
    "name": "Moor House",
    "scheme": "cfd_renewable",
    "technology": "Onshore Wind",
    "cost": 6395458.77,
-   "x": 297.94801039112826,
-   "y": 312.64685814644236
+   "lat": 54.5639,
+   "lon": -1.504
   },
   {
+   "slug": "nanclach",
    "name": "Nanclach",
    "scheme": "cfd_renewable",
    "technology": "Onshore Wind",
    "cost": 4053933.07,
-   "x": 208.2710279456087,
-   "y": 123.09836078652734
+   "lat": 57.3918,
+   "lon": -3.8965
   },
   {
+   "slug": "achlachan",
    "name": "Achlachan",
    "scheme": "cfd_renewable",
    "technology": "Onshore Wind",
    "cost": 3554206.32,
-   "x": 224.74085703090077,
-   "y": 48.593884193352096
+   "lat": 58.4474,
+   "lon": -3.4571
   },
   {
+   "slug": "drax-power-station",
    "name": "Drax Power Station",
    "scheme": "ro",
    "technology": "Biomass",
    "cost": 6478643283.0,
-   "x": 316.84670821726377,
-   "y": 365.50783563954974
+   "lat": 53.738,
+   "lon": -0.9998
   },
   {
+   "slug": "london-array",
    "name": "London Array Offshore Windfarm",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 2921810149.0,
-   "x": 410.35815473976345,
-   "y": 496.0611925289295
+   "lat": 51.627,
+   "lon": 1.495
   },
   {
+   "slug": "greater-gabbard",
    "name": "Greater Gabbard",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 2198286741.0,
-   "x": 424.9126259136792,
-   "y": 477.50402399939594
+   "lat": 51.9333,
+   "lon": 1.8833
   },
   {
+   "slug": "gwynt-y-mor",
    "name": "Gwynt y Mor",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 1930213898.0,
-   "x": 219.42208427896003,
-   "y": 383.0670137364459
+   "lat": 53.46,
+   "lon": -3.599
   },
   {
+   "slug": "west-of-duddon-sands",
    "name": "West of Duddon Sands Offshore Wind Farm",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 1771953579.0,
-   "x": 224.63215765823952,
-   "y": 350.127704886675
+   "lat": 53.98,
+   "lon": -3.46
   },
   {
+   "slug": "race-bank",
    "name": "Race Bank",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 1750094370.0,
-   "x": 385.5559565018548,
-   "y": 394.6884562889645
+   "lat": 53.275,
+   "lon": 0.8333
   },
   {
+   "slug": "sheringham-shoal",
    "name": "Sheringham Shoal",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 1431951619.0,
-   "x": 396.80071919094644,
-   "y": 404.5927750428864
+   "lat": 53.1167,
+   "lon": 1.1333
   },
   {
+   "slug": "thanet",
    "name": "Thanet Offshore Wind Farm",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 1303265231.0,
-   "x": 415.5344938309772,
-   "y": 507.8942350427433
+   "lat": 51.4306,
+   "lon": 1.6331
   },
   {
+   "slug": "lincs",
    "name": "Lincs Wind Farm",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 1247317020.0,
-   "x": 372.4370666979121,
-   "y": 400.4302841320532
+   "lat": 53.1833,
+   "lon": 0.4833
   },
   {
+   "slug": "galloper",
    "name": "Galloper Wind Farm",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 1133757519.0,
-   "x": 433.0350928294356,
-   "y": 476.48862195616675
+   "lat": 51.95,
+   "lon": 2.1
   },
   {
+   "slug": "rampion",
    "name": "Rampion",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 1073161528.0,
-   "x": 343.82664216262856,
-   "y": 553.2463720768656
+   "lat": 50.67,
+   "lon": -0.28
   },
   {
+   "slug": "walney-2",
    "name": "Walney Offshore Wind Phase II",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 974459099.0,
-   "x": 219.04725885599055,
-   "y": 343.70146542176917
+   "lat": 54.0807,
+   "lon": -3.609
   },
   {
+   "slug": "westermost-rough",
    "name": "Westermost Rough",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 951506226.0,
-   "x": 359.90665280803205,
-   "y": 361.2585948607393
+   "lat": 53.805,
+   "lon": 0.149
   },
   {
+   "slug": "walney-1",
    "name": "Walney Offshore Wind Phase I",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 896126414.0,
-   "x": 222.5406317980678,
-   "y": 346.33893604850255
+   "lat": 54.0394,
+   "lon": -3.5158
   },
   {
+   "slug": "humber-gateway",
    "name": "Humber Gateway Offshore Wind Farm",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 838364104.0,
-   "x": 365.30788715302606,
-   "y": 371.464376824807
+   "lat": 53.6439,
+   "lon": 0.2931
   },
   {
+   "slug": "ormonde",
    "name": "Ormonde Wind Farm",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 629891547.0,
-   "x": 225.49425613106996,
-   "y": 343.23500523029634
+   "lat": 54.088,
+   "lon": -3.437
   },
   {
+   "slug": "whitelee",
    "name": "Whitelee Windfarm",
    "scheme": "ro",
    "technology": "Onshore Wind",
    "cost": 472768538.0,
-   "x": 191.5800518607648,
-   "y": 237.32772324460802
+   "lat": 55.7124,
+   "lon": -4.3418
   },
   {
+   "slug": "robin-rigg-east",
    "name": "Robin Rigg Offshore Wind Farm (East)",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 366298883.0,
-   "x": 214.88669666102578,
-   "y": 300.58831023855873
+   "lat": 54.75,
+   "lon": -3.72
   },
   {
+   "slug": "inner-dowsing",
    "name": "Inner Dowsing Offshore Wind Farm",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 365970909.0,
-   "x": 369.76456143213727,
-   "y": 402.0998058790274
+   "lat": 53.1566,
+   "lon": 0.412
   },
   {
+   "slug": "lynn",
    "name": "Lynn Offshore Wind Farm",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 360366128.0,
-   "x": 369.76456143213727,
-   "y": 402.0998058790274
+   "lat": 53.1566,
+   "lon": 0.412
   },
   {
+   "slug": "gunfleet-sands-1",
    "name": "Gunfleet Sands I",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 348766631.0,
-   "x": 398.1763284932458,
-   "y": 489.39922837895756
+   "lat": 51.7372,
+   "lon": 1.17
   },
   {
+   "slug": "burbo-bank",
    "name": "Burbo Offshore Windfarm - A (31/01/07)",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 319013493.0,
-   "x": 234.37012214699462,
-   "y": 381.0705866370927
+   "lat": 53.4917,
+   "lon": -3.2002
   },
   {
+   "slug": "robin-rigg-west",
    "name": "Robin Rigg Offshore Wind Farm (West)",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 308281938.0,
-   "x": 214.88669666102578,
-   "y": 300.58831023855873
+   "lat": 54.75,
+   "lon": -3.72
   },
   {
+   "slug": "rhyl-flats",
    "name": "Rhyl Flats Wind farm",
    "scheme": "ro",
    "technology": "Offshore Wind",
    "cost": 294062445.0,
-   "x": 217.6604047910023,
-   "y": 388.0986970496133
+   "lat": 53.38,
+   "lon": -3.646
   },
   {
+   "slug": "clyde-north",
    "name": "Clyde Windfarm (North)",
    "scheme": "ro",
    "technology": "Onshore Wind",
    "cost": 284952623.0,
-   "x": 217.34555143570742,
-   "y": 253.5912703614904
+   "lat": 55.4672,
+   "lon": -3.6544
   }
  ]
 }

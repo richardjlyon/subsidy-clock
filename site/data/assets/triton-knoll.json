@@ -1,0 +1,228 @@
+{
+ "slug": "triton-knoll",
+ "name": "Triton Knoll",
+ "scheme": "cfd_renewable",
+ "scheme_label": "CfD - renewables",
+ "technology": "Offshore Wind",
+ "hero_gbp": 129523775.42,
+ "hero_label": "cumulative payments",
+ "quarters": [
+  {
+   "q": "2021-Q2",
+   "payment_gbp": 653430.24,
+   "generation_mwh": 36059.922999999995
+  },
+  {
+   "q": "2021-Q3",
+   "payment_gbp": -6957584.460000001,
+   "generation_mwh": 175293.64500000002
+  },
+  {
+   "q": "2021-Q4",
+   "payment_gbp": -26904577.480000004,
+   "generation_mwh": 323770.607
+  },
+  {
+   "q": "2022-Q1",
+   "payment_gbp": -30232733.640000004,
+   "generation_mwh": 299480.74500000005
+  },
+  {
+   "q": "2022-Q2",
+   "payment_gbp": -9636733.809999997,
+   "generation_mwh": 229829.1390000001
+  },
+  {
+   "q": "2022-Q3",
+   "payment_gbp": -38353721.49999998,
+   "generation_mwh": 217281.01100000003
+  },
+  {
+   "q": "2022-Q4",
+   "payment_gbp": -20506958.180000007,
+   "generation_mwh": 488142.4959999998
+  },
+  {
+   "q": "2023-Q1",
+   "payment_gbp": -11810129.54,
+   "generation_mwh": 498379.4289999999
+  },
+  {
+   "q": "2023-Q2",
+   "payment_gbp": 4773376.970000002,
+   "generation_mwh": 504843.58300000016
+  },
+  {
+   "q": "2023-Q3",
+   "payment_gbp": 12739315.440000009,
+   "generation_mwh": 498088.4050000002
+  },
+  {
+   "q": "2023-Q4",
+   "payment_gbp": 25656227.890000023,
+   "generation_mwh": 1006640.6740000002
+  },
+  {
+   "q": "2024-Q1",
+   "payment_gbp": 38216015.790000014,
+   "generation_mwh": 1049058.626
+  },
+  {
+   "q": "2024-Q2",
+   "payment_gbp": 27402171.759999983,
+   "generation_mwh": 638290.3870000002
+  },
+  {
+   "q": "2024-Q3",
+   "payment_gbp": 23546104.769999985,
+   "generation_mwh": 577647.135
+  },
+  {
+   "q": "2024-Q4",
+   "payment_gbp": 19424451.060000002,
+   "generation_mwh": 851908.8469999998
+  },
+  {
+   "q": "2025-Q1",
+   "payment_gbp": 3509677.5300000026,
+   "generation_mwh": 637167.9970000004
+  },
+  {
+   "q": "2025-Q2",
+   "payment_gbp": 21599579.479999997,
+   "generation_mwh": 524959.3369999999
+  },
+  {
+   "q": "2025-Q3",
+   "payment_gbp": 22852331.950000003,
+   "generation_mwh": 532062.4409999996
+  },
+  {
+   "q": "2025-Q4",
+   "payment_gbp": 37838998.39,
+   "generation_mwh": 1050935.6320000007
+  },
+  {
+   "q": "2026-Q1",
+   "payment_gbp": 23028503.18000002,
+   "generation_mwh": 927342.8410000004
+  },
+  {
+   "q": "2026-Q2",
+   "payment_gbp": 10523263.409999998,
+   "generation_mwh": 583517.5549999998
+  },
+  {
+   "q": "2026-Q3",
+   "payment_gbp": 2162766.1700000004,
+   "generation_mwh": 105288.90199999997
+  }
+ ],
+ "contracts": [
+  {
+   "cfd_id": "AR2-TKN-303",
+   "unit_name": "Triton Knoll Offshore Wind Farm Phase 3",
+   "technology": "Offshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": 135609019.03,
+   "first_settlement": "2023-03-31",
+   "latest_strike_gbp_mwh": 108.2
+  },
+  {
+   "cfd_id": "AR2-TKN-203",
+   "unit_name": "Triton Knoll Offshore Wind Farm Phase 2",
+   "technology": "Offshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": -2332189.2800000003,
+   "first_settlement": "2021-07-06",
+   "latest_strike_gbp_mwh": 108.2
+  },
+  {
+   "cfd_id": "AR2-TKN-103",
+   "unit_name": "Triton Knoll Offshore Wind Farm Phase 1",
+   "technology": "Offshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": -3753054.33,
+   "first_settlement": "2021-05-17",
+   "latest_strike_gbp_mwh": 108.2
+  }
+ ],
+ "strings": {
+  "basis": "Payments and generation are LCCC daily settlement data, summed per contract from first settlement. Quarters below zero are periods when the market price exceeded the strike price and the generator paid back.",
+  "outages_label": "Major outages (Elexon REMIT): periods of at least 24 hours with at least 20% of unit capacity unavailable. Records from 2016; earlier periods are not covered."
+ },
+ "provenance": {
+  "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
+  "data_to": "2026-07-19"
+ },
+ "outages": {
+  "coverage_from": "2016-01-01",
+  "windows": [
+   {
+    "start": "2023-08-13",
+    "end": "2023-08-18",
+    "type": "Planned",
+    "mw_lost": 412.0
+   },
+   {
+    "start": "2024-01-10",
+    "end": "2024-02-02",
+    "type": "Unplanned",
+    "mw_lost": 91.0
+   },
+   {
+    "start": "2024-05-19",
+    "end": "2024-05-21",
+    "type": "Planned",
+    "mw_lost": 176.0
+   },
+   {
+    "start": "2025-01-14",
+    "end": "2025-01-22",
+    "type": "Planned",
+    "mw_lost": 153.0
+   },
+   {
+    "start": "2025-01-22",
+    "end": "2025-01-24",
+    "type": "Planned",
+    "mw_lost": 149.0
+   },
+   {
+    "start": "2025-02-09",
+    "end": "2025-02-11",
+    "type": "Unplanned",
+    "mw_lost": 89.0
+   },
+   {
+    "start": "2025-02-09",
+    "end": "2025-02-11",
+    "type": "Planned",
+    "mw_lost": 176.0
+   },
+   {
+    "start": "2025-06-08",
+    "end": "2025-06-15",
+    "type": "Planned",
+    "mw_lost": 412.0
+   },
+   {
+    "start": "2026-01-10",
+    "end": "2026-01-13",
+    "type": "Unplanned",
+    "mw_lost": 83.0
+   },
+   {
+    "start": "2026-04-02",
+    "end": "2026-04-10",
+    "type": "Unplanned",
+    "mw_lost": 93.0
+   }
+  ]
+ },
+ "tiles": {
+  "generation_mwh": 11755989.357,
+  "rate_gbp_per_mwh": 11.017683964036273,
+  "rate_label": "payment per subsidised MWh"
+ }
+}

@@ -1,0 +1,175 @@
+{
+ "slug": "nanclach",
+ "name": "Nanclach",
+ "scheme": "cfd_renewable",
+ "scheme_label": "CfD - renewables",
+ "technology": "Onshore Wind",
+ "hero_gbp": 4053933.07,
+ "hero_label": "cumulative payments",
+ "quarters": [
+  {
+   "q": "2019-Q4",
+   "payment_gbp": 1891705.0600000008,
+   "generation_mwh": 34366.38800000001
+  },
+  {
+   "q": "2020-Q1",
+   "payment_gbp": 3277513.350000001,
+   "generation_mwh": 54295.109
+  },
+  {
+   "q": "2020-Q2",
+   "payment_gbp": 1633547.5000000007,
+   "generation_mwh": 22478.917000000012
+  },
+  {
+   "q": "2020-Q3",
+   "payment_gbp": 1214174.69,
+   "generation_mwh": 21852.856
+  },
+  {
+   "q": "2020-Q4",
+   "payment_gbp": 1740927.5799999998,
+   "generation_mwh": 36216.50499999999
+  },
+  {
+   "q": "2021-Q1",
+   "payment_gbp": 1405640.52,
+   "generation_mwh": 42098.464
+  },
+  {
+   "q": "2021-Q2",
+   "payment_gbp": 633519.4600000001,
+   "generation_mwh": 23701.283
+  },
+  {
+   "q": "2021-Q3",
+   "payment_gbp": -768525.03,
+   "generation_mwh": 18600.55
+  },
+  {
+   "q": "2021-Q4",
+   "payment_gbp": -3702573.990000001,
+   "generation_mwh": 36020.814999999995
+  },
+  {
+   "q": "2022-Q1",
+   "payment_gbp": -4684985.44,
+   "generation_mwh": 47314.647999999994
+  },
+  {
+   "q": "2022-Q2",
+   "payment_gbp": -1281068.2299999997,
+   "generation_mwh": 28495.263000000003
+  },
+  {
+   "q": "2022-Q3",
+   "payment_gbp": -5162749.619999999,
+   "generation_mwh": 31339.813000000002
+  },
+  {
+   "q": "2022-Q4",
+   "payment_gbp": -2029562.29,
+   "generation_mwh": 35316.251000000004
+  },
+  {
+   "q": "2023-Q1",
+   "payment_gbp": -1189317.43,
+   "generation_mwh": 36920.769000000015
+  },
+  {
+   "q": "2023-Q2",
+   "payment_gbp": 337102.8099999999,
+   "generation_mwh": 17014.586999999996
+  },
+  {
+   "q": "2023-Q3",
+   "payment_gbp": 520830.08000000013,
+   "generation_mwh": 16580.085
+  },
+  {
+   "q": "2023-Q4",
+   "payment_gbp": 958180.0099999995,
+   "generation_mwh": 27826.724
+  },
+  {
+   "q": "2024-Q1",
+   "payment_gbp": 1475075.8700000006,
+   "generation_mwh": 31107.970999999994
+  },
+  {
+   "q": "2024-Q2",
+   "payment_gbp": 966845.0600000004,
+   "generation_mwh": 19805.487
+  },
+  {
+   "q": "2024-Q3",
+   "payment_gbp": 790000.5,
+   "generation_mwh": 18432.151
+  },
+  {
+   "q": "2024-Q4",
+   "payment_gbp": 552282.7300000002,
+   "generation_mwh": 27431.496000000006
+  },
+  {
+   "q": "2025-Q1",
+   "payment_gbp": 515957.9499999999,
+   "generation_mwh": 37817.490999999995
+  },
+  {
+   "q": "2025-Q2",
+   "payment_gbp": 1384171.1599999992,
+   "generation_mwh": 26784.076999999997
+  },
+  {
+   "q": "2025-Q3",
+   "payment_gbp": 1119150.5600000003,
+   "generation_mwh": 24054.708
+  },
+  {
+   "q": "2025-Q4",
+   "payment_gbp": 951385.5999999999,
+   "generation_mwh": 24293.71499999999
+  },
+  {
+   "q": "2026-Q1",
+   "payment_gbp": 863549.0200000001,
+   "generation_mwh": 35383.135
+  },
+  {
+   "q": "2026-Q2",
+   "payment_gbp": 530407.8699999999,
+   "generation_mwh": 23174.020999999997
+  },
+  {
+   "q": "2026-Q3",
+   "payment_gbp": 110747.72000000002,
+   "generation_mwh": 3633.4159999999997
+  }
+ ],
+ "contracts": [
+  {
+   "cfd_id": "AAA-NAN-184",
+   "unit_name": "Nanclach Wind Farm",
+   "technology": "Onshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": 4053933.07,
+   "first_settlement": "2019-10-01",
+   "latest_strike_gbp_mwh": 121.79
+  }
+ ],
+ "strings": {
+  "basis": "Payments and generation are LCCC daily settlement data, summed per contract from first settlement. Quarters below zero are periods when the market price exceeded the strike price and the generator paid back.",
+  "outages_unavailable": "Outage history is not available for this station."
+ },
+ "provenance": {
+  "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
+  "data_to": "2026-07-19"
+ },
+ "tiles": {
+  "generation_mwh": 802356.695,
+  "rate_gbp_per_mwh": 5.052532240663861,
+  "rate_label": "payment per subsidised MWh"
+ }
+}

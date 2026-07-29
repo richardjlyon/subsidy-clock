@@ -1,0 +1,554 @@
+{
+ "slug": "dudgeon",
+ "name": "Dudgeon",
+ "scheme": "cfd_renewable",
+ "scheme_label": "CfD - renewables",
+ "technology": "Offshore Wind",
+ "hero_gbp": 1565312495.78,
+ "hero_label": "cumulative payments",
+ "quarters": [
+  {
+   "q": "2017-Q2",
+   "payment_gbp": 7704868.869999999,
+   "generation_mwh": 62562.64299999998
+  },
+  {
+   "q": "2017-Q3",
+   "payment_gbp": 20342444.53000001,
+   "generation_mwh": 169953.18800000002
+  },
+  {
+   "q": "2017-Q4",
+   "payment_gbp": 64136882.739999995,
+   "generation_mwh": 571196.1799999996
+  },
+  {
+   "q": "2018-Q1",
+   "payment_gbp": 55951929.39,
+   "generation_mwh": 511362.5320000002
+  },
+  {
+   "q": "2018-Q2",
+   "payment_gbp": 35628024.37999999,
+   "generation_mwh": 307587.28300000005
+  },
+  {
+   "q": "2018-Q3",
+   "payment_gbp": 30450729.38000001,
+   "generation_mwh": 286733.74199999997
+  },
+  {
+   "q": "2018-Q4",
+   "payment_gbp": 49986450.67,
+   "generation_mwh": 476643.107
+  },
+  {
+   "q": "2019-Q1",
+   "payment_gbp": 50754510.92999999,
+   "generation_mwh": 435685.67899999995
+  },
+  {
+   "q": "2019-Q2",
+   "payment_gbp": 38722317.480000004,
+   "generation_mwh": 298854.2109999998
+  },
+  {
+   "q": "2019-Q3",
+   "payment_gbp": 46082620.65999998,
+   "generation_mwh": 344307.851
+  },
+  {
+   "q": "2019-Q4",
+   "payment_gbp": 66573126.84000001,
+   "generation_mwh": 507971.54499999987
+  },
+  {
+   "q": "2020-Q1",
+   "payment_gbp": 83270559.79999995,
+   "generation_mwh": 600215.8300000005
+  },
+  {
+   "q": "2020-Q2",
+   "payment_gbp": 46576705.07,
+   "generation_mwh": 304077.95399999997
+  },
+  {
+   "q": "2020-Q3",
+   "payment_gbp": 45565732.69999998,
+   "generation_mwh": 326316.635
+  },
+  {
+   "q": "2020-Q4",
+   "payment_gbp": 66250543.59999999,
+   "generation_mwh": 509470.0029999999
+  },
+  {
+   "q": "2021-Q1",
+   "payment_gbp": 54984498.28999997,
+   "generation_mwh": 474567.244
+  },
+  {
+   "q": "2021-Q2",
+   "payment_gbp": 29304842.06000001,
+   "generation_mwh": 268131.79099999997
+  },
+  {
+   "q": "2021-Q3",
+   "payment_gbp": 14914621.899999997,
+   "generation_mwh": 271460.32300000003
+  },
+  {
+   "q": "2021-Q4",
+   "payment_gbp": -3350208.9399999985,
+   "generation_mwh": 520670.17099999974
+  },
+  {
+   "q": "2022-Q1",
+   "payment_gbp": -5600992.460000001,
+   "generation_mwh": 505952.84200000006
+  },
+  {
+   "q": "2022-Q2",
+   "payment_gbp": 12836153.200000003,
+   "generation_mwh": 297223.3290000001
+  },
+  {
+   "q": "2022-Q3",
+   "payment_gbp": -21143416.469999976,
+   "generation_mwh": 233385.27000000022
+  },
+  {
+   "q": "2022-Q4",
+   "payment_gbp": 24915755.949999996,
+   "generation_mwh": 503846.6729999999
+  },
+  {
+   "q": "2023-Q1",
+   "payment_gbp": 33652692.89000001,
+   "generation_mwh": 490920.24000000017
+  },
+  {
+   "q": "2023-Q2",
+   "payment_gbp": 31763696.67000002,
+   "generation_mwh": 283784.10500000004
+  },
+  {
+   "q": "2023-Q3",
+   "payment_gbp": 37256795.150000006,
+   "generation_mwh": 282488.5800000001
+  },
+  {
+   "q": "2023-Q4",
+   "payment_gbp": 65987074.87000003,
+   "generation_mwh": 518825.1759999999
+  },
+  {
+   "q": "2024-Q1",
+   "payment_gbp": 73831862.65999997,
+   "generation_mwh": 534942.3289999999
+  },
+  {
+   "q": "2024-Q2",
+   "payment_gbp": 53121584.44,
+   "generation_mwh": 348766.62600000016
+  },
+  {
+   "q": "2024-Q3",
+   "payment_gbp": 47047682.67000001,
+   "generation_mwh": 318545.87600000005
+  },
+  {
+   "q": "2024-Q4",
+   "payment_gbp": 59562967.33,
+   "generation_mwh": 464374.97700000013
+  },
+  {
+   "q": "2025-Q1",
+   "payment_gbp": 46066024.32999998,
+   "generation_mwh": 410052.27899999975
+  },
+  {
+   "q": "2025-Q2",
+   "payment_gbp": 48117251.61999998,
+   "generation_mwh": 316478.24700000003
+  },
+  {
+   "q": "2025-Q3",
+   "payment_gbp": 49183300.979999974,
+   "generation_mwh": 320637.65500000014
+  },
+  {
+   "q": "2025-Q4",
+   "payment_gbp": 81499215.12000005,
+   "generation_mwh": 557533.4869999995
+  },
+  {
+   "q": "2026-Q1",
+   "payment_gbp": 67468958.94000004,
+   "generation_mwh": 505807.4719999999
+  },
+  {
+   "q": "2026-Q2",
+   "payment_gbp": 47536509.319999956,
+   "generation_mwh": 352700.12799999997
+  },
+  {
+   "q": "2026-Q3",
+   "payment_gbp": 8358178.220000001,
+   "generation_mwh": 63228.62300000003
+  }
+ ],
+ "contracts": [
+  {
+   "cfd_id": "INV-DUD-002",
+   "unit_name": "Dudgeon Phase 2",
+   "technology": "Offshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": 810432826.74,
+   "first_settlement": "2017-08-02",
+   "latest_strike_gbp_mwh": 220.95
+  },
+  {
+   "cfd_id": "INV-DUD-003",
+   "unit_name": "Dudgeon Phase 3",
+   "technology": "Offshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": 392925178.5,
+   "first_settlement": "2017-10-01",
+   "latest_strike_gbp_mwh": 220.95
+  },
+  {
+   "cfd_id": "INV-DUD-001",
+   "unit_name": "Dudgeon Phase 1",
+   "technology": "Offshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": 361954490.54,
+   "first_settlement": "2017-04-27",
+   "latest_strike_gbp_mwh": 220.95
+  }
+ ],
+ "strings": {
+  "basis": "Payments and generation are LCCC daily settlement data, summed per contract from first settlement. Quarters below zero are periods when the market price exceeded the strike price and the generator paid back.",
+  "outages_label": "Major outages (Elexon REMIT): periods of at least 24 hours with at least 20% of unit capacity unavailable. Records from 2016; earlier periods are not covered."
+ },
+ "provenance": {
+  "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
+  "data_to": "2026-07-19"
+ },
+ "outages": {
+  "coverage_from": "2016-01-01",
+  "windows": [
+   {
+    "start": "2018-08-13",
+    "end": "2018-08-17",
+    "type": "Planned",
+    "mw_lost": 54.0
+   },
+   {
+    "start": "2018-08-13",
+    "end": "2018-08-17",
+    "type": "Planned",
+    "mw_lost": 45.0
+   },
+   {
+    "start": "2018-08-13",
+    "end": "2018-08-17",
+    "type": "Planned",
+    "mw_lost": 51.0
+   },
+   {
+    "start": "2018-08-13",
+    "end": "2018-08-17",
+    "type": "Planned",
+    "mw_lost": 51.0
+   },
+   {
+    "start": "2018-12-03",
+    "end": "2018-12-21",
+    "type": "Unplanned",
+    "mw_lost": 48.0
+   },
+   {
+    "start": "2018-12-03",
+    "end": "2018-12-21",
+    "type": "Unplanned",
+    "mw_lost": 32.0
+   },
+   {
+    "start": "2018-12-03",
+    "end": "2018-12-07",
+    "type": "Unplanned",
+    "mw_lost": 60.0
+   },
+   {
+    "start": "2019-01-06",
+    "end": "2019-01-24",
+    "type": "Unplanned",
+    "mw_lost": 42.0
+   },
+   {
+    "start": "2019-01-15",
+    "end": "2019-01-24",
+    "type": "Unplanned",
+    "mw_lost": 72.0
+   },
+   {
+    "start": "2019-07-01",
+    "end": "2019-07-04",
+    "type": "Planned",
+    "mw_lost": 54.0
+   },
+   {
+    "start": "2019-07-01",
+    "end": "2019-07-04",
+    "type": "Planned",
+    "mw_lost": 45.0
+   },
+   {
+    "start": "2019-07-01",
+    "end": "2019-07-04",
+    "type": "Planned",
+    "mw_lost": 51.0
+   },
+   {
+    "start": "2019-07-01",
+    "end": "2019-07-04",
+    "type": "Planned",
+    "mw_lost": 51.0
+   },
+   {
+    "start": "2020-03-05",
+    "end": "2020-03-06",
+    "type": "Unplanned",
+    "mw_lost": 102.0
+   },
+   {
+    "start": "2020-06-15",
+    "end": "2020-06-24",
+    "type": "Planned",
+    "mw_lost": 36.0
+   },
+   {
+    "start": "2020-06-17",
+    "end": "2020-06-19",
+    "type": "Planned",
+    "mw_lost": 66.0
+   },
+   {
+    "start": "2020-06-17",
+    "end": "2020-06-19",
+    "type": "Planned",
+    "mw_lost": 36.0
+   },
+   {
+    "start": "2020-06-22",
+    "end": "2020-06-23",
+    "type": "Planned",
+    "mw_lost": 30.0
+   },
+   {
+    "start": "2020-06-24",
+    "end": "2020-07-07",
+    "type": "Planned",
+    "mw_lost": 30.0
+   },
+   {
+    "start": "2020-06-26",
+    "end": "2020-07-10",
+    "type": "Planned",
+    "mw_lost": 24.0
+   },
+   {
+    "start": "2020-06-27",
+    "end": "2020-06-30",
+    "type": "Planned",
+    "mw_lost": 36.0
+   },
+   {
+    "start": "2022-04-01",
+    "end": "2022-04-05",
+    "type": "Planned",
+    "mw_lost": 102.0
+   },
+   {
+    "start": "2022-04-01",
+    "end": "2022-04-05",
+    "type": "Planned",
+    "mw_lost": 108.0
+   },
+   {
+    "start": "2022-04-01",
+    "end": "2022-04-05",
+    "type": "Planned",
+    "mw_lost": 102.0
+   },
+   {
+    "start": "2022-04-01",
+    "end": "2022-04-05",
+    "type": "Planned",
+    "mw_lost": 90.0
+   },
+   {
+    "start": "2023-07-06",
+    "end": "2023-07-10",
+    "type": "Planned",
+    "mw_lost": 45.0
+   },
+   {
+    "start": "2023-07-06",
+    "end": "2023-07-10",
+    "type": "Planned",
+    "mw_lost": 51.0
+   },
+   {
+    "start": "2023-07-06",
+    "end": "2023-07-10",
+    "type": "Planned",
+    "mw_lost": 51.0
+   },
+   {
+    "start": "2023-07-06",
+    "end": "2023-07-10",
+    "type": "Planned",
+    "mw_lost": 54.0
+   },
+   {
+    "start": "2023-07-11",
+    "end": "2023-07-15",
+    "type": "Planned",
+    "mw_lost": 54.0
+   },
+   {
+    "start": "2023-07-11",
+    "end": "2023-07-15",
+    "type": "Planned",
+    "mw_lost": 45.0
+   },
+   {
+    "start": "2023-07-11",
+    "end": "2023-07-15",
+    "type": "Planned",
+    "mw_lost": 51.0
+   },
+   {
+    "start": "2023-07-11",
+    "end": "2023-07-15",
+    "type": "Planned",
+    "mw_lost": 51.0
+   },
+   {
+    "start": "2025-04-27",
+    "end": "2025-05-02",
+    "type": "Unplanned",
+    "mw_lost": 108.01
+   },
+   {
+    "start": "2025-04-27",
+    "end": "2025-05-02",
+    "type": "Unplanned",
+    "mw_lost": 90.01
+   },
+   {
+    "start": "2025-06-05",
+    "end": "2025-06-11",
+    "type": "Planned",
+    "mw_lost": 50.0
+   },
+   {
+    "start": "2025-06-05",
+    "end": "2025-06-11",
+    "type": "Planned",
+    "mw_lost": 50.0
+   },
+   {
+    "start": "2025-06-05",
+    "end": "2025-06-11",
+    "type": "Planned",
+    "mw_lost": 90.0
+   },
+   {
+    "start": "2025-06-05",
+    "end": "2025-06-11",
+    "type": "Planned",
+    "mw_lost": 50.0
+   },
+   {
+    "start": "2025-06-06",
+    "end": "2025-06-09",
+    "type": "Planned",
+    "mw_lost": 90.0
+   },
+   {
+    "start": "2025-06-06",
+    "end": "2025-06-09",
+    "type": "Planned",
+    "mw_lost": 37.0
+   },
+   {
+    "start": "2025-06-06",
+    "end": "2025-06-09",
+    "type": "Planned",
+    "mw_lost": 37.0
+   },
+   {
+    "start": "2025-06-06",
+    "end": "2025-06-09",
+    "type": "Planned",
+    "mw_lost": 37.0
+   },
+   {
+    "start": "2026-07-17",
+    "end": "2026-07-21",
+    "type": "Planned",
+    "mw_lost": 51.0
+   },
+   {
+    "start": "2026-07-17",
+    "end": "2026-07-21",
+    "type": "Planned",
+    "mw_lost": 51.0
+   },
+   {
+    "start": "2026-07-17",
+    "end": "2026-07-21",
+    "type": "Planned",
+    "mw_lost": 54.0
+   },
+   {
+    "start": "2026-07-17",
+    "end": "2026-07-21",
+    "type": "Planned",
+    "mw_lost": 45.0
+   },
+   {
+    "start": "2026-07-17",
+    "end": "2026-07-21",
+    "type": "Planned",
+    "mw_lost": 54.0
+   },
+   {
+    "start": "2026-07-17",
+    "end": "2026-07-21",
+    "type": "Planned",
+    "mw_lost": 45.0
+   },
+   {
+    "start": "2026-07-17",
+    "end": "2026-07-21",
+    "type": "Planned",
+    "mw_lost": 51.0
+   },
+   {
+    "start": "2026-07-17",
+    "end": "2026-07-21",
+    "type": "Planned",
+    "mw_lost": 51.0
+   }
+  ]
+ },
+ "tiles": {
+  "generation_mwh": 14557261.826,
+  "rate_gbp_per_mwh": 107.52794821511512,
+  "rate_label": "payment per subsidised MWh"
+ }
+}

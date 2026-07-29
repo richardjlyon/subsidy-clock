@@ -21,6 +21,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="skin-ft.css">
+<link rel="stylesheet" href="assets/vendor/maplibre-gl.css?v=5.24.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <!-- Matomo (self-hosted, cookieless) -->
@@ -52,14 +53,21 @@
 
 <main class="container prose">
   <h1>Where the money lands</h1>
-  <p class="lede">Every generating station in the largest-recipients table, mapped. Each bubble is one physical station; its <strong>area is proportional to cumulative payment</strong>, and its colour shows the scheme. Hover a bubble for the detail.</p>
+  <p class="lede">Every generating station in the largest-recipients table, mapped. Each bubble is one physical station; its <strong>area is proportional to cumulative payment</strong>, and its colour shows the scheme. Hover a bubble for a summary — click it for the station’s full subsidy history.</p>
 
   <div class="map-frame" id="map-frame">
+    <div id="map-canvas"></div>
     <div class="map-popup" id="map-popup" role="status" aria-live="polite"></div>
+    <aside class="asset-panel" id="asset-panel" role="dialog" aria-labelledby="asset-panel-name" hidden>
+      <button type="button" class="asset-panel-close" id="asset-panel-close" aria-label="Close">×</button>
+      <div id="asset-panel-body"></div>
+    </aside>
   </div>
+  <div id="map-station-list" aria-label="Recipients, largest payment first"></div>
   <div class="legend" id="map-legend"></div>
+  <noscript><p class="table-note">The map needs JavaScript. Every recipient shown on it is listed in the <a href="/data">data tables</a>.</p></noscript>
 
-  <p class="table-note" id="map-note">Basemap © Mapbox © OpenStreetMap. Bubbles are placed by each station’s coordinates and sized by cumulative payment — Contracts for Difference grouped by physical station, Renewables Obligation at buy-out value. A plant paid under both schemes shows one bubble per scheme (Drax, for example). Constraint-payment recipients are excluded: their payees are registered Balancing Mechanism lead parties, not physical assets, and cannot be located on the map.</p>
+  <p class="table-note" id="map-note">Bubbles are placed by each station’s coordinates and sized by cumulative payment — Contracts for Difference grouped by physical station, Renewables Obligation at buy-out value. A plant paid under both schemes shows one bubble per scheme (Drax, for example). Constraint-payment recipients are excluded: their payees are registered Balancing Mechanism lead parties, not physical assets, and cannot be located on the map.</p>
 </main>
 <footer class="footer">
   <div class="container">
@@ -68,7 +76,7 @@
   </div>
 </footer>
 
-<script src="mapbox-token.js"></script>
+<script src="assets/vendor/maplibre-gl.js?v=5.24.0"></script>
 <script src="map.js"></script>
 </body>
 </html>

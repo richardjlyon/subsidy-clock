@@ -1,0 +1,16 @@
+{
+  "style_url": "https://tiles.openfreemap.org/styles/positron",
+  "center": [-3.05, 54.45],
+  "zoom": 4.9,
+  "terrain": {
+    "tiles": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png",
+    "encoding": "terrarium",
+    "tile_size": 256,
+    "max_zoom": 15,
+    "exaggeration": 1.5
+  },
+  "attribution": "OpenFreeMap © OpenMapTiles Data from OpenStreetMap",
+  "fallback": "The interactive map could not be loaded in this browser. Every recipient shown on it is listed in the data tables.",
+  "terrain_attribution": "Terrain: Mapzen/Tilezen Joerd (Copernicus EU-DEM, UK Environment Agency, USGS) — full credits on the methodology page",
+  "note": "Keyless tile sources, verified 2026-07-29 (openspec change add-interactive-asset-map, verification.md): OpenFreeMap public instance — no keys, no limits, commercial use permitted, no SLA; AWS Terrain Tiles via the AWS Open Data registry. Both attribution strings are engine-pinned into map.json; the page places them, never authors them. Swapping providers = edit this file + rebuild. The old Mapbox Static Images basemap (and its deploy-injected token) is gone."
+}

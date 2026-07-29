@@ -1,0 +1,22 @@
+{
+ "slug": "drax-power-station",
+ "name": "Drax Power Station",
+ "scheme": "ro",
+ "scheme_label": "Renewables Obligation",
+ "technology": "Biomass",
+ "hero_gbp": 6478643283.0,
+ "hero_label": "cumulative buy-out value",
+ "strings": {
+  "basis": "Valued at Renewables Obligation buy-out only \u2014 the directly-sourced per-generator basis. The scheme's full cost also includes recycle value, so this understates the station's receipts. Ofgem publishes richer per-station ROC data; it is not yet shown here.",
+  "outages_unavailable": "Outage history is not available for this station."
+ },
+ "provenance": {
+  "source": "Source: Ofgem Renewables Obligation annual reports (buy-out basis).",
+  "data_to": "2025-03-31"
+ },
+ "note": {
+  "date": "2024-08-29",
+  "text": "Ofgem's investigation into Drax's reporting under the Renewables Obligation, closed on 29 August 2024, found that an absence of adequate data governance and controls had led to Drax misreporting annual profiling data (Canadian forestry type and sawlog proportions) for the April 2021 to March 2022 compliance period. Ofgem found no evidence that ROCs were issued incorrectly, and stated that the misreported data would not have affected the level of subsidy Drax received. Drax paid \u00a325m into Ofgem's Voluntary Redress Fund.",
+  "source_url": "https://www.ofgem.gov.uk/publications/ofgem-decision-investigation-drax-power-limited"
+ }
+}

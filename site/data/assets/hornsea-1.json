@@ -1,0 +1,580 @@
+{
+ "slug": "hornsea-1",
+ "name": "Hornsea 1",
+ "scheme": "cfd_renewable",
+ "scheme_label": "CfD - renewables",
+ "technology": "Offshore Wind",
+ "hero_gbp": 2554733803.5299997,
+ "hero_label": "cumulative payments",
+ "quarters": [
+  {
+   "q": "2019-Q2",
+   "payment_gbp": 24487736.68000001,
+   "generation_mwh": 205563.70799999998
+  },
+  {
+   "q": "2019-Q3",
+   "payment_gbp": 45127400.30000002,
+   "generation_mwh": 367643.2100000001
+  },
+  {
+   "q": "2019-Q4",
+   "payment_gbp": 61062898.26999999,
+   "generation_mwh": 510111.63200000004
+  },
+  {
+   "q": "2020-Q1",
+   "payment_gbp": 77058908.27000001,
+   "generation_mwh": 604822.4020000001
+  },
+  {
+   "q": "2020-Q2",
+   "payment_gbp": 86494809.27000006,
+   "generation_mwh": 616752.9480000001
+  },
+  {
+   "q": "2020-Q3",
+   "payment_gbp": 90245005.36999997,
+   "generation_mwh": 704046.2459999998
+  },
+  {
+   "q": "2020-Q4",
+   "payment_gbp": 123466054.79999998,
+   "generation_mwh": 1047512.5549999999
+  },
+  {
+   "q": "2021-Q1",
+   "payment_gbp": 99854719.83999999,
+   "generation_mwh": 968715.091
+  },
+  {
+   "q": "2021-Q2",
+   "payment_gbp": 81963123.58,
+   "generation_mwh": 841122.6549999998
+  },
+  {
+   "q": "2021-Q3",
+   "payment_gbp": 35024341.720000036,
+   "generation_mwh": 818882.7950000005
+  },
+  {
+   "q": "2021-Q4",
+   "payment_gbp": -28141815.57,
+   "generation_mwh": 1573826.3139999998
+  },
+  {
+   "q": "2022-Q1",
+   "payment_gbp": -38655344.03000004,
+   "generation_mwh": 1539226.636
+  },
+  {
+   "q": "2022-Q2",
+   "payment_gbp": 32647531.49,
+   "generation_mwh": 1016817.4119999999
+  },
+  {
+   "q": "2022-Q3",
+   "payment_gbp": -83399197.56000005,
+   "generation_mwh": 825429.7790000001
+  },
+  {
+   "q": "2022-Q4",
+   "payment_gbp": 58535015.92,
+   "generation_mwh": 1602612.718999999
+  },
+  {
+   "q": "2023-Q1",
+   "payment_gbp": 84041837.79,
+   "generation_mwh": 1494872.4359999993
+  },
+  {
+   "q": "2023-Q2",
+   "payment_gbp": 83355156.70000003,
+   "generation_mwh": 855052.9959999999
+  },
+  {
+   "q": "2023-Q3",
+   "payment_gbp": 106650535.90000005,
+   "generation_mwh": 932998.7429999992
+  },
+  {
+   "q": "2023-Q4",
+   "payment_gbp": 173946271.78,
+   "generation_mwh": 1579533.401999999
+  },
+  {
+   "q": "2024-Q1",
+   "payment_gbp": 130059303.45999998,
+   "generation_mwh": 1063668.4489999993
+  },
+  {
+   "q": "2024-Q2",
+   "payment_gbp": 109292148.36,
+   "generation_mwh": 829295.8350000001
+  },
+  {
+   "q": "2024-Q3",
+   "payment_gbp": 130333587.5499999,
+   "generation_mwh": 999070.2259999999
+  },
+  {
+   "q": "2024-Q4",
+   "payment_gbp": 161533678.49999988,
+   "generation_mwh": 1432154.5570000003
+  },
+  {
+   "q": "2025-Q1",
+   "payment_gbp": 126804802.57999997,
+   "generation_mwh": 1311251.401
+  },
+  {
+   "q": "2025-Q2",
+   "payment_gbp": 125981661.10999997,
+   "generation_mwh": 943809.7200000001
+  },
+  {
+   "q": "2025-Q3",
+   "payment_gbp": 132290810.15999997,
+   "generation_mwh": 990510.9069999999
+  },
+  {
+   "q": "2025-Q4",
+   "payment_gbp": 222380360.47,
+   "generation_mwh": 1735181.326
+  },
+  {
+   "q": "2026-Q1",
+   "payment_gbp": 191455948.56000012,
+   "generation_mwh": 1622842.948000001
+  },
+  {
+   "q": "2026-Q2",
+   "payment_gbp": 86661647.64999996,
+   "generation_mwh": 772812.0989999996
+  },
+  {
+   "q": "2026-Q3",
+   "payment_gbp": 24174864.61,
+   "generation_mwh": 203938.57000000004
+  }
+ ],
+ "contracts": [
+  {
+   "cfd_id": "INV-HOR-001",
+   "unit_name": "Hornsea Offshore Wind Farm Phase 1",
+   "technology": "Offshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": 1069607286.01,
+   "first_settlement": "2019-05-02",
+   "latest_strike_gbp_mwh": 206.06
+  },
+  {
+   "cfd_id": "INV-HOR-002",
+   "unit_name": "Hornsea Offshore Wind Farm Phase 2",
+   "technology": "Offshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": 847197216.66,
+   "first_settlement": "2020-03-31",
+   "latest_strike_gbp_mwh": 206.06
+  },
+  {
+   "cfd_id": "INV-HOR-003",
+   "unit_name": "Hornsea Offshore Wind Farm Phase 3",
+   "technology": "Offshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": 637929300.86,
+   "first_settlement": "2021-03-31",
+   "latest_strike_gbp_mwh": 206.06
+  }
+ ],
+ "strings": {
+  "basis": "Payments and generation are LCCC daily settlement data, summed per contract from first settlement. Quarters below zero are periods when the market price exceeded the strike price and the generator paid back.",
+  "outages_label": "Major outages (Elexon REMIT): periods of at least 24 hours with at least 20% of unit capacity unavailable. Records from 2016; earlier periods are not covered."
+ },
+ "provenance": {
+  "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
+  "data_to": "2026-07-19"
+ },
+ "outages": {
+  "coverage_from": "2016-01-01",
+  "windows": [
+   {
+    "start": "2019-02-07",
+    "end": "2019-08-20",
+    "type": "Planned",
+    "mw_lost": 406.0
+   },
+   {
+    "start": "2019-04-09",
+    "end": "2019-04-23",
+    "type": "Planned",
+    "mw_lost": 203.0
+   },
+   {
+    "start": "2019-07-08",
+    "end": "2019-08-07",
+    "type": "Planned",
+    "mw_lost": 100.0
+   },
+   {
+    "start": "2019-07-19",
+    "end": "2019-07-31",
+    "type": "Unplanned",
+    "mw_lost": 186.0
+   },
+   {
+    "start": "2019-07-31",
+    "end": "2019-08-02",
+    "type": "Planned",
+    "mw_lost": 406.0
+   },
+   {
+    "start": "2019-08-07",
+    "end": "2019-08-08",
+    "type": "Planned",
+    "mw_lost": 406.0
+   },
+   {
+    "start": "2019-08-09",
+    "end": "2019-08-22",
+    "type": "Unplanned",
+    "mw_lost": 406.0
+   },
+   {
+    "start": "2019-08-09",
+    "end": "2019-08-20",
+    "type": "Planned",
+    "mw_lost": 100.0
+   },
+   {
+    "start": "2019-09-01",
+    "end": "2019-09-13",
+    "type": "Unplanned",
+    "mw_lost": 349.0
+   },
+   {
+    "start": "2019-09-07",
+    "end": "2019-09-13",
+    "type": "Planned",
+    "mw_lost": 112.0
+   },
+   {
+    "start": "2019-09-13",
+    "end": "2019-10-03",
+    "type": "Planned",
+    "mw_lost": 166.0
+   },
+   {
+    "start": "2019-09-13",
+    "end": "2019-12-13",
+    "type": "Planned",
+    "mw_lost": 170.0
+   },
+   {
+    "start": "2019-10-02",
+    "end": "2019-10-03",
+    "type": "Planned",
+    "mw_lost": 126.0
+   },
+   {
+    "start": "2019-10-03",
+    "end": "2019-11-01",
+    "type": "Planned",
+    "mw_lost": 286.0
+   },
+   {
+    "start": "2019-10-04",
+    "end": "2019-10-15",
+    "type": "Planned",
+    "mw_lost": 140.0
+   },
+   {
+    "start": "2019-11-01",
+    "end": "2019-12-13",
+    "type": "Planned",
+    "mw_lost": 126.0
+   },
+   {
+    "start": "2019-12-09",
+    "end": "2019-12-13",
+    "type": "Planned",
+    "mw_lost": 126.0
+   },
+   {
+    "start": "2019-12-13",
+    "end": "2019-12-18",
+    "type": "Planned",
+    "mw_lost": 126.0
+   },
+   {
+    "start": "2020-01-30",
+    "end": "2020-03-04",
+    "type": "Planned",
+    "mw_lost": 211.0
+   },
+   {
+    "start": "2020-03-04",
+    "end": "2020-04-02",
+    "type": "Planned",
+    "mw_lost": 176.0
+   },
+   {
+    "start": "2020-03-24",
+    "end": "2020-03-26",
+    "type": "Planned",
+    "mw_lost": 400.0
+   },
+   {
+    "start": "2020-04-19",
+    "end": "2020-04-21",
+    "type": "Planned",
+    "mw_lost": 160.0
+   },
+   {
+    "start": "2020-04-21",
+    "end": "2020-05-03",
+    "type": "Planned",
+    "mw_lost": 160.0
+   },
+   {
+    "start": "2020-06-01",
+    "end": "2020-06-02",
+    "type": "Planned",
+    "mw_lost": 200.0
+   },
+   {
+    "start": "2020-06-01",
+    "end": "2020-06-02",
+    "type": "Planned",
+    "mw_lost": 200.0
+   },
+   {
+    "start": "2020-06-15",
+    "end": "2020-06-18",
+    "type": "Planned",
+    "mw_lost": 400.0
+   },
+   {
+    "start": "2020-06-22",
+    "end": "2020-06-24",
+    "type": "Planned",
+    "mw_lost": 400.0
+   },
+   {
+    "start": "2020-06-29",
+    "end": "2020-06-30",
+    "type": "Planned",
+    "mw_lost": 400.0
+   },
+   {
+    "start": "2020-09-14",
+    "end": "2020-09-16",
+    "type": "Planned",
+    "mw_lost": 400.0
+   },
+   {
+    "start": "2020-09-14",
+    "end": "2020-09-16",
+    "type": "Planned",
+    "mw_lost": 400.0
+   },
+   {
+    "start": "2020-09-14",
+    "end": "2020-09-16",
+    "type": "Planned",
+    "mw_lost": 400.0
+   },
+   {
+    "start": "2020-09-29",
+    "end": "2020-09-30",
+    "type": "Planned",
+    "mw_lost": 400.0
+   },
+   {
+    "start": "2020-11-18",
+    "end": "2020-11-19",
+    "type": "Planned",
+    "mw_lost": 160.0
+   },
+   {
+    "start": "2021-01-02",
+    "end": "2021-01-03",
+    "type": "Planned",
+    "mw_lost": 120.0
+   },
+   {
+    "start": "2021-01-07",
+    "end": "2021-01-14",
+    "type": "Planned",
+    "mw_lost": 113.0
+   },
+   {
+    "start": "2021-01-12",
+    "end": "2021-01-15",
+    "type": "Planned",
+    "mw_lost": 134.0
+   },
+   {
+    "start": "2021-01-15",
+    "end": "2021-01-20",
+    "type": "Planned",
+    "mw_lost": 260.0
+   },
+   {
+    "start": "2021-01-21",
+    "end": "2021-01-23",
+    "type": "Planned",
+    "mw_lost": 134.0
+   },
+   {
+    "start": "2021-01-24",
+    "end": "2021-02-05",
+    "type": "Planned",
+    "mw_lost": 106.0
+   },
+   {
+    "start": "2021-01-27",
+    "end": "2021-01-29",
+    "type": "Planned",
+    "mw_lost": 127.0
+   },
+   {
+    "start": "2021-09-08",
+    "end": "2021-09-17",
+    "type": "Planned",
+    "mw_lost": 134.0
+   },
+   {
+    "start": "2021-09-08",
+    "end": "2021-09-17",
+    "type": "Planned",
+    "mw_lost": 127.0
+   },
+   {
+    "start": "2022-06-16",
+    "end": "2022-06-28",
+    "type": "Planned",
+    "mw_lost": 200.0
+   },
+   {
+    "start": "2022-06-25",
+    "end": "2022-06-28",
+    "type": "Planned",
+    "mw_lost": 200.0
+   },
+   {
+    "start": "2023-04-24",
+    "end": "2023-04-26",
+    "type": "Unplanned",
+    "mw_lost": 150.0
+   },
+   {
+    "start": "2023-04-24",
+    "end": "2023-04-26",
+    "type": "Unplanned",
+    "mw_lost": 150.0
+   },
+   {
+    "start": "2023-04-24",
+    "end": "2023-04-26",
+    "type": "Unplanned",
+    "mw_lost": 150.0
+   },
+   {
+    "start": "2024-01-19",
+    "end": "2024-02-24",
+    "type": "Unplanned",
+    "mw_lost": 400.0
+   },
+   {
+    "start": "2024-01-19",
+    "end": "2024-01-23",
+    "type": "Planned",
+    "mw_lost": 250.0
+   },
+   {
+    "start": "2024-01-19",
+    "end": "2024-01-29",
+    "type": "Planned",
+    "mw_lost": 325.0
+   },
+   {
+    "start": "2024-01-23",
+    "end": "2024-06-04",
+    "type": "Planned",
+    "mw_lost": 400.0
+   },
+   {
+    "start": "2024-01-29",
+    "end": "2024-05-28",
+    "type": "Planned",
+    "mw_lost": 400.0
+   },
+   {
+    "start": "2024-02-24",
+    "end": "2024-02-25",
+    "type": "Planned",
+    "mw_lost": 300.0
+   },
+   {
+    "start": "2024-05-05",
+    "end": "2024-05-17",
+    "type": "Planned",
+    "mw_lost": 200.0
+   },
+   {
+    "start": "2024-09-18",
+    "end": "2024-09-20",
+    "type": "Unplanned",
+    "mw_lost": 400.0
+   },
+   {
+    "start": "2024-09-18",
+    "end": "2024-09-20",
+    "type": "Unplanned",
+    "mw_lost": 400.0
+   },
+   {
+    "start": "2024-09-19",
+    "end": "2024-09-20",
+    "type": "Planned",
+    "mw_lost": 400.0
+   },
+   {
+    "start": "2024-09-23",
+    "end": "2024-09-29",
+    "type": "Planned",
+    "mw_lost": 200.0
+   },
+   {
+    "start": "2024-09-23",
+    "end": "2024-09-29",
+    "type": "Planned",
+    "mw_lost": 200.0
+   },
+   {
+    "start": "2025-07-14",
+    "end": "2025-08-08",
+    "type": "Planned",
+    "mw_lost": 400.0
+   },
+   {
+    "start": "2025-07-14",
+    "end": "2025-08-08",
+    "type": "Planned",
+    "mw_lost": 400.0
+   },
+   {
+    "start": "2025-07-14",
+    "end": "2025-08-08",
+    "type": "Planned",
+    "mw_lost": 400.0
+   }
+  ]
+ },
+ "tiles": {
+  "generation_mwh": 30010079.717,
+  "rate_gbp_per_mwh": 85.1291908459278,
+  "rate_label": "payment per subsidised MWh"
+ }
+}

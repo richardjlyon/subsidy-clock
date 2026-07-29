@@ -1,0 +1,194 @@
+{
+ "slug": "kype-muir",
+ "name": "Kype Muir",
+ "scheme": "cfd_renewable",
+ "scheme_label": "CfD - renewables",
+ "technology": "Onshore Wind",
+ "hero_gbp": 34610276.58,
+ "hero_label": "cumulative payments",
+ "quarters": [
+  {
+   "q": "2019-Q1",
+   "payment_gbp": 88669.25,
+   "generation_mwh": 1763.9740000000002
+  },
+  {
+   "q": "2019-Q2",
+   "payment_gbp": 2170595.83,
+   "generation_mwh": 39678.69000000001
+  },
+  {
+   "q": "2019-Q3",
+   "payment_gbp": 2996752.8299999987,
+   "generation_mwh": 51814.289999999986
+  },
+  {
+   "q": "2019-Q4",
+   "payment_gbp": 3743079.69,
+   "generation_mwh": 66887.26400000001
+  },
+  {
+   "q": "2020-Q1",
+   "payment_gbp": 6578673.229999999,
+   "generation_mwh": 105464.99799999995
+  },
+  {
+   "q": "2020-Q2",
+   "payment_gbp": 3396800.9,
+   "generation_mwh": 44969.50799999997
+  },
+  {
+   "q": "2020-Q3",
+   "payment_gbp": 3148276.3999999994,
+   "generation_mwh": 51037.322
+  },
+  {
+   "q": "2020-Q4",
+   "payment_gbp": 2808268.5500000003,
+   "generation_mwh": 54139.12900000001
+  },
+  {
+   "q": "2021-Q1",
+   "payment_gbp": 2424567.5800000005,
+   "generation_mwh": 59119.35300000001
+  },
+  {
+   "q": "2021-Q2",
+   "payment_gbp": 938274.7100000001,
+   "generation_mwh": 31018.18200000002
+  },
+  {
+   "q": "2021-Q3",
+   "payment_gbp": -1009990.12,
+   "generation_mwh": 27017.861
+  },
+  {
+   "q": "2021-Q4",
+   "payment_gbp": -4868032.090000001,
+   "generation_mwh": 54318.73300000001
+  },
+  {
+   "q": "2022-Q1",
+   "payment_gbp": -4952979.53,
+   "generation_mwh": 54694.585999999974
+  },
+  {
+   "q": "2022-Q2",
+   "payment_gbp": -1489593.1,
+   "generation_mwh": 39344.488999999994
+  },
+  {
+   "q": "2022-Q3",
+   "payment_gbp": -4796606.219999999,
+   "generation_mwh": 31276.66200000001
+  },
+  {
+   "q": "2022-Q4",
+   "payment_gbp": -1934059.8900000001,
+   "generation_mwh": 60399.29099999998
+  },
+  {
+   "q": "2023-Q1",
+   "payment_gbp": -1420753.0800000003,
+   "generation_mwh": 60879.821999999986
+  },
+  {
+   "q": "2023-Q2",
+   "payment_gbp": 421883.1199999999,
+   "generation_mwh": 21421.716999999997
+  },
+  {
+   "q": "2023-Q3",
+   "payment_gbp": 1163668.81,
+   "generation_mwh": 31781.745000000014
+  },
+  {
+   "q": "2023-Q4",
+   "payment_gbp": 2077972.09,
+   "generation_mwh": 52568.876000000004
+  },
+  {
+   "q": "2024-Q1",
+   "payment_gbp": 2745219.1800000006,
+   "generation_mwh": 55475.59000000001
+  },
+  {
+   "q": "2024-Q2",
+   "payment_gbp": 2567226.730000001,
+   "generation_mwh": 41532.007999999994
+  },
+  {
+   "q": "2024-Q3",
+   "payment_gbp": 1350535.9900000002,
+   "generation_mwh": 27369.165000000005
+  },
+  {
+   "q": "2024-Q4",
+   "payment_gbp": 2241935.51,
+   "generation_mwh": 62497.03899999998
+  },
+  {
+   "q": "2025-Q1",
+   "payment_gbp": 1049250.85,
+   "generation_mwh": 49897.91199999998
+  },
+  {
+   "q": "2025-Q2",
+   "payment_gbp": 2622646.6300000004,
+   "generation_mwh": 43659.34499999998
+  },
+  {
+   "q": "2025-Q3",
+   "payment_gbp": 2633682.08,
+   "generation_mwh": 43826.69299999999
+  },
+  {
+   "q": "2025-Q4",
+   "payment_gbp": 3279486.8799999994,
+   "generation_mwh": 63377.76199999998
+  },
+  {
+   "q": "2026-Q1",
+   "payment_gbp": 2459115.9799999995,
+   "generation_mwh": 69348.73199999999
+  },
+  {
+   "q": "2026-Q2",
+   "payment_gbp": 1838587.89,
+   "generation_mwh": 45471.07600000002
+  },
+  {
+   "q": "2026-Q3",
+   "payment_gbp": 337119.9000000001,
+   "generation_mwh": 7316.4619999999995
+  }
+ ],
+ "contracts": [
+  {
+   "cfd_id": "AAA-BAN-189",
+   "unit_name": "Kype Muir Wind Farm",
+   "technology": "Onshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": 34610276.58,
+   "first_settlement": "2019-03-28",
+   "latest_strike_gbp_mwh": 120.28
+  }
+ ],
+ "strings": {
+  "basis": "Payments and generation are LCCC daily settlement data, summed per contract from first settlement. Quarters below zero are periods when the market price exceeded the strike price and the generator paid back.",
+  "outages_label": "Major outages (Elexon REMIT): periods of at least 24 hours with at least 20% of unit capacity unavailable. Records from 2016; earlier periods are not covered."
+ },
+ "provenance": {
+  "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
+  "data_to": "2026-07-19"
+ },
+ "outages": {
+  "coverage_from": "2016-01-01",
+  "windows": []
+ },
+ "tiles": {
+  "generation_mwh": 1449368.276,
+  "rate_gbp_per_mwh": 23.87955991110709,
+  "rate_label": "payment per subsidised MWh"
+ }
+}

@@ -15,6 +15,11 @@ DATASET_URL = (
     "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions"
 )
 TRACKING_URL = "https://dp.lowcarboncontracts.uk/dataset/in-period-tracking"
+# Contract portfolio status — per-contract lifecycle state (Live pre/post-FIC,
+# Pre-MDD, Pre-Start Date, Terminated). Join key verified 2026-07-29: every
+# settlement CfD_ID present (openspec add-interactive-asset-map, verification.md).
+PORTFOLIO_RESOURCE = "fdaf09d2-8cff-4799-a5b0-1c59444e492b"
+PORTFOLIO_URL = "https://dp.lowcarboncontracts.uk/dataset/cfd-contract-portfolio-status"
 
 # Renewable CfD technologies. These are the generators that hold renewable
 # CfDs and count toward the UK's renewable targets and REF's renewable
@@ -123,8 +128,22 @@ def parse_tracking(records: list[dict]) -> pl.DataFrame:
     )
 
 
+def parse_portfolio(records: list[dict]) -> pl.DataFrame:
+    """Contract id -> lifecycle status, one row per contract."""
+    return (
+        pl.DataFrame(records, infer_schema_length=None)
+        .select(pl.col("CFD_ID").alias("cfd_id"),
+                pl.col("Status").alias("status"))
+        .drop_nulls("cfd_id")
+        .unique(subset="cfd_id", keep="last")
+        .sort("cfd_id")
+    )
+
+
 def update(store: SnapshotStore, *, client: httpx.Client | None = None) -> None:
     gen = parse_generation(fetch_all_records(GENERATION_RESOURCE, client=client))
     store.write("cfd", "generation", gen, source_url=DATASET_URL, date_col="date")
     trk = parse_tracking(fetch_all_records(TRACKING_RESOURCE, client=client))
     store.write("cfd", "tracking", trk, source_url=TRACKING_URL, date_col="date")
+    port = parse_portfolio(fetch_all_records(PORTFOLIO_RESOURCE, client=client))
+    store.write("cfd", "portfolio", port, source_url=PORTFOLIO_URL)

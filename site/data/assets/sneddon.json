@@ -1,0 +1,85 @@
+{
+ "slug": "sneddon",
+ "name": "Sneddon",
+ "scheme": "cfd_renewable",
+ "scheme_label": "CfD - renewables",
+ "technology": "Onshore Wind",
+ "hero_gbp": 7660699.49,
+ "hero_label": "cumulative payments",
+ "quarters": [
+  {
+   "q": "2024-Q2",
+   "payment_gbp": 896572.58,
+   "generation_mwh": 14945.618
+  },
+  {
+   "q": "2024-Q3",
+   "payment_gbp": 995149.06,
+   "generation_mwh": 18178.150999999998
+  },
+  {
+   "q": "2024-Q4",
+   "payment_gbp": 768838.57,
+   "generation_mwh": 21699.737
+  },
+  {
+   "q": "2025-Q1",
+   "payment_gbp": 368753.19,
+   "generation_mwh": 18532.315
+  },
+  {
+   "q": "2025-Q2",
+   "payment_gbp": 936084.84,
+   "generation_mwh": 16407.906
+  },
+  {
+   "q": "2025-Q3",
+   "payment_gbp": 891133.22,
+   "generation_mwh": 15043.35
+  },
+  {
+   "q": "2025-Q4",
+   "payment_gbp": 1144445.91,
+   "generation_mwh": 23305.706000000002
+  },
+  {
+   "q": "2026-Q1",
+   "payment_gbp": 896316.58,
+   "generation_mwh": 27031.389
+  },
+  {
+   "q": "2026-Q2",
+   "payment_gbp": 641153.23,
+   "generation_mwh": 16810.953
+  },
+  {
+   "q": "2026-Q3",
+   "payment_gbp": 122252.31,
+   "generation_mwh": 3455.2889999999998
+  }
+ ],
+ "contracts": [
+  {
+   "cfd_id": "AAA-SNE-179",
+   "unit_name": "Sneddon Law Community Wind Farm",
+   "technology": "Onshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": 7660699.49,
+   "first_settlement": "2024-04-04",
+   "latest_strike_gbp_mwh": 118.08
+  }
+ ],
+ "strings": {
+  "basis": "Payments and generation are LCCC daily settlement data, summed per contract from first settlement. Quarters below zero are periods when the market price exceeded the strike price and the generator paid back.",
+  "outages_unavailable": "Outage history is not available for this station."
+ },
+ "provenance": {
+  "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
+  "data_to": "2026-07-19"
+ },
+ "tiles": {
+  "generation_mwh": 175410.41400000002,
+  "rate_gbp_per_mwh": 43.67300273289361,
+  "rate_label": "payment per subsidised MWh"
+ }
+}

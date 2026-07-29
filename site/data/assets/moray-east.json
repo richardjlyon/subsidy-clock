@@ -1,0 +1,695 @@
+{
+ "slug": "moray-east",
+ "name": "Moray East",
+ "scheme": "cfd_renewable",
+ "scheme_label": "CfD - renewables",
+ "technology": "Offshore Wind",
+ "hero_gbp": 6459214.6899999995,
+ "hero_label": "cumulative payments",
+ "quarters": [
+  {
+   "q": "2024-Q1",
+   "payment_gbp": 2936665.0599999996,
+   "generation_mwh": 180557.81599999993
+  },
+  {
+   "q": "2024-Q2",
+   "payment_gbp": 8681498.39999999,
+   "generation_mwh": 562356.0630000003
+  },
+  {
+   "q": "2024-Q3",
+   "payment_gbp": 3870493.5699999975,
+   "generation_mwh": 318105.5460000003
+  },
+  {
+   "q": "2024-Q4",
+   "payment_gbp": -4658613.300000001,
+   "generation_mwh": 393118.7860000001
+  },
+  {
+   "q": "2025-Q1",
+   "payment_gbp": -12207196.709999995,
+   "generation_mwh": 527978.2109999999
+  },
+  {
+   "q": "2025-Q2",
+   "payment_gbp": 4409451.340000004,
+   "generation_mwh": 335823.44299999997
+  },
+  {
+   "q": "2025-Q3",
+   "payment_gbp": 3965238.4899999984,
+   "generation_mwh": 319532.1949999998
+  },
+  {
+   "q": "2025-Q4",
+   "payment_gbp": 2891748.2299999995,
+   "generation_mwh": 449620.1070000002
+  },
+  {
+   "q": "2026-Q1",
+   "payment_gbp": -2097234.66,
+   "generation_mwh": 495546.91200000024
+  },
+  {
+   "q": "2026-Q2",
+   "payment_gbp": -1003380.9299999991,
+   "generation_mwh": 221766.05500000005
+  },
+  {
+   "q": "2026-Q3",
+   "payment_gbp": -329454.8,
+   "generation_mwh": 29485.558
+  }
+ ],
+ "contracts": [
+  {
+   "cfd_id": "AR2-MRY-107",
+   "unit_name": "Moray Offshore Windfarm (East) Phase 1",
+   "technology": "Offshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": 2447252.9899999998,
+   "first_settlement": "2024-03-04",
+   "latest_strike_gbp_mwh": 82.34
+  },
+  {
+   "cfd_id": "AR2-MRY-207",
+   "unit_name": "Moray Offshore Windfarm (East) Phase 2",
+   "technology": "Offshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": 2076094.5,
+   "first_settlement": "2024-03-04",
+   "latest_strike_gbp_mwh": 82.34
+  },
+  {
+   "cfd_id": "AR2-MRY-307",
+   "unit_name": "Moray Offshore Windfarm (East) Phase 3",
+   "technology": "Offshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": 1935867.2,
+   "first_settlement": "2024-03-04",
+   "latest_strike_gbp_mwh": 82.34
+  }
+ ],
+ "strings": {
+  "basis": "Payments and generation are LCCC daily settlement data, summed per contract from first settlement. Quarters below zero are periods when the market price exceeded the strike price and the generator paid back.",
+  "outages_label": "Major outages (Elexon REMIT): periods of at least 24 hours with at least 20% of unit capacity unavailable. Records from 2016; earlier periods are not covered."
+ },
+ "provenance": {
+  "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
+  "data_to": "2026-07-19"
+ },
+ "outages": {
+  "coverage_from": "2016-01-01",
+  "windows": [
+   {
+    "start": "2021-05-19",
+    "end": "2021-06-04",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2021-06-25",
+    "end": "2021-07-05",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2021-07-15",
+    "end": "2021-08-03",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2021-07-29",
+    "end": "2021-10-07",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2021-08-04",
+    "end": "2021-08-20",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2021-08-06",
+    "end": "2021-08-07",
+    "type": "Planned",
+    "mw_lost": 69.0
+   },
+   {
+    "start": "2021-09-22",
+    "end": "2021-10-28",
+    "type": "Unplanned",
+    "mw_lost": 156.0
+   },
+   {
+    "start": "2021-10-09",
+    "end": "2021-10-15",
+    "type": "Planned",
+    "mw_lost": 259.0
+   },
+   {
+    "start": "2021-10-15",
+    "end": "2021-10-17",
+    "type": "Planned",
+    "mw_lost": 269.0
+   },
+   {
+    "start": "2021-10-17",
+    "end": "2021-11-05",
+    "type": "Planned",
+    "mw_lost": 288.0
+   },
+   {
+    "start": "2021-11-05",
+    "end": "2021-11-08",
+    "type": "Planned",
+    "mw_lost": 256.0
+   },
+   {
+    "start": "2021-11-08",
+    "end": "2021-11-11",
+    "type": "Planned",
+    "mw_lost": 226.0
+   },
+   {
+    "start": "2021-11-11",
+    "end": "2021-11-15",
+    "type": "Planned",
+    "mw_lost": 166.0
+   },
+   {
+    "start": "2021-11-15",
+    "end": "2021-11-24",
+    "type": "Planned",
+    "mw_lost": 76.0
+   },
+   {
+    "start": "2021-11-15",
+    "end": "2021-11-24",
+    "type": "Planned",
+    "mw_lost": 106.0
+   },
+   {
+    "start": "2021-11-18",
+    "end": "2021-11-30",
+    "type": "Planned",
+    "mw_lost": 166.0
+   },
+   {
+    "start": "2021-11-24",
+    "end": "2021-11-29",
+    "type": "Planned",
+    "mw_lost": 166.0
+   },
+   {
+    "start": "2021-11-29",
+    "end": "2021-12-03",
+    "type": "Planned",
+    "mw_lost": 166.0
+   },
+   {
+    "start": "2021-12-03",
+    "end": "2021-12-25",
+    "type": "Planned",
+    "mw_lost": 66.0
+   },
+   {
+    "start": "2021-12-03",
+    "end": "2021-12-25",
+    "type": "Planned",
+    "mw_lost": 66.0
+   },
+   {
+    "start": "2021-12-03",
+    "end": "2021-12-25",
+    "type": "Planned",
+    "mw_lost": 66.0
+   },
+   {
+    "start": "2022-02-03",
+    "end": "2022-02-18",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2022-02-05",
+    "end": "2022-02-10",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2022-02-19",
+    "end": "2022-02-22",
+    "type": "Planned",
+    "mw_lost": 251.0
+   },
+   {
+    "start": "2022-02-22",
+    "end": "2022-02-26",
+    "type": "Planned",
+    "mw_lost": 251.0
+   },
+   {
+    "start": "2022-02-26",
+    "end": "2022-03-29",
+    "type": "Planned",
+    "mw_lost": 186.0
+   },
+   {
+    "start": "2022-03-29",
+    "end": "2022-03-30",
+    "type": "Planned",
+    "mw_lost": 138.0
+   },
+   {
+    "start": "2022-03-31",
+    "end": "2022-04-02",
+    "type": "Planned",
+    "mw_lost": 80.0
+   },
+   {
+    "start": "2022-04-20",
+    "end": "2022-04-23",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2022-05-04",
+    "end": "2022-05-07",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2022-05-04",
+    "end": "2022-05-07",
+    "type": "Planned",
+    "mw_lost": 250.0
+   },
+   {
+    "start": "2022-06-07",
+    "end": "2022-06-11",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2022-08-22",
+    "end": "2022-08-23",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2022-08-23",
+    "end": "2022-10-04",
+    "type": "Planned",
+    "mw_lost": 121.0
+   },
+   {
+    "start": "2022-08-24",
+    "end": "2022-08-25",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2022-08-26",
+    "end": "2022-08-29",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2022-10-04",
+    "end": "2022-10-07",
+    "type": "Planned",
+    "mw_lost": 102.0
+   },
+   {
+    "start": "2023-01-21",
+    "end": "2023-01-22",
+    "type": "Planned",
+    "mw_lost": 85.0
+   },
+   {
+    "start": "2023-01-22",
+    "end": "2023-06-05",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2023-06-05",
+    "end": "2023-09-17",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2023-09-11",
+    "end": "2024-01-12",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2023-09-11",
+    "end": "2023-12-01",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2023-09-17",
+    "end": "2023-09-20",
+    "type": "Planned",
+    "mw_lost": 266.0
+   },
+   {
+    "start": "2023-09-20",
+    "end": "2023-09-22",
+    "type": "Planned",
+    "mw_lost": 193.0
+   },
+   {
+    "start": "2023-09-22",
+    "end": "2023-09-23",
+    "type": "Planned",
+    "mw_lost": 136.0
+   },
+   {
+    "start": "2023-09-24",
+    "end": "2023-10-04",
+    "type": "Planned",
+    "mw_lost": 106.0
+   },
+   {
+    "start": "2023-10-16",
+    "end": "2023-10-17",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2023-10-18",
+    "end": "2023-10-19",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2023-10-23",
+    "end": "2023-10-24",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2023-12-01",
+    "end": "2023-12-08",
+    "type": "Planned",
+    "mw_lost": 106.0
+   },
+   {
+    "start": "2024-01-05",
+    "end": "2024-01-06",
+    "type": "Planned",
+    "mw_lost": 156.0
+   },
+   {
+    "start": "2024-01-12",
+    "end": "2024-01-18",
+    "type": "Planned",
+    "mw_lost": 196.0
+   },
+   {
+    "start": "2024-01-13",
+    "end": "2024-01-16",
+    "type": "Planned",
+    "mw_lost": 249.0
+   },
+   {
+    "start": "2024-01-16",
+    "end": "2024-01-25",
+    "type": "Planned",
+    "mw_lost": 154.0
+   },
+   {
+    "start": "2024-01-23",
+    "end": "2024-02-01",
+    "type": "Planned",
+    "mw_lost": 76.0
+   },
+   {
+    "start": "2024-01-25",
+    "end": "2024-01-31",
+    "type": "Planned",
+    "mw_lost": 154.0
+   },
+   {
+    "start": "2024-01-30",
+    "end": "2024-02-01",
+    "type": "Planned",
+    "mw_lost": 76.0
+   },
+   {
+    "start": "2024-01-31",
+    "end": "2024-02-03",
+    "type": "Planned",
+    "mw_lost": 154.0
+   },
+   {
+    "start": "2024-01-31",
+    "end": "2024-12-31",
+    "type": "Planned",
+    "mw_lost": 126.0
+   },
+   {
+    "start": "2024-02-01",
+    "end": "2024-02-03",
+    "type": "Planned",
+    "mw_lost": 107.0
+   },
+   {
+    "start": "2024-02-03",
+    "end": "2024-02-06",
+    "type": "Planned",
+    "mw_lost": 193.0
+   },
+   {
+    "start": "2024-02-05",
+    "end": "2024-02-06",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2024-02-06",
+    "end": "2024-02-09",
+    "type": "Planned",
+    "mw_lost": 164.0
+   },
+   {
+    "start": "2024-02-09",
+    "end": "2024-02-14",
+    "type": "Planned",
+    "mw_lost": 106.0
+   },
+   {
+    "start": "2024-02-09",
+    "end": "2024-02-14",
+    "type": "Planned",
+    "mw_lost": 107.0
+   },
+   {
+    "start": "2024-02-14",
+    "end": "2024-02-18",
+    "type": "Planned",
+    "mw_lost": 116.0
+   },
+   {
+    "start": "2024-02-14",
+    "end": "2024-02-18",
+    "type": "Planned",
+    "mw_lost": 97.0
+   },
+   {
+    "start": "2024-02-18",
+    "end": "2024-02-23",
+    "type": "Planned",
+    "mw_lost": 76.0
+   },
+   {
+    "start": "2024-02-18",
+    "end": "2024-02-23",
+    "type": "Planned",
+    "mw_lost": 136.0
+   },
+   {
+    "start": "2024-02-23",
+    "end": "2024-02-26",
+    "type": "Planned",
+    "mw_lost": 175.0
+   },
+   {
+    "start": "2024-02-26",
+    "end": "2024-02-29",
+    "type": "Planned",
+    "mw_lost": 76.0
+   },
+   {
+    "start": "2024-02-26",
+    "end": "2024-02-29",
+    "type": "Planned",
+    "mw_lost": 76.0
+   },
+   {
+    "start": "2024-02-26",
+    "end": "2024-02-29",
+    "type": "Planned",
+    "mw_lost": 76.0
+   },
+   {
+    "start": "2024-03-01",
+    "end": "2024-03-06",
+    "type": "Planned",
+    "mw_lost": 76.0
+   },
+   {
+    "start": "2024-03-01",
+    "end": "2024-03-15",
+    "type": "Planned",
+    "mw_lost": 76.0
+   },
+   {
+    "start": "2024-03-01",
+    "end": "2024-03-06",
+    "type": "Planned",
+    "mw_lost": 76.0
+   },
+   {
+    "start": "2024-03-06",
+    "end": "2024-03-07",
+    "type": "Planned",
+    "mw_lost": 104.0
+   },
+   {
+    "start": "2024-03-07",
+    "end": "2024-03-15",
+    "type": "Planned",
+    "mw_lost": 76.0
+   },
+   {
+    "start": "2024-03-07",
+    "end": "2024-03-15",
+    "type": "Planned",
+    "mw_lost": 76.0
+   },
+   {
+    "start": "2024-03-15",
+    "end": "2024-03-25",
+    "type": "Planned",
+    "mw_lost": 76.0
+   },
+   {
+    "start": "2024-03-15",
+    "end": "2024-03-25",
+    "type": "Planned",
+    "mw_lost": 76.0
+   },
+   {
+    "start": "2024-03-15",
+    "end": "2024-03-25",
+    "type": "Planned",
+    "mw_lost": 76.0
+   },
+   {
+    "start": "2024-03-25",
+    "end": "2024-03-30",
+    "type": "Planned",
+    "mw_lost": 97.0
+   },
+   {
+    "start": "2024-03-25",
+    "end": "2024-03-30",
+    "type": "Planned",
+    "mw_lost": 68.0
+   },
+   {
+    "start": "2024-04-10",
+    "end": "2024-04-11",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2024-12-02",
+    "end": "2024-12-03",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2024-12-04",
+    "end": "2024-12-05",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2024-12-09",
+    "end": "2024-12-10",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2025-03-26",
+    "end": "2025-03-27",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2026-03-25",
+    "end": "2026-04-02",
+    "type": "Unplanned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2026-04-03",
+    "end": "2026-04-05",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2026-04-03",
+    "end": "2026-04-05",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2026-04-08",
+    "end": "2026-04-09",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2026-07-22",
+    "end": "2026-07-25",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2026-07-23",
+    "end": "2026-07-27",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2026-07-24",
+    "end": "2026-07-28",
+    "type": "Planned",
+    "mw_lost": 316.0
+   },
+   {
+    "start": "2026-07-26",
+    "end": "2026-07-29",
+    "type": "Planned",
+    "mw_lost": 316.0
+   }
+  ]
+ },
+ "tiles": {
+  "generation_mwh": 3833890.6920000003,
+  "rate_gbp_per_mwh": 1.6847675661380068,
+  "rate_label": "payment per subsidised MWh"
+ }
+}
