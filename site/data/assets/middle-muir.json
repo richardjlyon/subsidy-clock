@@ -1,0 +1,194 @@
+{
+ "slug": "middle-muir",
+ "name": "Middle Muir",
+ "scheme": "cfd_renewable",
+ "scheme_label": "CfD - renewables",
+ "technology": "Onshore Wind",
+ "hero_gbp": 18839032.97,
+ "hero_label": "cumulative payments",
+ "quarters": [
+  {
+   "q": "2019-Q1",
+   "payment_gbp": 1462784.89,
+   "generation_mwh": 33691.634
+  },
+  {
+   "q": "2019-Q2",
+   "payment_gbp": 1207633.62,
+   "generation_mwh": 22395.431999999997
+  },
+  {
+   "q": "2019-Q3",
+   "payment_gbp": 1453071.8400000008,
+   "generation_mwh": 25209.656999999996
+  },
+  {
+   "q": "2019-Q4",
+   "payment_gbp": 1982776.8000000003,
+   "generation_mwh": 35328.339
+  },
+  {
+   "q": "2020-Q1",
+   "payment_gbp": 3259078.510000001,
+   "generation_mwh": 51610.129999999976
+  },
+  {
+   "q": "2020-Q2",
+   "payment_gbp": 1736865.2899999996,
+   "generation_mwh": 22862.764000000003
+  },
+  {
+   "q": "2020-Q3",
+   "payment_gbp": 1529621.0799999998,
+   "generation_mwh": 24892.941000000003
+  },
+  {
+   "q": "2020-Q4",
+   "payment_gbp": 1427266.6200000006,
+   "generation_mwh": 27390.18999999999
+  },
+  {
+   "q": "2021-Q1",
+   "payment_gbp": 848561.4000000001,
+   "generation_mwh": 21897.440999999995
+  },
+  {
+   "q": "2021-Q2",
+   "payment_gbp": 337348.76000000007,
+   "generation_mwh": 12613.656000000003
+  },
+  {
+   "q": "2021-Q3",
+   "payment_gbp": -490566.31,
+   "generation_mwh": 12246.873999999998
+  },
+  {
+   "q": "2021-Q4",
+   "payment_gbp": -2155163.3000000003,
+   "generation_mwh": 23596.780999999995
+  },
+  {
+   "q": "2022-Q1",
+   "payment_gbp": -2509818.1100000013,
+   "generation_mwh": 26337.640999999985
+  },
+  {
+   "q": "2022-Q2",
+   "payment_gbp": -856668.8300000002,
+   "generation_mwh": 22087.491999999995
+  },
+  {
+   "q": "2022-Q3",
+   "payment_gbp": -2974411.5199999996,
+   "generation_mwh": 18314.594000000005
+  },
+  {
+   "q": "2022-Q4",
+   "payment_gbp": -800324.7499999998,
+   "generation_mwh": 28644.341000000004
+  },
+  {
+   "q": "2023-Q1",
+   "payment_gbp": -728440.6599999999,
+   "generation_mwh": 33013.29099999999
+  },
+  {
+   "q": "2023-Q2",
+   "payment_gbp": 210384.57999999996,
+   "generation_mwh": 11831.088
+  },
+  {
+   "q": "2023-Q3",
+   "payment_gbp": 609779.6499999999,
+   "generation_mwh": 17189.049999999996
+  },
+  {
+   "q": "2023-Q4",
+   "payment_gbp": 1144423.31,
+   "generation_mwh": 28714.060999999987
+  },
+  {
+   "q": "2024-Q1",
+   "payment_gbp": 1508692.7300000002,
+   "generation_mwh": 30779.474
+  },
+  {
+   "q": "2024-Q2",
+   "payment_gbp": 1467376.08,
+   "generation_mwh": 23866.322000000004
+  },
+  {
+   "q": "2024-Q3",
+   "payment_gbp": 489716.23000000004,
+   "generation_mwh": 9767.255000000001
+  },
+  {
+   "q": "2024-Q4",
+   "payment_gbp": 1185182.3200000005,
+   "generation_mwh": 31032.778000000017
+  },
+  {
+   "q": "2025-Q1",
+   "payment_gbp": 530705.8700000001,
+   "generation_mwh": 28020.148999999994
+  },
+  {
+   "q": "2025-Q2",
+   "payment_gbp": 1356053.55,
+   "generation_mwh": 22740.777999999995
+  },
+  {
+   "q": "2025-Q3",
+   "payment_gbp": 1334475.4800000002,
+   "generation_mwh": 22075.847999999994
+  },
+  {
+   "q": "2025-Q4",
+   "payment_gbp": 1771220.18,
+   "generation_mwh": 33921.85799999999
+  },
+  {
+   "q": "2026-Q1",
+   "payment_gbp": 1372797.4200000002,
+   "generation_mwh": 39811.531
+  },
+  {
+   "q": "2026-Q2",
+   "payment_gbp": 980886.5500000004,
+   "generation_mwh": 24907.576999999997
+  },
+  {
+   "q": "2026-Q3",
+   "payment_gbp": 147723.69000000003,
+   "generation_mwh": 3107.7750000000005
+  }
+ ],
+ "contracts": [
+  {
+   "cfd_id": "AAA-BAN-192",
+   "unit_name": "Middle Muir Wind Farm",
+   "technology": "Onshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": 18839032.97,
+   "first_settlement": "2019-01-09",
+   "latest_strike_gbp_mwh": 120.28
+  }
+ ],
+ "strings": {
+  "basis": "Payments and generation are LCCC daily settlement data, summed per contract from first settlement. Quarters below zero are periods when the market price exceeded the strike price and the generator paid back.",
+  "outages_label": "Major outages (Elexon REMIT): periods of at least 24 hours with at least 20% of unit capacity unavailable. Records from 2016; earlier periods are not covered."
+ },
+ "provenance": {
+  "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
+  "data_to": "2026-07-19"
+ },
+ "outages": {
+  "coverage_from": "2016-01-01",
+  "windows": []
+ },
+ "tiles": {
+  "generation_mwh": 769898.742,
+  "rate_gbp_per_mwh": 24.469494418267278,
+  "rate_label": "payment per subsidised MWh"
+ }
+}

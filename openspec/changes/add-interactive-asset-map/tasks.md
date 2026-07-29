@@ -88,7 +88,7 @@ justified in the commit message.
       skip 7.4–7.5
 - [x] 7.4 Curate `reference/station_bmu_map.csv` from the Elexon BMU register,
       one source-cited row per BMU; loader + fixture tests
-- [ ] 7.5 REMIT fetcher (latest-revision-per-mRID collapse, window aggregation,
+- [x] 7.5 REMIT fetcher (latest-revision-per-mRID collapse, window aggregation,
       coverage_from stamp) + outage strip rendering with pinned
       coverage-window wording; ship data + rendering together
 - [x] 7.6 Enforcement notes: schema + loader (allowlist, station check,

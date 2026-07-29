@@ -1,0 +1,189 @@
+{
+ "slug": "coire",
+ "name": "Coire",
+ "scheme": "cfd_renewable",
+ "scheme_label": "CfD - renewables",
+ "technology": "Onshore Wind",
+ "hero_gbp": 7760510.19,
+ "hero_label": "cumulative payments",
+ "quarters": [
+  {
+   "q": "2019-Q2",
+   "payment_gbp": 35473.73,
+   "generation_mwh": 633.634
+  },
+  {
+   "q": "2019-Q3",
+   "payment_gbp": 736459.6999999998,
+   "generation_mwh": 13048.626999999997
+  },
+  {
+   "q": "2019-Q4",
+   "payment_gbp": 1081167.55,
+   "generation_mwh": 19690.576999999997
+  },
+  {
+   "q": "2020-Q1",
+   "payment_gbp": 1808577.4299999997,
+   "generation_mwh": 29655.892999999993
+  },
+  {
+   "q": "2020-Q2",
+   "payment_gbp": 979041.6000000004,
+   "generation_mwh": 13448.498000000003
+  },
+  {
+   "q": "2020-Q3",
+   "payment_gbp": 772240.6400000002,
+   "generation_mwh": 13333.248000000009
+  },
+  {
+   "q": "2020-Q4",
+   "payment_gbp": 921104.0800000004,
+   "generation_mwh": 18343.938
+  },
+  {
+   "q": "2021-Q1",
+   "payment_gbp": 812212.5200000003,
+   "generation_mwh": 21888.590000000004
+  },
+  {
+   "q": "2021-Q2",
+   "payment_gbp": 293962.4200000001,
+   "generation_mwh": 10345.603000000001
+  },
+  {
+   "q": "2021-Q3",
+   "payment_gbp": -267177.42000000004,
+   "generation_mwh": 7003.957999999998
+  },
+  {
+   "q": "2021-Q4",
+   "payment_gbp": -1912088.9500000004,
+   "generation_mwh": 20147.905
+  },
+  {
+   "q": "2022-Q1",
+   "payment_gbp": -2344006.3900000015,
+   "generation_mwh": 26419.330999999987
+  },
+  {
+   "q": "2022-Q2",
+   "payment_gbp": -566163.4599999998,
+   "generation_mwh": 15444.800999999998
+  },
+  {
+   "q": "2022-Q3",
+   "payment_gbp": -2137427.3400000003,
+   "generation_mwh": 13282.939000000006
+  },
+  {
+   "q": "2022-Q4",
+   "payment_gbp": -741492.5200000001,
+   "generation_mwh": 19508.61500000001
+  },
+  {
+   "q": "2023-Q1",
+   "payment_gbp": -490353.0000000001,
+   "generation_mwh": 18275.134000000002
+  },
+  {
+   "q": "2023-Q2",
+   "payment_gbp": 191360.47999999998,
+   "generation_mwh": 9272.950000000003
+  },
+  {
+   "q": "2023-Q3",
+   "payment_gbp": 448089.91999999987,
+   "generation_mwh": 12352.538999999997
+  },
+  {
+   "q": "2023-Q4",
+   "payment_gbp": 712680.6100000001,
+   "generation_mwh": 20043.371000000014
+  },
+  {
+   "q": "2024-Q1",
+   "payment_gbp": 1018582.6899999995,
+   "generation_mwh": 19908.944000000007
+  },
+  {
+   "q": "2024-Q2",
+   "payment_gbp": 970928.1299999999,
+   "generation_mwh": 16113.979999999998
+  },
+  {
+   "q": "2024-Q3",
+   "payment_gbp": 758517.7099999994,
+   "generation_mwh": 13641.813999999997
+  },
+  {
+   "q": "2024-Q4",
+   "payment_gbp": 756630.9700000002,
+   "generation_mwh": 20866.778
+  },
+  {
+   "q": "2025-Q1",
+   "payment_gbp": 450903.07000000007,
+   "generation_mwh": 21079.678000000004
+  },
+  {
+   "q": "2025-Q2",
+   "payment_gbp": 642189.0099999999,
+   "generation_mwh": 11523.250000000002
+  },
+  {
+   "q": "2025-Q3",
+   "payment_gbp": 846676.5900000002,
+   "generation_mwh": 14539.278000000004
+  },
+  {
+   "q": "2025-Q4",
+   "payment_gbp": 800773.6800000002,
+   "generation_mwh": 16009.375
+  },
+  {
+   "q": "2026-Q1",
+   "payment_gbp": 794357.2700000004,
+   "generation_mwh": 23408.11200000001
+  },
+  {
+   "q": "2026-Q2",
+   "payment_gbp": 386852.44000000006,
+   "generation_mwh": 11080.660999999993
+  },
+  {
+   "q": "2026-Q3",
+   "payment_gbp": 437.03,
+   "generation_mwh": 35.018
+  }
+ ],
+ "contracts": [
+  {
+   "cfd_id": "AAA-COI-196",
+   "unit_name": "Coire Na Cloiche Windfarm",
+   "technology": "Onshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": 7760510.19,
+   "first_settlement": "2019-06-25",
+   "latest_strike_gbp_mwh": 121.79
+  }
+ ],
+ "strings": {
+  "basis": "Payments and generation are LCCC daily settlement data, summed per contract from first settlement. Quarters below zero are periods when the market price exceeded the strike price and the generator paid back.",
+  "outages_label": "Major outages (Elexon REMIT): periods of at least 24 hours with at least 20% of unit capacity unavailable. Records from 2016; earlier periods are not covered."
+ },
+ "provenance": {
+  "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
+  "data_to": "2026-07-19"
+ },
+ "outages": {
+  "coverage_from": "2016-01-01",
+  "windows": []
+ },
+ "tiles": {
+  "generation_mwh": 470347.03900000005,
+  "rate_gbp_per_mwh": 16.499540863485695,
+  "rate_label": "payment per subsidised MWh"
+ }
+}

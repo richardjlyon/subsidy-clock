@@ -15,5 +15,5 @@ __pycache__/
 # underlying primaries (NAO/NESO/Ofgem), not these xlsx.
 /data/david-turver/
 
-# deploy-injected Mapbox token (written by scripts/inject-mapbox-token.js)
-site/mapbox-token.js
+.mcp.json
+.playwright-mcp/

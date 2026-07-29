@@ -1,0 +1,175 @@
+{
+ "slug": "clocaenog",
+ "name": "Clocaenog",
+ "scheme": "cfd_renewable",
+ "scheme_label": "CfD - renewables",
+ "technology": "Onshore Wind",
+ "hero_gbp": 29774772.73,
+ "hero_label": "cumulative payments",
+ "quarters": [
+  {
+   "q": "2019-Q4",
+   "payment_gbp": 1706792.7100000002,
+   "generation_mwh": 31375.132999999998
+  },
+  {
+   "q": "2020-Q1",
+   "payment_gbp": 3623434.8099999996,
+   "generation_mwh": 59216.02700000001
+  },
+  {
+   "q": "2020-Q2",
+   "payment_gbp": 3360329.8200000003,
+   "generation_mwh": 44890.592000000004
+  },
+  {
+   "q": "2020-Q3",
+   "payment_gbp": 3398345.990000001,
+   "generation_mwh": 55651.672
+  },
+  {
+   "q": "2020-Q4",
+   "payment_gbp": 3461089.7700000005,
+   "generation_mwh": 66987.05299999999
+  },
+  {
+   "q": "2021-Q1",
+   "payment_gbp": 2819649.840000001,
+   "generation_mwh": 74937.60200000001
+  },
+  {
+   "q": "2021-Q2",
+   "payment_gbp": 918619.9700000001,
+   "generation_mwh": 30773.646999999997
+  },
+  {
+   "q": "2021-Q3",
+   "payment_gbp": -761779.2199999999,
+   "generation_mwh": 27796.161000000004
+  },
+  {
+   "q": "2021-Q4",
+   "payment_gbp": -6603985.769999998,
+   "generation_mwh": 73186.77099999998
+  },
+  {
+   "q": "2022-Q1",
+   "payment_gbp": -6304369.999999999,
+   "generation_mwh": 73338.21400000002
+  },
+  {
+   "q": "2022-Q2",
+   "payment_gbp": -1709862.2800000003,
+   "generation_mwh": 45028.53599999999
+  },
+  {
+   "q": "2022-Q3",
+   "payment_gbp": -5480926.920000002,
+   "generation_mwh": 35000.852000000006
+  },
+  {
+   "q": "2022-Q4",
+   "payment_gbp": -1757735.0999999996,
+   "generation_mwh": 80409.42799999999
+  },
+  {
+   "q": "2023-Q1",
+   "payment_gbp": -1161429.8299999998,
+   "generation_mwh": 79589.57000000002
+  },
+  {
+   "q": "2023-Q2",
+   "payment_gbp": 686377.7300000001,
+   "generation_mwh": 32150.340000000004
+  },
+  {
+   "q": "2023-Q3",
+   "payment_gbp": 1985965.1000000003,
+   "generation_mwh": 49215.19500000002
+  },
+  {
+   "q": "2023-Q4",
+   "payment_gbp": 3455983.3699999996,
+   "generation_mwh": 81015.44799999999
+  },
+  {
+   "q": "2024-Q1",
+   "payment_gbp": 4094061.71,
+   "generation_mwh": 80017.35100000001
+  },
+  {
+   "q": "2024-Q2",
+   "payment_gbp": 2508227.05,
+   "generation_mwh": 41192.06100000001
+  },
+  {
+   "q": "2024-Q3",
+   "payment_gbp": 2853131.0300000007,
+   "generation_mwh": 50173.867
+  },
+  {
+   "q": "2024-Q4",
+   "payment_gbp": 2737921.3000000007,
+   "generation_mwh": 67341.55299999999
+  },
+  {
+   "q": "2025-Q1",
+   "payment_gbp": 1169105.6600000001,
+   "generation_mwh": 59986.365999999995
+  },
+  {
+   "q": "2025-Q2",
+   "payment_gbp": 3084816.9699999997,
+   "generation_mwh": 51871.48299999998
+  },
+  {
+   "q": "2025-Q3",
+   "payment_gbp": 2320418.9699999997,
+   "generation_mwh": 38113.104
+  },
+  {
+   "q": "2025-Q4",
+   "payment_gbp": 3876809.96,
+   "generation_mwh": 74900.18599999999
+  },
+  {
+   "q": "2026-Q1",
+   "payment_gbp": 3080276.67,
+   "generation_mwh": 78741.42299999998
+  },
+  {
+   "q": "2026-Q2",
+   "payment_gbp": 2150498.9900000007,
+   "generation_mwh": 55384.32500000005
+  },
+  {
+   "q": "2026-Q3",
+   "payment_gbp": 263004.43000000005,
+   "generation_mwh": 6190.975
+  }
+ ],
+ "contracts": [
+  {
+   "cfd_id": "AAA-CLO-186",
+   "unit_name": "Clocaenog Forest Wind Farm",
+   "technology": "Onshore Wind",
+   "status": "Live (Post-FIC)",
+   "cumulative_gbp": 29774772.73,
+   "first_settlement": "2019-10-31",
+   "latest_strike_gbp_mwh": 121.79
+  }
+ ],
+ "strings": {
+  "basis": "Payments and generation are LCCC daily settlement data, summed per contract from first settlement. Quarters below zero are periods when the market price exceeded the strike price and the generator paid back.",
+  "outages_unavailable": "Outage history is not available for this station."
+ },
+ "provenance": {
+  "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
+  "data_to": "2026-07-19"
+ },
+ "tiles": {
+  "generation_mwh": 1544474.935,
+  "rate_gbp_per_mwh": 19.2782492323192,
+  "rate_label": "payment per subsidised MWh"
+ }
+}
