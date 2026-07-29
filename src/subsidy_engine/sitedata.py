@@ -162,6 +162,8 @@ ASSET_STRINGS = {
                  "also includes recycle value, so this understates the "
                  "station's receipts. Ofgem publishes richer per-station ROC "
                  "data; it is not yet shown here."),
+    "hero_label_cfd": "cumulative payments",
+    "hero_label_ro": "cumulative buy-out value",
     "rate_label": "payment per subsidised MWh",
     "rate_not_shown": ("Payment per MWh is not shown: it is only computed when "
                        "cumulative payment and generation are both positive."),
@@ -211,6 +213,7 @@ def _asset_data(model: dict, map_data: dict) -> dict:
                 "scheme_label": cfd.label,
                 "technology": d["technology"],
                 "hero_gbp": d["cost"],
+                "hero_label": ASSET_STRINGS["hero_label_cfd"],
                 "quarters": d["quarters"],
                 "contracts": d["contracts"],
                 "strings": {
@@ -235,6 +238,7 @@ def _asset_data(model: dict, map_data: dict) -> dict:
                 "scheme_label": ro.label if ro is not None else "Renewables Obligation",
                 "technology": m["technology"],
                 "hero_gbp": m["cost"],
+                "hero_label": ASSET_STRINGS["hero_label_ro"],
                 "strings": {
                     "basis": ASSET_STRINGS["ro_basis"],
                     "outages_unavailable": ASSET_STRINGS["outages_unavailable"],

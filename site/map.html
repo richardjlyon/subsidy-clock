@@ -53,11 +53,15 @@
 
 <main class="container prose">
   <h1>Where the money lands</h1>
-  <p class="lede">Every generating station in the largest-recipients table, mapped. Each bubble is one physical station; its <strong>area is proportional to cumulative payment</strong>, and its colour shows the scheme. Hover a bubble for the detail.</p>
+  <p class="lede">Every generating station in the largest-recipients table, mapped. Each bubble is one physical station; its <strong>area is proportional to cumulative payment</strong>, and its colour shows the scheme. Hover a bubble for a summary — click it for the station’s full subsidy history.</p>
 
   <div class="map-frame" id="map-frame">
     <div id="map-canvas"></div>
     <div class="map-popup" id="map-popup" role="status" aria-live="polite"></div>
+    <aside class="asset-panel" id="asset-panel" role="dialog" aria-labelledby="asset-panel-name" hidden>
+      <button type="button" class="asset-panel-close" id="asset-panel-close" aria-label="Close">×</button>
+      <div id="asset-panel-body"></div>
+    </aside>
   </div>
   <div id="map-station-list" aria-label="Recipients, largest payment first"></div>
   <div class="legend" id="map-legend"></div>

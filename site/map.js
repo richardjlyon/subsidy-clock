@@ -30,6 +30,148 @@
 
   var frame = document.getElementById('map-frame');
   var popup = document.getElementById('map-popup');
+  var panel = document.getElementById('asset-panel');
+  var panelBody = document.getElementById('asset-panel-body');
+  var panelClose = document.getElementById('asset-panel-close');
+
+  function fmtGen(mwh) {
+    if (mwh >= 1e6) return (mwh / 1e6).toFixed(1) + ' TWh';
+    if (mwh >= 1e3) return Math.round(mwh / 1e3) + ' GWh';
+    return Math.round(mwh) + ' MWh';
+  }
+  function fmtDate(iso) {
+    if (!iso) return '';
+    var d = new Date(iso + 'T00:00:00Z');
+    return d.toLocaleDateString('en-GB',
+      { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+  }
+
+  /* diverging quarterly columns around a zero baseline: payments up
+     (--xray-pos), paybacks down (--xray-neg), plus an accessible table of the
+     same values. Sign is encoded twice: colour AND side of the baseline. */
+  function chartSVG(quarters) {
+    var W = 360, H = 120, PAD = 14;
+    var posMax = 0, negMax = 0;
+    quarters.forEach(function (q) {
+      if (q.payment_gbp >= 0) posMax = Math.max(posMax, q.payment_gbp);
+      else negMax = Math.max(negMax, -q.payment_gbp);
+    });
+    var span = posMax + negMax || 1;
+    var y0 = PAD + (H - 2 * PAD) * (posMax / span);
+    var bw = W / quarters.length;
+    var s = '<svg viewBox="0 0 ' + W + ' ' + (H + 14) + '" role="img" ' +
+      'aria-label="Net payment by quarter, paybacks below the zero line">';
+    quarters.forEach(function (q, i) {
+      var h = Math.abs(q.payment_gbp) / span * (H - 2 * PAD);
+      if (h > 0 && h < 1) h = 1;
+      var y = q.payment_gbp >= 0 ? y0 - h : y0;
+      s += '<rect x="' + (i * bw + 0.5).toFixed(1) + '" y="' + y.toFixed(1) +
+        '" width="' + Math.max(bw - 1, 0.5).toFixed(1) + '" height="' + h.toFixed(1) +
+        '" fill="var(' + (q.payment_gbp >= 0 ? '--xray-pos' : '--xray-neg') + ')">' +
+        '<title>' + esc(q.q) + ': ' + (q.payment_gbp < 0 ? '−' : '') +
+        fmtCompact(q.payment_gbp) + '</title></rect>';
+      if (/Q1$/.test(q.q) && bw * i > 8) {
+        s += '<text x="' + (i * bw).toFixed(1) + '" y="' + (H + 11) +
+          '" font-size="8.5" fill="#5b6572">' + esc(q.q.slice(0, 4)) + '</text>';
+      }
+    });
+    s += '<line x1="0" x2="' + W + '" y1="' + y0.toFixed(1) + '" y2="' +
+      y0.toFixed(1) + '" stroke="#5b6572" stroke-width="1"/></svg>';
+    return s;
+  }
+
+  function chartTable(quarters) {
+    var t = '<table class="sr-table"><caption>Net payment by quarter</caption>' +
+      '<thead><tr><th scope="col">Quarter</th><th scope="col">Net payment £</th>' +
+      '<th scope="col">Generation MWh</th></tr></thead><tbody>';
+    quarters.forEach(function (q) {
+      t += '<tr><td>' + esc(q.q) + '</td><td>' + Math.round(q.payment_gbp) +
+        '</td><td>' + Math.round(q.generation_mwh) + '</td></tr>';
+    });
+    return t + '</tbody></table>';
+  }
+
+  var assetCache = {};
+  var panelInvoker = null;
+
+  function renderPanel(a) {
+    var col = (a.scheme === 'cfd_renewable') ? colours.cfd_renewable : colours.ro;
+    var h = '<div class="asset-head">' +
+      '<p class="asset-name" id="asset-panel-name"><span class="pop-dot" ' +
+      'style="background:' + col + '"></span>' + esc(a.name) + '</p>' +
+      '<p class="asset-meta">' + esc(a.scheme_label) + ' · ' +
+      esc(a.technology) + '</p></div>' +
+      '<p class="asset-hero"><span class="v">' + (a.hero_gbp < 0 ? '−' : '') +
+      fmtCompact(a.hero_gbp) + '</span><span class="l">' +
+      esc(a.hero_label) + '</span></p>';
+    if (a.tiles) {
+      h += '<div class="asset-tiles">' +
+        '<div class="tile"><span class="v">' + fmtGen(a.tiles.generation_mwh) +
+        '</span><span class="l">subsidised generation</span></div>' +
+        '<div class="tile"><span class="v">£' +
+        Math.round(a.tiles.rate_gbp_per_mwh) + '/MWh</span><span class="l">' +
+        esc(a.tiles.rate_label) + '</span></div></div>';
+    }
+    if (a.strings.rate_not_shown) {
+      h += '<p class="asset-note">' + esc(a.strings.rate_not_shown) + '</p>';
+    }
+    if (a.quarters && a.quarters.length) {
+      h += '<p class="asset-chart-title">Net payment by quarter</p>' +
+        '<div class="asset-chart">' + chartSVG(a.quarters) + '</div>' +
+        chartTable(a.quarters);
+    }
+    if (a.contracts && a.contracts.length) {
+      h += '<table class="asset-contracts"><thead><tr><th scope="col">Contract</th>' +
+        '<th scope="col">Since</th><th class="num" scope="col">Strike £/MWh</th>' +
+        '<th class="num" scope="col">Paid</th></tr></thead><tbody>';
+      a.contracts.forEach(function (c) {
+        h += '<tr><td>' + esc(c.cfd_id) + '</td>' +
+          '<td>' + (c.first_settlement ? esc(c.first_settlement.slice(0, 4)) : '—') + '</td>' +
+          '<td class="num">' + (c.latest_strike_gbp_mwh != null
+            ? c.latest_strike_gbp_mwh.toFixed(2) : '—') + '</td>' +
+          '<td class="num">' + (c.cumulative_gbp < 0 ? '−' : '') +
+          fmtCompact(c.cumulative_gbp) + '</td></tr>';
+      });
+      h += '</tbody></table>';
+    }
+    h += '<p class="asset-note">' + esc(a.strings.basis) + '</p>';
+    h += '<p class="asset-note">' + esc(a.strings.outages_unavailable) + '</p>';
+    h += '<p class="asset-prov">' + esc(a.provenance.source) +
+      (a.provenance.data_to
+        ? ' Data to ' + esc(fmtDate(a.provenance.data_to)) + '.' : '') + '</p>';
+    panelBody.innerHTML = h;
+  }
+
+  function openPanel(slug, invoker) {
+    panelInvoker = invoker || document.activeElement;
+    var got = assetCache[slug]
+      ? Promise.resolve(assetCache[slug])
+      : fetch('data/assets/' + encodeURIComponent(slug) + '.json')
+          .then(function (r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+          })
+          .then(function (a) { assetCache[slug] = a; return a; });
+    got.then(function (a) {
+      renderPanel(a);
+      panel.hidden = false;
+      panelClose.focus();
+    }).catch(function () {
+      panelBody.innerHTML = '<p class="asset-note">Asset detail could not be ' +
+        'loaded. <a href="/data">See the data tables</a>.</p>';
+      panel.hidden = false;
+      panelClose.focus();
+    });
+  }
+  function closePanel() {
+    panel.hidden = true;
+    if (panelInvoker && panelInvoker.focus) panelInvoker.focus();
+    panelInvoker = null;
+  }
+  panelClose.addEventListener('click', closePanel);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !panel.hidden) closePanel();
+  });
 
   var data;
   try {
@@ -181,7 +323,8 @@
       hidePopup();
     });
     map.on('click', 'recipients', function (e) {
-      showPopup(e.features[0].properties.i, e.point);
+      hidePopup();
+      openPanel(markers[e.features[0].properties.i].slug, map.getCanvas());
     });
     map.on('click', function (e) {
       var hits = map.queryRenderedFeatures(e.point, { layers: ['recipients'] });
@@ -201,9 +344,7 @@
         b.addEventListener('click', function () {
           var move = { center: [m.k.lon, m.k.lat], zoom: 8 };
           if (REDUCED) map.jumpTo(move); else map.flyTo(move);
-          map.once(REDUCED ? 'idle' : 'moveend', function () {
-            showPopup(m.i, map.project([m.k.lon, m.k.lat]));
-          });
+          openPanel(m.k.slug, b);
         });
         list.appendChild(b);
       });

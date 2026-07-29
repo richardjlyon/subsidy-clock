@@ -640,6 +640,8 @@ def test_asset_strings_are_pinned():
     # act and must show up here
     s = sitedata.ASSET_STRINGS
     assert s["rate_label"] == "payment per subsidised MWh"
+    assert s["hero_label_cfd"] == "cumulative payments"
+    assert s["hero_label_ro"] == "cumulative buy-out value"
     assert s["cfd_basis"].startswith("Payments and generation are LCCC daily")
     assert "paid back" in s["cfd_basis"]
     assert s["ro_basis"].startswith("Valued at Renewables Obligation buy-out only")

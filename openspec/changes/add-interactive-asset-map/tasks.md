@@ -66,11 +66,11 @@ justified in the commit message.
 
 ## 6. Phase B — panel and ship (ONE push)
 
-- [ ] 6.1 Asset panel (side panel / bottom sheet): header, hero, tiles,
+- [x] 6.1 Asset panel (side panel / bottom sheet): header, hero, tiles,
       diverging quarterly SVG chart + visually-hidden table, contract table,
       provenance footer — strings placed from JSON only; focus management per
       spec (into close control, back to activator)
-- [ ] 6.2 Run the dataviz palette validator on chart colours in light and dark
+- [x] 6.2 Run the dataviz palette validator on chart colours in light and dark
       modes; fix any FAIL
 - [ ] 6.3 Ship: per-asset JSONs + panel code in ONE push; post-deploy smoke
       check (CfD asset, RO asset, payback quarter renders negative)
