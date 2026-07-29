@@ -1,11 +1,15 @@
 {
-  "provider": "mapbox",
-  "style": "mapbox/streets-v12",
+  "style_url": "https://tiles.openfreemap.org/styles/positron",
   "center": [-3.05, 54.45],
-  "zoom": 4.72,
-  "width": 480,
-  "height": 640,
-  "retina": true,
-  "attribution": "© Mapbox © OpenStreetMap",
-  "note": "No access token here on purpose — it is kept out of git. The token is a public (pk.*) client token, URL-restricted to subsidyclock.co.uk, set as the Vercel env var MAPBOX_TOKEN; scripts/inject-mapbox-token.js writes site/mapbox-token.js at deploy and site/map.js appends it to the static-image URL client-side. Because it is domain-locked, the basemap 403s off-domain (e.g. localhost) — it only renders on the live site. Served by Mapbox's Static Images API per their ToS (not self-hosted). Marker projection is Web Mercator from center/zoom/width/height, matching the static image exactly."
+  "zoom": 4.9,
+  "terrain": {
+    "tiles": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png",
+    "encoding": "terrarium",
+    "tile_size": 256,
+    "max_zoom": 15,
+    "exaggeration": 1.5
+  },
+  "attribution": "OpenFreeMap © OpenMapTiles Data from OpenStreetMap",
+  "terrain_attribution": "Terrain: Mapzen/Tilezen Joerd (Copernicus EU-DEM, UK Environment Agency, USGS) — full credits on the methodology page",
+  "note": "Keyless tile sources, verified 2026-07-29 (openspec change add-interactive-asset-map, verification.md): OpenFreeMap public instance — no keys, no limits, commercial use permitted, no SLA; AWS Terrain Tiles via the AWS Open Data registry. Both attribution strings are engine-pinned into map.json; the page places them, never authors them. Swapping providers = edit this file + rebuild. The old Mapbox Static Images basemap (and its deploy-injected token) is gone."
 }

@@ -150,38 +150,17 @@ def _factoids(model: dict, equivalences: list[dict],
     return out
 
 
-def _mapbox_static_url(bm: dict) -> str:
-    """Build the Mapbox Static Images API URL for the basemap (served by Mapbox,
-    not self-hosted, per their ToS). center/zoom/size fix the Web Mercator frame.
-    The access token is deliberately NOT included — it is a per-deploy secret kept
-    out of git and appended client-side (see site/map.js + scripts/inject-mapbox-token.js)."""
-    retina = "@2x" if bm.get("retina") else ""
-    lon, lat = bm["center"]
-    return (f"https://api.mapbox.com/styles/v1/{bm['style']}/static/"
-            f"{lon},{lat},{bm['zoom']},0/{bm['width']}x{bm['height']}{retina}")
-
-
-def _web_mercator(lat: float, lon: float, bm: dict) -> tuple[float, float]:
-    """Project (lat, lon) to logical pixels on a Mapbox static image defined by
-    center/zoom/width/height (512-px tiles). Matches the rendered basemap exactly."""
-    world = 512 * 2 ** bm["zoom"]
-    def wx(deg: float) -> float:
-        return (deg + 180.0) / 360.0 * world
-    def wy(deg: float) -> float:
-        s = math.sin(math.radians(deg))
-        return (0.5 - math.log((1 + s) / (1 - s)) / (4 * math.pi)) * world
-    clon, clat = bm["center"]
-    return (bm["width"] / 2 + (wx(lon) - wx(clon)),
-            bm["height"] / 2 + (wy(lat) - wy(clat)))
-
-
-def _map_data(model: dict, coords: dict, basemap: dict) -> dict:
-    """One bubble per physical station for the recipients map, over a Mapbox basemap.
+def _map_data(model: dict, coords: dict, tiles: dict) -> dict:
+    """One marker per station × scheme for the interactive recipients map.
 
     Pulls the ``by_station`` lists from the ``cfd_renewable`` and ``ro``
     SchemeResults' extras; a station appears once per scheme it pays out under
-    (so Drax yields two markers). Each (lat, lon) is Web-Mercator-projected into
-    the basemap's pixel frame. Stations absent from ``coords`` are dropped."""
+    (so Drax yields two markers). Markers carry real (lat, lon) plus the pinned
+    slug from the coords reference — the client (MapLibre) does its own
+    projection, so no pixel-space maths happens here. Stations absent from
+    ``coords`` are dropped. ``tiles`` (reference/map_tiles.json) is passed
+    through verbatim: style/terrain URLs and the pinned attribution strings the
+    page must place."""
     by_id = {s.scheme_id: s for s in model["schemes"]}
     markers = []
     for scheme_id in ("cfd_renewable", "ro"):
@@ -192,24 +171,16 @@ def _map_data(model: dict, coords: dict, basemap: dict) -> dict:
             ll = coords.get(st["station"])
             if ll is None:
                 continue
-            x, y = _web_mercator(ll[0], ll[1], basemap)
             markers.append({
+                "slug": ll[2],
                 "name": st["station"],
                 "scheme": scheme_id,
                 "technology": st["technology"],
                 "cost": st["cost"],
-                "x": x,
-                "y": y,
+                "lat": ll[0],
+                "lon": ll[1],
             })
-    return {
-        "basemap": {
-            "url": _mapbox_static_url(basemap),
-            "width": basemap["width"],
-            "height": basemap["height"],
-            "attribution": basemap["attribution"],
-        },
-        "markers": markers,
-    }
+    return {"tiles": tiles, "markers": markers}
 
 
 def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
@@ -217,7 +188,7 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
           bill_annual: pl.DataFrame | None = None,
           bill_info: dict | None = None,
           deflators: pl.DataFrame | None = None,
-          coords: dict | None = None, basemap: dict | None = None,
+          coords: dict | None = None, tiles: dict | None = None,
           equivalences: list[dict] | None = None) -> None:
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
@@ -292,8 +263,8 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
         "factoids": _factoids(model, equivalences or [], deflators),
     }, indent=1, allow_nan=False))
 
-    if coords is not None and basemap is not None:
-        map_data = _map_data(model, coords, basemap)
+    if coords is not None and tiles is not None:
+        map_data = _map_data(model, coords, tiles)
         (out / "map.json").write_text(json.dumps(map_data, indent=1, allow_nan=False))
         by_id = {s.scheme_id: s for s in model["schemes"]}
         located = {m["name"] for m in map_data["markers"]}

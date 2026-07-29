@@ -23,20 +23,34 @@ def load_station_map(path):
 
 
 def load_station_coords(path):
-    """Load station -> (lat, lon) from the reference coords CSV.
+    """Load station -> (lat, lon, slug) from the reference coords CSV.
 
-    The CSV (``reference/station_coords.csv``) has columns ``station,lat,lon,
-    source_url`` where ``station`` is the exact ``by_station`` name (the join
-    key). Rows with a blank or non-numeric (e.g. ``NOT FOUND``) lat/lon are
-    skipped so an unlocated station simply yields no marker.
+    The CSV (``reference/station_coords.csv``) has columns ``station,slug,lat,
+    lon,source_url`` where ``station`` is the exact ``by_station`` name (the
+    join key) and ``slug`` is the hand-pinned stable identifier for the
+    station's asset JSON and deep links — assigned once, never derived from the
+    (unstable) upstream name. Rows with a blank or non-numeric (e.g.
+    ``NOT FOUND``) lat/lon are skipped so an unlocated station simply yields no
+    marker. A located row without a slug, or a slug used twice, fails loudly:
+    silent slug drift would orphan asset files and deep links.
     """
     coords = {}
+    seen = {}
     with Path(path).open(newline="") as f:
         for row in csv.DictReader(f):
             try:
-                coords[row["station"]] = (float(row["lat"]), float(row["lon"]))
+                lat, lon = float(row["lat"]), float(row["lon"])
             except (TypeError, ValueError):
                 continue
+            slug = (row.get("slug") or "").strip()
+            if not slug:
+                raise ValueError(f"station_coords: located row for "
+                                 f"{row['station']!r} has no slug")
+            if slug in seen:
+                raise ValueError(f"station_coords: duplicate slug {slug!r} "
+                                 f"({seen[slug]!r} and {row['station']!r})")
+            seen[slug] = row["station"]
+            coords[row["station"]] = (lat, lon, slug)
     return coords
 
 

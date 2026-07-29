@@ -1,3 +1,5 @@
+import pytest
+
 from subsidy_engine_uk.stations import (
     group_by_station,
     load_ro_stations,
@@ -6,34 +8,57 @@ from subsidy_engine_uk.stations import (
 )
 
 
-def test_load_station_coords_reads_station_to_latlon_floats(tmp_path):
+def test_load_station_coords_reads_station_to_latlon_slug(tmp_path):
     csv = tmp_path / "coords.csv"
     csv.write_text(
-        "station,lat,lon,source_url\n"
-        "Hornsea 1,53.8800,1.6800,https://example/hornsea\n"
-        "Drax,53.7380,-0.9998,https://example/drax\n"
+        "station,slug,lat,lon,source_url\n"
+        "Hornsea 1,hornsea-1,53.8800,1.6800,https://example/hornsea\n"
+        "Drax,drax,53.7380,-0.9998,https://example/drax\n"
     )
 
     coords = load_station_coords(csv)
 
     assert coords == {
-        "Hornsea 1": (53.88, 1.68),
-        "Drax": (53.738, -0.9998),
+        "Hornsea 1": (53.88, 1.68, "hornsea-1"),
+        "Drax": (53.738, -0.9998, "drax"),
     }
 
 
 def test_load_station_coords_skips_blank_and_not_found_rows(tmp_path):
     csv = tmp_path / "coords.csv"
     csv.write_text(
-        "station,lat,lon,source_url\n"
-        "Hornsea 1,53.8800,1.6800,https://example/hornsea\n"
-        "Mystery Farm,,,\n"
-        "Unlocatable,NOT FOUND,NOT FOUND,\n"
+        "station,slug,lat,lon,source_url\n"
+        "Hornsea 1,hornsea-1,53.8800,1.6800,https://example/hornsea\n"
+        "Mystery Farm,,,,\n"
+        "Unlocatable,,NOT FOUND,NOT FOUND,\n"
     )
 
     coords = load_station_coords(csv)
 
-    assert coords == {"Hornsea 1": (53.88, 1.68)}
+    assert coords == {"Hornsea 1": (53.88, 1.68, "hornsea-1")}
+
+
+def test_load_station_coords_fails_on_located_row_without_slug(tmp_path):
+    csv = tmp_path / "coords.csv"
+    csv.write_text(
+        "station,slug,lat,lon,source_url\n"
+        "Hornsea 1,,53.8800,1.6800,https://example/hornsea\n"
+    )
+
+    with pytest.raises(ValueError, match="Hornsea 1"):
+        load_station_coords(csv)
+
+
+def test_load_station_coords_fails_on_duplicate_slug(tmp_path):
+    csv = tmp_path / "coords.csv"
+    csv.write_text(
+        "station,slug,lat,lon,source_url\n"
+        "Hornsea 1,hornsea-1,53.8800,1.6800,https://example/hornsea\n"
+        "Hornsea 2,hornsea-1,53.9000,1.7900,https://example/hornsea2\n"
+    )
+
+    with pytest.raises(ValueError, match="hornsea-1"):
+        load_station_coords(csv)
 
 
 def test_load_ro_stations_reads_named_stations_with_buyout_value(tmp_path):
