@@ -1,5 +1,19 @@
 # add-interactive-asset-map — verification record
 
+## HANDOFF — state as of 2026-07-29 (machine change)
+
+All build tasks complete; merged to master and pushed (the deploy). Remaining
+when work resumes on the new machine:
+1. Post-deploy smoke of live /map if not already done (CfD asset panel, RO
+   panel, payback quarters negative, outage strip, Drax note).
+2. Delete the now-unused MAPBOX_TOKEN Vercel env var (rollback to the old
+   static map is only clean before this).
+3. iOS Safari/FxiOS check on Richard's phone.
+4. Nightly Action now includes the `remit` update target (~800 light Elexon
+   requests/run) — watch the first scheduled run.
+5. Archive this change (`openspec archive add-interactive-asset-map`) once
+   1–3 are done.
+
 ## Task 1.1 — tile-source terms (verified 2026-07-29)
 
 **OpenFreeMap (basemap) — PASS.**
