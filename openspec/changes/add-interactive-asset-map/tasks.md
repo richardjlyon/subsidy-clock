@@ -54,11 +54,11 @@ justified in the commit message.
 
 ## 5. Phase B — engine asset JSON
 
-- [ ] 5.1 Per-asset builder in `sitedata.py`: CfD shape (header, hero, tiles
+- [x] 5.1 Per-asset builder in `sitedata.py`: CfD shape (header, hero, tiles
       with degenerate-case suppression, quarterly aggregation unclamped,
       contract rows) and RO-only shape; hero == marker cost enforced in the
       build; provenance block with data-to date
-- [ ] 5.2 Pin all panel wording in engine JSON with tests (basis notes, £/MWh
+- [x] 5.2 Pin all panel wording in engine JSON with tests (basis notes, £/MWh
       label + not-shown wording, RO understatement + richer-data statement,
       unavailable-outages wording, provenance strings)
 - Gate: full suite green; golden-master diff confined to new asset outputs and

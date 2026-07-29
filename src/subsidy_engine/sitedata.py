@@ -150,6 +150,102 @@ def _factoids(model: dict, equivalences: list[dict],
     return out
 
 
+# Panel wording for the per-asset JSONs — engine-pinned (test-pinned): the map
+# page places these strings verbatim, it never authors wording that matters.
+ASSET_STRINGS = {
+    "cfd_basis": ("Payments and generation are LCCC daily settlement data, "
+                  "summed per contract from first settlement. Quarters below "
+                  "zero are periods when the market price exceeded the strike "
+                  "price and the generator paid back."),
+    "ro_basis": ("Valued at Renewables Obligation buy-out only — the "
+                 "directly-sourced per-generator basis. The scheme's full cost "
+                 "also includes recycle value, so this understates the "
+                 "station's receipts. Ofgem publishes richer per-station ROC "
+                 "data; it is not yet shown here."),
+    "rate_label": "payment per subsidised MWh",
+    "rate_not_shown": ("Payment per MWh is not shown: it is only computed when "
+                       "cumulative payment and generation are both positive."),
+    "outages_unavailable": "Outage history is not available for this station.",
+    "source_cfd": ("Source: LCCC actual CfD generation and payments, daily "
+                   "settlement."),
+    "source_ro": ("Source: Ofgem Renewables Obligation annual reports "
+                  "(buy-out basis)."),
+}
+
+
+def _asset_data(model: dict, map_data: dict) -> dict:
+    """One JSON object per map marker: the asset X-ray panel's whole content.
+
+    CfD markers carry the quarterly series, contract rows and stat tiles from
+    ``station_detail`` (built from the same settlement rows as the scheme
+    totals, so figures reconcile by construction — and are re-checked here,
+    fail-loud). RO markers carry the honest-degradation shape: hero buy-out
+    value and the pinned understatement note, no tiles, no chart. The
+    effective-rate tile is suppressed (never negative, infinite, or zero
+    standing in for unknown) unless payment and generation are both positive."""
+    by_id = {s.scheme_id: s for s in model["schemes"]}
+    cfd = by_id.get("cfd_renewable")
+    detail = {d["station"]: d
+              for d in (cfd.extras.get("station_detail", []) if cfd else [])}
+    ro = by_id.get("ro")
+    ro_data_to = (ro.data_to.isoformat()
+                  if ro is not None and ro.data_to is not None else None)
+    out = {}
+    for m in map_data["markers"]:
+        if m["scheme"] == "cfd_renewable":
+            assert cfd is not None  # a cfd marker implies the scheme exists
+            d = detail.get(m["name"])
+            if d is None:
+                raise ValueError("asset data: no station_detail for mapped "
+                                 f"CfD station {m['name']!r}")
+            tol = 1e-6 * max(1.0, abs(m["cost"]))
+            if abs(d["cost"] - m["cost"]) > tol:
+                raise ValueError("asset data: hero/marker cost mismatch for "
+                                 f"{m['name']!r}")
+            if abs(sum(c["cumulative_gbp"] for c in d["contracts"]) - d["cost"]) > tol:
+                raise ValueError("asset data: contract sum != station cost for "
+                                 f"{m['name']!r}")
+            asset = {
+                "slug": m["slug"], "name": m["name"],
+                "scheme": "cfd_renewable",
+                "scheme_label": cfd.label,
+                "technology": d["technology"],
+                "hero_gbp": d["cost"],
+                "quarters": d["quarters"],
+                "contracts": d["contracts"],
+                "strings": {
+                    "basis": ASSET_STRINGS["cfd_basis"],
+                    "outages_unavailable": ASSET_STRINGS["outages_unavailable"],
+                },
+                "provenance": {"source": ASSET_STRINGS["source_cfd"],
+                               "data_to": d["data_to"]},
+            }
+            if d["cost"] > 0 and d["generation_mwh"] > 0:
+                asset["tiles"] = {
+                    "generation_mwh": d["generation_mwh"],
+                    "rate_gbp_per_mwh": d["cost"] / d["generation_mwh"],
+                    "rate_label": ASSET_STRINGS["rate_label"],
+                }
+            else:
+                asset["strings"]["rate_not_shown"] = ASSET_STRINGS["rate_not_shown"]
+        else:
+            asset = {
+                "slug": m["slug"], "name": m["name"],
+                "scheme": "ro",
+                "scheme_label": ro.label if ro is not None else "Renewables Obligation",
+                "technology": m["technology"],
+                "hero_gbp": m["cost"],
+                "strings": {
+                    "basis": ASSET_STRINGS["ro_basis"],
+                    "outages_unavailable": ASSET_STRINGS["outages_unavailable"],
+                },
+                "provenance": {"source": ASSET_STRINGS["source_ro"],
+                               "data_to": ro_data_to},
+            }
+        out[m["slug"]] = asset
+    return out
+
+
 def _map_data(model: dict, coords: dict, tiles: dict) -> dict:
     """One marker per station × scheme for the interactive recipients map.
 
@@ -273,6 +369,17 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
                   for st in s.extras.get("by_station", [])}
         print(f"[map] {len(map_data['markers'])} markers, "
               f"{len(wanted - located)} stations missing coords")
+        # per-asset X-ray JSONs, one per marker; dir cleared first so a
+        # renamed slug can't leave a stale orphan behind
+        assets = _asset_data(model, map_data)
+        assets_dir = out / "assets"
+        assets_dir.mkdir(exist_ok=True)
+        for stale in assets_dir.glob("*.json"):
+            stale.unlink()
+        for slug, asset in assets.items():
+            (assets_dir / f"{slug}.json").write_text(
+                json.dumps(asset, indent=1, allow_nan=False))
+        print(f"[assets] {len(assets)} asset files")
 
 
 # public CSV filename per scheme id - part of the published URL contract (/data/*.csv)

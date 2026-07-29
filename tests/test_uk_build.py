@@ -166,3 +166,62 @@ def test_build_indirect_layer(tmp_path):
                             baselines=baselines)
     assert (model["perspectives"]["renewables"]["cumulative_gbp"]
             == model2["perspectives"]["renewables"]["cumulative_gbp"])
+
+
+def test_station_detail_quarters_contracts_and_negative_quarter(tmp_path):
+    from subsidy_engine.reference import ReferenceScheme
+    from subsidy_engine.store import SnapshotStore
+
+    store = SnapshotStore(tmp_path)
+    gen = pl.DataFrame({
+        "date": [date(2021, 1, 10), date(2021, 2, 10),
+                 date(2021, 10, 5), date(2021, 10, 6), date(2022, 1, 3)],
+        "cfd_id": ["W-1", "W-1", "W-1", "W-2", "W-1"],
+        "unit_name": ["Farm P1", "Farm P1", "Farm P1", "Farm P2", "Farm P1"],
+        "technology": ["Offshore Wind"] * 5,
+        "generation_mwh": [10.0, 20.0, 30.0, 40.0, 15.0],
+        "payment_gbp": [100.0, 200.0, 50.0, 400.0, -75.0],
+        "strike_price_gbp_mwh": [150.0, 151.0, 152.0, 140.0, 153.0],
+        "is_renewable": [True] * 5,
+    })
+    store.write("cfd", "generation", gen, source_url="u", date_col="date")
+    hist = pl.DataFrame({"year": [2024], "cost_gbp": [390e6]},
+                        schema={"year": pl.Int64, "cost_gbp": pl.Float64})
+    annual = pl.DataFrame({"year": [2024], "cost_gbp": [1.0e9]},
+                          schema={"year": pl.Int64, "cost_gbp": pl.Float64})
+    refs = {
+        "constraints_history": ReferenceScheme(
+            "constraints_history", "Wind constraints history",
+            ["renewables", "low_carbon"], "annual", "s", "https://s", True, hist),
+        "ro": ReferenceScheme("ro", "Renewables Obligation",
+                              ["renewables", "low_carbon"], "annual",
+                              "s", "https://s", True, annual),
+        "fit": ReferenceScheme("fit", "Feed-in Tariffs",
+                               ["renewables", "low_carbon"], "annual",
+                               "s", "https://s", True, annual),
+    }
+    model = uk_build.build(store, refs, deflators=deflators(),
+                           station_map={"W-1": "Farm", "W-2": "Farm"})
+    by_id = {s.scheme_id: s for s in model["schemes"]}
+    detail = by_id["cfd_renewable"].extras["station_detail"]
+
+    assert [d["station"] for d in detail] == ["Farm"]
+    farm = detail[0]
+    # calendar-quarter aggregation across both contracts; the negative 2022-Q1
+    # (payback) passes through unclamped
+    assert farm["quarters"] == [
+        {"q": "2021-Q1", "payment_gbp": 300.0, "generation_mwh": 30.0},
+        {"q": "2021-Q4", "payment_gbp": 450.0, "generation_mwh": 70.0},
+        {"q": "2022-Q1", "payment_gbp": -75.0, "generation_mwh": 15.0},
+    ]
+    # per-contract rows: first settlement and the latest strike by date
+    c = {r["cfd_id"]: r for r in farm["contracts"]}
+    assert c["W-1"]["first_settlement"] == "2021-01-10"
+    assert c["W-1"]["latest_strike_gbp_mwh"] == 153.0
+    assert c["W-2"]["first_settlement"] == "2021-10-06"
+    assert c["W-2"]["latest_strike_gbp_mwh"] == 140.0
+    # station totals reconcile with the contract sum
+    assert farm["cost"] == 675.0
+    assert c["W-1"]["cumulative_gbp"] + c["W-2"]["cumulative_gbp"] == 675.0
+    assert farm["generation_mwh"] == 115.0
+    assert farm["data_to"] == "2022-01-03"

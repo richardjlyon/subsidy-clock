@@ -67,6 +67,52 @@ def baseline_uplift(
             .select("year", "cost_gbp"))
 
 
+def _station_detail(sub: pl.DataFrame, station_rows: list) -> list:
+    """Per-station panel detail for the mapped CfD recipients.
+
+    For each grouped station: the quarterly net payment/generation series
+    (calendar quarters across all the station's contracts — negative quarters
+    are real paybacks and pass through unclamped) and per-contract rows with
+    first settlement date and latest strike price. Feeds the per-asset JSONs
+    (sitedata.build); everything derives from the same daily settlement rows
+    the scheme totals use, so the panel reconciles by construction."""
+    out = []
+    for row in station_rows:
+        ids = [c["cfd_id"] for c in row["contracts"]]
+        d = sub.filter(pl.col("cfd_id").is_in(ids)).sort("date")
+        quarters = (
+            d.with_columns(
+                (pl.col("date").dt.year().cast(pl.Utf8) + "-Q"
+                 + ((pl.col("date").dt.month() - 1) // 3 + 1).cast(pl.Utf8))
+                .alias("q"))
+            .group_by("q")
+            .agg(pl.col("payment_gbp").sum(), pl.col("generation_mwh").sum())
+            .sort("q").to_dicts())
+        contracts = []
+        for c in row["contracts"]:
+            cd = d.filter(pl.col("cfd_id") == c["cfd_id"])
+            strikes = cd.drop_nulls("strike_price_gbp_mwh")
+            contracts.append({
+                "cfd_id": c["cfd_id"],
+                "unit_name": c["unit_name"],
+                "technology": c["technology"],
+                "cumulative_gbp": c["cost"],
+                "first_settlement": cd["date"].min().isoformat() if cd.height else None,
+                "latest_strike_gbp_mwh": (float(strikes["strike_price_gbp_mwh"][-1])
+                                          if strikes.height else None),
+            })
+        out.append({
+            "station": row["station"],
+            "technology": row["technology"],
+            "cost": row["cost"],
+            "generation_mwh": float(d["generation_mwh"].sum() or 0.0),
+            "data_to": d["date"].max().isoformat() if d.height else None,
+            "quarters": quarters,
+            "contracts": contracts,
+        })
+    return out
+
+
 def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
           *, deflators: pl.DataFrame, baselines: dict | None = None,
           station_map: dict | None = None,
@@ -101,26 +147,31 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
             daily = (sub.group_by("date").agg(pl.col("payment_gbp").sum().alias("cost_gbp"))
                      .sort("date"))
             gross, net = gross_net(sub, "payment_gbp")
+            by_station = group_by_station(
+                sub.group_by("cfd_id", "unit_name", "technology")
+                   .agg(pl.col("payment_gbp").sum().alias("cost"))
+                   .to_dicts(),
+                station_map or {})[:25]
+            extras = {"gross": gross, "net": net,
+                      "mwh": float(sub["generation_mwh"].sum() or 0.0),
+                      "by_technology": sub.group_by("technology")
+                          .agg(pl.col("payment_gbp").sum().alias("cost"),
+                               pl.col("generation_mwh").sum())
+                          .sort("cost", descending=True).to_dicts(),
+                      "by_recipient": sub.group_by("unit_name", "technology")
+                          .agg(pl.col("payment_gbp").sum().alias("cost"))
+                          .sort("cost", descending=True).head(25).to_dicts(),
+                      "by_station": by_station}
+            if flag:
+                # renewables carry the mapped stations' panel detail
+                extras["station_detail"] = _station_detail(sub, by_station)
             schemes.append(SchemeResult(
                 scheme_id=part, label=label, perspectives=perspectives, cadence="daily",
                 annual=annualise_daily(daily),
                 cumulative_gbp=cumulative(daily),
                 runrate_gbp_per_year=trailing_runrate(daily),
                 data_to=daily["date"].max() if daily.height else None,
-                extras={"gross": gross, "net": net,
-                        "mwh": float(sub["generation_mwh"].sum() or 0.0),
-                        "by_technology": sub.group_by("technology")
-                            .agg(pl.col("payment_gbp").sum().alias("cost"),
-                                 pl.col("generation_mwh").sum())
-                            .sort("cost", descending=True).to_dicts(),
-                        "by_recipient": sub.group_by("unit_name", "technology")
-                            .agg(pl.col("payment_gbp").sum().alias("cost"))
-                            .sort("cost", descending=True).head(25).to_dicts(),
-                        "by_station": group_by_station(
-                            sub.group_by("cfd_id", "unit_name", "technology")
-                               .agg(pl.col("payment_gbp").sum().alias("cost"))
-                               .to_dicts(),
-                            station_map or {})[:25]},
+                extras=extras,
             ))
 
     # --- Constraints: bottom-up daily merged with curated annual history

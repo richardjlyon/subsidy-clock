@@ -451,6 +451,33 @@ def _map_model():
              "cost": 1.9e9},
             {"station": "No Coord Farm", "technology": "Onshore Wind",
              "cost": 1.0e9},
+        ],
+        "station_detail": [
+            {"station": "Hornsea 1", "technology": "Offshore Wind",
+             "cost": 2.5e9, "generation_mwh": 18e6, "data_to": "2026-07-01",
+             "quarters": [
+                 {"q": "2020-Q1", "payment_gbp": 1.2e9, "generation_mwh": 9e6},
+                 {"q": "2021-Q4", "payment_gbp": -2.0e8, "generation_mwh": 4e6},
+                 {"q": "2022-Q1", "payment_gbp": 1.5e9, "generation_mwh": 5e6},
+             ],
+             "contracts": [
+                 {"cfd_id": "HOR-1", "unit_name": "Hornsea P1",
+                  "technology": "Offshore Wind", "cumulative_gbp": 2.5e9,
+                  "first_settlement": "2019-06-01",
+                  "latest_strike_gbp_mwh": 158.0},
+             ]},
+            # zero generation -> the effective-rate tile must be suppressed
+            {"station": "Drax", "technology": "Biomass Conversion",
+             "cost": 1.9e9, "generation_mwh": 0.0, "data_to": "2026-07-01",
+             "quarters": [
+                 {"q": "2024-Q1", "payment_gbp": 1.9e9, "generation_mwh": 0.0},
+             ],
+             "contracts": [
+                 {"cfd_id": "DRX-1", "unit_name": "Drax CfD",
+                  "technology": "Biomass Conversion", "cumulative_gbp": 1.9e9,
+                  "first_settlement": "2016-01-01",
+                  "latest_strike_gbp_mwh": 121.0},
+             ]},
         ]},
     )
     ro = SchemeResult(
@@ -528,6 +555,16 @@ def test_build_writes_map_json(tmp_path):
     full["schemes"][0].extras["by_station"] = [
         {"station": "Hornsea 1", "technology": "Offshore Wind", "cost": 2.5e9},
     ]
+    full["schemes"][0].extras["station_detail"] = [
+        {"station": "Hornsea 1", "technology": "Offshore Wind", "cost": 2.5e9,
+         "generation_mwh": 18e6, "data_to": "2026-07-01",
+         "quarters": [{"q": "2020-Q1", "payment_gbp": 2.5e9,
+                       "generation_mwh": 18e6}],
+         "contracts": [{"cfd_id": "HOR-1", "unit_name": "Hornsea P1",
+                        "technology": "Offshore Wind", "cumulative_gbp": 2.5e9,
+                        "first_settlement": "2019-06-01",
+                        "latest_strike_gbp_mwh": 158.0}]},
+    ]
     sitedata.build(full, CTX, {}, tmp_path,
                    generated_at="2026-06-17T07:00:00+00:00",
                    coords=COORDS, tiles=TILES)
@@ -535,6 +572,81 @@ def test_build_writes_map_json(tmp_path):
     m = json.loads((tmp_path / "map.json").read_text())
     assert m["tiles"]["style_url"] == TILES["style_url"]
     assert len(m["markers"]) >= 1
+    # one asset JSON per marker, hero reconciling with its marker
+    for mk in m["markers"]:
+        a = json.loads((tmp_path / "assets" / (mk["slug"] + ".json")).read_text())
+        assert a["hero_gbp"] == mk["cost"]
+        assert a["slug"] == mk["slug"]
+
+
+# ---- per-asset X-ray JSONs (site/data/assets/<slug>.json) ----
+
+def _assets():
+    mm = _map_model()
+    return sitedata._asset_data(mm, sitedata._map_data(mm, COORDS, TILES))
+
+
+def test_asset_cfd_carries_quarters_contracts_tiles():
+    a = _assets()["hornsea-1"]
+    assert a["hero_gbp"] == 2.5e9
+    assert a["scheme_label"] == "CfD - renewables"
+    # the payback quarter survives aggregation unclamped
+    q4 = next(q for q in a["quarters"] if q["q"] == "2021-Q4")
+    assert q4["payment_gbp"] == -2.0e8
+    assert a["contracts"][0]["cfd_id"] == "HOR-1"
+    assert a["contracts"][0]["latest_strike_gbp_mwh"] == 158.0
+    assert a["tiles"]["generation_mwh"] == 18e6
+    assert a["tiles"]["rate_gbp_per_mwh"] == 2.5e9 / 18e6
+    assert a["provenance"]["data_to"] == "2026-07-01"
+
+
+def test_asset_rate_tile_suppressed_without_positive_generation():
+    a = _assets()["drax"]
+    assert "tiles" not in a
+    assert a["strings"]["rate_not_shown"] == sitedata.ASSET_STRINGS["rate_not_shown"]
+
+
+def test_asset_ro_degrades_honestly():
+    a = _assets()["drax-power-station"]
+    assert a["hero_gbp"] == 6.4e9
+    assert a["scheme_label"] == "Renewables Obligation"
+    # no chart, no contract table, no tiles — and no zeroes standing in
+    for absent in ("quarters", "contracts", "tiles"):
+        assert absent not in a
+    assert a["strings"]["basis"] == sitedata.ASSET_STRINGS["ro_basis"]
+    assert a["provenance"]["data_to"] == "2025-01-01"
+
+
+def test_asset_hero_marker_mismatch_fails_loudly():
+    mm = _map_model()
+    md = sitedata._map_data(mm, COORDS, TILES)
+    for mk in md["markers"]:
+        if mk["name"] == "Hornsea 1":
+            mk["cost"] += 1e6  # far beyond the float-jitter tolerance
+    with pytest.raises(ValueError, match="Hornsea 1"):
+        sitedata._asset_data(mm, md)
+
+
+def test_asset_missing_station_detail_fails_loudly():
+    mm = _map_model()
+    md = sitedata._map_data(mm, COORDS, TILES)
+    mm["schemes"][0].extras.pop("station_detail")
+    with pytest.raises(ValueError, match="station_detail"):
+        sitedata._asset_data(mm, md)
+
+
+def test_asset_strings_are_pinned():
+    # the pin: the page places these verbatim; changing them is an editorial
+    # act and must show up here
+    s = sitedata.ASSET_STRINGS
+    assert s["rate_label"] == "payment per subsidised MWh"
+    assert s["cfd_basis"].startswith("Payments and generation are LCCC daily")
+    assert "paid back" in s["cfd_basis"]
+    assert s["ro_basis"].startswith("Valued at Renewables Obligation buy-out only")
+    assert "understates" in s["ro_basis"]
+    assert "not yet shown" in s["ro_basis"]
+    assert s["outages_unavailable"] == ("Outage history is not available for "
+                                        "this station.")
 
 
 def test_build_omits_map_json_without_coords(tmp_path):
