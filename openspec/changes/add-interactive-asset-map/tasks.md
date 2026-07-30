@@ -42,14 +42,14 @@ justified in the commit message.
 
 ## 4. Phase A — ship (ONE push)
 
-- [ ] 4.1 One push containing: rebuilt `map.json` (new schema), rewritten
+- [x] 4.1 One push containing: rebuilt `map.json` (new schema), rewritten
       map page + vendored library, `site/mapbox-token.js` deletion,
       `scripts/inject-mapbox-token.js` deletion AND `vercel.json` buildCommand
       removal (deploys fail otherwise), updated map.html meta (canonical /map
       unchanged), methodology attribution/privacy wording
-- [ ] 4.2 Post-deploy smoke check of live /map; then delete the `MAPBOX_TOKEN`
-      Vercel env var (rollback is clean only before this step — noted in ship
-      checklist)
+- [~] 4.2 Post-deploy smoke check of live /map (DONE 2026-07-30, verification.md);
+      then delete the `MAPBOX_TOKEN` Vercel env var (rollback is clean only
+      before this step — noted in ship checklist) — env var still OUTSTANDING
 - Gate: code + rebuilt data in ONE push; live smoke check passes
 
 ## 5. Phase B — engine asset JSON
@@ -72,8 +72,9 @@ justified in the commit message.
       spec (into close control, back to activator)
 - [x] 6.2 Run the dataviz palette validator on chart colours in light and dark
       modes; fix any FAIL
-- [ ] 6.3 Ship: per-asset JSONs + panel code in ONE push; post-deploy smoke
-      check (CfD asset, RO asset, payback quarter renders negative)
+- [x] 6.3 Ship: per-asset JSONs + panel code in ONE push; post-deploy smoke
+      check (CfD asset, RO asset, payback quarter renders negative) — all
+      three verified live 2026-07-30
 - Gate: full suite green; one push; live smoke check passes
 
 ## 7. Phase C — context layers (each behind go/no-go)

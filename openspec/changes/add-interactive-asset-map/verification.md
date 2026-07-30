@@ -4,15 +4,35 @@
 
 All build tasks complete; merged to master and pushed (the deploy). Remaining
 when work resumes on the new machine:
-1. Post-deploy smoke of live /map if not already done (CfD asset panel, RO
-   panel, payback quarters negative, outage strip, Drax note).
+1. ~~Post-deploy smoke of live /map~~ — DONE 2026-07-30, see below.
 2. Delete the now-unused MAPBOX_TOKEN Vercel env var (rollback to the old
-   static map is only clean before this).
-3. iOS Safari/FxiOS check on Richard's phone.
-4. Nightly Action now includes the `remit` update target (~800 light Elexon
-   requests/run) — watch the first scheduled run.
+   static map is only clean before this). OUTSTANDING — dashboard-only.
+3. iOS Safari/FxiOS check on Richard's phone. OUTSTANDING.
+4. ~~Nightly Action now includes the `remit` update target~~ — ran clean
+   30 July (commit 18266d0); no stale-data warning.
 5. Archive this change (`openspec archive add-interactive-asset-map`) once
    1–3 are done.
+
+## Post-deploy smoke of live /map (2026-07-30): PASS
+
+Headless Chromium against https://subsidyclock.co.uk/map, panels opened via
+the visually-hidden station list (the keyboard/a11y path, focus + Enter).
+
+- Map boots: MapLibre canvas present, OpenFreeMap basemap + hillshade painted,
+  50 markers in two scheme colours, pinned attribution rendered. No JS errors
+  and no console errors on load or on any panel open.
+- **CfD panel (Hornsea 1):** hero £2.56bn, both tiles (30.0 TWh, £85/MWh),
+  diverging quarterly chart, outage strip ("53 planned, 9 unplanned") with the
+  pinned 2016-coverage wording, contract table (INV-HOR-001, Live (Post-FIC)).
+- **Payback quarters render negative:** the 2021-Q4 to 2022-Q2 bars draw below
+  the zero line in the contrasting colour — the case the change exists to show.
+- **RO panel (London Array):** hero + pinned basis note ("understates the
+  station's receipts"), pinned outages-unavailable line, chart correctly
+  suppressed.
+- **Enforcement note (Drax Power Station):** Ofgem 2024 note renders with the
+  Voluntary Redress Fund figure.
+- **Focus management per spec:** opening moves focus to the close control,
+  Escape closes and returns focus to the activator. Verified on all three.
 
 ## Task 1.1 — tile-source terms (verified 2026-07-29)
 
