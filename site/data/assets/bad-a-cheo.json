@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 13732693.06,
+ "hero_gbp": 13731776.53,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -109,8 +109,8 @@
   },
   {
    "q": "2024-Q1",
-   "payment_gbp": 1246168.6800000004,
-   "generation_mwh": 26054.453
+   "payment_gbp": 1246168.6300000004,
+   "generation_mwh": 26054.449
   },
   {
    "q": "2024-Q2",
@@ -134,8 +134,8 @@
   },
   {
    "q": "2025-Q2",
-   "payment_gbp": 828623.7,
-   "generation_mwh": 14493.419000000002
+   "payment_gbp": 828624.2399999999,
+   "generation_mwh": 14493.440000000002
   },
   {
    "q": "2025-Q3",
@@ -144,8 +144,8 @@
   },
   {
    "q": "2025-Q4",
-   "payment_gbp": 917841.5299999996,
-   "generation_mwh": 19346.647000000004
+   "payment_gbp": 917851.0199999996,
+   "generation_mwh": 19346.959000000006
   },
   {
    "q": "2026-Q1",
@@ -154,13 +154,13 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 569483.7200000002,
-   "generation_mwh": 15220.09
+   "payment_gbp": 569518.8200000002,
+   "generation_mwh": 15220.299
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 76552.77,
-   "generation_mwh": 2337.978
+   "payment_gbp": 75591.15999999999,
+   "generation_mwh": 2520.583
   }
  ],
  "contracts": [
@@ -169,7 +169,7 @@
    "unit_name": "Bad A Cheo Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 13732693.06,
+   "cumulative_gbp": 13731776.53,
    "first_settlement": "2019-03-31",
    "latest_strike_gbp_mwh": 120.46
   }
@@ -180,7 +180,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-07-21"
+  "data_to": "2026-07-22"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -206,8 +206,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 478735.778,
-  "rate_gbp_per_mwh": 28.685328507032956,
+  "generation_mwh": 478918.92100000003,
+  "rate_gbp_per_mwh": 28.67244522585901,
   "rate_label": "payment per subsidised MWh"
  }
 }

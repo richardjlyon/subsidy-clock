@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 63398300.23,
+ "hero_gbp": 63390624.93,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -114,8 +114,8 @@
   },
   {
    "q": "2024-Q1",
-   "payment_gbp": 4317313.809999999,
-   "generation_mwh": 89836.06300000002
+   "payment_gbp": 4317313.609999999,
+   "generation_mwh": 89836.05800000002
   },
   {
    "q": "2024-Q2",
@@ -139,8 +139,8 @@
   },
   {
    "q": "2025-Q2",
-   "payment_gbp": 3449345.020000001,
-   "generation_mwh": 60044.114
+   "payment_gbp": 3449342.690000001,
+   "generation_mwh": 60044.048
   },
   {
    "q": "2025-Q3",
@@ -149,8 +149,8 @@
   },
   {
    "q": "2025-Q4",
-   "payment_gbp": 4056009.360000001,
-   "generation_mwh": 79399.94899999996
+   "payment_gbp": 4056077.020000001,
+   "generation_mwh": 79402.12099999997
   },
   {
    "q": "2026-Q1",
@@ -159,13 +159,13 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 2725174.45,
-   "generation_mwh": 67424.47000000002
+   "payment_gbp": 2725471.5200000005,
+   "generation_mwh": 67426.713
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 473611.81,
-   "generation_mwh": 14731.374999999996
+   "payment_gbp": 465574.31,
+   "generation_mwh": 16457.570999999996
   }
  ],
  "contracts": [
@@ -174,7 +174,7 @@
    "unit_name": "Dorenell Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 63398300.23,
+   "cumulative_gbp": 63390624.93,
    "first_settlement": "2018-12-20",
    "latest_strike_gbp_mwh": 120.28
   }
@@ -185,7 +185,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-07-21"
+  "data_to": "2026-07-22"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -205,8 +205,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 2660451.38,
-  "rate_gbp_per_mwh": 23.82990371731582,
+  "generation_mwh": 2662181.92,
+  "rate_gbp_per_mwh": 23.81153010384805,
   "rate_label": "payment per subsidised MWh"
  }
 }
