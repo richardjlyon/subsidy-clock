@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Biomass Conversion",
- "hero_gbp": 953028200.39,
+ "hero_gbp": 954170326.32,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -54,7 +54,7 @@
   },
   {
    "q": "2020-Q3",
-   "payment_gbp": 58182751.38000001,
+   "payment_gbp": 58182751.38000002,
    "generation_mwh": 702520.525
   },
   {
@@ -135,7 +135,7 @@
   {
    "q": "2024-Q3",
    "payment_gbp": 27271737.479999997,
-   "generation_mwh": 422817.6269999998
+   "generation_mwh": 422817.62699999986
   },
   {
    "q": "2024-Q4",
@@ -149,8 +149,8 @@
   },
   {
    "q": "2025-Q2",
-   "payment_gbp": 29901555.13,
-   "generation_mwh": 454638.17600000015
+   "payment_gbp": 29901367.21,
+   "generation_mwh": 454635.3160000001
   },
   {
    "q": "2025-Q3",
@@ -159,8 +159,8 @@
   },
   {
    "q": "2025-Q4",
-   "payment_gbp": 45198541.350000024,
-   "generation_mwh": 700535.3710000002
+   "payment_gbp": 45198736.590000026,
+   "generation_mwh": 700538.3950000001
   },
   {
    "q": "2026-Q1",
@@ -169,13 +169,13 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 56239298.00999999,
-   "generation_mwh": 717155.016
+   "payment_gbp": 56223171.57999999,
+   "generation_mwh": 716949.3709999999
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 15049418.019999998,
-   "generation_mwh": 191907.901
+   "payment_gbp": 16207663.059999999,
+   "generation_mwh": 206677.66700000002
   }
  ],
  "contracts": [
@@ -184,7 +184,7 @@
    "unit_name": "Lynemouth Power Station",
    "technology": "Biomass Conversion",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 953028200.39,
+   "cumulative_gbp": 954170326.32,
    "first_settlement": "2018-06-23",
    "latest_strike_gbp_mwh": 153.72
   }
@@ -195,7 +195,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-07-26"
+  "data_to": "2026-07-27"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -5191,12 +5191,18 @@
     "end": "2026-07-19",
     "type": "Planned",
     "mw_lost": 133.0
+   },
+   {
+    "start": "2026-08-05",
+    "end": "2026-08-06",
+    "type": "Unplanned",
+    "mw_lost": 41.0
    }
   ]
  },
  "tiles": {
-  "generation_mwh": 16509485.683000002,
-  "rate_gbp_per_mwh": 57.72609872222389,
+  "generation_mwh": 16524049.968,
+  "rate_gbp_per_mwh": 57.744337990251715,
   "rate_label": "payment per subsidised MWh"
  }
 }
