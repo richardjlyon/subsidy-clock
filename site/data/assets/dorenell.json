@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 63497860.99,
+ "hero_gbp": 63496612.26,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -119,13 +119,13 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 5388638.800000004,
-   "generation_mwh": 92941.02099999996
+   "payment_gbp": 5388638.490000003,
+   "generation_mwh": 92941.01599999996
   },
   {
    "q": "2024-Q3",
-   "payment_gbp": 2727240.4600000004,
-   "generation_mwh": 52999.38299999995
+   "payment_gbp": 2727240.46,
+   "generation_mwh": 52999.38299999999
   },
   {
    "q": "2024-Q4",
@@ -139,8 +139,8 @@
   },
   {
    "q": "2025-Q2",
-   "payment_gbp": 3449321.7100000004,
-   "generation_mwh": 60041.798
+   "payment_gbp": 3449370.4600000004,
+   "generation_mwh": 60042.77
   },
   {
    "q": "2025-Q3",
@@ -149,23 +149,23 @@
   },
   {
    "q": "2025-Q4",
-   "payment_gbp": 4056223.8300000005,
-   "generation_mwh": 79406.15600000002
+   "payment_gbp": 4056396.610000001,
+   "generation_mwh": 79410.89100000002
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 3922555.2,
-   "generation_mwh": 115939.04300000003
+   "payment_gbp": 3922960.16,
+   "generation_mwh": 115943.91900000002
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 2724545.84,
-   "generation_mwh": 67398.54500000003
+   "payment_gbp": 2724479.8199999994,
+   "generation_mwh": 67395.48200000003
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 573610.66,
-   "generation_mwh": 28369.541999999998
+   "payment_gbp": 571801.77,
+   "generation_mwh": 28834.977
   }
  ],
  "contracts": [
@@ -174,7 +174,7 @@
    "unit_name": "Dorenell Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 63497860.99,
+   "cumulative_gbp": 63496612.26,
    "first_settlement": "2018-12-20",
    "latest_strike_gbp_mwh": 120.28
   }
@@ -185,7 +185,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-07-28"
+  "data_to": "2026-07-29"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -205,8 +205,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 2674067.496,
-  "rate_gbp_per_mwh": 23.745795902677546,
+  "generation_mwh": 2674540.446,
+  "rate_gbp_per_mwh": 23.74112994064626,
   "rate_label": "payment per subsidised MWh"
  }
 }

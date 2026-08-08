@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 130007758.02000001,
+ "hero_gbp": 129970149.37000002,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -45,7 +45,7 @@
   {
    "q": "2023-Q1",
    "payment_gbp": -11810129.539999995,
-   "generation_mwh": 498379.4290000001
+   "generation_mwh": 498379.429
   },
   {
    "q": "2023-Q2",
@@ -69,8 +69,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 27402171.329999994,
-   "generation_mwh": 638290.3720000002
+   "payment_gbp": 27402169.12999999,
+   "generation_mwh": 638290.3130000002
   },
   {
    "q": "2024-Q3",
@@ -89,8 +89,8 @@
   },
   {
    "q": "2025-Q2",
-   "payment_gbp": 21599461.739999995,
-   "generation_mwh": 524944.9830000001
+   "payment_gbp": 21599882.18999999,
+   "generation_mwh": 524959.1280000001
   },
   {
    "q": "2025-Q3",
@@ -99,23 +99,23 @@
   },
   {
    "q": "2025-Q4",
-   "payment_gbp": 37840372.789999984,
-   "generation_mwh": 1051001.5700000008
+   "payment_gbp": 37840843.70999998,
+   "generation_mwh": 1051019.9050000007
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 23028501.620000016,
-   "generation_mwh": 927342.1220000004
+   "payment_gbp": 23030601.650000017,
+   "generation_mwh": 927374.7870000004
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 10521414.809999993,
-   "generation_mwh": 583356.5700000001
+   "payment_gbp": 10521210.919999992,
+   "generation_mwh": 583337.5730000001
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 2647347.0699999994,
-   "generation_mwh": 138961.995
+   "payment_gbp": 2606953.109999999,
+   "generation_mwh": 140660.31100000002
   }
  ],
  "contracts": [
@@ -124,7 +124,7 @@
    "unit_name": "Triton Knoll Offshore Wind Farm Phase 3",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 135860753.11,
+   "cumulative_gbp": 135841922.11,
    "first_settlement": "2023-03-31",
    "latest_strike_gbp_mwh": 108.2
   },
@@ -133,7 +133,7 @@
    "unit_name": "Triton Knoll Offshore Wind Farm Phase 2",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": -2227888.87,
+   "cumulative_gbp": -2237073.94,
    "first_settlement": "2021-07-06",
    "latest_strike_gbp_mwh": 108.2
   },
@@ -142,7 +142,7 @@
    "unit_name": "Triton Knoll Offshore Wind Farm Phase 1",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": -3625106.2200000007,
+   "cumulative_gbp": -3634698.8000000003,
    "first_settlement": "2021-05-17",
    "latest_strike_gbp_mwh": 108.2
   }
@@ -153,7 +153,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-07-28"
+  "data_to": "2026-07-29"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -221,8 +221,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 11789552.161,
-  "rate_gbp_per_mwh": 11.027370356786532,
+  "generation_mwh": 11791296.566,
+  "rate_gbp_per_mwh": 11.022549440811005,
   "rate_label": "payment per subsidised MWh"
  }
 }
