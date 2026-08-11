@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 34701308.44,
+ "hero_gbp": 34705006.13,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -114,8 +114,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 2567226.320000001,
-   "generation_mwh": 41531.99999999999
+   "payment_gbp": 2567225.240000001,
+   "generation_mwh": 41531.992
   },
   {
    "q": "2024-Q3",
@@ -134,8 +134,8 @@
   },
   {
    "q": "2025-Q2",
-   "payment_gbp": 2622649.5300000007,
-   "generation_mwh": 43658.79199999998
+   "payment_gbp": 2622649.880000001,
+   "generation_mwh": 43658.804999999986
   },
   {
    "q": "2025-Q3",
@@ -149,18 +149,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 2459233.59,
-   "generation_mwh": 69350.00699999998
+   "payment_gbp": 2459252.74,
+   "generation_mwh": 69350.24999999999
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 1838190.3399999994,
-   "generation_mwh": 45457.40000000001
+   "payment_gbp": 1838126.3999999994,
+   "generation_mwh": 45454.42300000001
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 428396.88000000006,
-   "generation_mwh": 12170.593999999997
+   "payment_gbp": 432140.09,
+   "generation_mwh": 12751.939999999999
   }
  ],
  "contracts": [
@@ -169,7 +169,7 @@
    "unit_name": "Kype Muir Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 34701308.44,
+   "cumulative_gbp": 34705006.13,
    "first_settlement": "2019-03-28",
    "latest_strike_gbp_mwh": 120.28
   }
@@ -180,15 +180,15 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-07-29"
+  "data_to": "2026-07-30"
  },
  "outages": {
   "coverage_from": "2016-01-01",
   "windows": []
  },
  "tiles": {
-  "generation_mwh": 1454211.057,
-  "rate_gbp_per_mwh": 23.86263553214064,
+  "generation_mwh": 1454789.6739999999,
+  "rate_gbp_per_mwh": 23.855686323767518,
   "rate_label": "payment per subsidised MWh"
  }
 }
