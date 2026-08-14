@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Dedicated Biomass",
- "hero_gbp": 286546708.18,
+ "hero_gbp": 287188102.86,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -44,8 +44,8 @@
   },
   {
    "q": "2025-Q2",
-   "payment_gbp": 39168257.30999999,
-   "generation_mwh": 413909.5130000001
+   "payment_gbp": 39168295.58999999,
+   "generation_mwh": 413909.9140000001
   },
   {
    "q": "2025-Q3",
@@ -54,23 +54,23 @@
   },
   {
    "q": "2025-Q4",
-   "payment_gbp": 17409055.279999997,
+   "payment_gbp": 17409055.28,
    "generation_mwh": 186432.377
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 39334383.46000001,
-   "generation_mwh": 421229.22299999994
+   "payment_gbp": 39333520.01000001,
+   "generation_mwh": 421219.98099999997
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 16587348.379999999,
-   "generation_mwh": 153373.7
+   "payment_gbp": 16586668.309999997,
+   "generation_mwh": 153367.41
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 20255020.74,
-   "generation_mwh": 187286.36299999998
+   "payment_gbp": 20897920.659999996,
+   "generation_mwh": 193230.887
   }
  ],
  "contracts": [
@@ -79,7 +79,7 @@
    "unit_name": "Teesside Renewable Energy Project",
    "technology": "Dedicated Biomass",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 286546708.18,
+   "cumulative_gbp": 287188102.86,
    "first_settlement": "2023-09-30",
    "latest_strike_gbp_mwh": 183.45
   }
@@ -90,7 +90,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-03"
+  "data_to": "2026-08-04"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -836,8 +836,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 3247833.502,
-  "rate_gbp_per_mwh": 88.22703134367755,
+  "generation_mwh": 3253762.8950000005,
+  "rate_gbp_per_mwh": 88.26337755013337,
   "rate_label": "payment per subsidised MWh"
  }
 }
