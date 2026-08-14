@@ -16,9 +16,13 @@
     padding: 8px 14px; overflow: hidden;
   }
   body.dark { --bg: #221f1a; --ink: #f0ece2; --money: #e08a72; --muted: #a39d8d; --brand: #e0c9a8; }
+  body.transparent { --bg: transparent; --ink: #000; --money: #D0001B; --muted: #000; --brand: #000; }
+  body.transparent-dark { --bg: transparent; --ink: #fff; --money: #D0001B; --muted: #fff; --brand: #fff; }
   .fig { font-weight: 700; color: var(--money);
          font-variant-numeric: tabular-nums; font-size: 22px; line-height: 1.1; }
   .what { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .asof { display: block; }
+  body.strip .asof { display: inline; margin-left: 6px; }
   .attr { font-size: 10px; margin-top: 3px; }
   .attr a { color: var(--brand); text-decoration: none; font-weight: 600; }
   /* banner 728x90: figure and text side by side */
@@ -38,7 +42,7 @@
 <body>
   <div class="fig" id="fig">£228,496,446,323</div>
   <div class="meta">
-    <div class="what"><span id="what">paid to UK renewable generators plus estimated indirect system costs since 2002</span> · as of <span id="asof">14 August 2026</span></div>
+    <div class="what"><span id="what">paid to UK renewable generators plus estimated indirect system costs since 2002</span>.<span class="asof">As of <span id="asof">14 August 2026</span>.</span></div>
     <div class="attr"><a href="https://subsidyclock.co.uk" target="_blank" rel="noopener">The Subsidy Clock — subsidyclock.co.uk</a></div>
   </div>
 <script>
@@ -50,7 +54,8 @@
   var q = new URLSearchParams(location.search);
   var size = q.get('size');
   if (size === 'banner' || size === 'card' || size === 'strip') document.body.classList.add(size);
-  if (q.get('theme') === 'dark') document.body.classList.add('dark');
+  var theme = q.get('theme');
+  if (theme === 'dark' || theme === 'transparent' || theme === 'transparent-dark') document.body.classList.add(theme);
 
   var basis = q.get('basis') === 'nominal' ? 'nominal' : 'real';
   var scope = q.get('scope') === 'direct' ? 'direct' : 'combined';
