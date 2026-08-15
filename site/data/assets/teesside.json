@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Dedicated Biomass",
- "hero_gbp": 287188102.86,
+ "hero_gbp": 287823100.36,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -24,8 +24,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 21206224.030000005,
-   "generation_mwh": 229157.37299999993
+   "payment_gbp": 21206221.850000005,
+   "generation_mwh": 229157.34999999995
   },
   {
    "q": "2024-Q3",
@@ -44,8 +44,8 @@
   },
   {
    "q": "2025-Q2",
-   "payment_gbp": 39168295.58999999,
-   "generation_mwh": 413909.9140000001
+   "payment_gbp": 39168287.109999985,
+   "generation_mwh": 413909.8220000001
   },
   {
    "q": "2025-Q3",
@@ -55,12 +55,12 @@
   {
    "q": "2025-Q4",
    "payment_gbp": 17409055.28,
-   "generation_mwh": 186432.377
+   "generation_mwh": 186432.37699999998
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 39333520.01000001,
-   "generation_mwh": 421219.98099999997
+   "payment_gbp": 39332157.48000001,
+   "generation_mwh": 421205.388
   },
   {
    "q": "2026-Q2",
@@ -69,8 +69,8 @@
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 20897920.659999996,
-   "generation_mwh": 193230.887
+   "payment_gbp": 21534291.349999998,
+   "generation_mwh": 199115.03499999997
   }
  ],
  "contracts": [
@@ -79,7 +79,7 @@
    "unit_name": "Teesside Renewable Energy Project",
    "technology": "Dedicated Biomass",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 287188102.86,
+   "cumulative_gbp": 287823100.36,
    "first_settlement": "2023-09-30",
    "latest_strike_gbp_mwh": 183.45
   }
@@ -90,7 +90,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-04"
+  "data_to": "2026-08-05"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -836,8 +836,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 3253762.8950000005,
-  "rate_gbp_per_mwh": 88.26337755013337,
+  "generation_mwh": 3259632.335,
+  "rate_gbp_per_mwh": 88.29925303830318,
   "rate_label": "payment per subsidised MWh"
  }
 }

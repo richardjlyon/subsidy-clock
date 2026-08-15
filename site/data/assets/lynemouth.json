@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Biomass Conversion",
- "hero_gbp": 959819423.74,
+ "hero_gbp": 960476804.42,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -129,8 +129,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 30203172.03000002,
-   "generation_mwh": 468266.2390000001
+   "payment_gbp": 30203170.450000018,
+   "generation_mwh": 468266.21300000005
   },
   {
    "q": "2024-Q3",
@@ -149,8 +149,8 @@
   },
   {
    "q": "2025-Q2",
-   "payment_gbp": 29901598.679999992,
-   "generation_mwh": 454638.8400000001
+   "payment_gbp": 29901590.06999999,
+   "generation_mwh": 454638.7100000001
   },
   {
    "q": "2025-Q3",
@@ -164,18 +164,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 45401795.36,
-   "generation_mwh": 703685.621
+   "payment_gbp": 45400369.550000004,
+   "generation_mwh": 703663.5260000001
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 56195683.04,
-   "generation_mwh": 716598.8259999999
+   "payment_gbp": 56195488.839999996,
+   "generation_mwh": 716596.3519999998
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 21885345.21,
-   "generation_mwh": 279078.615
+   "payment_gbp": 22544356.090000004,
+   "generation_mwh": 287482.225
   }
  ],
  "contracts": [
@@ -184,7 +184,7 @@
    "unit_name": "Lynemouth Power Station",
    "technology": "Biomass Conversion",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 959819423.74,
+   "cumulative_gbp": 960476804.42,
    "first_settlement": "2018-06-23",
    "latest_strike_gbp_mwh": 153.72
   }
@@ -195,7 +195,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-04"
+  "data_to": "2026-08-05"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -5225,8 +5225,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 16596083.320000002,
-  "rate_gbp_per_mwh": 57.83409285390355,
+  "generation_mwh": 16604462.205000002,
+  "rate_gbp_per_mwh": 57.844499422015446,
   "rate_label": "payment per subsidised MWh"
  }
 }
