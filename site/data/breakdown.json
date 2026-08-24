@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-23T06:03:52.879186+00:00",
+ "generated_at": "2026-08-24T06:11:19.916644+00:00",
  "schemes": [
   {
    "id": "cfd_renewable",
@@ -22,13 +22,13 @@
    "by_technology": [
     {
      "technology": "Offshore Wind",
-     "cost": 10191111952.560036,
-     "generation_mwh": 136905064.2140001
+     "cost": 10191111952.559975,
+     "generation_mwh": 136905064.21400002
     },
     {
      "technology": "Biomass Conversion",
-     "cost": 2944017910.070006,
-     "generation_mwh": 53331979.11799993
+     "cost": 2944017910.0700026,
+     "generation_mwh": 53331979.117999986
     },
     {
      "technology": "Dedicated Biomass",
@@ -37,8 +37,8 @@
     },
     {
      "technology": "Onshore Wind",
-     "cost": 223527557.65000206,
-     "generation_mwh": 11288392.050000003
+     "cost": 223527557.65000033,
+     "generation_mwh": 11288392.049999993
     },
     {
      "technology": "Advanced Conversion Technology",
@@ -47,13 +47,13 @@
     },
     {
      "technology": "Energy from Waste",
-     "cost": -9240964.06000001,
-     "generation_mwh": 786498.8840000001
+     "cost": -9240964.060000006,
+     "generation_mwh": 786498.8840000003
     },
     {
      "technology": "Solar PV",
-     "cost": -12431080.719999999,
-     "generation_mwh": 1314274.1260000044
+     "cost": -12431080.720000014,
+     "generation_mwh": 1314274.1260000025
     }
    ],
    "by_recipient": [
@@ -12669,8 +12669,8 @@
       },
       {
        "q": "2024-Q4",
-       "payment_gbp": 909094.0499999999,
-       "generation_mwh": 26784.770000000004
+       "payment_gbp": 909094.0500000002,
+       "generation_mwh": 26784.77
       },
       {
        "q": "2025-Q1",
@@ -14167,13 +14167,13 @@
    "attribution_note": "",
    "attribution_confidence": "",
    "cumulative": 2588620471.5995965,
-   "runrate_per_year": 384519270.92655337,
+   "runrate_per_year": 384519270.92655325,
    "data_to": "2026-08-22",
    "by_recipient": [
     {
      "lead_party": "Moray Offshore Wind East Ltd",
-     "cost": 135989872.54917997,
-     "volume_mwh": -3525816.892410826
+     "cost": 140106335.3962365,
+     "volume_mwh": -3612684.4768694374
     },
     {
      "lead_party": "Moray Offshore Wind West Ltd",
@@ -14182,53 +14182,58 @@
     },
     {
      "lead_party": "Seagreen Wind Energy Limited",
-     "cost": 56839877.71572011,
-     "volume_mwh": -5637261.03567634
+     "cost": 59266728.493053444,
+     "volume_mwh": -5764140.244009674
     },
     {
      "lead_party": "SP Renewables (UK) Limited",
-     "cost": 48917546.90314296,
-     "volume_mwh": -821410.3094222947
+     "cost": 49899635.55705963,
+     "volume_mwh": -836152.2510889614
     },
     {
      "lead_party": "Statkraft Markets Gmbh",
-     "cost": 28938421.74803731,
-     "volume_mwh": -370109.02724878426
+     "cost": 30538826.284169786,
+     "volume_mwh": -390751.56261203217
     },
     {
      "lead_party": "Eneco Energy Trade",
-     "cost": 25263498.880051125,
-     "volume_mwh": -281972.86061436543
+     "cost": 26896307.58219196,
+     "volume_mwh": -299242.96558394877
     },
     {
      "lead_party": "SSE Generation Ltd",
-     "cost": 23288900.880223025,
-     "volume_mwh": -413026.1104639294
+     "cost": 24376186.384223025,
+     "volume_mwh": -426983.63546392944
     },
     {
      "lead_party": "Stronelairg Windfarm Limited",
-     "cost": 22708320.110144112,
-     "volume_mwh": -250952.36065305557
+     "cost": 24022108.062227443,
+     "volume_mwh": -264469.0564863889
     },
     {
      "lead_party": "Viking Energy Wind Farm LLP",
-     "cost": 22669214.51904243,
-     "volume_mwh": -2087056.2252451454
+     "cost": 24007939.80779243,
+     "volume_mwh": -2135028.9502451452
     },
     {
      "lead_party": "Dorenell Windfarm Limited",
-     "cost": 22240329.779644582,
-     "volume_mwh": -537124.4014522854
+     "cost": 23075333.091094583,
+     "volume_mwh": -555318.8197856187
     },
     {
      "lead_party": "EDF Energy Customers Limited",
-     "cost": 15125870.20772611,
-     "volume_mwh": -261023.00216612883
+     "cost": 15932957.795145554,
+     "volume_mwh": -272246.77077723993
     },
     {
      "lead_party": "Neart Na Gaoithe Offshore Wind",
      "cost": 13672848.867635613,
      "volume_mwh": -201655.88022128213
+    },
+    {
+     "lead_party": "Creag Riabhach Wind Farm Ltd",
+     "cost": 9743721.18152177,
+     "volume_mwh": -155456.54513114406
     },
     {
      "lead_party": "South Kyle Wind Farm Limited",
@@ -14241,24 +14246,19 @@
      "volume_mwh": -57697.58332375
     },
     {
-     "lead_party": "Creag Riabhach Wind Farm Ltd",
-     "cost": 9327930.598946769,
-     "volume_mwh": -150836.6497691996
-    },
-    {
      "lead_party": "Strathy Wind Farm Limited",
-     "cost": 8966184.705833333,
-     "volume_mwh": -107736.5
+     "cost": 9396103.581666667,
+     "volume_mwh": -112443.125
     },
     {
      "lead_party": "Smartestenergy Limited",
-     "cost": 8325213.275659722,
-     "volume_mwh": -125574.16645833333
+     "cost": 8983359.203159722,
+     "volume_mwh": -132767.018125
     },
     {
      "lead_party": "Dunmaglass Wind Farm Limited",
-     "cost": 8295987.224123838,
-     "volume_mwh": -91147.22888361111
+     "cost": 8342955.629971061,
+     "volume_mwh": -91632.57911513888
     },
     {
      "lead_party": "Limekiln Extension Ltd",
@@ -14267,13 +14267,13 @@
     },
     {
      "lead_party": "Corriegarth Wind Energy LTD",
-     "cost": 6911432.953938199,
-     "volume_mwh": -85542.98152196837
+     "cost": 7383042.928252829,
+     "volume_mwh": -91380.07122846568
     },
     {
      "lead_party": "Griffin Wind Farm Ltd",
-     "cost": 6873234.448064514,
-     "volume_mwh": -72848.468395
+     "cost": 7341003.288064514,
+     "volume_mwh": -77649.05172833333
     },
     {
      "lead_party": "Beatrice Offshore Windfarm Ltd",
@@ -14282,23 +14282,23 @@
     },
     {
      "lead_party": "Clyde Windfarm (Scotland) Ltd",
-     "cost": 6280909.569105372,
-     "volume_mwh": -65601.16111444445
+     "cost": 6578069.054938706,
+     "volume_mwh": -68545.55278111111
     },
     {
      "lead_party": "AIK2A Sustainable Energy Ltd",
-     "cost": 6132147.170128125,
-     "volume_mwh": -91568.78745890762
+     "cost": 6372360.286794792,
+     "volume_mwh": -95101.33329224096
     },
     {
      "lead_party": "Fallago Rig Wind Farm Limited",
-     "cost": 6105576.480018168,
-     "volume_mwh": -70483.13663122669
+     "cost": 6349230.282651502,
+     "volume_mwh": -73090.17496456004
     }
    ],
-   "curtailed_mwh": 19588350.901215445,
+   "curtailed_mwh": 20049048.270565793,
    "history_source_url": "https://www.ref.org.uk/constraints/index.php?tab=yr",
-   "bottom_up_from": "2024-10-25",
+   "bottom_up_from": "2024-10-18",
    "bottom_up_to": "2026-08-22"
   },
   {
