@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 891314238.03,
+ "hero_gbp": 891338149.26,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -149,8 +149,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 29361385.930000007,
-   "generation_mwh": 190668.47
+   "payment_gbp": 29361384.360000007,
+   "generation_mwh": 190668.454
   },
   {
    "q": "2024-Q3",
@@ -174,8 +174,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 26614370.46,
-   "generation_mwh": 171422.575
+   "payment_gbp": 26614129.220000003,
+   "generation_mwh": 171420.954
   },
   {
    "q": "2025-Q4",
@@ -184,18 +184,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 36503519.27,
-   "generation_mwh": 276421.5169999999
+   "payment_gbp": 36501167.25000001,
+   "generation_mwh": 276400.5799999999
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 25685470.240000006,
-   "generation_mwh": 188016.09599999996
+   "payment_gbp": 25684933.360000007,
+   "generation_mwh": 188011.63299999997
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 8777777.740000002,
-   "generation_mwh": 69814.81999999998
+   "payment_gbp": 8804820.680000002,
+   "generation_mwh": 70143.68399999998
   }
  ],
  "contracts": [
@@ -204,7 +204,7 @@
    "unit_name": "Burbo Bank Extension Offshore Wind Farm",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 891314238.03,
+   "cumulative_gbp": 891338149.26,
    "first_settlement": "2017-04-11",
    "latest_strike_gbp_mwh": 220.95
   }
@@ -215,7 +215,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-12"
+  "data_to": "2026-08-13"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -313,8 +313,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 8145818.367,
-  "rate_gbp_per_mwh": 109.41985174145978,
+  "generation_mwh": 8146120.194,
+  "rate_gbp_per_mwh": 109.41873284861576,
   "rate_label": "payment per subsidised MWh"
  }
 }

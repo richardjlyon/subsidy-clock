@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Biomass Conversion",
- "hero_gbp": 963869494.47,
+ "hero_gbp": 964556514.99,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -129,8 +129,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 30203159.18000002,
-   "generation_mwh": 468266.0380000001
+   "payment_gbp": 30203154.60000002,
+   "generation_mwh": 468265.9670000001
   },
   {
    "q": "2024-Q3",
@@ -154,8 +154,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 44886347.06,
-   "generation_mwh": 682474.4750000001
+   "payment_gbp": 44886156.0,
+   "generation_mwh": 682471.5690000001
   },
   {
    "q": "2025-Q4",
@@ -164,18 +164,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 45392891.230000004,
-   "generation_mwh": 703547.633
+   "payment_gbp": 45386199.370000005,
+   "generation_mwh": 703443.9170000001
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 56184725.88999996,
-   "generation_mwh": 716459.109
+   "payment_gbp": 56183101.72999997,
+   "generation_mwh": 716438.3920000001
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 25954754.189999994,
-   "generation_mwh": 330971.11
+   "payment_gbp": 26650286.369999994,
+   "generation_mwh": 339840.434
   }
  ],
  "contracts": [
@@ -184,7 +184,7 @@
    "unit_name": "Lynemouth Power Station",
    "technology": "Biomass Conversion",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 963869494.47,
+   "cumulative_gbp": 964556514.99,
    "first_settlement": "2018-06-23",
    "latest_strike_gbp_mwh": 153.72
   }
@@ -195,7 +195,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-12"
+  "data_to": "2026-08-13"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -5231,8 +5231,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 16647706.055,
-  "rate_gbp_per_mwh": 57.89803659949353,
+  "generation_mwh": 16656447.969,
+  "rate_gbp_per_mwh": 57.9088961094932,
   "rate_label": "payment per subsidised MWh"
  }
 }

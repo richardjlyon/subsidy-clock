@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Dedicated Biomass",
- "hero_gbp": 292262057.57,
+ "hero_gbp": 292291757.41,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -24,8 +24,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 21206209.970000003,
-   "generation_mwh": 229157.21699999998
+   "payment_gbp": 21206205.020000003,
+   "generation_mwh": 229157.16299999997
   },
   {
    "q": "2024-Q3",
@@ -49,8 +49,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 42259255.93999999,
-   "generation_mwh": 446573.528
+   "payment_gbp": 42259066.00999999,
+   "generation_mwh": 446571.5200000001
   },
   {
    "q": "2025-Q4",
@@ -59,18 +59,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 39324733.62000001,
-   "generation_mwh": 421125.881
+   "payment_gbp": 39318131.17000001,
+   "generation_mwh": 421055.173
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 16584759.129999999,
-   "generation_mwh": 153349.764
+   "payment_gbp": 16583195.169999998,
+   "generation_mwh": 153335.304
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 25982227.34,
-   "generation_mwh": 240242.502
+   "payment_gbp": 26020288.470000003,
+   "generation_mwh": 240594.42700000003
   }
  ],
  "contracts": [
@@ -79,7 +79,7 @@
    "unit_name": "Teesside Renewable Energy Project",
    "technology": "Dedicated Biomass",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 292262057.57,
+   "cumulative_gbp": 292291757.41,
    "first_settlement": "2023-09-30",
    "latest_strike_gbp_mwh": 183.45
   }
@@ -90,7 +90,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-12"
+  "data_to": "2026-08-13"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -836,8 +836,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 3300666.395,
-  "rate_gbp_per_mwh": 88.54637900174701,
+  "generation_mwh": 3300931.09,
+  "rate_gbp_per_mwh": 88.54827605928607,
   "rate_label": "payment per subsidised MWh"
  }
 }

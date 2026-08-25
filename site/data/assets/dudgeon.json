@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 1571132613.93,
+ "hero_gbp": 1571203551.35,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -59,7 +59,7 @@
   },
   {
    "q": "2019-Q4",
-   "payment_gbp": 66573126.83999999,
+   "payment_gbp": 66573126.83999998,
    "generation_mwh": 507971.5449999999
   },
   {
@@ -104,8 +104,8 @@
   },
   {
    "q": "2022-Q1",
-   "payment_gbp": -5600992.459999999,
-   "generation_mwh": 505952.84200000006
+   "payment_gbp": -5600992.460000001,
+   "generation_mwh": 505952.8420000001
   },
   {
    "q": "2022-Q2",
@@ -149,8 +149,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 53121521.06999999,
-   "generation_mwh": 348766.25600000005
+   "payment_gbp": 53121513.269999996,
+   "generation_mwh": 348766.20000000007
   },
   {
    "q": "2024-Q3",
@@ -174,8 +174,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 49183325.91999998,
-   "generation_mwh": 320637.85100000014
+   "payment_gbp": 49183039.09999998,
+   "generation_mwh": 320635.66600000014
   },
   {
    "q": "2025-Q4",
@@ -184,18 +184,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 67456720.80000006,
-   "generation_mwh": 505697.43399999995
+   "payment_gbp": 67452960.22000006,
+   "generation_mwh": 505664.355
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 47516250.99000002,
-   "generation_mwh": 352523.837
+   "payment_gbp": 47514153.42000002,
+   "generation_mwh": 352506.487
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 14203537.769999994,
-   "generation_mwh": 114598.086
+   "payment_gbp": 14280627.959999993,
+   "generation_mwh": 115720.43899999998
   }
  ],
  "contracts": [
@@ -204,7 +204,7 @@
    "unit_name": "Dudgeon Phase 2",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 813524435.87,
+   "cumulative_gbp": 813556878.21,
    "first_settlement": "2017-08-02",
    "latest_strike_gbp_mwh": 220.95
   },
@@ -213,7 +213,7 @@
    "unit_name": "Dudgeon Phase 3",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 394463556.88,
+   "cumulative_gbp": 394484416.61,
    "first_settlement": "2017-10-01",
    "latest_strike_gbp_mwh": 220.95
   },
@@ -222,7 +222,7 @@
    "unit_name": "Dudgeon Phase 1",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 363144621.18,
+   "cumulative_gbp": 363162256.53,
    "first_settlement": "2017-04-27",
    "latest_strike_gbp_mwh": 220.95
   }
@@ -233,7 +233,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-12"
+  "data_to": "2026-08-13"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -547,8 +547,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 14608397.471000003,
-  "rate_gbp_per_mwh": 107.54996344047653,
+  "generation_mwh": 14609467.154,
+  "rate_gbp_per_mwh": 107.54694437434101,
   "rate_label": "payment per subsidised MWh"
  }
 }

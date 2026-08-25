@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 18955586.02,
+ "hero_gbp": 18954446.4,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -114,8 +114,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 1467373.6400000001,
-   "generation_mwh": 23866.292
+   "payment_gbp": 1467373.56,
+   "generation_mwh": 23866.29
   },
   {
    "q": "2024-Q3",
@@ -139,8 +139,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 1334475.3600000003,
-   "generation_mwh": 22075.843999999994
+   "payment_gbp": 1334473.0500000003,
+   "generation_mwh": 22075.825999999994
   },
   {
    "q": "2025-Q4",
@@ -149,18 +149,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 1372811.53,
-   "generation_mwh": 39808.822
+   "payment_gbp": 1372773.47,
+   "generation_mwh": 39806.463
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 980893.4700000003,
-   "generation_mwh": 24897.572999999997
+   "payment_gbp": 980889.4800000003,
+   "generation_mwh": 24897.343999999997
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 264220.9700000001,
-   "generation_mwh": 8475.614999999998
+   "payment_gbp": 263125.7900000001,
+   "generation_mwh": 8561.992999999999
   }
  ],
  "contracts": [
@@ -169,7 +169,7 @@
    "unit_name": "Middle Muir Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 18955586.02,
+   "cumulative_gbp": 18954446.4,
    "first_settlement": "2019-01-09",
    "latest_strike_gbp_mwh": 120.28
   }
@@ -180,15 +180,15 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-12"
+  "data_to": "2026-08-13"
  },
  "outages": {
   "coverage_from": "2016-01-01",
   "windows": []
  },
  "tiles": {
-  "generation_mwh": 775254.3999999999,
-  "rate_gbp_per_mwh": 24.45079450048913,
+  "generation_mwh": 775338.17,
+  "rate_gbp_per_mwh": 24.446682922885117,
   "rate_label": "payment per subsidised MWh"
  }
 }
