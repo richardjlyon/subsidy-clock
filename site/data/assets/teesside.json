@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Dedicated Biomass",
- "hero_gbp": 292291757.41,
+ "hero_gbp": 293113638.88,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -24,8 +24,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 21206205.020000003,
-   "generation_mwh": 229157.16299999997
+   "payment_gbp": 21206197.110000003,
+   "generation_mwh": 229157.07899999994
   },
   {
    "q": "2024-Q3",
@@ -49,8 +49,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 42259066.00999999,
-   "generation_mwh": 446571.5200000001
+   "payment_gbp": 42259592.18999999,
+   "generation_mwh": 446577.08100000006
   },
   {
    "q": "2025-Q4",
@@ -59,18 +59,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 39318131.17000001,
-   "generation_mwh": 421055.173
+   "payment_gbp": 39316327.56000001,
+   "generation_mwh": 421035.8549999999
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 16583195.169999998,
-   "generation_mwh": 153335.304
+   "payment_gbp": 16583171.11,
+   "generation_mwh": 153335.084
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 26020288.470000003,
-   "generation_mwh": 240594.42700000003
+   "payment_gbp": 26843479.34,
+   "generation_mwh": 248205.98599999998
   }
  ],
  "contracts": [
@@ -79,7 +79,7 @@
    "unit_name": "Teesside Renewable Energy Project",
    "technology": "Dedicated Biomass",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 292291757.41,
+   "cumulative_gbp": 293113638.88,
    "first_settlement": "2023-09-30",
    "latest_strike_gbp_mwh": 183.45
   }
@@ -90,7 +90,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-13"
+  "data_to": "2026-08-16"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -836,8 +836,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 3300931.09,
-  "rate_gbp_per_mwh": 88.54827605928607,
+  "generation_mwh": 3308528.588,
+  "rate_gbp_per_mwh": 88.59335232680782,
   "rate_label": "payment per subsidised MWh"
  }
 }
