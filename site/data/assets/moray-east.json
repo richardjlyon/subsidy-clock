@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 4598588.62,
+ "hero_gbp": 4488676.2299999995,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -24,8 +24,8 @@
   },
   {
    "q": "2024-Q4",
-   "payment_gbp": -4658613.3,
-   "generation_mwh": 393118.78599999985
+   "payment_gbp": -4658613.300000001,
+   "generation_mwh": 393118.7859999999
   },
   {
    "q": "2025-Q1",
@@ -34,13 +34,13 @@
   },
   {
    "q": "2025-Q2",
-   "payment_gbp": 4409612.340000001,
+   "payment_gbp": 4409612.340000004,
    "generation_mwh": 335821.90800000017
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 3965205.6999999983,
-   "generation_mwh": 319531.2349999998
+   "payment_gbp": 3965180.259999998,
+   "generation_mwh": 319531.9429999998
   },
   {
    "q": "2025-Q4",
@@ -49,18 +49,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": -2089890.689999999,
-   "generation_mwh": 495241.5340000001
+   "payment_gbp": -2089537.7700000005,
+   "generation_mwh": 495216.5020000001
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": -997269.45,
-   "generation_mwh": 221483.08399999992
+   "payment_gbp": -997352.26,
+   "generation_mwh": 221480.4869999999
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": -2203320.18,
-   "generation_mwh": 97674.30200000001
+   "payment_gbp": -2313477.2399999998,
+   "generation_mwh": 99094.86899999999
   }
  ],
  "contracts": [
@@ -69,7 +69,7 @@
    "unit_name": "Moray Offshore Windfarm (East) Phase 1",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 1811783.66,
+   "cumulative_gbp": 1774949.2699999998,
    "first_settlement": "2024-03-04",
    "latest_strike_gbp_mwh": 82.34
   },
@@ -78,7 +78,7 @@
    "unit_name": "Moray Offshore Windfarm (East) Phase 2",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 1463717.51,
+   "cumulative_gbp": 1427486.89,
    "first_settlement": "2024-03-04",
    "latest_strike_gbp_mwh": 82.34
   },
@@ -87,7 +87,7 @@
    "unit_name": "Moray Offshore Windfarm (East) Phase 3",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 1323087.45,
+   "cumulative_gbp": 1286240.0699999998,
    "first_settlement": "2024-03-04",
    "latest_strike_gbp_mwh": 82.34
   }
@@ -98,7 +98,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-16"
+  "data_to": "2026-08-17"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -706,8 +706,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 3901562.9250000003,
-  "rate_gbp_per_mwh": 1.1786529420129754,
+  "generation_mwh": 3902956.571,
+  "rate_gbp_per_mwh": 1.150070760036648,
   "rate_label": "payment per subsidised MWh"
  }
 }
