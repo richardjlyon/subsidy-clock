@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 4055946.4499999997,
+ "hero_gbp": 4047803.5,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -124,8 +124,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 1119170.5900000003,
-   "generation_mwh": 24055.434999999998
+   "payment_gbp": 1119165.0900000003,
+   "generation_mwh": 24055.29
   },
   {
    "q": "2025-Q4",
@@ -134,18 +134,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 863591.76,
-   "generation_mwh": 35387.960999999996
+   "payment_gbp": 863618.3,
+   "generation_mwh": 35389.144
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 530258.5199999998,
-   "generation_mwh": 23179.801
+   "payment_gbp": 530266.4899999999,
+   "generation_mwh": 23180.594
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 113153.14,
-   "generation_mwh": 12368.069000000001
+   "payment_gbp": 104981.17999999998,
+   "generation_mwh": 12802.369
   }
  ],
  "contracts": [
@@ -154,7 +154,7 @@
    "unit_name": "Nanclach Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 4055946.4499999997,
+   "cumulative_gbp": 4047803.5,
    "first_settlement": "2019-10-01",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -165,11 +165,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-17"
+  "data_to": "2026-08-18"
  },
  "tiles": {
-  "generation_mwh": 811094.2890000001,
-  "rate_gbp_per_mwh": 5.000585634748563,
+  "generation_mwh": 811530.42,
+  "rate_gbp_per_mwh": 4.987864164106134,
   "rate_label": "payment per subsidised MWh"
  }
 }
