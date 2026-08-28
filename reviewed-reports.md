@@ -5,6 +5,25 @@ don't belong in `corrections.jsonl` (confirmed errors only). Logged here for the
 
 ---
 
+## 2026-08-14 — REF constraint totals attacked as unreliable source
+
+- **Reviewed:** 2026-08-14
+- **Page:** https://subsidyclock.co.uk/methodology (curtailment section)
+- **Reporter:** Not stated (comment criticism)
+- **Claim:** "The source for some of the data is the Renewable Energy Foundation, a
+  notorious RE-hating group of bigots. It is not an official source, and anything that
+  quotes it is unreliable."
+- **Verdict:** Reviewed, not a correction. Ad hominem, and factually confused about
+  what REF's constraint database is.
+  - REF's constraint totals are a tabulation of Elexon Balancing Mechanism bid-acceptance
+    data — the official settlement records of the GB grid. The underlying source IS official.
+  - The Clock independently reconstructs the same figures bid-by-bid from Elexon's own API
+    (back to 28 Dec 2024); REF totals are used only for history before the backfill window,
+    and the methodology page states the same accepted-bid method REF uses.
+  - If biased, the figures err against the site's argument: bilateral trades outside the BM
+    are excluded, so the totals are a stated lower bound.
+- **Action:** Reply drafted for Richard to post.
+
 ## 2026-06-22 — Local distribution-mains reinforcement omitted
 
 - **Reviewed:** 2026-06-22
