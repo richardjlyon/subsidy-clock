@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Dedicated Biomass",
- "hero_gbp": 293975700.88,
+ "hero_gbp": 294360692.66,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -24,8 +24,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 21206197.110000003,
-   "generation_mwh": 229157.07899999994
+   "payment_gbp": 21206194.560000002,
+   "generation_mwh": 229157.05299999999
   },
   {
    "q": "2024-Q3",
@@ -49,8 +49,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 42259590.88999999,
-   "generation_mwh": 446577.06600000005
+   "payment_gbp": 42259759.17999999,
+   "generation_mwh": 446578.8460000001
   },
   {
    "q": "2025-Q4",
@@ -59,18 +59,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 39316036.74000001,
-   "generation_mwh": 421032.73999999993
+   "payment_gbp": 39316822.69000001,
+   "generation_mwh": 421041.158
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 16581081.469999999,
-   "generation_mwh": 153315.75899999996
+   "payment_gbp": 16563580.52,
+   "generation_mwh": 153153.93599999996
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 27707923.1,
-   "generation_mwh": 256198.99500000002
+   "payment_gbp": 28109464.14,
+   "generation_mwh": 259911.81500000003
   }
  ],
  "contracts": [
@@ -79,7 +79,7 @@
    "unit_name": "Teesside Renewable Energy Project",
    "technology": "Dedicated Biomass",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 293975700.88,
+   "cumulative_gbp": 294360692.66,
    "first_settlement": "2023-09-30",
    "latest_strike_gbp_mwh": 183.45
   }
@@ -90,7 +90,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-18"
+  "data_to": "2026-08-19"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -836,8 +836,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 3316499.142,
-  "rate_gbp_per_mwh": 88.64036693304232,
+  "generation_mwh": 3320060.3109999998,
+  "rate_gbp_per_mwh": 88.661248617902,
   "rate_label": "payment per subsidised MWh"
  }
 }

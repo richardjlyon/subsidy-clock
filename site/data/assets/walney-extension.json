@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 2299978463.73,
+ "hero_gbp": 2300701052.6800003,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -59,7 +59,7 @@
   },
   {
    "q": "2020-Q2",
-   "payment_gbp": 75577333.35000001,
+   "payment_gbp": 75577333.35000002,
    "generation_mwh": 496354.3080000001
   },
   {
@@ -99,7 +99,7 @@
   },
   {
    "q": "2022-Q2",
-   "payment_gbp": 26708479.089999996,
+   "payment_gbp": 26708479.09,
    "generation_mwh": 533013.888
   },
   {
@@ -139,12 +139,12 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 74414018.30000003,
-   "generation_mwh": 497177.56399999995
+   "payment_gbp": 74414017.57000002,
+   "generation_mwh": 497177.557
   },
   {
    "q": "2024-Q3",
-   "payment_gbp": 79461049.45999998,
+   "payment_gbp": 79461049.45999996,
    "generation_mwh": 549614.7889999999
   },
   {
@@ -164,8 +164,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 77254752.96000004,
-   "generation_mwh": 523858.636
+   "payment_gbp": 77254870.00000003,
+   "generation_mwh": 523859.518
   },
   {
    "q": "2025-Q4",
@@ -174,18 +174,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 110333522.57000008,
-   "generation_mwh": 842593.8400000002
+   "payment_gbp": 110335760.98000008,
+   "generation_mwh": 842611.5720000003
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 76797006.19999997,
-   "generation_mwh": 598542.6349999998
+   "payment_gbp": 76785104.21999997,
+   "generation_mwh": 598437.3139999998
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 24598676.100000005,
-   "generation_mwh": 210014.92500000002
+   "payment_gbp": 25330812.310000002,
+   "generation_mwh": 218991.905
   }
  ],
  "contracts": [
@@ -194,7 +194,7 @@
    "unit_name": "Walney Extension Offshore Wind Farm Phase 1",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 1154140657.65,
+   "cumulative_gbp": 1154613875.66,
    "first_settlement": "2017-12-19",
    "latest_strike_gbp_mwh": 220.95
   },
@@ -203,7 +203,7 @@
    "unit_name": "Walney Extension Offshore Wind Farm Phase 2",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 1145837806.08,
+   "cumulative_gbp": 1146087177.02,
    "first_settlement": "2018-04-13",
    "latest_strike_gbp_mwh": 220.95
   }
@@ -214,7 +214,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-18"
+  "data_to": "2026-08-19"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -432,8 +432,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 21610253.915,
-  "rate_gbp_per_mwh": 106.42996018355669,
+  "generation_mwh": 21619144.180999998,
+  "rate_gbp_per_mwh": 106.4196174195449,
   "rate_label": "payment per subsidised MWh"
  }
 }

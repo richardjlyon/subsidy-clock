@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 6428799.55,
+ "hero_gbp": 6428342.04,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -89,8 +89,8 @@
   },
   {
    "q": "2022-Q2",
-   "payment_gbp": -306714.2199999999,
-   "generation_mwh": 7680.578000000002
+   "payment_gbp": -306714.22,
+   "generation_mwh": 7680.578000000001
   },
   {
    "q": "2022-Q3",
@@ -129,13 +129,13 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 419391.4999999999,
+   "payment_gbp": 419391.5099999999,
    "generation_mwh": 7080.145999999998
   },
   {
    "q": "2024-Q3",
-   "payment_gbp": 377534.8,
-   "generation_mwh": 6597.688999999999
+   "payment_gbp": 377534.79999999993,
+   "generation_mwh": 6597.689
   },
   {
    "q": "2024-Q4",
@@ -154,8 +154,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 402821.21999999986,
-   "generation_mwh": 6646.251000000002
+   "payment_gbp": 402821.0599999998,
+   "generation_mwh": 6646.249000000002
   },
   {
    "q": "2025-Q4",
@@ -164,18 +164,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 428528.7200000001,
-   "generation_mwh": 11022.136
+   "payment_gbp": 428519.44000000006,
+   "generation_mwh": 11021.766000000001
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 329449.57,
-   "generation_mwh": 7872.131000000004
+   "payment_gbp": 329479.10000000003,
+   "generation_mwh": 7874.184000000004
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 80101.99999999997,
-   "generation_mwh": 3131.8149999999987
+   "payment_gbp": 79624.38999999998,
+   "generation_mwh": 3166.862999999999
   }
  ],
  "contracts": [
@@ -184,7 +184,7 @@
    "unit_name": "Moor House Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 6428799.55,
+   "cumulative_gbp": 6428342.04,
    "first_settlement": "2018-04-03",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -195,11 +195,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-18"
+  "data_to": "2026-08-19"
  },
  "tiles": {
-  "generation_mwh": 283381.554,
-  "rate_gbp_per_mwh": 22.686019817648397,
+  "generation_mwh": 283418.283,
+  "rate_gbp_per_mwh": 22.681465613141125,
   "rate_label": "payment per subsidised MWh"
  }
 }
