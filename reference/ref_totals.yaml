@@ -3,7 +3,12 @@
 # Figures read directly from REF Tables 1 (direct) and 2 (indirect),
 # cumulative 2002 to FY 2023/24, GBP nominal. Re-verify on REF updates.
 source: REF, "UK Renewable Electricity Subsidy Totals 2002 to the Present Day", April 2025, Tables 1 and 2
-source_url: https://www.ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day
+source_url: https://web.archive.org/web/20260412090644/https://ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day
+# URL ROT, checked 2026-09-01: the original REF URL
+#   https://www.ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day
+# now returns 404 and the study is not linked from ref.org.uk/publications.
+# Cite the Internet Archive capture of 2026-04-12 (verified 2026-09-01,
+# study dated Monday 28 April 2025). Publisher URLs are not stable citations.
 period: "2002 to FY 2023/24"
 # Our annual series is calendar-year; comparing ours <=2023 against REF's
 # <=FY2023/24 leaves ~3 months of theirs uncovered by ours - the mismatch

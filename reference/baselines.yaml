@@ -6,7 +6,12 @@ bsuos:
   period: "2002-2005"
   description: Mean annual GB balancing (BSUoS) cost over calendar years 2002-2005 inclusive (the engine's 4-year CPIH baseline window), nominal (£0.4bn/yr per REF Table 2)
   source: REF April 2025 study, Table 2 (citing NESO/National Grid historic balancing cost reporting)
-  source_url: https://www.ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day
+  source_url: https://web.archive.org/web/20260412090644/https://ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day
+  # URL ROT, checked 2026-09-01: the original REF URL
+  #   https://www.ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day
+  # now returns 404 and the study is not linked from ref.org.uk/publications.
+  # Cite the Internet Archive capture of 2026-04-12 (verified 2026-09-01,
+  # study dated Monday 28 April 2025). Publisher URLs are not stable citations.
   verified: false
   note: "Corroborated against REF (April 2025, Table 2) only; primary NESO/Elexon confirmation pending."
 tnuos:
@@ -14,6 +19,11 @@ tnuos:
   period: "2002-2005"
   description: Mean annual TNUoS revenue over calendar years 2002-2005 inclusive (the engine's 4-year CPIH baseline window), nominal (£0.9bn/yr per REF Table 2)
   source: REF April 2025 study, Table 2 (citing NESO/National Grid charging statements)
-  source_url: https://www.ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day
+  source_url: https://web.archive.org/web/20260412090644/https://ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day
+  # URL ROT, checked 2026-09-01: the original REF URL
+  #   https://www.ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day
+  # now returns 404 and the study is not linked from ref.org.uk/publications.
+  # Cite the Internet Archive capture of 2026-04-12 (verified 2026-09-01,
+  # study dated Monday 28 April 2025). Publisher URLs are not stable citations.
   verified: false
   note: "Corroborated against REF (April 2025, Table 2) only; primary NESO/Elexon confirmation pending."

@@ -71,7 +71,14 @@ def test_tnuos_neso_traced_values():
 
 def test_load_ref_crosscheck():
     rc = reference.load_ref_crosscheck(REF_DIR / "ref_crosscheck.yaml")
-    assert rc["source_url"].startswith("https://www.ref.org.uk")
+    # The REF study must still be cited, but NOT necessarily at a ref.org.uk
+    # URL: the original blog URL 404'd (checked 2026-09-01, study pulled from
+    # the live site), so the citation is now an Internet Archive capture of it.
+    # Assert the study is reachable-as-cited, not that the publisher still
+    # hosts it — publisher URLs are not stable citations.
+    url = rc["source_url"]
+    assert url.startswith("https://")
+    assert "ref.org.uk" in url
     assert set(rc["components"]) == {"capacity_market", "ccl", "ets", "bsuos", "tnuos"}
     assert all(v > 0 for v in rc["components"].values())
 

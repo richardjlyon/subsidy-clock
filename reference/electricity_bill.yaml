@@ -1,14 +1,49 @@
 # Total UK electricity consumer expenditure - the denominator for the
 # share-of-bill chart. DUKES 1.3 "Sales of electricity and gas by sector".
 # Annual Excel publication (gov.uk), calendar-year keyed; refresh each July.
-# Verified 2026-06-10 against DUKES_1.3.xlsx (published Jul 2025), sheet
-# "1.3.A" ("Total selling value, GBP million"), row "Total all consumers -
-# of which electricity". Values rounded to the nearest GBP million.
+#
+# Verified 2026-09-01 against DUKES_1.3.xlsx (published Thu 30 July 2026),
+# sheet "1.3.A" ("Total selling value, GBP million"), row 22 "of which
+# electricity". Values rounded to the nearest GBP million.
+#
+# EDITION: DUKES 2026 (published 2026-07-30). Record the edition with the
+# figures - this series is NOT stable between editions. The 2026 Cover Sheet
+# states: "The revisions period is 2010 - 2024 ... value balances have been
+# revised from 2010 onwards", so the whole series from 2010 was re-read, not
+# appended. Against the 2025 edition: 2024 +GBP 614m (+0.94%), 2023 +GBP 686m,
+# 2022 -GBP 222m. The previously held 2024 value of 65,579,000,000 was a
+# correct reading of the JULY 2025 edition and is now superseded.
+#
+# ROW LABEL NOTE: the workbook has "Total all consumers" (row 20), "of which
+# gas" (row 21) and "of which electricity" (row 22) as three separate rows.
+# The composite label used previously here ("Total all consumers - of which
+# electricity") is a local convention, not a literal string in the file.
+#
+# CITATION DISCIPLINE: gov.uk asset URLs are NOT stable citations. The URL
+# previously stored here (.../6889eaed8b3a37b63e738fe1/DUKES_1.3.xlsx) now
+# 301-redirects to the 2026 workbook, so anyone re-fetching it to check the
+# stored 2025 figures silently receives 2026 data. Confirmed 2026-09-01:
+# that URL returns SHA-256 1dca0224...c662f, the 2026 file. Superseded
+# editions are therefore cited via their National Archives capture only.
+#
+# WARNING: the 2026 Cover Sheet states DESNZ "plan to carry out a methodology
+# review of the value balances in this table over the upcoming year". Expect
+# further revision in the July 2027 edition.
 source: DESNZ, Digest of UK Energy Statistics (DUKES) 1.3, Sales of electricity and gas by sector
 source_url: https://www.gov.uk/government/statistics/energy-chapter-1-digest-of-united-kingdom-energy-statistics-dukes
-note: Sheet 1.3.A, row "Total all consumers - of which electricity"; workbook https://assets.publishing.service.gov.uk/media/6889eaed8b3a37b63e738fe1/DUKES_1.3.xlsx
+edition: DUKES 2026, published 2026-07-30
+workbook_url: https://assets.publishing.service.gov.uk/media/6a69ee394dda8076771a4339/DUKES_1.3.xlsx
+workbook_sha256: 1dca0224ca42d3ebf02b5e50ad0b7cce3d1bd8b2d0eb452dd643d092f70c662f
+note: Sheet 1.3.A, row 22 "of which electricity" (nested under "Total all consumers", row 20); GBP million, excludes VAT where payable; calendar years.
+superseded_editions:
+  - edition: DUKES 2025, published 2025-07-31
+    # Cite ONLY via the archive capture - the original asset URL now redirects
+    # to the 2026 workbook. Capture verified 2026-09-01, SHA-256 3b867d8c...4b21.
+    archive_url: https://webarchive.nationalarchives.gov.uk/ukgwa/20250731163309mp_/https://assets.publishing.service.gov.uk/media/6889eaed8b3a37b63e738fe1/DUKES_1.3.xlsx
+    archive_sha256: 3b867d8c73d2ac41c20d93917b50add9944d1b9d2b6b590536e674b6072f4b21
+    note: Held 2024 value under this edition was 65,579,372,627 (stored as 65,579,000,000).
 verified: true
-expected_next_update: 2026-07-31   # DUKES 1.3, published each July
+expected_next_update: 2027-07-29   # DUKES 1.3 2027, date stated on the 2026 Cover Sheet
 bill:
   2002: 14346000000
   2003: 14193000000
@@ -18,18 +53,19 @@ bill:
   2007: 26290000000
   2008: 30875000000
   2009: 31015000000
-  2010: 30107000000
-  2011: 30502000000
-  2012: 32482000000
-  2013: 34237000000
-  2014: 33799000000
-  2015: 33853000000
-  2016: 33222000000
-  2017: 34163000000
-  2018: 37202000000
-  2019: 39589000000
-  2020: 38139000000
-  2021: 43370000000
-  2022: 58374000000
-  2023: 71689000000
-  2024: 65579000000
+  2010: 30109000000
+  2011: 30505000000
+  2012: 32485000000
+  2013: 34241000000
+  2014: 33803000000
+  2015: 33857000000
+  2016: 33225000000
+  2017: 34320000000
+  2018: 37310000000
+  2019: 39703000000
+  2020: 38252000000
+  2021: 43168000000
+  2022: 58152000000
+  2023: 72374000000
+  2024: 66193000000
+  2025: 65071000000

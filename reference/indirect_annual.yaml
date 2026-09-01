@@ -20,7 +20,7 @@ schemes:
       estimated CPF receipts (CPS applies solely to fossil fuels used for
       electricity generation, so it is wholly electricity-attributable).
       Sums rounded down to the nearest GBP 0.1m.
-    source_url: https://www.gov.uk/government/statistics/climate-change-levy-and-carbon-price-floor-bulletin
+    source_url: https://www.gov.uk/government/statistics/environmental-taxes-bulletin
     verified: true
     expected_next_update: 2027-03-31   # HMRC Environmental Taxes Bulletin, March edition
     attribution:
@@ -73,15 +73,83 @@ schemes:
       converted from EUR at Bank of England annual average rates; 2019-2020
       "EU ETS auction income" from the BEIS Annual Report and Accounts
       2020-21 Trust Statement (FY2019-20 GBP 201.4m, FY2020-21 GBP 2,213.1m);
-      2021-2024 "UK ETS auction income" from the BEIS/DESNZ Annual Report and
-      Accounts Trust Statements (FY2021-22 GBP 5,753.6m, FY2022-23
-      GBP 6,049.0m, FY2023-24 GBP 3,407.1m, FY2024-25 GBP 2,521.9m).
-      Power-sector share: 2021-2024 from published UK ETS verified emissions
-      (electricity generation / total covered: 47.3/107.9, 48.2/110.0,
-      37.1/96.8, 30.4/85.6 MtCO2e); 2009-2020 a flat 0.5 estimate.
+      2021-2023 "UK ETS auction income" from the BEIS/DESNZ Annual Report and
+      Accounts Trust Statements (FY2021-22 GBP 5,753,639k, FY2022-23
+      GBP 6,048,951k, FY2023-24 GBP 3,407,068k), attributed to the calendar
+      year in which the financial year starts. 2024 uses the PUBLISHED
+      CALENDAR-YEAR total instead - see calendar_year_revenue below.
+      Power-sector share: from published UK ETS verified emissions
+      (electricity generation / total covered); 2009-2020 a flat 0.5 estimate.
+      See emissions_vintage below for the figures and their editions.
     source_url: https://www.gov.uk/government/publications/desnz-annual-report-and-accounts-2023-to-2024/trust-statement
     verified: false
-    expected_next_update: 2027-03-31   # UK ETS auction results, calendar-year sums
+    expected_next_update: 2026-11-30   # "Functioning of the UK carbon market, 2025", expected autumn 2026
+    # Verified 2026-09-01 against the primary documents themselves (PDF text
+    # extracted; auction table re-summed row by row).
+    calendar_year_revenue:
+      # DESNZ now publishes an OFFICIAL calendar-year auction total, which
+      # removes this series' main methodological weakness for 2024 (the
+      # financial-year to calendar-year conversion). Use it where it exists.
+      2024:
+        total_gbp: 2564090000
+        volume_ukas: 68964000
+        auctions: 25
+        source: >-
+          Functioning of the UK carbon market, 2024 (DESNZ, published
+          2025-10-14), section 5 "Auction results in 2024", Table 1 "Auction
+          outcomes for the 2024 scheme year", Totals row.
+        source_url: https://assets.publishing.service.gov.uk/media/68ee0df182670806f9d5e00f/report-on-the-functioning-of-the-UK-carbon-market-for-2024.pdf
+        source_sha256: 850ddc726c5ee9ad231a9eff062bd9f138058bc909760f58504e94f580a33f42
+        note: >-
+          All 25 revenue rows re-summed independently 2026-09-01 and match the
+          printed Totals row exactly (volumes likewise: 68,964,000). This is
+          MATERIALLY DIFFERENT from the FY2024-25 accounts figure of
+          GBP 2,521,910k - a different period, not a different measurement of
+          the same period. Implied volume-weighted average clearing price
+          GBP 37.18/tCO2e (our arithmetic; DESNZ does not print an average).
+      unavailable:
+        # No official annual total is printed for these years, so they remain
+        # on the financial-year method. Flag as own-arithmetic if quoted.
+        - 2021
+        - 2022
+        - 2023
+    emissions_vintage:
+      # This series is NOT stable between editions - DESNZ restates. Store
+      # which edition each figure came from. Verified verbatim from section 7.3
+      # of the 2024 report (see source_url under calendar_year_revenue).
+      2024:
+        power_tco2e: 29484524
+        total_covered_tco2e: 85634344
+        share: 0.344307
+        edition: Functioning of the UK carbon market, 2024 (published 2025-10-14)
+      2023:
+        power_tco2e: 36084695
+        total_covered_tco2e: 96750817
+        share: 0.372965
+        edition: Functioning of the UK carbon market, 2024 (published 2025-10-14), restating 2023
+        superseded: >-
+          The 2023 report (published 2024-11-19) gave 2023 power emissions as
+          37,056,676 tCO2e and total 96,757,682 tCO2e. The 2024 report restates
+          power ~1.0 Mt lower. The value previously held here (37.1 Mt) was the
+          superseded 2023-report vintage.
+      2022:
+        power_tco2e: 48193462
+        total_covered_tco2e: 110618346
+        share: 0.435663
+        edition: Functioning of the UK carbon market, 2023 (published 2024-11-19)
+        note: >-
+          Total covered was previously held as 110.0 Mt; the published figure is
+          110.6 Mt (110,618,346 per the 2023 report; 110,614,015 per the
+          2021-and-2022 report).
+      2021:
+        power_tco2e: null   # UNSUPPORTED - see note
+        total_covered_tco2e: 107880367
+        edition: Functioning of the UK carbon market, 2021 and 2022 (published 2023-07-27)
+        note: >-
+          NO primary document prints a 2021 power-sector figure. The value
+          previously held here (47.3 Mt) could not be traced to any source and
+          is treated as UNSUPPORTED. The 2021 attribution below therefore rests
+          on an untraced share and should be flagged if quoted.
     attribution:
       rule: >-
         Power-sector share of AUCTIONED allowance revenue only; free
@@ -90,19 +158,43 @@ schemes:
         receives no free allocation and so buys a larger share of auctioned
         allowances than its emissions share.
       confidence: medium
+      unpublished_assumption: >-
+        THIS METHOD IS AN ASSUMPTION, NOT A PUBLISHED STATISTIC. No source
+        attributes UK ETS auction revenue or auction volumes to sectors
+        (checked 2026-09-01). Because the power sector receives essentially no
+        free allocation while industry receives a great deal, an emissions-share
+        proxy probably UNDERSTATES the power sector's true share of auction
+        purchases. That is a conservative error, and it should be stated on the
+        methodology page rather than silently carried.
     note: >-
-      Not fully verified from primary sources. Unverified elements: 2009-2011
-      values (OBR EU ETS receipts series as tabulated in REF's April 2025
-      study, x0.5 - DMO Phase II auction results not yet traced); the
-      EUR-to-GBP conversion for 2012-2018 (BoE annual average rates, not the
-      Treasury's actual settlement rates); and the flat 0.5 power-sector
-      share for 2009-2020. 2012 covers ICE auctions only (from November
-      2012); any DMO Phase II proceeds that year are excluded (conservative).
-      2019 is near-zero because UK auctions were suspended January 2019 to
-      March 2020 over Brexit; FY2019-20 income reflects March 2020 auctions
-      only. Revenue figures for 2012-2024 are verified (EC auction platform
-      reports; BEIS/DESNZ trust statements).
+      Not fully verified from primary sources - the inputs are now traced but
+      the attribution method itself remains an unpublished assumption (see
+      attribution.unpublished_assumption), which is why verified stays false.
+      Unverified elements: 2009-2011 values (OBR EU ETS receipts series as
+      tabulated in REF's April 2025 study, x0.5 - DMO Phase II auction results
+      not yet traced); the EUR-to-GBP conversion for 2012-2018 (BoE annual
+      average rates, not the Treasury's actual settlement rates); the flat 0.5
+      power-sector share for 2009-2020; and the 2021 power-sector share, whose
+      emissions numerator is untraced (see emissions_vintage.2021). 2012 covers
+      ICE auctions only (from November 2012); any DMO Phase II proceeds that
+      year are excluded (conservative). 2019 is near-zero because UK auctions
+      were suspended January 2019 to March 2020 over Brexit; FY2019-20 income
+      reflects March 2020 auctions only. Revenue figures for 2012-2024 are
+      verified (EC auction platform reports; BEIS/DESNZ trust statements; and
+      for 2024 the published calendar-year total).
+      GAP: 2025 verified emissions by sector are NOT published - no 2025
+      edition of "Functioning of the UK carbon market" existed as at
+      2026-09-01; expected around autumn 2026. No 2025 power share can be
+      established until it appears.
+      FY2025-26 UK ETS auction income is now published at GBP 2,786,818k
+      (DESNZ ARA 2025-26 Trust Statement, note 2.1) - the first year-on-year
+      rise since FY2022-23. Not yet used here: this series is calendar-year and
+      2025 lacks a power-sector share.
     annual:
+      # 2009-2020: see note (flat 0.5 share, revenue provenance varies).
+      # 2021-2023: financial-year Trust Statement revenue x power's share of
+      #   verified emissions. 2024: PUBLISHED calendar-year auction revenue x
+      #   share (see calendar_year_revenue). All shares per emissions_vintage.
       2009: 50000000
       2010: 100000000
       2011: 150000000
@@ -115,10 +207,19 @@ schemes:
       2018: 710900000
       2019: 100600000
       2020: 1106500000
+      # 2021: 5,753,639k x 47.3/107.9. The 47.3 Mt numerator is UNTRACED
+      # (see emissions_vintage.2021) - value left unchanged but not defensible.
       2021: 2522200000
-      2022: 2650500000
-      2023: 1305800000
-      2024: 895600000
+      # 2022: 6,048,951k x 48,193,462/110,618,346 (0.435673). Was 2,650,500,000
+      # on the superseded 110.0 Mt denominator.
+      2022: 2635366563
+      # 2023: 3,407,068k x 36,084,695/96,750,817 (0.372965), the 2024-report
+      # restatement. Was 1,305,800,000 on the superseded 37.1/96.8 vintage.
+      2023: 1270718051
+      # 2024: 2,564,090,000 (published CY total) x 29,484,524/85,634,344
+      # (0.344307). Was 895,600,000, which used the superseded 30.4/85.6 share
+      # against an FY revenue base.
+      2024: 882834732
   tnuos:
     # the annual series below is raw total revenue; the published scheme series
     # is the attributed uplift money.py derives from it, so the public label
