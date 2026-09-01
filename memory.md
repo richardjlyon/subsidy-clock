@@ -5,8 +5,8 @@ Read at session start. Update when state changes. Durable knowledge lives in the
 ## Headline figures (always re-read live — these go stale)
 
 - Direct hero (ticking, nominal, renewables-only, measured): **~£105–110bn**
-- Combined direct + indirect, real 2024 prices — the public headline, floored to **"over £220 billion"**: **~£223bn**
-- ⚠️ Unresolved drift: vault flags a **£228bn vs £223bn** discrepancy (Daily 2026-08-15). £223bn is canonical/floored; £228 appears in some content copy. Settle before quoting to experts.
+- Combined direct + indirect, real 2024 prices — the public headline, floored to **"over £220 billion"**: **£228.5bn** (measured from the live build 2026-09-01: `meta.json` `headline.combined_real` = 228,525,542,236 after the ETS/DUKES corrections; was 228.585bn before them).
+- ✅ The **£228bn vs £223bn** drift (flagged Daily 2026-08-15) is settled: the engine's own figure is £228.5bn, so the content copy showing ~£228bn was right and the £223bn note was stale. Verified against the built site data, not against another document. The floored public headline is unaffected either way — both floor to "over £220 billion".
 
 ## Open correspondence (Aug 2026)
 
