@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 892015139.8,
+ "hero_gbp": 892099627.71,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -149,8 +149,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 29361382.96,
-   "generation_mwh": 190668.44200000004
+   "payment_gbp": 29361381.620000005,
+   "generation_mwh": 190668.43300000005
   },
   {
    "q": "2024-Q3",
@@ -174,8 +174,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 26614429.110000003,
-   "generation_mwh": 171423.213
+   "payment_gbp": 26614437.71,
+   "generation_mwh": 171423.28
   },
   {
    "q": "2025-Q4",
@@ -184,18 +184,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 36501154.52,
-   "generation_mwh": 276398.7339999999
+   "payment_gbp": 36501669.09,
+   "generation_mwh": 276403.1759999999
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 25682298.610000007,
-   "generation_mwh": 187989.41799999995
+   "payment_gbp": 25681793.400000006,
+   "generation_mwh": 187984.94999999995
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 9484160.210000005,
-   "generation_mwh": 78442.97699999996
+   "payment_gbp": 9568631.500000004,
+   "generation_mwh": 79611.04499999995
   }
  ],
  "contracts": [
@@ -204,7 +204,7 @@
    "unit_name": "Burbo Bank Extension Offshore Wind Farm",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 892015139.8,
+   "cumulative_gbp": 892099627.71,
    "first_settlement": "2017-04-11",
    "latest_strike_gbp_mwh": 220.95
   }
@@ -215,7 +215,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-19"
+  "data_to": "2026-08-20"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -313,8 +313,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 8154397.6729999995,
-  "rate_gbp_per_mwh": 109.39068409105782,
+  "generation_mwh": 8155565.773000001,
+  "rate_gbp_per_mwh": 109.38537589426414,
   "rate_label": "payment per subsidised MWh"
  }
 }
