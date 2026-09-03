@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 4039613.6999999997,
+ "hero_gbp": 4036456.35,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -40,7 +40,7 @@
   {
    "q": "2021-Q2",
    "payment_gbp": 633519.4600000001,
-   "generation_mwh": 23701.283000000003
+   "generation_mwh": 23701.283
   },
   {
    "q": "2021-Q3",
@@ -99,7 +99,7 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 966844.2400000003,
+   "payment_gbp": 966844.2300000003,
    "generation_mwh": 19805.477
   },
   {
@@ -124,8 +124,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 1119159.0300000003,
-   "generation_mwh": 24055.083
+   "payment_gbp": 1119168.7700000003,
+   "generation_mwh": 24055.261
   },
   {
    "q": "2025-Q4",
@@ -134,18 +134,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 863661.24,
-   "generation_mwh": 35390.35799999999
+   "payment_gbp": 863662.4500000001,
+   "generation_mwh": 35390.621
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 530320.2899999998,
-   "generation_mwh": 23184.789
+   "payment_gbp": 530319.8199999998,
+   "generation_mwh": 23184.756
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 96700.67,
-   "generation_mwh": 13153.354000000001
+   "payment_gbp": 93532.84999999999,
+   "generation_mwh": 13465.758
   }
  ],
  "contracts": [
@@ -154,7 +154,7 @@
    "unit_name": "Nanclach Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 4039613.6999999997,
+   "cumulative_gbp": 4036456.35,
    "first_settlement": "2019-10-01",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -165,11 +165,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-20"
+  "data_to": "2026-08-23"
  },
  "tiles": {
-  "generation_mwh": 811886.6080000001,
-  "rate_gbp_per_mwh": 4.975588536866221,
+  "generation_mwh": 812199.42,
+  "rate_gbp_per_mwh": 4.969784822057617,
   "rate_label": "payment per subsidised MWh"
  }
 }
