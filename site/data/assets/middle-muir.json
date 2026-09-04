@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 18939023.87,
+ "hero_gbp": 18937311.43,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -84,8 +84,8 @@
   },
   {
    "q": "2022-Q4",
-   "payment_gbp": -800324.7499999999,
-   "generation_mwh": 28644.341000000004
+   "payment_gbp": -800324.7499999998,
+   "generation_mwh": 28644.341000000008
   },
   {
    "q": "2023-Q1",
@@ -139,8 +139,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 1334479.4200000002,
-   "generation_mwh": 22076.107999999993
+   "payment_gbp": 1334481.8900000004,
+   "generation_mwh": 22076.242999999995
   },
   {
    "q": "2025-Q4",
@@ -149,18 +149,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 1372825.9500000002,
-   "generation_mwh": 39807.479
+   "payment_gbp": 1372821.02,
+   "generation_mwh": 39807.270000000004
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 980834.7900000004,
-   "generation_mwh": 24892.568000000003
+   "payment_gbp": 981022.6900000005,
+   "generation_mwh": 24898.425000000003
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 247699.2100000001,
-   "generation_mwh": 9490.185000000001
+   "payment_gbp": 245801.3300000001,
+   "generation_mwh": 9559.110000000002
   }
  ],
  "contracts": [
@@ -169,7 +169,7 @@
    "unit_name": "Middle Muir Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 18939023.87,
+   "cumulative_gbp": 18937311.43,
    "first_settlement": "2019-01-09",
    "latest_strike_gbp_mwh": 120.28
   }
@@ -180,15 +180,15 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-23"
+  "data_to": "2026-08-24"
  },
  "outages": {
   "coverage_from": "2016-01-01",
   "windows": []
  },
  "tiles": {
-  "generation_mwh": 776262.88,
-  "rate_gbp_per_mwh": 24.397693562263342,
+  "generation_mwh": 776337.588,
+  "rate_gbp_per_mwh": 24.39313994674183,
   "rate_label": "payment per subsidised MWh"
  }
 }

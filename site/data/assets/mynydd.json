@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 10416518.95,
+ "hero_gbp": 10409370.8,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -149,18 +149,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 846301.8300000004,
-   "generation_mwh": 27173.925999999992
+   "payment_gbp": 846304.2300000003,
+   "generation_mwh": 27173.977999999992
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 893464.4700000001,
-   "generation_mwh": 27489.70400000001
+   "payment_gbp": 893416.8300000002,
+   "generation_mwh": 27486.97100000001
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 42762.80000000003,
-   "generation_mwh": 5702.790000000002
+   "payment_gbp": 35659.890000000036,
+   "generation_mwh": 6040.943000000001
   }
  ],
  "contracts": [
@@ -169,7 +169,7 @@
    "unit_name": "Mynydd Y Gwair Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 10416518.95,
+   "cumulative_gbp": 10409370.8,
    "first_settlement": "2019-03-20",
    "latest_strike_gbp_mwh": 118.08
   }
@@ -180,11 +180,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-23"
+  "data_to": "2026-08-24"
  },
  "tiles": {
-  "generation_mwh": 725525.1370000001,
-  "rate_gbp_per_mwh": 14.357213029270959,
+  "generation_mwh": 725860.6089999999,
+  "rate_gbp_per_mwh": 14.340729708890983,
   "rate_label": "payment per subsidised MWh"
  }
 }
