@@ -1,26 +1,26 @@
 {
- "generated_at": "2026-09-05T09:20:07.271191+00:00",
+ "generated_at": "2026-09-06T09:40:46.686305+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-09-05T09:14:54.496155+00:00",
+   "retrieved_at": "2026-09-06T09:36:26.630013+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
    "row_count": 114840
   },
   "constraints": {
-   "retrieved_at": "2026-09-05T09:20:06.174156+00:00",
-   "source_date": "2024-08-01",
+   "retrieved_at": "2026-09-06T09:40:45.641158+00:00",
+   "source_date": "2024-07-25",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 6
+   "row_count": 10
   },
   "capacity_market": {
-   "retrieved_at": "2026-09-05T09:15:14.386614+00:00",
+   "retrieved_at": "2026-09-06T09:36:45.079620+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 774
   },
   "bsuos": {
-   "retrieved_at": "2026-09-05T09:15:16.856762+00:00",
+   "retrieved_at": "2026-09-06T09:36:46.987934+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/daily-balancing-costs-balancing-services-use-system",
    "row_count": 153
@@ -154,11 +154,11 @@
   },
   {
    "slug": "teachers",
-   "figure": "238,000",
+   "figure": "239,000",
    "basis": "runrate",
    "figure_label": "schoolteachers",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of UK renewable subsidy pays the salaries of 238,000 experienced schoolteachers, in today's money.",
+   "sentence": "A year of UK renewable subsidy pays the salaries of 239,000 experienced schoolteachers, in today's money.",
    "label": "experienced schoolteachers' annual salaries paid by one year of UK renewable subsidy, in today's money",
    "source_name": "STPCD 2025, Upper Pay Range UPS3, England excluding London (2025-26)",
    "source_url": "https://www.gov.uk/government/publications/school-teachers-pay-and-conditions"
