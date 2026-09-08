@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 6424878.45,
+ "hero_gbp": 6423895.38,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -129,7 +129,7 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 419391.5999999999,
+   "payment_gbp": 419391.6099999999,
    "generation_mwh": 7080.145999999998
   },
   {
@@ -154,8 +154,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 402817.46999999986,
-   "generation_mwh": 6646.129000000002
+   "payment_gbp": 402819.1899999998,
+   "generation_mwh": 6646.170000000002
   },
   {
    "q": "2025-Q4",
@@ -164,18 +164,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 428519.09,
-   "generation_mwh": 11021.517000000002
+   "payment_gbp": 428519.0200000001,
+   "generation_mwh": 11021.503
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 329435.55000000005,
-   "generation_mwh": 7873.147000000004
+   "payment_gbp": 329435.2,
+   "generation_mwh": 7873.136000000003
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 76208.20000000001,
-   "generation_mwh": 3498.488999999999
+   "payment_gbp": 75223.82,
+   "generation_mwh": 3558.2739999999994
   }
  ],
  "contracts": [
@@ -184,7 +184,7 @@
    "unit_name": "Moor House Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 6424878.45,
+   "cumulative_gbp": 6423895.38,
    "first_settlement": "2018-04-03",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -195,11 +195,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-25"
+  "data_to": "2026-08-26"
  },
  "tiles": {
-  "generation_mwh": 283748.503,
-  "rate_gbp_per_mwh": 22.642862894681066,
+  "generation_mwh": 283808.304,
+  "rate_gbp_per_mwh": 22.63462798466954,
   "rate_label": "payment per subsidised MWh"
  }
 }
