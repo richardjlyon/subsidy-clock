@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 7751805.75,
+ "hero_gbp": 7751748.93,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -84,8 +84,8 @@
   },
   {
    "q": "2023-Q1",
-   "payment_gbp": -490353.0000000001,
-   "generation_mwh": 18275.134
+   "payment_gbp": -490353.00000000006,
+   "generation_mwh": 18275.134000000002
   },
   {
    "q": "2023-Q2",
@@ -109,8 +109,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 970926.5299999997,
-   "generation_mwh": 16113.96
+   "payment_gbp": 970926.5399999996,
+   "generation_mwh": 16113.962
   },
   {
    "q": "2024-Q3",
@@ -120,7 +120,7 @@
   {
    "q": "2024-Q4",
    "payment_gbp": 756630.97,
-   "generation_mwh": 20866.778000000006
+   "generation_mwh": 20866.778000000002
   },
   {
    "q": "2025-Q1",
@@ -134,8 +134,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 846686.9400000002,
-   "generation_mwh": 14539.419000000004
+   "payment_gbp": 846686.9000000001,
+   "generation_mwh": 14539.418000000003
   },
   {
    "q": "2025-Q4",
@@ -144,18 +144,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 794505.8300000003,
-   "generation_mwh": 23411.40900000001
+   "payment_gbp": 794503.3800000002,
+   "generation_mwh": 23411.300000000007
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 386763.19000000006,
-   "generation_mwh": 11082.293999999996
+   "payment_gbp": 386763.25000000006,
+   "generation_mwh": 11082.302999999996
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": -8353.429999999998,
-   "generation_mwh": 790.053
+   "payment_gbp": -8407.83,
+   "generation_mwh": 789.124
   }
  ],
  "contracts": [
@@ -164,7 +164,7 @@
    "unit_name": "Coire Na Cloiche Windfarm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 7751805.75,
+   "cumulative_gbp": 7751748.93,
    "first_settlement": "2019-06-25",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -175,15 +175,15 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-08-26"
+  "data_to": "2026-08-27"
  },
  "outages": {
   "coverage_from": "2016-01-01",
   "windows": []
  },
  "tiles": {
-  "generation_mwh": 471107.355,
-  "rate_gbp_per_mwh": 16.45443584721788,
+  "generation_mwh": 471106.327,
+  "rate_gbp_per_mwh": 16.454351142688008,
   "rate_label": "payment per subsidised MWh"
  }
 }
