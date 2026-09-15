@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Biomass Conversion",
- "hero_gbp": 2000724729.18,
+ "hero_gbp": 2001670920.92,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -159,8 +159,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 73388779.3,
-   "generation_mwh": 1273226.5559999999
+   "payment_gbp": 73388773.91,
+   "generation_mwh": 1273226.459
   },
   {
    "q": "2024-Q3",
@@ -194,8 +194,8 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 69661300.56,
-   "generation_mwh": 1211711.6199999996
+   "payment_gbp": 69661018.35000001,
+   "generation_mwh": 1211706.7139999997
   },
   {
    "q": "2026-Q2",
@@ -204,8 +204,8 @@
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 23356679.330000002,
-   "generation_mwh": 327997.1619999999
+   "payment_gbp": 24303158.67,
+   "generation_mwh": 341288.54099999997
   }
  ],
  "contracts": [
@@ -214,7 +214,7 @@
    "unit_name": "Drax 3rd conversion unit (unit 1)",
    "technology": "Biomass Conversion",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 2000724729.18,
+   "cumulative_gbp": 2001670920.92,
    "first_settlement": "2016-12-21",
    "latest_strike_gbp_mwh": 146.51
   }
@@ -225,7 +225,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-02"
+  "data_to": "2026-09-03"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -1403,8 +1403,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 36973191.579,
-  "rate_gbp_per_mwh": 54.11284889769618,
+  "generation_mwh": 36986477.955,
+  "rate_gbp_per_mwh": 54.118992442463835,
   "rate_label": "payment per subsidised MWh"
  }
 }

@@ -1,26 +1,26 @@
 {
- "generated_at": "2026-09-14T10:58:50.888740+00:00",
+ "generated_at": "2026-09-15T10:26:36.079166+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-09-14T10:54:50.702243+00:00",
+   "retrieved_at": "2026-09-15T10:20:22.025942+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
-   "row_count": 115508
+   "row_count": 115591
   },
   "constraints": {
-   "retrieved_at": "2026-09-14T10:58:49.752037+00:00",
-   "source_date": "2024-05-30",
+   "retrieved_at": "2026-09-15T10:26:35.104139+00:00",
+   "source_date": "2024-05-23",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 37
+   "row_count": 51
   },
   "capacity_market": {
-   "retrieved_at": "2026-09-14T10:55:08.278311+00:00",
+   "retrieved_at": "2026-09-15T10:20:49.805896+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 793
   },
   "bsuos": {
-   "retrieved_at": "2026-09-14T10:55:10.064644+00:00",
+   "retrieved_at": "2026-09-15T10:20:52.481218+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/daily-balancing-costs-balancing-services-use-system",
    "row_count": 161
@@ -61,7 +61,7 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 228896712433.49078
+  "combined_real": 228902732966.32828
  },
  "factoids": [
   {
@@ -154,11 +154,11 @@
   },
   {
    "slug": "teachers",
-   "figure": "238,000",
+   "figure": "237,000",
    "basis": "runrate",
    "figure_label": "schoolteachers",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of UK renewable subsidy pays the salaries of 238,000 experienced schoolteachers, in today's money.",
+   "sentence": "A year of UK renewable subsidy pays the salaries of 237,000 experienced schoolteachers, in today's money.",
    "label": "experienced schoolteachers' annual salaries paid by one year of UK renewable subsidy, in today's money",
    "source_name": "STPCD 2025, Upper Pay Range UPS3, England excluding London (2025-26)",
    "source_url": "https://www.gov.uk/government/publications/school-teachers-pay-and-conditions"

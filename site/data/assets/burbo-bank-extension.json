@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 893811661.95,
+ "hero_gbp": 894235600.77,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -54,7 +54,7 @@
   },
   {
    "q": "2019-Q3",
-   "payment_gbp": 28625444.840000007,
+   "payment_gbp": 28625444.84,
    "generation_mwh": 213374.72900000002
   },
   {
@@ -99,7 +99,7 @@
   },
   {
    "q": "2021-Q4",
-   "payment_gbp": -2281598.9700000007,
+   "payment_gbp": -2281598.97,
    "generation_mwh": 282259.71599999996
   },
   {
@@ -149,8 +149,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 29361379.56000001,
-   "generation_mwh": 190668.41399999996
+   "payment_gbp": 29361379.510000005,
+   "generation_mwh": 190668.41300000003
   },
   {
    "q": "2024-Q3",
@@ -174,8 +174,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 26614424.340000004,
-   "generation_mwh": 171423.38999999998
+   "payment_gbp": 26614502.650000002,
+   "generation_mwh": 171423.985
   },
   {
    "q": "2025-Q4",
@@ -184,18 +184,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 36501050.260000005,
-   "generation_mwh": 276398.2409999999
+   "payment_gbp": 36500803.580000006,
+   "generation_mwh": 276396.45699999994
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 25683161.48000001,
-   "generation_mwh": 187996.00899999996
+   "payment_gbp": 25683042.620000012,
+   "generation_mwh": 187995.20399999994
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 11279931.920000004,
-   "generation_mwh": 97923.33799999997
+   "payment_gbp": 11704158.020000001,
+   "generation_mwh": 101821.37199999999
   }
  ],
  "contracts": [
@@ -204,7 +204,7 @@
    "unit_name": "Burbo Bank Extension Offshore Wind Farm",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 893811661.95,
+   "cumulative_gbp": 894235600.77,
    "first_settlement": "2017-04-11",
    "latest_strike_gbp_mwh": 220.95
   }
@@ -215,7 +215,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-02"
+  "data_to": "2026-09-03"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -313,8 +313,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 8173884.2809999995,
-  "rate_gbp_per_mwh": 109.34968384953089,
+  "generation_mwh": 8177780.32,
+  "rate_gbp_per_mwh": 109.34942805727019,
   "rate_label": "payment per subsidised MWh"
  }
 }
