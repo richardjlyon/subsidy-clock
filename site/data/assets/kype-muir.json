@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 34950618.34,
+ "hero_gbp": 34926523.83,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -50,7 +50,7 @@
   {
    "q": "2021-Q1",
    "payment_gbp": 2424567.5799999996,
-   "generation_mwh": 59119.35300000002
+   "generation_mwh": 59119.353
   },
   {
    "q": "2021-Q2",
@@ -84,8 +84,8 @@
   },
   {
    "q": "2022-Q4",
-   "payment_gbp": -1934059.89,
-   "generation_mwh": 60399.290999999976
+   "payment_gbp": -1934059.8900000001,
+   "generation_mwh": 60399.29099999997
   },
   {
    "q": "2023-Q1",
@@ -125,7 +125,7 @@
   {
    "q": "2024-Q4",
    "payment_gbp": 2241935.51,
-   "generation_mwh": 62497.03899999999
+   "generation_mwh": 62497.039000000004
   },
   {
    "q": "2025-Q1",
@@ -139,8 +139,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 2633699.63,
-   "generation_mwh": 43827.82199999999
+   "payment_gbp": 2633702.0700000003,
+   "generation_mwh": 43827.88999999999
   },
   {
    "q": "2025-Q4",
@@ -149,18 +149,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 2459063.77,
-   "generation_mwh": 69338.41599999998
+   "payment_gbp": 2459063.3499999996,
+   "generation_mwh": 69338.40199999999
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 1838512.420000001,
-   "generation_mwh": 45450.01400000001
+   "payment_gbp": 1838514.130000001,
+   "generation_mwh": 45450.19700000001
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 677520.7299999996,
-   "generation_mwh": 26315.768999999997
+   "payment_gbp": 653422.4899999996,
+   "generation_mwh": 27078.513999999992
   }
  ],
  "contracts": [
@@ -169,7 +169,7 @@
    "unit_name": "Kype Muir Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 34950618.34,
+   "cumulative_gbp": 34926523.83,
    "first_settlement": "2019-03-28",
    "latest_strike_gbp_mwh": 120.28
   }
@@ -180,15 +180,15 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-06"
+  "data_to": "2026-09-07"
  },
  "outages": {
   "coverage_from": "2016-01-01",
   "windows": []
  },
  "tiles": {
-  "generation_mwh": 1468338.42,
-  "rate_gbp_per_mwh": 23.80283582036899,
+  "generation_mwh": 1469101.402,
+  "rate_gbp_per_mwh": 23.774072900925596,
   "rate_label": "payment per subsidised MWh"
  }
 }
