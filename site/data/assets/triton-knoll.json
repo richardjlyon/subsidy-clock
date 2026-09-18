@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 126674301.14,
+ "hero_gbp": 126684973.69,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -69,8 +69,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 27402114.71999999,
-   "generation_mwh": 638289.1630000001
+   "payment_gbp": 27402114.159999993,
+   "generation_mwh": 638289.143
   },
   {
    "q": "2024-Q3",
@@ -94,8 +94,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 22852379.38,
-   "generation_mwh": 532070.7999999997
+   "payment_gbp": 22852369.06,
+   "generation_mwh": 532070.4819999997
   },
   {
    "q": "2025-Q4",
@@ -104,18 +104,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 23028782.830000013,
-   "generation_mwh": 927095.4110000005
+   "payment_gbp": 23028771.960000012,
+   "generation_mwh": 927094.7400000006
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 10523534.899999987,
-   "generation_mwh": 583047.5070000006
+   "payment_gbp": 10523536.789999988,
+   "generation_mwh": 583047.6960000006
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": -689693.7899999978,
-   "generation_mwh": 355441.2880000001
+   "payment_gbp": -679001.3799999981,
+   "generation_mwh": 355159.0710000001
   }
  ],
  "contracts": [
@@ -133,7 +133,7 @@
    "unit_name": "Triton Knoll Offshore Wind Farm Phase 2",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": -3016253.11,
+   "cumulative_gbp": -3011537.37,
    "first_settlement": "2021-07-06",
    "latest_strike_gbp_mwh": 108.2
   },
@@ -142,7 +142,7 @@
    "unit_name": "Triton Knoll Offshore Wind Farm Phase 1",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": -4459296.36,
+   "cumulative_gbp": -4453339.550000001,
    "first_settlement": "2021-05-17",
    "latest_strike_gbp_mwh": 108.2
   }
@@ -221,8 +221,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 12005525.841,
-  "rate_gbp_per_mwh": 10.551333012619518,
+  "generation_mwh": 12005242.804,
+  "rate_gbp_per_mwh": 10.552470762839558,
   "rate_label": "payment per subsidised MWh"
  }
 }

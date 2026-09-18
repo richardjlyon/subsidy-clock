@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 2594182367.62,
+ "hero_gbp": 2594630567.85,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -109,8 +109,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 109291938.40999998,
-   "generation_mwh": 829294.2869999999
+   "payment_gbp": 109291934.85999997,
+   "generation_mwh": 829294.259
   },
   {
    "q": "2024-Q3",
@@ -134,8 +134,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 132293857.69999996,
-   "generation_mwh": 990538.064
+   "payment_gbp": 132293886.10999995,
+   "generation_mwh": 990538.323
   },
   {
    "q": "2025-Q4",
@@ -144,18 +144,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 191407469.0600001,
-   "generation_mwh": 1622341.0990000009
+   "payment_gbp": 191407272.9300001,
+   "generation_mwh": 1622339.3290000008
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 86788586.15999995,
-   "generation_mwh": 773529.286
+   "payment_gbp": 86788554.31999995,
+   "generation_mwh": 773528.73
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 63521180.53999998,
-   "generation_mwh": 637075.3959999998
+   "payment_gbp": 63969583.87999998,
+   "generation_mwh": 643224.5999999997
   }
  ],
  "contracts": [
@@ -173,7 +173,7 @@
    "unit_name": "Hornsea Offshore Wind Farm Phase 2",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 861554354.62,
+   "cumulative_gbp": 862002554.85,
    "first_settlement": "2020-03-31",
    "latest_strike_gbp_mwh": 206.06
   },
@@ -193,7 +193,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-07"
+  "data_to": "2026-09-08"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -573,8 +573,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 30443631.206,
-  "rate_gbp_per_mwh": 85.2126459575796,
+  "generation_mwh": 30449778.314999998,
+  "rate_gbp_per_mwh": 85.21016281329864,
   "rate_label": "payment per subsidised MWh"
  }
 }

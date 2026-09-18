@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 1579460451.49,
+ "hero_gbp": 1579694596.06,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -174,8 +174,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 49184163.53999998,
-   "generation_mwh": 320644.53100000013
+   "payment_gbp": 49184162.62999998,
+   "generation_mwh": 320644.52400000015
   },
   {
    "q": "2025-Q4",
@@ -184,18 +184,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 67450816.57000005,
-   "generation_mwh": 505644.528
+   "payment_gbp": 67450734.60000005,
+   "generation_mwh": 505643.871
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 47506192.77,
-   "generation_mwh": 352431.8289999999
+   "payment_gbp": 47506232.42000001,
+   "generation_mwh": 352432.16299999994
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 22546541.45,
-   "generation_mwh": 198884.33299999998
+   "payment_gbp": 22780729.25,
+   "generation_mwh": 201724.79099999997
   }
  ],
  "contracts": [
@@ -204,7 +204,7 @@
    "unit_name": "Dudgeon Phase 2",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 817795488.16,
+   "cumulative_gbp": 818029286.62,
    "first_settlement": "2017-08-02",
    "latest_strike_gbp_mwh": 220.95
   },
@@ -222,7 +222,7 @@
    "unit_name": "Dudgeon Phase 1",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 364971134.77,
+   "cumulative_gbp": 364971480.88,
    "first_settlement": "2017-04-27",
    "latest_strike_gbp_mwh": 220.95
   }
@@ -233,7 +233,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-07"
+  "data_to": "2026-09-08"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -547,8 +547,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 14692545.152,
-  "rate_gbp_per_mwh": 107.50080637152224,
+  "generation_mwh": 14695385.28,
+  "rate_gbp_per_mwh": 107.49596325384672,
   "rate_label": "payment per subsidised MWh"
  }
 }

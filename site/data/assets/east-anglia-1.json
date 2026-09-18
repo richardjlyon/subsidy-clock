@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 1088300193.4,
+ "hero_gbp": 1088273159.26,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -99,8 +99,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 43997663.92000001,
-   "generation_mwh": 413685.23400000035
+   "payment_gbp": 43997662.88000001,
+   "generation_mwh": 413685.2220000003
   },
   {
    "q": "2024-Q3",
@@ -124,8 +124,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 65677526.13999997,
-   "generation_mwh": 609821.475
+   "payment_gbp": 65677541.41999997,
+   "generation_mwh": 609821.6369999999
   },
   {
    "q": "2025-Q4",
@@ -134,18 +134,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 75902237.38999996,
-   "generation_mwh": 839465.1999999988
+   "payment_gbp": 75902212.08999996,
+   "generation_mwh": 839464.9009999988
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 54876781.50999996,
-   "generation_mwh": 609733.3099999999
+   "payment_gbp": 54876788.18999997,
+   "generation_mwh": 609733.3949999999
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 22819197.939999986,
-   "generation_mwh": 361636.13399999985
+   "payment_gbp": 22792168.179999985,
+   "generation_mwh": 361289.8429999999
   }
  ],
  "contracts": [
@@ -154,7 +154,7 @@
    "unit_name": "EA 1, Phase 2",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 429798621.62,
+   "cumulative_gbp": 429798623.81,
    "first_settlement": "2020-03-31",
    "latest_strike_gbp_mwh": 176.12
   },
@@ -172,7 +172,7 @@
    "unit_name": "EA 1, Phase 1",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 297352276.95,
+   "cumulative_gbp": 297325240.62,
    "first_settlement": "2019-10-30",
    "latest_strike_gbp_mwh": 176.12
   }
@@ -329,8 +329,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 17684103.237,
-  "rate_gbp_per_mwh": 61.54115811329224,
+  "generation_mwh": 17683756.882,
+  "rate_gbp_per_mwh": 61.54083470621195,
   "rate_label": "payment per subsidised MWh"
  }
 }
