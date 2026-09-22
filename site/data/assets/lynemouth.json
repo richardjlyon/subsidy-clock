@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Biomass Conversion",
- "hero_gbp": 980627596.86,
+ "hero_gbp": 981284454.55,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -129,8 +129,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 30203118.340000015,
-   "generation_mwh": 468265.39700000006
+   "payment_gbp": 30203113.930000015,
+   "generation_mwh": 468265.32
   },
   {
    "q": "2024-Q3",
@@ -154,8 +154,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 44888406.07,
-   "generation_mwh": 682505.7840000002
+   "payment_gbp": 44888539.25,
+   "generation_mwh": 682507.8040000001
   },
   {
    "q": "2025-Q4",
@@ -164,18 +164,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 45382973.61,
-   "generation_mwh": 703393.92
+   "payment_gbp": 45382897.74,
+   "generation_mwh": 703392.748
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 56408403.97999998,
-   "generation_mwh": 719311.4349999999
+   "payment_gbp": 56408309.069999985,
+   "generation_mwh": 719310.224
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 42497077.94,
-   "generation_mwh": 541916.3180000002
+   "payment_gbp": 43153977.63999999,
+   "generation_mwh": 550293.0010000002
   }
  ],
  "contracts": [
@@ -184,7 +184,7 @@
    "unit_name": "Lynemouth Power Station",
    "technology": "Biomass Conversion",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 980627596.86,
+   "cumulative_gbp": 981284454.55,
    "first_settlement": "2018-06-23",
    "latest_strike_gbp_mwh": 153.72
   }
@@ -195,7 +195,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-09"
+  "data_to": "2026-09-10"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -5291,8 +5291,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 16861380.544,
-  "rate_gbp_per_mwh": 58.15820325631339,
+  "generation_mwh": 16869756.787,
+  "rate_gbp_per_mwh": 58.168263297440504,
   "rate_label": "payment per subsidised MWh"
  }
 }
