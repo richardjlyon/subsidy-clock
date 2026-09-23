@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 13786084.03,
+ "hero_gbp": 13777202.54,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -114,8 +114,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 1131997.3000000003,
-   "generation_mwh": 20333.521
+   "payment_gbp": 1131997.2700000005,
+   "generation_mwh": 20333.52
   },
   {
    "q": "2024-Q3",
@@ -149,18 +149,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 837397.7899999998,
-   "generation_mwh": 26802.26200000001
+   "payment_gbp": 837392.6499999999,
+   "generation_mwh": 26802.125000000007
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 569399.13,
-   "generation_mwh": 15210.742999999997
+   "payment_gbp": 569398.3200000001,
+   "generation_mwh": 15210.717999999997
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 130031.32999999997,
-   "generation_mwh": 10792.973
+   "payment_gbp": 121155.81999999999,
+   "generation_mwh": 11306.796000000002
   }
  ],
  "contracts": [
@@ -169,7 +169,7 @@
    "unit_name": "Bad A Cheo Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 13786084.03,
+   "cumulative_gbp": 13777202.54,
    "first_settlement": "2019-03-31",
    "latest_strike_gbp_mwh": 120.46
   }
@@ -180,7 +180,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-10"
+  "data_to": "2026-09-13"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -206,8 +206,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 487176.24999999994,
-  "rate_gbp_per_mwh": 28.297939462360905,
+  "generation_mwh": 487689.91,
+  "rate_gbp_per_mwh": 28.249923276042352,
   "rate_label": "payment per subsidised MWh"
  }
 }

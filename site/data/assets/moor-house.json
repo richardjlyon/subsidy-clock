@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 6435737.01,
+ "hero_gbp": 6426536.19,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -49,8 +49,8 @@
   },
   {
    "q": "2020-Q2",
-   "payment_gbp": 563207.1699999999,
-   "generation_mwh": 7624.191999999998
+   "payment_gbp": 563207.17,
+   "generation_mwh": 7624.191999999999
   },
   {
    "q": "2020-Q3",
@@ -129,7 +129,7 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 419391.6999999999,
+   "payment_gbp": 419391.7099999999,
    "generation_mwh": 7080.150999999997
   },
   {
@@ -154,8 +154,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 402814.9899999998,
-   "generation_mwh": 6646.033000000002
+   "payment_gbp": 402815.45999999985,
+   "generation_mwh": 6646.040000000002
   },
   {
    "q": "2025-Q4",
@@ -164,18 +164,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 428584.63,
-   "generation_mwh": 11023.348000000002
+   "payment_gbp": 428589.21,
+   "generation_mwh": 11023.467
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 329437.1900000001,
-   "generation_mwh": 7873.171000000001
+   "payment_gbp": 329437.2300000001,
+   "generation_mwh": 7873.168000000001
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 87001.96000000004,
-   "generation_mwh": 4968.840000000001
+   "payment_gbp": 77796.04000000004,
+   "generation_mwh": 5361.713000000001
   }
  ],
  "contracts": [
@@ -184,7 +184,7 @@
    "unit_name": "Moor House Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 6435737.01,
+   "cumulative_gbp": 6426536.19,
    "first_settlement": "2018-04-03",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -195,11 +195,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-10"
+  "data_to": "2026-09-13"
  },
  "tiles": {
-  "generation_mwh": 285220.618,
-  "rate_gbp_per_mwh": 22.564066564079877,
+  "generation_mwh": 285613.61400000006,
+  "rate_gbp_per_mwh": 22.50080484608832,
   "rate_label": "payment per subsidised MWh"
  }
 }
