@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 10368195.21,
+ "hero_gbp": 10351859.84,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -50,7 +50,7 @@
   {
    "q": "2021-Q1",
    "payment_gbp": 1113215.7100000002,
-   "generation_mwh": 34487.19499999999
+   "generation_mwh": 34487.19500000001
   },
   {
    "q": "2021-Q2",
@@ -85,7 +85,7 @@
   {
    "q": "2022-Q4",
    "payment_gbp": -1190228.26,
-   "generation_mwh": 35929.348000000005
+   "generation_mwh": 35929.348
   },
   {
    "q": "2023-Q1",
@@ -124,7 +124,7 @@
   },
   {
    "q": "2024-Q4",
-   "payment_gbp": 909094.0500000002,
+   "payment_gbp": 909094.05,
    "generation_mwh": 26784.77
   },
   {
@@ -149,18 +149,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 846281.0400000004,
-   "generation_mwh": 27172.544
+   "payment_gbp": 846266.7300000004,
+   "generation_mwh": 27172.145
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 893421.4800000002,
-   "generation_mwh": 27487.065999999995
+   "payment_gbp": 893421.8700000003,
+   "generation_mwh": 27487.937999999995
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": -5497.959999999963,
-   "generation_mwh": 11674.044000000002
+   "payment_gbp": -21819.409999999953,
+   "generation_mwh": 11975.894000000002
   }
  ],
  "contracts": [
@@ -169,7 +169,7 @@
    "unit_name": "Mynydd Y Gwair Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 10368195.21,
+   "cumulative_gbp": 10351859.84,
    "first_settlement": "2019-03-20",
    "latest_strike_gbp_mwh": 118.08
   }
@@ -180,11 +180,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-13"
+  "data_to": "2026-09-14"
  },
  "tiles": {
-  "generation_mwh": 731492.3879999999,
-  "rate_gbp_per_mwh": 14.174030215609028,
+  "generation_mwh": 731794.711,
+  "rate_gbp_per_mwh": 14.145852223848609,
   "rate_label": "payment per subsidised MWh"
  }
 }
