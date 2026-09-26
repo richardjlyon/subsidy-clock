@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 1435385767.76,
+ "hero_gbp": 1435622200.91,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -144,8 +144,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 56473463.47,
-   "generation_mwh": 410560.7820000001
+   "payment_gbp": 56473709.17,
+   "generation_mwh": 410563.16500000004
   },
   {
    "q": "2025-Q4",
@@ -159,13 +159,13 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 54149249.230000004,
-   "generation_mwh": 459741.155
+   "payment_gbp": 54149243.510000005,
+   "generation_mwh": 459741.098
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 28405360.12999999,
-   "generation_mwh": 318522.3059999999
+   "payment_gbp": 28641553.299999993,
+   "generation_mwh": 324855.6669999999
   }
  ],
  "contracts": [
@@ -174,7 +174,7 @@
    "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 2)",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 793535753.21,
+   "cumulative_gbp": 793682430.07,
    "first_settlement": "2019-04-28",
    "latest_strike_gbp_mwh": 205.7
   },
@@ -183,7 +183,7 @@
    "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 1)",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 641850014.55,
+   "cumulative_gbp": 641939770.84,
    "first_settlement": "2018-11-06",
    "latest_strike_gbp_mwh": 205.7
   }
@@ -194,7 +194,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-15"
+  "data_to": "2026-09-16"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -616,8 +616,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 15155981.944,
-  "rate_gbp_per_mwh": 94.70754010288626,
+  "generation_mwh": 15162317.631,
+  "rate_gbp_per_mwh": 94.68355932438784,
   "rate_label": "payment per subsidised MWh"
  }
 }

@@ -1,29 +1,29 @@
 {
- "generated_at": "2026-09-25T10:31:54.532193+00:00",
+ "generated_at": "2026-09-26T10:12:04.416638+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-09-25T10:26:55.725961+00:00",
+   "retrieved_at": "2026-09-26T10:06:51.595001+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
-   "row_count": 116601
+   "row_count": 116686
   },
   "constraints": {
-   "retrieved_at": "2026-09-25T10:31:53.307622+00:00",
-   "source_date": "2024-03-14",
+   "retrieved_at": "2026-09-26T10:12:03.199327+00:00",
+   "source_date": "2024-03-07",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 32
+   "row_count": 28
   },
   "capacity_market": {
-   "retrieved_at": "2026-09-25T10:27:13.768153+00:00",
+   "retrieved_at": "2026-09-26T10:07:11.434468+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 793
   },
   "bsuos": {
-   "retrieved_at": "2026-09-25T10:27:15.597561+00:00",
+   "retrieved_at": "2026-09-26T10:07:14.341133+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/daily-balancing-costs-balancing-services-use-system",
-   "row_count": 168
+   "row_count": 175
   }
  },
  "context": {
@@ -61,16 +61,16 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 229027247450.0427
+  "combined_real": 229163179378.56805
  },
  "factoids": [
   {
    "slug": "nurses",
-   "figure": "309,000",
+   "figure": "308,000",
    "basis": "runrate",
    "figure_label": "NHS nurses",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of direct UK renewable subsidy pays the salaries of 309,000 NHS nurses, in today's money.",
+   "sentence": "A year of direct UK renewable subsidy pays the salaries of 308,000 NHS nurses, in today's money.",
    "label": "NHS nurses' annual salaries paid by one year of direct renewable subsidy, in today's money",
    "source_name": "NHS Employers, Agenda for Change pay scales 2026/27",
    "source_url": "https://www.nhsemployers.org/articles/pay-scales-202627"
@@ -165,11 +165,11 @@
   },
   {
    "slug": "police",
-   "figure": "240,000",
+   "figure": "239,000",
    "basis": "runrate",
    "figure_label": "police officers",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of UK renewable subsidy pays the salaries of 240,000 police officers, in today's money.",
+   "sentence": "A year of UK renewable subsidy pays the salaries of 239,000 police officers, in today's money.",
    "label": "police officers' annual salaries paid by one year of UK renewable subsidy, in today's money",
    "source_name": "Police Federation of England & Wales, constable pay scales (top of scale, from 1 September 2025)",
    "source_url": "https://polfed.org/resources/pay-scales/constable-pay-scales/"
