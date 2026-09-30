@@ -189,6 +189,18 @@ def cmd_build_cards(args: argparse.Namespace) -> int:
     sharecards.write_manifest(facts, site / "share", asof, versions)
     if versions.get("headline"):
         sharecards.stamp_index_og(site / "index.html", versions["headline"])
+    # Every other page carrying a share image needs the same cache-buster, or
+    # the platforms keep serving whatever they cached the first time a link was
+    # shared. The explainers in particular were unstamped, so a corrected
+    # figure would never have reached anyone re-sharing them.
+    n_stamped = 0
+    for page in sorted(site.rglob("*.html")):
+        if page.name == "index.html" and page.parent == site:
+            continue          # already done, with its strict one-tag check
+        if page.parent.name == "s":
+            continue          # stubs are written with the token inline
+        n_stamped += sharecards.stamp_og_images(page, versions)
     n_stubs = sum(1 for f in facts if f.get("stub"))
-    print(f"[ok] {len(facts)} share cards and {n_stubs} share stubs written (as of {asof})")
+    print(f"[ok] {len(facts)} share cards and {n_stubs} share stubs written "
+          f"({n_stamped} og:image tags cache-busted, as of {asof})")
     return 0

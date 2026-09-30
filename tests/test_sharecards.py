@@ -191,6 +191,47 @@ def test_stamp_index_og_requires_one_tag(tmp_path):
         sharecards.stamp_index_og(index, "abc1234567")
 
 
+def test_stamp_og_images_busts_any_share_image(tmp_path):
+    # An explainer page, not the homepage. These were shipped unstamped, so a
+    # corrected figure never reached anyone re-sharing the link: the platforms
+    # kept serving the image they cached the first time.
+    page = tmp_path / "bsuos.html"
+    page.write_text(
+        '<meta property="og:image" '
+        'content="https://subsidyclock.co.uk/share/bsuos.png">\n'
+        '<meta name="twitter:image" '
+        'content="https://subsidyclock.co.uk/share/bsuos.png">\n')
+    n = sharecards.stamp_og_images(page, {"bsuos": "feedface01"})
+    text = page.read_text()
+    assert n == 2
+    assert text.count("bsuos.png?v=feedface01") == 2
+
+
+def test_stamp_og_images_leaves_unknown_slugs_alone(tmp_path):
+    # An empty token would be worse than none: it changes the URL without
+    # tracking the content, so the cache is busted once and then sticks.
+    page = tmp_path / "odd.html"
+    page.write_text(
+        '<meta property="og:image" '
+        'content="https://subsidyclock.co.uk/share/not-a-card.png">\n')
+    n = sharecards.stamp_og_images(page, {"bsuos": "feedface01"})
+    assert n == 0
+    assert "not-a-card.png\"" in page.read_text()
+
+
+def test_stamp_og_images_is_idempotent(tmp_path):
+    page = tmp_path / "bsuos.html"
+    page.write_text(
+        '<meta property="og:image" '
+        'content="https://subsidyclock.co.uk/share/bsuos.png?v=0000000000">\n')
+    sharecards.stamp_og_images(page, {"bsuos": "feedface01"})
+    sharecards.stamp_og_images(page, {"bsuos": "feedface01"})
+    text = page.read_text()
+    assert text.count("?v=") == 1
+    assert "bsuos.png?v=feedface01" in text
+    assert "0000000000" not in text
+
+
 def _png_size(path):
     data = path.read_bytes()
     assert data[:8] == b"\x89PNG\r\n\x1a\n"

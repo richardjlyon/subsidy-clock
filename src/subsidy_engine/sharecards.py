@@ -327,21 +327,48 @@ def write_stubs(facts: list[dict], out_dir: Path | str, asof: str,
         (out / f"{fact['slug']}.html").write_text(html)
 
 
+# Any og:image/twitter:image pointing at one of our rendered share PNGs.
+_OG_SHARE_IMAGE = re.compile(
+    r'(<meta (?:property|name)="(?:og:image|twitter:image)" content=")'
+    rf'{re.escape(SITE_URL)}/share/([A-Za-z0-9._-]+)\.png(?:\?[^"]*)?(">)'
+)
+
+
+def stamp_og_images(page_path: Path | str, versions: dict[str, str]) -> int:
+    """Rewrite every og:image/twitter:image on a page with the content-hash ?v=
+    token for the PNG it points at, and return how many tags were stamped.
+
+    Social platforms cache preview images by URL. Without the token a card whose
+    pixels changed — a new total, a corrected figure, a restyle — keeps being
+    served from their cache at the old content, potentially for good. Every page
+    carrying a share image needs this, not just the homepage: the explainers
+    were left unstamped and would have gone on showing pre-correction figures
+    to anyone sharing them. Idempotent: an existing query string is replaced.
+    Unknown slugs are left alone rather than stamped with an empty token."""
+    page = Path(page_path)
+    stamped = 0
+
+    def sub(m: re.Match) -> str:
+        nonlocal stamped
+        slug = m.group(2)
+        version = versions.get(slug)
+        if not version:
+            return m.group(0)
+        stamped += 1
+        return f"{m.group(1)}{SITE_URL}/share/{slug}.png?v={version}{m.group(3)}"
+
+    html = _OG_SHARE_IMAGE.sub(sub, page.read_text())
+    page.write_text(html)
+    return stamped
+
+
 def stamp_index_og(index_path: Path | str, version: str) -> None:
-    """Rewrite the homepage og:image with a content-hash ?v= query string, the
-    same token the stubs use, so social-platform preview caches refetch
-    headline.png whenever its pixels change (a new total, a restyle) rather than
-    serving a stale image. Idempotent: any existing query string is replaced."""
-    index = Path(index_path)
-    base = f"{SITE_URL}/share/headline.png"
-    pattern = re.compile(
-        rf'(<meta property="og:image" content="){re.escape(base)}(?:\?[^"]*)?(">)'
-    )
-    html, n = pattern.subn(rf'\g<1>{base}?v={version}\g<2>', index.read_text())
+    """Stamp the homepage's headline og:image. Thin wrapper over
+    stamp_og_images that keeps the homepage's strict one-tag guarantee."""
+    n = stamp_og_images(index_path, {"headline": version})
     if n != 1:
         raise ValueError(
-            f"expected exactly one og:image headline tag in {index}, found {n}")
-    index.write_text(html)
+            f"expected exactly one og:image headline tag in {index_path}, found {n}")
 
 
 def render(facts: list[dict], asof: str, out_dir: Path | str) -> None:
