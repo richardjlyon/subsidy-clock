@@ -46,7 +46,7 @@
       <p class="brand"><a href="/"><span class="brand-tick" aria-hidden="true"></span>The Subsidy Clock</a></p>
       <p class="brand-tag">What UK energy subsidies cost</p>
     </div>
-    <nav><a href="/">← Back to the clock</a><a href="/data">Data</a><a href="/map">Map</a><a href="/share">Share</a><a href="/about">About</a></nav>
+    <nav><a href="/">← Back to the clock</a><a href="/data">Data</a><a href="/map">Map</a><a href="/corrections">Corrections</a><a href="/share">Share</a><a href="/about">About</a></nav>
   </div>
 </header>
 
@@ -88,10 +88,10 @@
   <p class="src-quote" id="fit-source"></p>
 
   <h2 id="perspectives">Perspectives: renewables, and all low-carbon</h2>
-  <p>The dashboard's headline counts <strong>renewable generators</strong> — wind, solar, hydro and the biomass plants (Drax and the like) that hold renewable contracts and count towards the UK's renewable targets. The all-low-carbon view adds the one kind of low-carbon generation that is not renewable: nuclear. Hinkley Point C has not yet generated, so its CfD payments stand at <span class="num" id="persp-delta"></span>: the all-low-carbon total (<span class="num" id="persp-lowcarbon"></span>) is for now identical to the renewables headline (<span class="num" id="persp-renewables"></span>), and the gap will open only once Hinkley begins to pay out. Indirect costs (network, balancing, carbon pricing, capacity) are tracked separately and always marked estimated; they are never folded into the headline.</p>
+  <p>The dashboard's headline counts <strong>renewable generators</strong> — wind, solar, hydro and the biomass plants (Drax and the like) that hold renewable contracts and count towards the UK's renewable targets. The all-low-carbon view adds the one kind of low-carbon generation that is not renewable: nuclear. Hinkley Point C has not yet generated, so its CfD payments stand at <span class="num" id="persp-delta"></span>: the all-low-carbon total (<span class="num" id="persp-lowcarbon"></span>) is for now identical to the renewables headline (<span class="num" id="persp-renewables"></span>), and the gap will open only once Hinkley begins to pay out. Indirect costs (network, balancing, carbon pricing, capacity) are tracked separately and always marked estimated. The dashboard's <em>Include indirect costs</em> switch controls whether they are added to the headline counter; it starts on, so the figure you first see is the combined total, and the counter's own caption says so. Switch it off and the counter falls back to the direct, measured payments alone.</p>
 
   <h2 id="indirect">Indirect subsidies (estimated)</h2>
-  <p>Beyond the direct schemes above, renewable generation imposes costs that reach bill-payers and taxpayers through network charges, balancing costs, carbon pricing and the capacity levy. The dashboard shows these as ‘the indirect bill’, always marked <strong>estimated</strong>: each component’s <em>amount</em> is measured from an official source — recent years are verified against primary sources, while some earlier years (pre-2013 TNUoS, the 2006–2010 and 2014–2016 BSUoS years, and pre-2019 ETS) rest on the Renewable Energy Foundation’s published tabulation pending primary confirmation, as noted in each component’s source notes — and the share <em>attributable</em> to renewables is a stated judgement. The attribution rule for each component is quoted verbatim below.</p>
+  <p>Beyond the direct schemes above, renewable generation imposes costs that reach bill-payers and taxpayers through network charges, balancing costs, carbon pricing and the capacity levy. The dashboard shows these as ‘the indirect bill’, always marked <strong>estimated</strong>: each component’s <em>amount</em> is measured from an official source — recent years are verified against primary sources, while some earlier years (pre-2013 TNUoS, the 2006–2010 and 2014–2016 BSUoS years, and pre-2019 ETS) rest on the Renewable Energy Foundation’s published tabulation pending primary confirmation, as noted in each component’s source notes — and the share <em>attributable</em> to renewables is a stated judgement. The attribution rule for each component is quoted verbatim below. From 2017 onwards the BSUoS series is measured from NESO’s settled data; the hand-maintained years end at 2016 because the settled data begins on 1 April 2016 and so covers no complete calendar year before 2017.</p>
 
   <h3>Capacity Market</h3>
   <p class="scheme-meta" id="im-capacity_market"></p>
@@ -128,6 +128,7 @@
   <blockquote id="attr-bsuos"></blockquote>
   <p id="raw-bsuos"></p>
   <p>Conservative direction: as for TNUoS, only the uplift above the inflation-indexed baseline is attributed, floored at zero.</p>
+  <p><strong>Corrected 30 September 2026.</strong> This series previously came from NESO’s <em>Daily Balancing Costs</em> dataset, which breaks down balancing-mechanism and ancillary spend. That is not the same quantity as the balancing cost recovered from bill-payers through BSUoS: it ran 23–39% below the outturn in NESO’s own <em>Annual Balancing Costs Report</em> in every year from 2018-19. Because the pre-2017 history and the baseline are both on the gross BSUoS basis, the old series joined two different definitions mid-run. The series now reads NESO’s settled BSUoS charge data — the half-hourly charge up to 31 March 2023, and actual BSUoS cost thereafter, because the April 2023 fixed-tariff reform broke the identity between what users are charged and what balancing costs. Full detail, and the effect on the totals, is on the <a href="corrections.html">corrections page</a>.</p>
 
   <h3>The double-counting guard</h3>
   <p>Constraint payments to wind farms are counted in the <strong>direct</strong> layer (‘paid to switch off’). Those same payments are recovered from bill-payers through BSUoS, so the BSUoS series is <strong>netted of direct constraint payments before attribution</strong> — the same pound is never counted twice across the direct and indirect layers.</p>
@@ -277,11 +278,15 @@
 
   <h2 id="freshness">Data freshness</h2>
   <p class="scheme-meta" id="freshness-detail"></p>
-  <p>Each scheme on the dashboard carries a badge showing its update cadence and the latest date its data covers. Every source publishes in arrears — LCCC releases daily CfD data weekly, NESO publishes daily balancing costs with a few days’ lag, and Capacity Market monthly data follows the settlement calendar — so a publication lag is normal and is not flagged. A scheme is marked <strong>stale</strong> only when its latest data is older than that scheme’s normal publication lag: 21 days for CfD, 3 days for constraints, 7 days for BSUoS, 75 days after the end of the latest data month for the Capacity Market, and 2 years for RO and FIT annual reports.</p>
+  <p>Each scheme on the dashboard carries a badge showing its update cadence and the latest date its data covers. Every source publishes in arrears — LCCC releases daily CfD data weekly, NESO publishes settled BSUoS data roughly three weeks behind the days it covers, and Capacity Market monthly data follows the settlement calendar — so a publication lag is normal and is not flagged. A scheme is marked <strong>stale</strong> only when its latest data is older than that scheme’s normal publication lag: 21 days for CfD, 3 days for constraints, 30 days for BSUoS, 75 days after the end of the latest data month for the Capacity Market, and 2 years for RO and FIT annual reports.</p>
+  <p class="caveat">The BSUoS threshold was 7 days until 30 September 2026, when the series moved to NESO’s settled BSUoS data. That source is slower than the daily extract it replaced — about three weeks behind rather than one — because settlement runs take time to finalise. The Clock accepts roughly twelve days less timeliness for a figure that measures the right quantity; see <a href="corrections.html">corrections</a>.</p>
 
   <h2>Restatements</h2>
   <p>Source datasets are revised by their publishers. When a source revises history, the change is logged as a restatement; figures are never silently overwritten.</p>
-  <p>That log covers the sources this site fetches automatically. Several series are
+  <p>That log covers the sources this site fetches automatically. It distinguishes
+  a publisher restating its own history from a change of basis made here: the
+  BSUoS entries dated 30 September 2026 are the latter, and are labelled as ours
+  with the cause named. Several series are
   maintained by hand from annual publications, and those are revised too. On
   1 September 2026 the electricity spending denominator was moved to the
   <a href="https://www.gov.uk/government/statistics/energy-chapter-1-digest-of-united-kingdom-energy-statistics-dukes">DUKES 2026</a>
@@ -325,7 +330,7 @@
 </main>
 <footer class="footer">
   <div class="container">
-    <p class="footer-links">Made by <a href="https://theenergytrap.org">Richard Lyon</a> · <a href="/data">Data</a> · <a href="/methodology">Methodology &amp; sources</a> · <a href="/corrections">Corrections</a> · <a href="/about">About this site</a></p>
+    <p class="footer-links">Made by <a href="https://richardlyon.net/">Richard Lyon</a> · <a href="/data">Data</a> · <a href="/methodology">Methodology &amp; sources</a> · <a href="/corrections">Corrections</a> · <a href="/about">About this site</a></p>
     <p class="footer-small">Every figure traces to an official source.</p>
   </div>
 </footer>
@@ -472,7 +477,7 @@
     ccl: 'HMRC Environmental Taxes Bulletin',
     ets: 'BEIS/DESNZ Annual Report and Accounts Trust Statements; EC UK auction platform reports',
     tnuos: 'NESO Final TNUoS Tariffs publications',
-    bsuos: 'NESO daily balancing costs (BSUoS); NAO Electricity Balancing Services'
+    bsuos: 'NESO settled BSUoS charge data; NAO Electricity Balancing Services'
   };
   ['capacity_market', 'ccl', 'ets', 'tnuos', 'bsuos'].forEach(function (id) {
     var s = byId[id];

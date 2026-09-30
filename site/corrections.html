@@ -80,14 +80,24 @@
   <h2>The log</h2>
 
   <table class="data-table" id="corrections-table" hidden>
-    <thead><tr><th>Date</th><th>Figure</th><th>What was shown</th><th>What it now shows</th><th>Cause</th><th>Found by</th></tr></thead>
+    <thead><tr><th>Date</th><th>Figure</th><th class="num-col">Was</th><th class="num-col">Now</th><th>Note</th><th>Found by</th></tr></thead>
     <tbody></tbody>
   </table>
   <p id="corrections-empty">No corrections yet. The invitation stands.</p>
+
+  <!-- The reasoning lives here, not in a table cell. An explanation of a real
+       error runs to several hundred words; prose needs a 55-75 character
+       measure, which no column in a six-column table can give it. Notes are
+       addressable (/corrections#note-1) so a specific correction can be cited,
+       and nothing is hidden behind a click: the page prints whole. -->
+  <section class="corr-notes" id="corrections-notes" hidden>
+    <h3>Notes</h3>
+    <div id="corrections-notes-body"></div>
+  </section>
 </main>
 <footer class="footer">
   <div class="container">
-    <p class="footer-links">Made by <a href="https://theenergytrap.org">Richard Lyon</a> · <a href="/data">Data</a> · <a href="/methodology">Methodology &amp; sources</a> · <a href="/corrections">Corrections</a> · <a href="/about">About this site</a></p>
+    <p class="footer-links">Made by <a href="https://richardlyon.net/">Richard Lyon</a> · <a href="/data">Data</a> · <a href="/methodology">Methodology &amp; sources</a> · <a href="/corrections">Corrections</a> · <a href="/about">About this site</a></p>
     <p class="footer-small">Every figure traces to an official source.</p>
   </div>
 </footer>
@@ -113,6 +123,18 @@
     return new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB',
       { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
   }
+  function fmtShort(iso) {
+    return new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB',
+      { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+  }
+  // The table is an index: it carries the size of the change, and the note
+  // directly beneath states each figure in full with its basis. Keeping
+  // "cumulative"/"run-rate" in the cell cost ~80px a column inside a 760px
+  // prose measure and squeezed the figure name into three wrapped lines.
+  function headline(s) {
+    var m = String(s).match(/^\s*£[\d,]+(?:\.\d+)?\s*(?:bn|m|k)?/i);
+    return m ? m[0].trim() : String(s);
+  }
   fetch('data/corrections.json')
     .then(function (r) { if (!r.ok) throw new Error('' + r.status); return r.json(); })
     .then(function (data) {
@@ -120,15 +142,40 @@
       if (!entries.length) return; // the static empty state stands
       entries.sort(function (a, b) { return a.date < b.date ? 1 : -1; }); // newest first
       document.querySelector('#corrections-table tbody').innerHTML =
-        entries.map(function (c) {
-          return '<tr><td class="num">' + esc(fmtDate(c.date)) + '</td>' +
-            '<td>' + esc(c.figure_label) + '</td>' +
-            '<td class="num-col money">' + esc(c.was) + '</td>' +
-            '<td class="num-col money">' + esc(c.now) + '</td>' +
-            '<td>' + esc(c.cause) + '</td>' +
-            '<td>' + esc(c.credit || '—') + '</td></tr>';
+        entries.map(function (c, i) {
+          var n = i + 1;
+          // A correction may restate a FIGURE or a DESCRIPTION. Money cells get
+          // tabular alignment; prose cells wrap instead of stretching the row.
+          var wasTxt = headline(c.was), nowTxt = headline(c.now);
+          var isMoney = /^[−-]?£/.test(wasTxt) || /^[−-]?£/.test(nowTxt);
+          var cls = isMoney ? 'corr-money' : 'corr-prose';
+          return '<tr><td class="num corr-date">' + esc(fmtShort(c.date)) + '</td>' +
+            '<td class="corr-fig">' + esc(c.figure_label) + '</td>' +
+            '<td class="' + cls + ' corr-was-val">' + esc(wasTxt) + '</td>' +
+            '<td class="' + cls + ' corr-now-val">' + esc(nowTxt) + '</td>' +
+            '<td class="corr-note-cell"><a class="corr-ref" href="#note-' + n + '">note ' + n + '</a></td>' +
+            '<td class="cell-dim corr-found">' + esc(c.credit || '—') + '</td></tr>';
+        }).join('');
+      document.getElementById('corrections-notes-body').innerHTML =
+        entries.map(function (c, i) {
+          var n = i + 1;
+          // cause is a list of paragraphs; tolerate a bare string from an
+          // older data file rather than rendering "undefined"
+          var paras = Array.isArray(c.cause) ? c.cause : [c.cause];
+          return '<div class="corr-note" id="note-' + n + '">' +
+            '<div class="corr-note-n">' + n + '</div>' +
+            '<div class="corr-note-body">' +
+            '<p class="corr-note-head">' + esc(c.figure_label) +
+            '<span class="corr-note-date">' + esc(fmtDate(c.date)) + '</span></p>' +
+            '<div class="corr-note-change">' +
+            '<span class="corr-label">was</span><span class="corr-was-val">' + esc(c.was) + '</span>' +
+            '<span class="corr-label">now</span><span class="corr-now-val">' + esc(c.now) + '</span>' +
+            '</div>' +
+            paras.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') +
+            '</div></div>';
         }).join('');
       document.getElementById('corrections-table').hidden = false;
+      document.getElementById('corrections-notes').hidden = false;
       document.getElementById('corrections-empty').hidden = true;
     })
     .catch(function () {}); // page never breaks: the empty state is the fallback

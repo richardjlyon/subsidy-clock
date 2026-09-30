@@ -17,3 +17,10 @@ __pycache__/
 
 .mcp.json
 .playwright-mcp/
+
+# private review/analysis work - technical notes written for third parties,
+# internal findings, roast/factcheck jobs. Never published with the site.
+/review/
+
+# throwaway design variants used to choose a layout
+/sketches/

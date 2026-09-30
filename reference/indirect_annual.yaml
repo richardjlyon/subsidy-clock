@@ -304,19 +304,32 @@ schemes:
         direct layer, floored at zero.
       confidence: low
     note: >-
-      Raw annual BSUoS for fiscal years starting 2002-2016, i.e. before
-      NESO's daily BSUoS dataset begins (April 2017). The money model uses
-      these only for years not covered by the bottom-up NESO series. Not
+      Raw annual BSUoS for fiscal years starting 2002-2016, i.e. before the
+      first full calendar year the settled NESO series covers. The money model
+      uses these only for years not covered by the bottom-up NESO series. Not
       fully verified: 2006-2010 and 2014-2016 are from REF Table 2's
       total-charge column pending primary confirmation; 2005 and 2011-2013
       are verified against the NAO report (Figure 9, total balancing costs
       recovered through BSUoS); 2002-2004 against the project baseline.
+      BASIS - this series, the 2002-05 baseline and the fetched series must all
+      be GROSS BSUoS (the balancing cost recovered from users), or the engine
+      splices two definitions mid-run. That is exactly the defect corrected on
+      2026-09-30 (amendment `bsuos-basis-2026-09-30`): the fetched series was
+      taken from NESO's Daily Balancing Costs dataset, which is 23-39% narrower,
+      and the join to this history showed a 63% cliff between 2016 and 2017.
+      Any future replacement for these years must be checked on the same basis.
       David Turver's NESO "balancing costs" series was evaluated as a
-      replacement but measures a narrower basis (it excludes National Grid's
+      replacement but is likewise narrower (it excludes National Grid's
       internal/admin costs, ~GBP 130m/yr, which the NAO Figure 9 series and
-      our 2002-05 baseline include), so adopting it would splice two
-      definitions mid-series; the gross BSUoS basis is retained here pending a
-      shared definition agreed with David.
+      our 2002-05 baseline include), so adopting it would reintroduce a splice;
+      the gross BSUoS basis is retained here pending a shared definition agreed
+      with David.
+      The 2016 entry is RETAINED and still in use: the corrected fetched series
+      begins 1 April 2016, so calendar 2016 is only nine months of data and the
+      engine's first-full-year rule correctly excludes it from the bottom-up
+      series. For reference, the settled NESO data gives GBP 1,303m for fiscal
+      2016-17 against this entry's GBP 1,200m for calendar 2016 - consistent,
+      and not a like-for-like comparison.
     annual:
       2002: 400000000
       2003: 400000000

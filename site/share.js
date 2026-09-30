@@ -133,14 +133,18 @@ var SCShare = (function () {
     // discoverability: the glyph lifts when the reader hovers its line or heading
     'li:hover .fact-share-btn,h2:hover .fact-share-btn{opacity:1}' +
     // instant on-brand tooltip from data-tip, on hover and keyboard focus;
-    // hidden while the popover is open (it would sit in the same spot)
-    '.fact-share-btn::after{content:attr(data-tip);position:absolute;top:50%;' +
+    // hidden while the popover is open (it would sit in the same spot).
+    // The label is injected ONLY on hover/focus: an absolutely-positioned
+    // nowrap ::after still occupies layout at opacity:0, and on a 390px phone
+    // that pushed the page 53px sideways. Empty content = zero box at rest.
+    '.fact-share-btn::after{content:"";position:absolute;top:50%;' +
       'left:calc(100% + 2px);transform:translateY(-50%);background:var(--ink,#23211c);' +
-      'color:var(--paper,#f7f4ee);font-size:.68rem;font-weight:400;padding:.2rem .5rem;' +
+      'color:var(--paper,#f7f4ee);font-size:.68rem;font-weight:400;padding:0;' +
       'border-radius:4px;white-space:nowrap;opacity:0;pointer-events:none;' +
       'transition:opacity .12s .15s;z-index:25}' +
-    '.fact-share-btn:hover::after,.fact-share-btn:focus-visible::after{opacity:1}' +
-    '.fact-share-btn[aria-expanded="true"]::after{opacity:0}' +
+    '.fact-share-btn:hover::after,.fact-share-btn:focus-visible::after{' +
+      'content:attr(data-tip);padding:.2rem .5rem;opacity:1}' +
+    '.fact-share-btn[aria-expanded="true"]::after{content:"";opacity:0}' +
     '.report-pop{min-width:14rem}' +
     '.report-note{margin:.15rem .6rem .35rem;color:var(--muted,#6e6a5f);font-size:.78rem}';
   var styleDone = false;

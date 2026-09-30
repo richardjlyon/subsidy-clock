@@ -40,6 +40,7 @@ class SnapshotStore:
         partition: str = "full",
         date_col: str | None = None,
         source_date: str | None = None,
+        restatement_cause: str | None = None,
     ) -> Path:
         retrieved_at = datetime.now(timezone.utc)
         prev = self._versions(scheme, table, partition)
@@ -63,7 +64,8 @@ class SnapshotStore:
         }
         (snap_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
         if prev:
-            self._check_restatement(scheme, table, prev[-1], snap_dir, df, date_col, manifest)
+            self._check_restatement(scheme, table, prev[-1], snap_dir, df, date_col,
+                                    manifest, restatement_cause)
         return snap_dir
 
     def _check_restatement(
@@ -75,6 +77,7 @@ class SnapshotStore:
         new_df: pl.DataFrame,
         date_col: str | None,
         manifest: dict,
+        cause: str | None = None,
     ) -> None:
         prev_df = pl.read_parquet(prev_dir / "data.parquet")
         if date_col is not None and date_col in prev_df.columns and prev_df.height:
@@ -85,11 +88,19 @@ class SnapshotStore:
         else:
             changed = _canonical_hash(new_df) != _canonical_hash(prev_df)
         if changed:
+            # `cause` distinguishes a PUBLISHER restating its own history (the
+            # default, and what the /data page's restatement log is for) from
+            # OUR OWN basis change re-reading the same upstream days from a
+            # different source. Conflating the two publishes a lie: it credits
+            # the publisher with a revision we made. Ours carry an explicit
+            # cause and are labelled as ours wherever the log is shown.
             event = {
                 "detected_at": manifest["retrieved_at"],
                 "partition": manifest["partition"],
                 "previous_version": prev_dir.name,
                 "new_version": new_dir.name,
+                "cause": cause or "source revision",
+                "origin": "ours" if cause else "publisher",
             }
             log = self.root / "raw" / scheme / table / "restatements.jsonl"
             with log.open("a") as fh:

@@ -3,12 +3,12 @@
  "ours_through_year": 2023,
  "ref_source": "REF, \"UK Renewable Electricity Subsidy Totals 2002 to the Present Day\", April 2025, Tables 1 and 2",
  "ref_source_url": "https://web.archive.org/web/20260412090644/https://ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day",
- "ours_total": 159624005540.8,
+ "ours_total": 166113922674.19,
  "ref_total": 185100000000.0,
  "ref_total_published": 185000000000.0,
- "gap": 25475994459.2,
- "stricter_gap": 26279088940.45,
- "ours_real": 200543251826.15,
+ "gap": 18986077325.81,
+ "stricter_gap": 19789171807.07,
+ "ours_real": 208072825371.24,
  "ref_real": 223000000000.0,
  "components": [
   {
@@ -69,10 +69,10 @@
   },
   {
    "component": "bsuos",
-   "ours": 9592626445.55,
+   "ours": 16082543578.93,
    "ref": 18500000000.0,
-   "divergence_pct": -48.1,
-   "note": "REF does not net off direct constraint payments; we do, to avoid double-counting against our constraints line.",
+   "divergence_pct": -13.1,
+   "note": "REF does not net off direct constraint payments; we do, to avoid double-counting against our constraints line. Our gross BSUoS base is nonetheless larger than REF's, so on the full window we still land below REF but by less than the netting alone implies.",
    "stricter": true
   },
   {

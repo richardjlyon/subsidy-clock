@@ -33,7 +33,11 @@ notes:
   cfd: REF's CfD line covers renewable generators including biomass; ours is CfD-renewables, which likewise already includes biomass (Drax and the like). CfD-nuclear contributes nothing in this window - Hinkley Point C payments begin in 2025.
   rego: REGO certificate costs are excluded from the Clock entirely (listed under "What is not included").
   ccl: REF counts total CCL receipts (OBR series, all fuels); we count electricity's share of main-rate receipts plus Carbon Price Support.
-  bsuos: REF does not net off direct constraint payments; we do, to avoid double-counting against our constraints line.
+  bsuos: >-
+    REF does not net off direct constraint payments; we do, to avoid
+    double-counting against our constraints line. Our gross BSUoS base is
+    nonetheless larger than REF's, so on the full window we still land below
+    REF but by less than the netting alone implies.
   ets: REF counts total ETS receipts (OBR series, all sectors); we count only the power-sector share of auctioned allowance revenue.
   fit: Both series sum the same April-March Ofgem scheme years, so the gap is not a calendar-vs-fiscal timing difference. Ours uses Ofgem's published FIT scheme value (generation + export + qualifying costs); REF's lower figure appears to use a narrower payments basis, plus rounding to GBP 0.1bn. The residual is a definitional difference and is not yet fully reconciled with REF.
   real_terms: "REF's £223bn 2024-price total uses REF's own deflation; the Clock's real column is CPIH-deflated (see methodology #real-terms). The bases are close but not identical."

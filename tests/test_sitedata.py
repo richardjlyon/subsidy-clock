@@ -227,9 +227,9 @@ def test_write_csvs(tmp_path):
     assert combined[4] == "2025,3000000000.00,3000000000.00"
     # restatements published alongside, same header
     rst = (tmp_path / "restatements.csv").read_text().splitlines()
-    assert rst[2] == ("# Source revisions log — every restatement the engine "
-                      "has recorded: subsidyclock.co.uk/data")
-    assert rst[3] == "scheme,table,detected_at,partition,previous_version,new_version"
+    assert rst[2].startswith("# Data revisions log: origin=publisher")
+    assert rst[3] == ("scheme,table,detected_at,partition,previous_version,"
+                      "new_version,origin,cause")
     assert rst[4].startswith("bsuos,daily,")
 
 
@@ -250,9 +250,33 @@ def test_write_csvs_no_restatements_writes_header_only(tmp_path):
     rst = (tmp_path / "restatements.csv").read_text().splitlines()
     assert rst[0] == "# The Subsidy Clock — subsidyclock.co.uk"
     assert rst[1].startswith("# Licence: CC BY 4.0")
-    assert rst[2].startswith("# Source revisions log")
-    assert rst[3] == "scheme,table,detected_at,partition,previous_version,new_version"
+    assert rst[2].startswith("# Data revisions log")
+    assert rst[3] == ("scheme,table,detected_at,partition,previous_version,"
+                      "new_version,origin,cause")
     assert len(rst) == 4
+
+
+def test_write_csvs_restatements_distinguish_ours_from_the_publishers(tmp_path):
+    """A basis change of OUR OWN must not be published as the publisher
+    restating its history — the log is cited as evidence of source revisions."""
+    sitedata.write_csvs(model(), tmp_path, generated="2026-06-11T05:45:00+00:00",
+                        restatements=[
+                            {"scheme": "bsuos", "table": "daily",
+                             "detected_at": "2026-06-10T06:31:04+00:00",
+                             "partition": "2026-2027",
+                             "previous_version": "a", "new_version": "b",
+                             "origin": "publisher", "cause": "source revision"},
+                            {"scheme": "bsuos", "table": "daily",
+                             "detected_at": "2026-09-30T03:13:08+00:00",
+                             "partition": "2023-2024",
+                             "previous_version": "c", "new_version": "d",
+                             "origin": "ours", "cause": "basis change"},
+                        ])
+    rows = [l for l in (tmp_path / "restatements.csv").read_text().splitlines()
+            if l and not l.startswith("#")]
+    assert rows[0].endswith("origin,cause")
+    assert "publisher,source revision" in rows[1]
+    assert "ours,basis change" in rows[2]
 
 
 def test_factoid_divisions_floor_not_round(tmp_path):
@@ -345,6 +369,42 @@ def test_load_corrections_valid_entry(tmp_path):
     assert entries[0]["credit"] == "J. Smith"
 
 
+def test_load_corrections_cause_string_becomes_one_paragraph(tmp_path):
+    # /corrections renders the cause as paragraphs at reading measure, so the
+    # shape is always a list even when the log holds a single string
+    entries = sitedata.load_corrections(_corr_file(tmp_path, [CORR_VALID]))
+    assert entries[0]["cause"] == ["Double-counted two settlement days"]
+
+
+def test_load_corrections_cause_keeps_its_paragraph_breaks(tmp_path):
+    # a real explanation runs to several hundred words; the author's paragraph
+    # breaks are data, not something the page may guess at from full stops
+    line = CORR_VALID.replace(
+        '"cause": "Double-counted two settlement days"',
+        '"cause": ["First, the wrong dataset.", "Second, a short first year."]')
+    entries = sitedata.load_corrections(_corr_file(tmp_path, [line]))
+    assert entries[0]["cause"] == ["First, the wrong dataset.",
+                                   "Second, a short first year."]
+
+
+def test_load_corrections_cause_paragraph_whitespace_is_normalised(tmp_path):
+    # JSONL authors wrap long paragraphs; the newlines must not reach the page
+    line = CORR_VALID.replace(
+        '"cause": "Double-counted two settlement days"',
+        '"cause": ["Two   settlement\\n  days were counted twice."]')
+    entries = sitedata.load_corrections(_corr_file(tmp_path, [line]))
+    assert entries[0]["cause"] == ["Two settlement days were counted twice."]
+
+
+def test_load_corrections_empty_cause_paragraph_raises(tmp_path):
+    # an empty paragraph would render as a blank gap in the note
+    line = CORR_VALID.replace(
+        '"cause": "Double-counted two settlement days"',
+        '"cause": ["A real reason.", "   "]')
+    with pytest.raises(ValueError, match="cause"):
+        sitedata.load_corrections(_corr_file(tmp_path, [line]))
+
+
 def test_load_corrections_credit_optional(tmp_path):
     line = CORR_VALID.replace(', "credit": "J. Smith"', '')
     entries = sitedata.load_corrections(_corr_file(tmp_path, [line]))
@@ -382,6 +442,24 @@ def test_write_corrections_files(tmp_path):
                         "confirmed error: subsidyclock.co.uk/corrections")
     assert lines[3] == "date,figure,figure_label,was,now,cause,credit"
     assert "£1.59bn" in lines[4]
+
+
+def test_write_corrections_csv_cause_is_flat_prose(tmp_path):
+    # the page wants paragraphs, a CSV cell wants one string: a reader opening
+    # the CSV must not find a Python list repr in the cause column
+    line = CORR_VALID.replace(
+        '"cause": "Double-counted two settlement days"',
+        '"cause": ["The wrong dataset.", "And a short first year."]')
+    entries = sitedata.load_corrections(_corr_file(tmp_path, [line]))
+    sitedata.write_corrections(entries, tmp_path / "out",
+                               generated="2026-06-12T17:00:00+00:00")
+    csv = (tmp_path / "out" / "corrections.csv").read_text()
+    assert "The wrong dataset. And a short first year." in csv
+    assert "['" not in csv and '["' not in csv
+    # the JSON keeps the paragraphs the page renders
+    data = json.loads((tmp_path / "out" / "corrections.json").read_text())
+    assert data["corrections"][0]["cause"] == ["The wrong dataset.",
+                                              "And a short first year."]
 
 
 def test_write_corrections_empty_log(tmp_path):

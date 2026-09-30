@@ -426,7 +426,7 @@ CSV_NAMES = {
 }
 
 RESTATEMENT_COLS = ["scheme", "table", "detected_at", "partition",
-                    "previous_version", "new_version"]
+                    "previous_version", "new_version", "origin", "cause"]
 
 CORRECTION_FIELDS = ["date", "figure", "figure_label", "was", "now", "cause"]
 
@@ -435,7 +435,13 @@ def load_corrections(path: Path | str) -> list[dict]:
     """Append-only log of confirmed errors in our own published figures
     (corrections C4) — the restatement-log honesty pattern applied to our own
     mistakes. A missing file means no corrections; a malformed entry fails the
-    build loudly — never publish a half-readable log."""
+    build loudly — never publish a half-readable log.
+
+    `cause` may be a string or a list of paragraphs, and is always published as
+    a list. An explanation of a real error runs to several hundred words, which
+    is prose, not a table cell: /corrections renders it as numbered notes at
+    reading measure, so the paragraph breaks are part of the data rather than
+    something the page invents by guessing at sentence boundaries."""
     p = Path(path)
     if not p.is_file():
         return []
@@ -451,6 +457,13 @@ def load_corrections(path: Path | str) -> list[dict]:
         if missing:
             raise ValueError(f"corrections.jsonl line {i}: missing {missing}")
         out = {k: rec[k] for k in CORRECTION_FIELDS}
+        cause = rec["cause"]
+        paras = [cause] if isinstance(cause, str) else list(cause)
+        if any(not isinstance(x, str) or not x.strip() for x in paras):
+            raise ValueError(
+                f"corrections.jsonl line {i}: cause must be a non-empty string "
+                "or a list of non-empty strings")
+        out["cause"] = [" ".join(x.split()) for x in paras]
         out["credit"] = rec.get("credit") or ""
         entries.append(out)
     entries.sort(key=lambda r: r["date"])
@@ -484,7 +497,8 @@ def write_corrections(entries: list[dict], out_dir: Path | str,
     (out / "corrections.json").write_text(json.dumps(
         {"generated_at": generated, "corrections": entries}, indent=1))
     cols = CORRECTION_FIELDS + ["credit"]
-    rows = [{k: str(r.get(k, "")) for k in cols} for r in entries]
+    rows = [{k: (" ".join(r[k]) if k == "cause" else str(r.get(k, "")))
+             for k in cols} for r in entries]
     note = ("# Corrections to our own published figures — every confirmed "
             "error: subsidyclock.co.uk/corrections\n")
     (out / "corrections.csv").write_text(
@@ -539,8 +553,9 @@ def write_csvs(model: dict, out_dir: Path | str,
     rows = [{k: str(r.get(k, "")) for k in RESTATEMENT_COLS} for r in restatements]
     write(pl.DataFrame(rows, schema={k: pl.String for k in RESTATEMENT_COLS}),
           "restatements.csv",
-          "# Source revisions log — every restatement the engine has "
-          "recorded: subsidyclock.co.uk/data\n")
+          "# Data revisions log: origin=publisher is a source restating its own "
+          "history; origin=ours is a basis change we made, with the cause named "
+          "— see subsidyclock.co.uk/corrections\n")
 
 
 WIDGET_TEMPLATE = Path(__file__).parent / "templates" / "widget.html"

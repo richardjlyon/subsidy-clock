@@ -344,6 +344,94 @@ main > .card-pair { margin: 24px 0; }
 .data-table .cell-dim { color: var(--muted); }
 .table-note { margin: 12px 0 0; font-size: 0.8rem; color: var(--muted); max-width: 50em; font-family: var(--serif); }
 
+/* ---------- corrections: summary table, reasoning as numbered notes ----------
+   An error explanation is prose, not tabular data: it needs a 55-75 character
+   measure, which no cell in a six-column table can give it (the cause column
+   measured 121px — about 17 characters a line, a 2,046px row, and sideways
+   overflow on a phone). So the table indexes what changed and the notes below
+   carry why, at reading width. Notes are addressable so a single correction
+   can be cited, and none of it hides behind a click: the page prints whole. */
+#corrections-table td { vertical-align: baseline; }
+#corrections-table .corr-fig { font-family: var(--sans); font-weight: 700; }
+/* Every cell in .data-table has padding-left:0 and .num-col zeroes the right
+   padding too — fine for a final right-aligned column, but here WAS, NOW and
+   NOTE sit mid-table and collided ("£22.85bn cumulativenote 1"). This table
+   spaces its own columns and does not use .num-col. */
+#corrections-table th, #corrections-table td { padding-right: 22px; }
+#corrections-table th:last-child, #corrections-table td:last-child { padding-right: 0; }
+/* width:1% + nowrap shrinks a column to its content, so the figure name (the
+   only cell wanting to wrap) takes the slack instead of the money columns
+   hoarding it and forcing three-line rows. A correction to a DESCRIPTION
+   carries prose in was/now rather than a figure, which would stretch those
+   columns and crush the figure name to one word per line — so prose cells
+   wrap within a fixed share and the figure name keeps its room. */
+#corrections-table th:not(:nth-child(2)), #corrections-table td:not(:nth-child(2)) {
+  width: 1%; white-space: nowrap;
+}
+#corrections-table th:nth-child(2), #corrections-table td:nth-child(2) { min-width: 15ch; }
+#corrections-table td.corr-prose {
+  white-space: normal; width: auto; min-width: 20ch; max-width: 26ch;
+  font-size: 0.86em; line-height: 1.35;
+}
+#corrections-table .corr-money {
+  text-align: right;
+  font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1;
+}
+.corr-was-val { color: var(--muted); }
+.corr-now-val { color: var(--navy); font-weight: 700; }
+.corr-ref {
+  font-family: var(--sans); font-size: 0.72rem; font-weight: 700;
+  text-decoration: none; color: var(--navy); white-space: nowrap;
+  border-bottom: 1px solid var(--line);
+}
+.corr-ref:hover { color: var(--amber-dark); border-bottom-color: var(--amber); }
+
+.corr-notes { margin: 34px 0 0; }
+.corr-notes h3 {
+  font-family: var(--sans); font-size: 0.7rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--muted); font-weight: 700;
+  border-bottom: 1px solid var(--line); padding-bottom: 6px; margin-bottom: 0;
+}
+.corr-note {
+  display: grid; grid-template-columns: 2.4em 1fr; gap: 0 4px;
+  padding: 20px 0 22px; border-bottom: 1px solid var(--line-soft);
+  scroll-margin-top: 16px;
+}
+.corr-note:last-child { border-bottom: 0; }
+.corr-note-n {
+  font-family: var(--sans); font-weight: 700; font-size: 0.9rem;
+  color: var(--amber-dark); font-variant-numeric: tabular-nums;
+}
+.corr-note-body { max-width: 52ch; }
+.corr-note-head {
+  font-family: var(--sans); font-weight: 700; font-size: 0.92rem;
+  margin: 0 0 6px; color: var(--ink);
+}
+/* the date is a caption, not part of the title: own line, so a long figure
+   name cannot strand "· 1 September 2026" across a wrap */
+.corr-note-date {
+  display: block; margin-top: 2px;
+  font-weight: 400; color: var(--faint); font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+/* the was/now pair reads as two labelled lines, not one long wrapping sentence
+   with the arrow stranded mid-phrase */
+.corr-note-change {
+  margin: 0 0 0.95em; font-family: var(--sans); font-size: 0.86rem;
+  font-variant-numeric: tabular-nums;
+  display: grid; grid-template-columns: auto 1fr; gap: 2px 10px;
+  align-items: baseline; max-width: 46ch;
+}
+.corr-note-change .corr-label {
+  font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--faint); font-weight: 700; text-align: right;
+}
+.corr-note-body p { margin: 0 0 0.7em; font-size: 0.96rem; }
+.corr-note-body p:last-child { margin-bottom: 0; }
+/* jumping from "note 2" must land somewhere obvious */
+.corr-note:target { background: var(--stale-bg); box-shadow: 0 0 0 10px var(--stale-bg); }
+.corr-note:target .corr-note-n { color: var(--navy); }
+
 /* recipients: station rows expandable to their per-contract phases */
 .rec-expand { background: none; border: 0; padding: 0 0 0 6px; cursor: pointer; font: inherit; color: var(--muted); }
 .rec-expand:hover { color: var(--navy); }
@@ -510,6 +598,44 @@ tr.out-of-tolerance td { color: var(--amber-dark); font-weight: 500; }
   .stat-value { font-size: 1.45rem; }
   .data-table { font-size: 0.82rem; }
   #recipients-table th:nth-child(3), #recipients-table td:nth-child(3) { display: none; }
+  /* the credit column is restated in the note, so dropping it loses nothing */
+  #corrections-table th:nth-child(6), #corrections-table td:nth-child(6) { display: none; }
+  /* a 20ch floor on prose cells is a desktop comfort; on a phone it forces the
+     row wider than the screen, so let prose shrink with the viewport */
+  #corrections-table td.corr-prose { min-width: 0; max-width: none; }
+  #corrections-table th:nth-child(2), #corrections-table td:nth-child(2) { min-width: 0; }
+  .corr-note { grid-template-columns: 1.9em 1fr; }
+
+  /* Audit tables (the REF cross-check and reconciliation) print figures to the
+     penny on purpose — a reader checking our arithmetic needs the whole number,
+     so they must not be truncated or hidden. Below the prose measure they
+     scroll inside their own box instead of pushing the page sideways. */
+  #crosscheck-table, #ref-recon-table, #recon-table, #prices-table {
+    display: block; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    max-width: 100%; width: 100%;
+  }
+  /* Only the figures resist wrapping — a mid-number line break is unreadable.
+     Note/label columns must still wrap, or one long note stretches the row to
+     several thousand pixels and the scroll becomes useless. */
+  #crosscheck-table .num-col, #ref-recon-table .num-col,
+  #recon-table .num-col, #prices-table .num-col { white-space: nowrap; }
+  #crosscheck-table td:last-child, #ref-recon-table td:last-child { min-width: 15ch; }
+}
+
+/* Below ~430px the five remaining columns cannot compress past their own
+   content and the table pushes the page sideways. The "was" figure goes: the
+   note states both figures in full, so the table keeps the current one and the
+   link to the reasoning. */
+@media (max-width: 430px) {
+  #corrections-table th:nth-child(3), #corrections-table td:nth-child(3) { display: none; }
+  #corrections-table .corr-fig { font-weight: 400; }
+  #corrections-table th, #corrections-table td { padding-right: 12px; }
+}
+
+/* Narrowest phones: the date column's "30 Sept 2026" is the last thing that
+   will not fit alongside a figure name. It is restated in the note. */
+@media (max-width: 380px) {
+  #corrections-table th:nth-child(1), #corrections-table td:nth-child(1) { display: none; }
 }
 
 @media (max-width: 400px) {

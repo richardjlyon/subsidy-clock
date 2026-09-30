@@ -179,19 +179,29 @@
       : 'paid directly to renewable generators ') +
       '<span class="nowrap">since ' + sinceYear + FN + '</span>';
     // FT skin: left-box descriptive paragraph (inert markup in other skins).
-    // Uses the same floored combined total as the lead-in so the figures can't drift.
+    // The FT skin hides .hero-leadin and .hero-sub, so this paragraph is the
+    // ONLY prose describing the counter. It must therefore say what the counter
+    // includes in BOTH states: naming just the four direct schemes while the
+    // figure above is the combined total describes a £100bn-smaller number.
     var ftLead = document.getElementById('ft-lead');
     if (ftLead) {
-      // When indirect is OFF the counter is direct-only, so name what the full
-      // picture would be; when ON the counter already IS the combined figure.
       var ftInd = iv();
       var combinedBn = ftInd ? floorStepBelow(pv().cumulative + ftInd.cumulative) / 1e9 : null;
-      ftLead.innerHTML =
-        'Paid to renewable &amp; low-carbon generators through the Renewables ' +
-        'Obligation, Contracts for Difference, Feed-in Tariffs and constraint payments.' +
-        ((!state.combined && combinedBn != null)
-          ? ' With estimated indirect costs, <strong>£' + combinedBn + 'bn+</strong>.'
-          : '');
+      var directNames =
+        'the Renewables Obligation, Contracts for Difference, Feed-in Tariffs ' +
+        'and constraint payments';
+      ftLead.innerHTML = state.combined
+        // counter IS the combined figure: name the direct schemes, then say
+        // plainly that the estimated indirect layer is inside this total.
+        ? 'Paid to renewable &amp; low-carbon generators through ' + directNames +
+          ', <strong>plus estimated indirect costs</strong> — network and balancing ' +
+          'charges, carbon pricing and the capacity levy. ' +
+          '<a href="/methodology#indirect">How indirect costs are attributed</a>.'
+        // counter is direct-only: name what the fuller picture would be.
+        : 'Paid to renewable &amp; low-carbon generators through ' + directNames + '.' +
+          (combinedBn != null
+            ? ' With estimated indirect costs, <strong>£' + combinedBn + 'bn+</strong>.'
+            : '');
     }
   }
 
@@ -316,10 +326,16 @@
   // ---------- scheme breakdown bars ----------
   // Per-scheme staleness thresholds (days): each source publishes in arrears,
   // so the threshold is set beyond that scheme's normal publication lag.
+  // bsuos: 30, not the 7 that suited the old daily-extract source. The settled
+  // BSUoS data this series now reads is slower by design — the interim (II) run
+  // trails coverage by ~11 days and is itself published a few days later, so a
+  // ~20-day lag is normal and healthy. 7 would have flagged correct data as
+  // stale every single day. The trade is deliberate: the old source was ~8 days
+  // fresher but measured the wrong quantity (see /corrections).
   var STALE_DAYS = {
     cfd: 21, cfd_renewable: 21, cfd_low_carbon: 21,
     constraints: 3, capacity_market: 75, ro: 730, fit: 730,
-    bsuos: 7
+    bsuos: 30
   };
   var STALE_FALLBACK_MS = { daily: 2 * 864e5, monthly: 2 * 30.44 * 864e5, annual: 2 * 365.25 * 864e5 };
   function dataCoverageEnd(s) {

@@ -5,8 +5,42 @@ Read at session start. Update when state changes. Durable knowledge lives in the
 ## Headline figures (always re-read live — these go stale)
 
 - Direct hero (ticking, nominal, renewables-only, measured): **~£105–110bn**
-- Combined direct + indirect, real 2024 prices — the public headline, floored to **"over £220 billion"**: **£228.5bn** (measured from the live build 2026-09-01: `meta.json` `headline.combined_real` = 228,525,542,236 after the ETS/DUKES corrections; was 228.585bn before them).
-- ✅ The **£228bn vs £223bn** drift (flagged Daily 2026-08-15) is settled: the engine's own figure is £228.5bn, so the content copy showing ~£228bn was right and the £223bn note was stale. Verified against the built site data, not against another document. The floored public headline is unaffected either way — both floor to "over £220 billion".
+- Combined direct + indirect, real 2024 prices — the public headline, floored to
+  **"over £220 billion"**: **£239.9bn** (measured from the live build 2026-09-30,
+  `meta.json` `headline.combined_real` = 239,864,…). Was £228.5bn before the
+  **BSUoS basis correction of 30 Sep 2026** (below), which added £11.2bn.
+  The floored public headline is unaffected — it still floors to "over £220bn".
+- ✅ The **£228bn vs £223bn** drift (flagged Daily 2026-08-15) was settled 1 Sep
+  against the built site data; superseded by the 30 Sep correction.
+
+## BSUoS basis correction — 30 Sep 2026 (logged publicly)
+
+- **The defect.** The BSUoS series was built from NESO's *Daily Balancing Costs*
+  dataset, which is a breakdown of balancing-mechanism spend, NOT the balancing
+  cost recovered through BSUoS. It ran **23–39% below** the outturn in NESO's
+  Annual Balancing Costs Report every year from 2018-19 (2023-24: £1,824m vs
+  £2,455m; 2018-25 total £12.07bn vs £16.80bn). Worse than a narrow source: the
+  pre-2017 history and the £0.4bn baseline are on the **gross BSUoS** basis, so
+  the engine spliced two definitions mid-series — a **63% cliff** between raw
+  2016 (£1,200m) and raw 2017 (£439m).
+- **The fix.** `schemes/bsuos.py` now reads NESO's *Current BSUoS Charges*
+  dataset: `Half-hourly Charge` to 31 Mar 2023 (pre-reform pass-through, charge
+  == cost, and it foots to the dataset's own daily total to the penny), and
+  `Actual BSUoS Cost` after — the Apr 2023 fixed-tariff reform broke charge ==
+  cost, so **recovery is the wrong column**. Most-settled run type per day wins
+  (RF → SF → II). Corrected series runs 1.10–1.23× ABCR with **no step at either
+  seam**; 2016→2017 is now **+3.2%**.
+- **Effect:** BSUoS attributed £12.54bn → **£22.85bn**; run-rate £1.62 →
+  **£3.39bn/yr**; attribution 44.9% → **59.4%**. Headline +£11.2bn (+4.92%).
+- **NESO column spellings are not stable within this one dataset** — day is
+  "Settlement Day" or "Settlement Date"; cost is "Actual BSUoS Cost (£)" or
+  "...Cost(£)" (no space). Exact-string matching broke the live fetch. Matching
+  is now on a normalised key, still fail-loud when nothing matches.
+- **Consequence for the REF review (unsent).** Review §5.1 tells Constable the
+  correction "raises the Clock's BSUoS line by about £4.7bn and its headline by
+  2.5%". Measured: **+£10.3bn on the line and +4.92% on the headline.** §5.1 must
+  be revised before the review goes out. Awaiting Richard's decision on whether
+  to revise the review or publish the correction first.
 
 ## Open correspondence (Aug 2026)
 
@@ -37,11 +71,16 @@ Read at session start. Update when state changes. Durable knowledge lives in the
 
 - **Golden master lives at `tools/golden_master.py` (revived 1 Sep 2026).** Run
   `uv run python tools/golden_master.py check` before and after any data or
-  engine change; `capture` re-baselines. It had been DEAD since the AIOS
+  engine change; `capture` re-baselines. Re-baselined 30 Sep 2026 after the BSUoS
+  correction — 123 files, PASS. It had been DEAD since the AIOS
   migration — the only copy sat in `~/Archive` hardcoded to the deleted
   `/Users/rjl/Code/web-subsidy-clock` and imported three APIs that no longer
   exist, while the openspec docs cited it as a gate on every engine change.
   Proven to fail on a deliberate £1m perturbation (exit 1), not merely to pass.
+- **`tests/test_sharecards.py` needs a browser binary**: if it fails with
+  "Executable doesn't exist", run `uv run playwright install
+  chromium-headless-shell`. Done on this host 30 Sep 2026 — full suite is
+  **157 passed, exit 0**, so a sharecard failure is now a real failure.
 - `check` leaves the rebuilt `site/` in the tree — `git restore -- site/` after,
   since `site/data` is bot-owned (`.githooks/pre-commit` blocks committing it).
 

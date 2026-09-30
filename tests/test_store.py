@@ -38,7 +38,8 @@ def test_append_only_growth_is_not_a_restatement(tmp_path):
     assert store.restatements("cfd", "generation") == []
 
 
-def test_changed_history_is_a_restatement(tmp_path):
+def test_changed_history_defaults_to_a_publisher_restatement(tmp_path):
+    """No cause given means the SOURCE restated its own history."""
     store = SnapshotStore(tmp_path)
     store.write("cfd", "generation", df([{"date": date(2026, 1, 1), "cost_gbp": 100.0}]),
                 source_url="u", date_col="date")
@@ -46,9 +47,28 @@ def test_changed_history_is_a_restatement(tmp_path):
                 source_url="u", date_col="date")
     events = store.restatements("cfd", "generation")
     assert len(events) == 1
+    assert events[0]["origin"] == "publisher"
+    assert events[0]["cause"] == "source revision"
     # both versions still on disk (immutable history)
     versions = list((tmp_path / "raw" / "cfd" / "generation" / "full").iterdir())
     assert len(versions) == 2
+
+
+def test_our_own_basis_change_is_not_logged_as_the_publishers(tmp_path):
+    """A restatement_cause marks the change as OURS. Without this the published
+    revisions log credits the publisher with a revision we made — the log is
+    cited as evidence about the source, so that is a false claim about a third
+    party."""
+    store = SnapshotStore(tmp_path)
+    store.write("bsuos", "daily", df([{"date": date(2026, 1, 1), "cost_gbp": 100.0}]),
+                source_url="u", date_col="date")
+    store.write("bsuos", "daily", df([{"date": date(2026, 1, 1), "cost_gbp": 250.0}]),
+                source_url="u", date_col="date",
+                restatement_cause="basis change 2026-09-30: moved to settled data")
+    events = store.restatements("bsuos", "daily")
+    assert len(events) == 1
+    assert events[0]["origin"] == "ours"
+    assert events[0]["cause"] == "basis change 2026-09-30: moved to settled data"
 
 
 def test_partitioned_write_and_read_all(tmp_path):
