@@ -608,12 +608,40 @@ tr.out-of-tolerance td { color: var(--amber-dark); font-weight: 500; }
 
   /* Audit tables (the REF cross-check and reconciliation) print figures to the
      penny on purpose — a reader checking our arithmetic needs the whole number,
-     so they must not be truncated or hidden. Below the prose measure they
-     scroll inside their own box instead of pushing the page sideways. */
-  #crosscheck-table, #ref-recon-table, #recon-table, #prices-table {
+     so they must not be truncated or hidden. Two penny columns alone are 222px,
+     so below the prose measure the table cannot fit and must scroll.
+     Restyling the table's own display (block/table on thead/tbody/tr) either
+     fails to clip or breaks header-to-cell column alignment; the table keeps
+     its native layout and a wrapper does the scrolling instead. */
+  .table-scroll {
     display: block; overflow-x: auto; -webkit-overflow-scrolling: touch;
-    max-width: 100%; width: 100%;
+    max-width: 100%;
   }
+  .table-scroll > table { min-width: max-content; }
+
+  /* Citation strings contain long unbroken URLs, which no amount of normal
+     wrapping will break — they pushed the page 18px wider than the phone.
+     Allow a break inside the URL itself. */
+  #cite-formats { overflow-wrap: anywhere; word-break: break-word; }
+
+  /* An embed snippet is one long unbreakable line of markup. It is meant to be
+     copied, not read, so it scrolls in its own box rather than stretching the
+     page to 2,161px on a phone. */
+  pre > code, code.embed-snippet {
+    display: block; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    max-width: 100%; white-space: pre;
+  }
+  /* The note column is prose and will happily stretch a row to thousands of
+     pixels, which defeats the scroll box. Cap it so the row width stays
+     governed by the figures, and keep the whole row inside the box. */
+  #crosscheck-table td:last-child, #ref-recon-table td:last-child,
+  #recon-table td:last-child, #prices-table td:last-child {
+    white-space: normal; max-width: 13ch; min-width: 9ch;
+  }
+  #crosscheck-table th, #crosscheck-table td,
+  #ref-recon-table th, #ref-recon-table td,
+  #recon-table th, #recon-table td,
+  #prices-table th, #prices-table td { padding-left: 6px; padding-right: 6px; font-size: 0.78rem; }
   /* Only the figures resist wrapping — a mid-number line break is unreadable.
      Note/label columns must still wrap, or one long note stretches the row to
      several thousand pixels and the scroll becomes useless. */

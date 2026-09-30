@@ -399,15 +399,22 @@
         '<span class="pct num">' + pct + '%</span></a>';
     }
 
+    // BASIS. These cards follow the basis switch, and it defaults to real
+    // (2024 prices). The per-scheme explainer pages show the same schemes in
+    // cash as paid, so the two disagree by the CPIH uplift unless each says
+    // which basis it is on. Say it here rather than leave a reader to find
+    // £26.3bn on this card and £22.8bn on /explainers/bsuos.
+    var basisWords = state.real ? 'in today\u2019s money' : 'in cash as paid';
+
     document.getElementById('direct-card-total').textContent = fmtCompact(pv().cumulative);
     document.getElementById('direct-card-sub').textContent =
       'paid through electricity bills and taxes since ' + persp().since_year +
-      ' · adding ' + fmtPence(pv().rate_per_sec) + ' a second';
+      ', ' + basisWords + ' · adding ' + fmtPence(pv().rate_per_sec) + ' a second';
     document.getElementById('direct-card-rows').innerHTML = direct.map(rowHtml).join('');
 
     document.getElementById('indirect-card-total').textContent = ind ? fmtCompact(ind.cumulative) : '—';
     document.getElementById('indirect-card-sub').textContent = ind ?
-      'adding ' + fmtPence(ind.rate_per_sec) + ' a second at the current run-rate' : '';
+      basisWords + ' · adding ' + fmtPence(ind.rate_per_sec) + ' a second at the current run-rate' : '';
     document.getElementById('indirect-card-rows').innerHTML = indirect.map(rowHtml).join('');
 
     var lc = totals.perspectives.low_carbon;

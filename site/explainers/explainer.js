@@ -16,6 +16,23 @@
     document.getElementById('x-rate').textContent = '+' + SC.fmtCompact(rate * 86400) + '/day';
     document.getElementById('x-household').textContent = '≈ ' + SC.fmtPence(perHousehold) + '/yr';
 
+    // BASIS. Every figure on this page is nominal — cash as it was paid, each
+    // year's pounds unadjusted. The front page shows the same schemes in 2024
+    // prices, so the two disagree by the CPIH uplift (BSUoS: £22.8bn here vs
+    // £26.3bn there; the Renewables Obligation differs by £17.7bn). Neither is
+    // wrong, but an unlabelled figure that contradicts another page is, so the
+    // real-terms equivalent is stated here rather than left to be discovered.
+    var realCum = null;
+    if (data.timeseries && data.timeseries.schemes && data.timeseries.schemes[id]) {
+      realCum = 0;
+      data.timeseries.schemes[id].annual.forEach(function (a) { realCum += a.cost_real; });
+    }
+    var basisEl = document.getElementById('x-total-basis');
+    if (basisEl && realCum) {
+      basisEl.innerHTML = '≈ <span class="num">' + SC.fmtCompact(realCum) +
+        '</span> in today\u2019s money';
+    }
+
     // live prose slots: <span data-live="cumulative|runrate|household|rate"></span>
     var liveVals = {
       cumulative: SC.fmtCompact(s.cumulative),

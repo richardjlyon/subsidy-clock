@@ -23,6 +23,12 @@
 <link rel="stylesheet" href="skin-ft.css">
 <style>
   .embed-demo { border: 1px solid var(--line); border-radius: 6px; background: var(--card); }
+  /* The banner demo is deliberately 728px — it must render at its true size to
+     be an honest demonstration of what an embedder gets. On a phone that is
+     wider than the screen, so the STAGE scrolls rather than the page: the
+     widget keeps its real dimensions and the layout stays put. */
+  .embed-stage { overflow-x: auto; max-width: 100%; -webkit-overflow-scrolling: touch; }
+  .embed-stage > .embed-demo { display: block; max-width: none; }
   .embed-block { margin: 1.2rem 0 2rem; }
   .embed-block pre { background: var(--card); border: 1px solid var(--line); border-radius: 6px;
     padding: .7rem .9rem; font-size: .78rem; overflow-x: auto; white-space: pre-wrap; }
@@ -69,24 +75,24 @@
 
   <h2>Banner — 728 × 90</h2>
   <div class="embed-block">
-    <iframe class="embed-demo" src="embed/widget.html?size=banner" width="728" height="90"
-      title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy"></iframe>
+    <div class="embed-stage"><iframe class="embed-demo" src="embed/widget.html?size=banner" width="728" height="90"
+      title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy"></iframe></div>
     <pre><code>&lt;iframe src="https://subsidyclock.co.uk/embed/widget?size=banner" width="728" height="90" title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy" style="border:0"&gt;&lt;/iframe&gt;</code></pre>
     <button class="copy-snippet" type="button">Copy snippet</button>
   </div>
 
   <h2>Card — 300 × 250</h2>
   <div class="embed-block">
-    <iframe class="embed-demo" src="embed/widget.html?size=card" width="300" height="250"
-      title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy"></iframe>
+    <div class="embed-stage"><iframe class="embed-demo" src="embed/widget.html?size=card" width="300" height="250"
+      title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy"></iframe></div>
     <pre><code>&lt;iframe src="https://subsidyclock.co.uk/embed/widget?size=card" width="300" height="250" title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy" style="border:0"&gt;&lt;/iframe&gt;</code></pre>
     <button class="copy-snippet" type="button">Copy snippet</button>
   </div>
 
   <h2>Strip — full width</h2>
   <div class="embed-block">
-    <iframe class="embed-demo" src="embed/widget.html?size=strip" width="100%" height="56"
-      title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy"></iframe>
+    <div class="embed-stage"><iframe class="embed-demo" src="embed/widget.html?size=strip" width="100%" height="56"
+      title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy"></iframe></div>
     <pre><code>&lt;iframe src="https://subsidyclock.co.uk/embed/widget?size=strip" width="100%" height="56" title="The Subsidy Clock" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation" loading="lazy" style="border:0"&gt;&lt;/iframe&gt;</code></pre>
     <button class="copy-snippet" type="button">Copy snippet</button>
   </div>

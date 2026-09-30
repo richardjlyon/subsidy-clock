@@ -260,6 +260,16 @@ html[data-skin="ft"] .hero-share-pill:hover {
   }
 }
 
+/* very narrow phones (≤360px): the hero figure is 15 characters wide, and a
+   2.3rem floor makes it ~294px — wider than the 248px left after the card's
+   padding on a 320px screen, which pushed the whole page sideways. Let the
+   figure scale below the general floor here, and trim the card padding, so
+   the number fits the screen instead of the screen fitting the number. */
+@media (max-width: 360px) {
+  html[data-skin="ft"] .hero-value { font-size: clamp(1.5rem, 8.2vw, 2.3rem); }
+  html[data-skin="ft"] .ft-hero-grid { padding-left: 18px; padding-right: 18px; }
+}
+
 /* ============================================================
    CHIPS — separate white cards on the oat ground (not a joined
    strip). Same six cells, same data; fonts/colours remapped.

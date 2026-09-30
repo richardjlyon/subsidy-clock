@@ -54,6 +54,9 @@ body {
 .xstrip .m { flex: 1 1 0; min-width: 140px; padding: 9px 13px; border-right: 1px solid var(--line-soft); }
 .xstrip .k { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--faint); }
 .xstrip .v { font-size: 1.08rem; font-weight: 650; color: var(--money-deep); }
+/* the real-terms equivalent, printed under the nominal total so the figure
+   cannot be read as contradicting the front page's 2024-price version */
+.xstrip .basis { font-size: 0.68rem; color: var(--faint); margin-top: 1px; line-height: 1.3; }
 .xbody h2 { font-family: var(--serif); font-size: 1.05rem; color: var(--money-deep); margin: 20px 0 6px; }
 .xbody p { font-size: 0.92rem; line-height: 1.6; margin: 0 0 10px; }
 .spark { display: flex; align-items: flex-end; gap: 2px; height: 56px; margin: 10px 0 4px; }
