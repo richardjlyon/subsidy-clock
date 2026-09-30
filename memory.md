@@ -6,10 +6,14 @@ Read at session start. Update when state changes. Durable knowledge lives in the
 
 - Direct hero (ticking, nominal, renewables-only, measured): **~£105–110bn**
 - Combined direct + indirect, real 2024 prices — the public headline, floored to
-  **"over £220 billion"**: **£239.9bn** (measured from the live build 2026-09-30,
-  `meta.json` `headline.combined_real` = 239,864,…). Was £228.5bn before the
-  **BSUoS basis correction of 30 Sep 2026** (below), which added £11.2bn.
+  **"over £220 billion"**: **£240.09bn** (measured from the live build 2026-09-30,
+  `meta.json` `headline.combined_real` = 240,090,844,344). Was £228.5bn before the
+  **BSUoS basis correction of 30 Sep 2026** (below), which added £11.2bn; it then
+  moved again when the nightly bot's fresher data was merged.
   The floored public headline is unaffected — it still floors to "over £220bn".
+- Direct-only, real 2024 prices (the four measured schemes): **£132.27bn**.
+  **Always say which basis a figure is on** — the same schemes are £22.8bn
+  (BSUoS, cash as paid) or £26.3bn (real) depending on it. See the basis section.
 - ✅ The **£228bn vs £223bn** drift (flagged Daily 2026-08-15) was settled 1 Sep
   against the built site data; superseded by the 30 Sep correction.
 
@@ -42,6 +46,51 @@ Read at session start. Update when state changes. Durable knowledge lives in the
   be revised before the review goes out. Awaiting Richard's decision on whether
   to revise the review or publish the correction first.
 
+## Price basis must be stated on every figure — 30 Sep 2026
+
+- **The defect.** The front page showed BSUoS as £26.3bn, `/explainers/bsuos`
+  showed £22.8bn. Both correct: the front page sums `cost_real` (2024 prices;
+  the basis switch **defaults to real**), the explainers read `breakdown.json`'s
+  nominal `cumulative`. Neither page said which basis, so they read as a
+  contradiction. **Every scheme was affected** — RO differed by £17.7bn on the
+  same data, CCL by 31%.
+- **The fix.** Explainers label the total "(cash as paid)" and print the
+  real-terms equivalent beneath; front-page cards say "in today's money" or
+  "in cash as paid", following the switch; share cards carry the same wording.
+  No figure changed, so **no corrections entry** (Richard's call: unlabelled but
+  correct goes to methodology, not the log).
+- **Rule:** a money figure without its basis is a defect, even when the number
+  is right. Two pages disagreeing is how it surfaces; the cause is the missing
+  label, not the arithmetic.
+- **Open judgement:** the front page defaults to real terms, so the casual
+  reader sees the larger number. Defensible and now disclosed, but it is a
+  choice — worth a methodology line if it is ever challenged.
+
+## Share-image caching and stubs — 30 Sep 2026
+
+- **og:image needs a content-hash `?v=` on EVERY page, not just the homepage.**
+  The nine explainers shipped unstamped. Platforms cache previews by URL, so the
+  corrected BSUoS card would never have reached anyone re-sharing those links —
+  they would have gone on serving the pre-correction image indefinitely.
+  `stamp_index_og` is now a wrapper over the general `stamp_og_images`, and the
+  build walks the whole site (reports "N og:image tags cache-busted").
+- **Unknown slugs are deliberately left unstamped.** An empty token changes the
+  URL without tracking the content — busts the cache once, then sticks. Worse
+  than no token.
+- **Every scheme card now has a `/s/` stub** (21 → 29) whose click-through lands
+  on that scheme's explainer, not the homepage: that page carries the basis,
+  sources and method. Previously the 8 scheme cards had no stub, so a scheme
+  figure could only be shared via the explainer URL — the exact path with the
+  stale-cache fault. The two defects compounded.
+- **`verify_stub_targets` fails the build on a dead click-through.** The
+  explainer slug map includes `cfd-nuclear`, which has **no page** — an
+  unguarded `target_path` publishes a 404 link on a share card. Proved by
+  breaking a target deliberately, not by a passing test.
+- **Verify cards by reading the rendered PNG, not the stub HTML** (`tesseract`
+  is on this host). OCR misreads digits — it read RO as £92,325,105,597 when
+  `cards.json` says £92,325,705,597 — so use OCR to confirm *wording/basis*, and
+  `cards.json` or the data for *figures*.
+
 ## Open correspondence (Aug 2026)
 
 - **Gordon Hughes (gordon.hughes@cantab.net) + John Constable (john.constable@ref.org.uk)** — both replied warmly 14–15 Aug to Richard's collaboration offer. Hughes & Moroney put UK subsidies at £274bn (2025 prices, 2005–25) via an independent route; the Clock's bottom-up ~£223bn lands nearby. The Clock caught REF's constraints double-count, which Constable acknowledged in writing. Offer: reconcile the two reconstructions, Clock as public front-end for REF's numbers, share the engine. **Hughes cannot travel — his wife is disabled** (per his 14 Aug email) — so propose a call/video, not a table. Reply drafted; awaiting Richard's approval.
@@ -72,7 +121,10 @@ Read at session start. Update when state changes. Durable knowledge lives in the
 - **Golden master lives at `tools/golden_master.py` (revived 1 Sep 2026).** Run
   `uv run python tools/golden_master.py check` before and after any data or
   engine change; `capture` re-baselines. Re-baselined 30 Sep 2026 after the BSUoS
-  correction — 123 files, PASS. It had been DEAD since the AIOS
+  correction (123 files) and again after the scheme share stubs landed — **131
+  files, PASS**. A changed file SET is reported separately from changed content:
+  read that list before re-baselining, it is the cheapest check that you added
+  what you meant and removed nothing. It had been DEAD since the AIOS
   migration — the only copy sat in `~/Archive` hardcoded to the deleted
   `/Users/rjl/Code/web-subsidy-clock` and imported three APIs that no longer
   exist, while the openspec docs cited it as a gate on every engine change.
@@ -80,7 +132,7 @@ Read at session start. Update when state changes. Durable knowledge lives in the
 - **`tests/test_sharecards.py` needs a browser binary**: if it fails with
   "Executable doesn't exist", run `uv run playwright install
   chromium-headless-shell`. Done on this host 30 Sep 2026 — full suite is
-  **157 passed, exit 0**, so a sharecard failure is now a real failure.
+  **169 passed, exit 0**, so a sharecard failure is now a real failure.
 - `check` leaves the rebuilt `site/` in the tree — `git restore -- site/` after,
   since `site/data` is bot-owned (`.githooks/pre-commit` blocks committing it).
 
