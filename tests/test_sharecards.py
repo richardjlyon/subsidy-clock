@@ -155,6 +155,16 @@ def test_write_stubs(data_dir, tmp_path):
     scheme = (out / "bsuos.html").read_text()
     assert 'url=https://subsidyclock.co.uk/explainers/bsuos"' in scheme
     assert 'location.replace("https://subsidyclock.co.uk/explainers/bsuos")' in scheme
+    # A stub canonicalises to ITSELF. Facebook and LinkedIn honour canonical when
+    # picking a preview, so canonicalising to "/" makes them show the homepage
+    # card instead of the card that was shared, and dissolves any ?v= buster on
+    # the shared URL. noindex is what keeps these out of search.
+    assert '<link rel="canonical" href="https://subsidyclock.co.uk/s/bsuos">' in scheme
+    assert '<meta name="robots" content="noindex">' in scheme
+    assert '<link rel="canonical" href="https://subsidyclock.co.uk/">' not in scheme
+    for stub in out.glob("*.html"):
+        text = stub.read_text()
+        assert f'rel="canonical" href="https://subsidyclock.co.uk/s/{stub.stem}"' in text, stub.name
     html = (out / "switch-off.html").read_text()
     # per-fact OG tags with a content-hash image URL (defeats platform preview caching)
     assert 'property="og:image" content="https://subsidyclock.co.uk/share/switch-off.png?v=abc1234567"' in html

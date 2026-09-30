@@ -246,6 +246,14 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
 
 # NOTE: substituted with str.format() - any literal braces added later
 # (e.g. a <style> block) must be escaped as {{ and }}.
+#
+# canonical points at the stub ITSELF, not the homepage. Facebook and LinkedIn
+# honour canonical when choosing which preview to show, so a stub canonicalised
+# to "/" gets collapsed to the homepage: the reader sees the headline card
+# instead of the scheme card that was shared, and a ?v= cache-buster on the stub
+# URL resolves away with it. Search engines are kept off these pages by the
+# robots noindex above, which is the right tool for that job and costs nothing
+# socially. Do not "tidy" this back to site_url.
 STUB_TEMPLATE = """<!DOCTYPE html>
 <html lang="en-GB">
 <head>
@@ -262,7 +270,7 @@ STUB_TEMPLATE = """<!DOCTYPE html>
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="canonical" href="{site_url}/">
+<link rel="canonical" href="{stub_url}">
 <meta http-equiv="refresh" content="0;url={target}">
 </head>
 <body>
@@ -327,7 +335,6 @@ def write_stubs(facts: list[dict], out_dir: Path | str, asof: str,
             description=_html.escape(f"As of {asof}. Every figure traces to an official source."),
             stub_url=f"{SITE_URL}/s/{fact['slug']}",
             image_url=f"{SITE_URL}/share/{fact['slug']}.png?v={versions.get(fact['slug'], '')}",
-            site_url=SITE_URL,
             target=target,
             target_js=json.dumps(target),
             figure=fact["figure"],
