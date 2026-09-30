@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 18954839.07,
+ "hero_gbp": 19023990.39,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -44,8 +44,8 @@
   },
   {
    "q": "2020-Q4",
-   "payment_gbp": 1427266.6200000006,
-   "generation_mwh": 27390.18999999999
+   "payment_gbp": 1427266.6199999999,
+   "generation_mwh": 27390.190000000002
   },
   {
    "q": "2021-Q1",
@@ -84,8 +84,8 @@
   },
   {
    "q": "2022-Q4",
-   "payment_gbp": -800324.7499999998,
-   "generation_mwh": 28644.341000000004
+   "payment_gbp": -800324.7499999999,
+   "generation_mwh": 28644.341
   },
   {
    "q": "2023-Q1",
@@ -114,8 +114,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 1467372.8699999999,
-   "generation_mwh": 23866.264999999996
+   "payment_gbp": 1467372.8099999998,
+   "generation_mwh": 23866.257999999998
   },
   {
    "q": "2024-Q3",
@@ -124,8 +124,8 @@
   },
   {
    "q": "2024-Q4",
-   "payment_gbp": 1185182.3200000005,
-   "generation_mwh": 31032.778000000017
+   "payment_gbp": 1185182.3200000003,
+   "generation_mwh": 31032.778000000002
   },
   {
    "q": "2025-Q1",
@@ -139,8 +139,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 1334512.9500000002,
-   "generation_mwh": 22077.009999999995
+   "payment_gbp": 1334509.87,
+   "generation_mwh": 22077.007999999994
   },
   {
    "q": "2025-Q4",
@@ -149,18 +149,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 1372756.2400000002,
-   "generation_mwh": 39805.362
+   "payment_gbp": 1372702.8900000004,
+   "generation_mwh": 39804.434
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 981012.4400000001,
-   "generation_mwh": 24895.059000000005
+   "payment_gbp": 981015.0,
+   "generation_mwh": 24895.072000000007
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 263373.5200000002,
-   "generation_mwh": 15144.551000000001
+   "payment_gbp": 332578.7700000002,
+   "generation_mwh": 16011.157000000005
   }
  ],
  "contracts": [
@@ -169,7 +169,7 @@
    "unit_name": "Middle Muir Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 18954839.07,
+   "cumulative_gbp": 19023990.39,
    "first_settlement": "2019-01-09",
    "latest_strike_gbp_mwh": 120.28
   }
@@ -180,15 +180,15 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-17"
+  "data_to": "2026-09-20"
  },
  "outages": {
   "coverage_from": "2016-01-01",
   "windows": []
  },
  "tiles": {
-  "generation_mwh": 781918.5009999999,
-  "rate_gbp_per_mwh": 24.241451053733286,
+  "generation_mwh": 782784.183,
+  "rate_gbp_per_mwh": 24.30298261404702,
   "rate_label": "payment per subsidised MWh"
  }
 }
