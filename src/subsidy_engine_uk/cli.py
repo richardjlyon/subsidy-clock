@@ -185,6 +185,7 @@ def cmd_build_cards(args: argparse.Namespace) -> int:
         if fact.get("chart"):
             sharecards.render_chart_card(timeseries, member_ids, fact, asof, site / "share")
     versions = sharecards.png_versions(site / "share")
+    n_targets = sharecards.verify_stub_targets(facts, site)
     sharecards.write_stubs(facts, site / "s", asof, versions)
     sharecards.write_manifest(facts, site / "share", asof, versions)
     if versions.get("headline"):
@@ -202,5 +203,6 @@ def cmd_build_cards(args: argparse.Namespace) -> int:
         n_stamped += sharecards.stamp_og_images(page, versions)
     n_stubs = sum(1 for f in facts if f.get("stub"))
     print(f"[ok] {len(facts)} share cards and {n_stubs} share stubs written "
-          f"({n_stamped} og:image tags cache-busted, as of {asof})")
+          f"({n_targets} stub targets verified, {n_stamped} og:image tags "
+          f"cache-busted, as of {asof})")
     return 0

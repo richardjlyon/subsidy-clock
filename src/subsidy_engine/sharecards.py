@@ -229,7 +229,8 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
         facts.append({"slug": slug,
                       "figure": fmt_full(_real_cum(scheme_id, s["cumulative"])),
                       "label": f"{name} — cumulative cost{since}{est}, in today’s money",
-                      "anchor": None, "stub": False,
+                      "anchor": None, "stub": True,
+                      "target_path": f"/explainers/{slug}",
                       "group": INDIRECT_G if indirect else DIRECT_G})
 
     # Equivalences (real), composed in sitedata.py.
@@ -311,7 +312,16 @@ def write_stubs(facts: list[dict], out_dir: Path | str, asof: str,
     for fact in facts:
         if not fact.get("stub"):
             continue
-        target = f"{SITE_URL}/#{fact['anchor']}" if fact["anchor"] else f"{SITE_URL}/"
+        # Where the stub sends a human who clicks through. Scheme cards belong
+        # on their own explainer, not the homepage: that page carries the
+        # figure's basis, sources and method, which is the whole point of
+        # letting the figure be shared on its own.
+        if fact.get("target_path"):
+            target = f"{SITE_URL}{fact['target_path']}"
+        elif fact["anchor"]:
+            target = f"{SITE_URL}/#{fact['anchor']}"
+        else:
+            target = f"{SITE_URL}/"
         html = STUB_TEMPLATE.format(
             title=_html.escape(f"{fact['figure']} {fact['label']}"),
             description=_html.escape(f"As of {asof}. Every figure traces to an official source."),
@@ -325,6 +335,32 @@ def write_stubs(facts: list[dict], out_dir: Path | str, asof: str,
             asof=asof,
         )
         (out / f"{fact['slug']}.html").write_text(html)
+
+
+def verify_stub_targets(facts: list[dict], site_dir: Path | str) -> int:
+    """Check every stub's click-through target resolves to a real page, and
+    return how many were checked.
+
+    A share stub exists to be posted publicly, so a broken target is a dead end
+    in front of the largest possible audience. The scheme→explainer mapping
+    names slugs that do not all have pages (cfd-nuclear has none), so this must
+    fail the build rather than publish a link to a 404."""
+    site = Path(site_dir)
+    missing = []
+    checked = 0
+    for fact in facts:
+        path = fact.get("target_path")
+        if not fact.get("stub") or not path:
+            continue
+        checked += 1
+        page = site / path.lstrip("/")
+        if not (page.with_suffix(".html").exists() or (page / "index.html").exists()):
+            missing.append((fact["slug"], path))
+    if missing:
+        raise ValueError(
+            "share stubs point at pages that do not exist: "
+            + ", ".join(f"{s} -> {p}" for s, p in missing))
+    return checked
 
 
 # Any og:image/twitter:image pointing at one of our rendered share PNGs.

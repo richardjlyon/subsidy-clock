@@ -94,7 +94,12 @@ def test_load_facts_headline_set(data_dir):
     assert by_slug["renewables-obligation"]["figure"] == "£48,000,000,000"
     assert "since 2003" in by_slug["renewables-obligation"]["label"]  # first non-zero year
     assert "today’s money" in by_slug["renewables-obligation"]["label"]
-    assert not by_slug["renewables-obligation"]["stub"]
+    # scheme cards get their own stub, pointing at the scheme's explainer: that
+    # page carries the figure's basis, sources and method, which is the point
+    # of letting the figure be shared on its own.
+    assert by_slug["renewables-obligation"]["stub"]
+    assert by_slug["renewables-obligation"]["target_path"] == "/explainers/renewables-obligation"
+    assert by_slug["bsuos"]["target_path"] == "/explainers/bsuos"
     # indirect scheme cards label themselves estimated
     assert "estimated" in by_slug["bsuos"]["label"]
     # the 'site' brand duplicate is gone
@@ -136,12 +141,20 @@ def test_write_stubs(data_dir, tmp_path):
     out = tmp_path / "s"
     versions = {f["slug"]: "abc1234567" for f in facts}
     sharecards.write_stubs(facts, out, asof, versions)
-    # one stub per stub-flagged fact (headline figures + switch-off), none for
-    # the per-scheme explainer cards
-    assert sorted(p.name for p in out.glob("*.html")) == [
-        "headline.html", "household-full.html", "household.html",
-        "per-mwh-full.html", "per-mwh.html", "run-rate-full.html", "run-rate.html",
-        "switch-off.html", "the-bill.html", "total.html"]
+    # one stub per stub-flagged fact: the headline figures, switch-off, and now
+    # every per-scheme explainer card, so a scheme figure can be posted on its
+    # own and still land somewhere that explains it. Derived from the facts
+    # rather than hard-coded, so the fixture's scheme set can change without
+    # this becoming a list to hand-maintain.
+    expected = sorted(f"{f['slug']}.html" for f in facts if f.get("stub"))
+    assert sorted(p.name for p in out.glob("*.html")) == expected
+    # the scheme cards are in there, and they are what changed
+    assert "bsuos.html" in expected
+    assert "renewables-obligation.html" in expected
+    # a scheme stub sends the reader to its explainer, not the homepage
+    scheme = (out / "bsuos.html").read_text()
+    assert 'url=https://subsidyclock.co.uk/explainers/bsuos"' in scheme
+    assert 'location.replace("https://subsidyclock.co.uk/explainers/bsuos")' in scheme
     html = (out / "switch-off.html").read_text()
     # per-fact OG tags with a content-hash image URL (defeats platform preview caching)
     assert 'property="og:image" content="https://subsidyclock.co.uk/share/switch-off.png?v=abc1234567"' in html
@@ -230,6 +243,34 @@ def test_stamp_og_images_is_idempotent(tmp_path):
     assert text.count("?v=") == 1
     assert "bsuos.png?v=feedface01" in text
     assert "0000000000" not in text
+
+
+def test_verify_stub_targets_rejects_a_missing_page(tmp_path):
+    # A share stub is made to be posted publicly, so a broken click-through is a
+    # dead end in front of the largest possible audience. The build must fail
+    # rather than publish it: cfd-nuclear is mapped as an explainer slug but has
+    # no page, so this is a live trap, not a hypothetical.
+    site = tmp_path / "site"
+    (site / "explainers").mkdir(parents=True)
+    (site / "explainers" / "bsuos.html").write_text("<html></html>")
+    facts = [
+        {"slug": "bsuos", "stub": True, "target_path": "/explainers/bsuos"},
+        {"slug": "cfd-nuclear", "stub": True, "target_path": "/explainers/cfd-nuclear"},
+    ]
+    with pytest.raises(ValueError, match="cfd-nuclear"):
+        sharecards.verify_stub_targets(facts, site)
+
+
+def test_verify_stub_targets_passes_and_counts(tmp_path):
+    site = tmp_path / "site"
+    (site / "explainers").mkdir(parents=True)
+    (site / "explainers" / "bsuos.html").write_text("<html></html>")
+    facts = [
+        {"slug": "bsuos", "stub": True, "target_path": "/explainers/bsuos"},
+        {"slug": "total", "stub": True, "anchor": None},      # homepage, no target_path
+        {"slug": "tnuos", "stub": False, "target_path": "/explainers/nope"},  # not a stub
+    ]
+    assert sharecards.verify_stub_targets(facts, site) == 1
 
 
 def _png_size(path):
