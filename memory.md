@@ -89,7 +89,24 @@ Read at session start. Update when state changes. Durable knowledge lives in the
 - **Verify cards by reading the rendered PNG, not the stub HTML** (`tesseract`
   is on this host). OCR misreads digits — it read RO as £92,325,105,597 when
   `cards.json` says £92,325,705,597 — so use OCR to confirm *wording/basis*, and
-  `cards.json` or the data for *figures*.
+  `cards.json` or the data for *figures*. To prove the deployed PNG is the one
+  built: `curl -s <url> | sha256sum` against the local file.
+
+## Re-sharing a link when a platform shows the old card
+
+- **To bust a stale unfurl, append any unused query string to the link you
+  paste**: `https://subsidyclock.co.uk/s/bsuos?v=2` (bump to `?v=3` next time).
+  Platforms key their preview cache on the exact URL, so this reads as a new
+  page and forces a re-scrape; the reader sees the identical page. Twitter
+  retired its Card Validator, so there is no flush button any more.
+- **Stubs canonicalise to THEMSELVES** (`/s/<slug>`), fixed 30 Sep 2026. They
+  previously pointed at `/`, so Facebook and LinkedIn could collapse a shared
+  scheme link to the homepage and unfurl the £240bn headline card instead of the
+  card shared — and a `?v=` buster dissolves with it. `noindex` (already present)
+  is what keeps these out of search; canonical is not a de-indexing tool.
+  There is a test asserting this, proved against a full revert. Do not "tidy" it.
+- Diagnosing a wrong unfurl: **old card = cache** (use `?v=`); **headline card on
+  a scheme link = canonical**. Different faults.
 
 ## Open correspondence (Aug 2026)
 
