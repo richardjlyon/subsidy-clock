@@ -115,10 +115,10 @@ Read at session start. Update when state changes. Durable knowledge lives in the
   so the count overstated, and NHP costs include future inflation. Now 4 x the
   whole New Hospital Programme (£60bn, 46 schemes, NAO Jan 2026 Summary para 16);
   inflation-inclusive, so it understates. Verified live meta.json + PNG by OCR.
-- **homes (610,000) under test:** unit £393,333 = Cebr's £35.4bn / 90,000 in
-  **2023 prices**, but the record has no `price_base`, so it is not uplifted to
-  2024 — overstates ~3% (590,000 with `price_base: 2023`). Source is a
-  Shelter/NHF-commissioned study, not an official one.
+- **homes 610,000 -> 590,000 (1 Oct).** Unit £393,333 = Cebr's £35.4bn /
+  90,000 in **2023 prices**; record lacked `price_base`, so it was never uplifted
+  to 2024 (~3% overstatement). Now `price_base: 2023`. Residual weakness: source
+  is a Shelter/NHF-commissioned study, not official; England only.
 
 ## Open correspondence (Aug 2026)
 
