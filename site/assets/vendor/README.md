@@ -11,5 +11,5 @@ Re-vendor (version bump or security fix):
     curl -s  https://unpkg.com/maplibre-gl@<version>/LICENSE.txt -o maplibre-gl-LICENSE.txt
 
 then update the version above and re-test /map. These files are served with a
-long max-age (vercel.json), so a version bump should also bump the `?v=` query
+long max-age (site/_headers), so a version bump should also bump the `?v=` query
 on the script/link tags in site/map.html to bust caches.

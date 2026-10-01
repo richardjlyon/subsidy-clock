@@ -1,0 +1,25 @@
+name: Deploy site
+
+# Publishes site/ to Cloudflare Pages when a hand-made change lands on master.
+# The daily data run (update.yml) deploys itself; GITHUB_TOKEN pushes do not
+# trigger this workflow, so the two never double-deploy.
+on:
+  push:
+    branches: [master]
+    paths: ["site/**"]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 99b63c8b76711ecc6e202087e5860cc2
+        run: npx -y wrangler@4.144.0 pages deploy site --project-name=subsidy-clock --branch=master --commit-dirty=true

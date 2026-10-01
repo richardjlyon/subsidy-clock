@@ -1,0 +1,10 @@
+# Cloudflare Pages response headers (replaces the "headers" block of vercel.json).
+# Every page and data file revalidates, so the daily figure is never stale.
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Vendored libraries are versioned by ?v= query, so they can be cached for a year.
+# "! Cache-Control" drops the rule above first; Pages would otherwise join the two.
+/assets/vendor/*
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable

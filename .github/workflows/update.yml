@@ -41,7 +41,10 @@ jobs:
           git add data site/data site/share site/s site/embed site/index.html
           git diff --cached --quiet || git commit -m "data: scheduled update $(date -u +%F)"
           git push
-      - name: Deploy to Vercel
-        # explicit deploy hook: push-triggered auto-deploys have proven unreliable,
-        # and a stale live clock is a silent failure
-        run: curl -fsS -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}" > /dev/null
+      - name: Deploy to Cloudflare Pages
+        # deployed every run, not only when data changed: a stale live clock is
+        # a silent failure, so the deploy is explicit rather than push-triggered
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 99b63c8b76711ecc6e202087e5860cc2
+        run: npx -y wrangler@4.144.0 pages deploy site --project-name=subsidy-clock --branch=master --commit-dirty=true
