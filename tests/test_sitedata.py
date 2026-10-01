@@ -22,8 +22,8 @@ EQUIV = yaml.safe_load(Path("reference/equivalences.yaml").read_text())
 DEFLATOR_INFO = {"source": "ONS CPIH L522", "source_url": "https://ons", "base_year": 2024}
 
 DEFLATORS = pl.DataFrame(
-    {"year": [2012, 2014, 2015, 2022, 2024],
-     "index": [96.0, 99.6, 100.0, 120.5, 132.9]},
+    {"year": [2012, 2014, 2015, 2022, 2023, 2024],
+     "index": [96.0, 99.6, 100.0, 120.5, 128.6, 132.9]},
     schema={"year": pl.Int64, "index": pl.Float64})
 
 
@@ -93,8 +93,9 @@ def test_factoids_floored_figures_and_sentences(tmp_path):
     assert by_slug["nurses"]["figure_label"] == "NHS nurses"
 
     # combined real 223.35e9 -> £10bn floor strictly below -> £220bn+
-    # homes = 220e9 / 393333 = 559,322.0 -> 559,000
-    assert by_slug["homes"]["figure"] == "559,000"
+    # homes: 393333 is in 2023 prices -> * 132.9/128.6 = 406,485 (2024)
+    # 220e9 / 406,485 = 541,224 -> 541,000
+    assert by_slug["homes"]["figure"] == "541,000"
     assert by_slug["homes"]["frame"] == "the current £220bn+ full cost would have built"
     assert "£220bn+ full cost" in by_slug["homes"]["sentence"]
     assert "social homes" in by_slug["homes"]["label"]
