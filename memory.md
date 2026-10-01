@@ -108,6 +108,18 @@ Read at session start. Update when state changes. Durable knowledge lives in the
 - Diagnosing a wrong unfurl: **old card = cache** (use `?v=`); **headline card on
   a scheme link = canonical**. Different faults.
 
+## Factoid audit — 1 Oct 2026
+
+- **hospitals swapped (c9e4eb90, live 1 Oct).** Was 120 x "£2bn largest new NHS
+  hospitals": £2bn is the FLOOR of NAO Fig 15's top band ("£2 billion or more"),
+  so the count overstated, and NHP costs include future inflation. Now 4 x the
+  whole New Hospital Programme (£60bn, 46 schemes, NAO Jan 2026 Summary para 16);
+  inflation-inclusive, so it understates. Verified live meta.json + PNG by OCR.
+- **homes (610,000) under test:** unit £393,333 = Cebr's £35.4bn / 90,000 in
+  **2023 prices**, but the record has no `price_base`, so it is not uplifted to
+  2024 — overstates ~3% (590,000 with `price_base: 2023`). Source is a
+  Shelter/NHF-commissioned study, not an official one.
+
 ## Open correspondence (Aug 2026)
 
 - **Gordon Hughes (gordon.hughes@cantab.net) + John Constable (john.constable@ref.org.uk)** — both replied warmly 14–15 Aug to Richard's collaboration offer. Hughes & Moroney put UK subsidies at £274bn (2025 prices, 2005–25) via an independent route; the Clock's bottom-up ~£223bn lands nearby. The Clock caught REF's constraints double-count, which Constable acknowledged in writing. Offer: reconcile the two reconstructions, Clock as public front-end for REF's numbers, share the engine. **Hughes cannot travel — his wife is disabled** (per his 14 Aug email) — so propose a call/video, not a table. Reply drafted; awaiting Richard's approval.
