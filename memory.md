@@ -198,3 +198,6 @@ dynamic-redirect rule sends them to the `.co.uk` apex (308, path + query kept);
 `www.subsidyclock.co.uk` likewise. Headers: `site/_headers` (pages revalidate,
 `/assets/vendor/*` immutable). Pretty URLs (`/about.html` → `/about`) are Pages
 defaults, matching the old Vercel `cleanUrls`.
+Vercel retired the same day: Vercel project `subsidy-clock` deleted, both domains
+removed from the Vercel team, `vercel.json` and the `VERCEL_DEPLOY_HOOK` repo secret
+deleted. `subsidy-clock.vercel.app` now 404s.
