@@ -1,5 +1,5 @@
 # The Subsidy Clock — subsidyclock.co.uk
-# Licence: CC BY 4.0 (credit "The Subsidy Clock — subsidyclock.co.uk") · contains public sector information licensed under OGL v3.0 — generated 2026-10-01 06:53 UTC
+# Licence: CC BY 4.0 (credit "The Subsidy Clock — subsidyclock.co.uk") · contains public sector information licensed under OGL v3.0 — generated 2026-10-01 11:51 UTC
 # Data revisions log: origin=publisher is a source restating its own history; origin=ours is a basis change we made, with the cause named — see subsidyclock.co.uk/corrections
 scheme,table,detected_at,partition,previous_version,new_version,origin,cause
 bsuos,daily,2026-06-10T06:31:04.650394+00:00,2026-2027,20260610T063012.224599,20260610T063104.650394,publisher,source revision
@@ -39,6 +39,7 @@ bsuos,daily,2026-09-30T03:13:08.558603+00:00,2025-2026,20260909T100301.125215,20
 bsuos,daily,2026-09-30T03:13:08.561394+00:00,2026-2027,20260909T100301.542380,20260930T031308.561394,ours,basis change 2026-09-30: series moved from NESO's Daily Balancing Costs dataset to settled BSUoS charge data (gross BSUoS basis) — see /corrections
 bsuos,daily,2026-10-01T05:13:16.956599+00:00,2025-2026,20260930T111939.509898,20261001T051316.956599,ours,basis change 2026-09-30: series moved from NESO's Daily Balancing Costs dataset to settled BSUoS charge data (gross BSUoS basis) — see /corrections
 bsuos,daily,2026-10-01T05:13:16.962264+00:00,2026-2027,20260930T111939.515479,20261001T051316.962264,ours,basis change 2026-09-30: series moved from NESO's Daily Balancing Costs dataset to settled BSUoS charge data (gross BSUoS basis) — see /corrections
+bsuos,daily,2026-10-01T11:46:35.236529+00:00,2024-2025,20261001T064712.791773,20261001T114635.236529,ours,basis change 2026-09-30: series moved from NESO's Daily Balancing Costs dataset to settled BSUoS charge data (gross BSUoS basis) — see /corrections
 capacity_market,payments,2026-06-12T07:04:57.421142+00:00,full,20260611T201635.344897,20260612T070457.421142,"",""
 capacity_market,payments,2026-07-09T08:57:07.635346+00:00,full,20260708T075525.911839,20260709T085707.635346,"",""
 capacity_market,payments,2026-08-08T06:08:30.577839+00:00,full,20260807T064849.575079,20260808T060830.577839,"",""
@@ -202,3 +203,4 @@ remit,outages,2026-09-29T11:36:41.732623+00:00,full,20260928T120030.709119,20260
 remit,outages,2026-09-30T11:25:35.462494+00:00,full,20260929T113641.732623,20260930T112535.462494,publisher,source revision
 remit,outages,2026-10-01T05:17:46.067694+00:00,full,20260930T112535.462494,20261001T051746.067694,publisher,source revision
 remit,outages,2026-10-01T06:52:43.993893+00:00,full,20261001T051746.067694,20261001T065243.993893,publisher,source revision
+remit,outages,2026-10-01T11:51:12.242761+00:00,full,20261001T065243.993893,20261001T115112.242761,publisher,source revision
