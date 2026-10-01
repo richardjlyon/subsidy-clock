@@ -1,29 +1,29 @@
 {
- "generated_at": "2026-09-30T11:26:39.380249+00:00",
+ "generated_at": "2026-10-01T05:18:59.412169+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-09-30T11:18:34.880959+00:00",
+   "retrieved_at": "2026-10-01T05:12:29.186219+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
-   "row_count": 117026
+   "row_count": 117111
   },
   "constraints": {
-   "retrieved_at": "2026-09-30T11:26:38.110167+00:00",
-   "source_date": "2024-02-08",
+   "retrieved_at": "2026-10-01T05:18:58.099353+00:00",
+   "source_date": "2024-02-01",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 26
+   "row_count": 50
   },
   "capacity_market": {
-   "retrieved_at": "2026-09-30T11:19:06.509437+00:00",
+   "retrieved_at": "2026-10-01T05:12:47.202387+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 793
   },
   "bsuos": {
-   "retrieved_at": "2026-09-30T11:19:39.515479+00:00",
+   "retrieved_at": "2026-10-01T05:13:16.962264+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/current-balancing-services-use-of-system-bsuos-data",
-   "row_count": 163
+   "row_count": 165
   }
  },
  "context": {
@@ -61,7 +61,7 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 240123055554.39618
+  "combined_real": 240163735996.14478
  },
  "factoids": [
   {
@@ -110,13 +110,13 @@
   },
   {
    "slug": "hospitals",
-   "figure": "120",
+   "figure": "4",
    "basis": "full",
-   "figure_label": "the largest new NHS hospitals",
-   "frame": "the current \u00a3240bn+ full cost would have built",
-   "sentence": "The current \u00a3240bn+ full cost of subsidising UK renewables would have built 120 of the largest new NHS hospitals, in today's money.",
-   "label": "the largest new NHS hospitals the current \u00a3240bn+ full UK renewables cost would have built, in today's money",
-   "source_name": "National Audit Office, Update on the New Hospital Programme (2026) \u2014 largest schemes about \u00a32bn each",
+   "figure_label": "complete New Hospital Programmes",
+   "frame": "the current \u00a3240bn+ full cost would have paid for",
+   "sentence": "The current \u00a3240bn+ full cost of subsidising UK renewables would have paid for England's entire New Hospital Programme \u2014 46 hospital schemes \u2014 4 times over, in today's money.",
+   "label": "complete New Hospital Programmes (46 schemes each) the current \u00a3240bn+ full UK renewables cost would have paid for, in today's money",
+   "source_name": "National Audit Office, Update on the New Hospital Programme (January 2026) \u2014 \u00a360bn for all 46 schemes",
    "source_url": "https://www.nao.org.uk/reports/update-on-the-new-hospital-programme/"
   },
   {
@@ -154,11 +154,11 @@
   },
   {
    "slug": "teachers",
-   "figure": "236,000",
+   "figure": "235,000",
    "basis": "runrate",
    "figure_label": "schoolteachers",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of UK renewable subsidy pays the salaries of 236,000 experienced schoolteachers, in today's money.",
+   "sentence": "A year of UK renewable subsidy pays the salaries of 235,000 experienced schoolteachers, in today's money.",
    "label": "experienced schoolteachers' annual salaries paid by one year of UK renewable subsidy, in today's money",
    "source_name": "STPCD 2025, Upper Pay Range UPS3, England excluding London (2025-26)",
    "source_url": "https://www.gov.uk/government/publications/school-teachers-pay-and-conditions"

@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 29779372.57,
+ "hero_gbp": 29779249.04,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -45,7 +45,7 @@
   {
    "q": "2021-Q3",
    "payment_gbp": -761779.2199999999,
-   "generation_mwh": 27796.161
+   "generation_mwh": 27796.161000000004
   },
   {
    "q": "2021-Q4",
@@ -79,7 +79,7 @@
   },
   {
    "q": "2023-Q2",
-   "payment_gbp": 686377.7299999997,
+   "payment_gbp": 686377.7300000001,
    "generation_mwh": 32150.340000000004
   },
   {
@@ -114,8 +114,8 @@
   },
   {
    "q": "2025-Q1",
-   "payment_gbp": 1169105.66,
-   "generation_mwh": 59986.366
+   "payment_gbp": 1169105.6600000001,
+   "generation_mwh": 59986.365999999995
   },
   {
    "q": "2025-Q2",
@@ -124,8 +124,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 2320371.09,
-   "generation_mwh": 38111.424999999996
+   "payment_gbp": 2320363.77,
+   "generation_mwh": 38111.34
   },
   {
    "q": "2025-Q4",
@@ -134,13 +134,13 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 3080576.15,
-   "generation_mwh": 78764.75199999998
+   "payment_gbp": 3080557.1100000003,
+   "generation_mwh": 78764.46599999997
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 2153904.81,
-   "generation_mwh": 55487.039999999986
+   "payment_gbp": 2153807.64,
+   "generation_mwh": 55485.81799999998
   },
   {
    "q": "2026-Q3",
@@ -154,7 +154,7 @@
    "unit_name": "Clocaenog Forest Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 29779372.57,
+   "cumulative_gbp": 29779249.04,
    "first_settlement": "2019-10-31",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -165,11 +165,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-20"
+  "data_to": "2026-09-21"
  },
  "tiles": {
-  "generation_mwh": 1545010.701,
-  "rate_gbp_per_mwh": 19.27454130299904,
+  "generation_mwh": 1545009.108,
+  "rate_gbp_per_mwh": 19.274481222022672,
   "rate_label": "payment per subsidised MWh"
  }
 }
