@@ -180,8 +180,21 @@ dailysceptic.org** (iframe `/embed/widget?size=card&basis=real&scope=combined`,
 `loading=lazy`). Each load = 2 Vercel requests (widget.html + `data/totals.json`),
 both `max-age=0`, so nothing is cached in the browser. Matomo undercounts (ad
 blockers), which plausibly covers the rest. Main-site pageviews are only ~100/day.
-Options put to Richard, not yet chosen: stamp every basis/scope variant into the
-widget (drop the fetch) + cache `/embed/*` for an hour; or move the whole static
-site to Cloudflare Pages (zone already on Cloudflare, free unlimited requests).
+**Resolved 2026-10-01: the site moved to Cloudflare Pages** (free, unmetered static
+requests), Richard's choice over trimming the widget.
 The Matomo API tokens in 1Password are dead again; query the DB via
 `qm guest exec 102` → `docker exec matomo-db mariadb -u$MARIADB_USER …`.
+
+## Hosting: Cloudflare Pages since 2026-10-01
+
+Pages project `subsidy-clock` in **richlyon@mac.com's** Cloudflare account
+(`99b63c8b76711ecc6e202087e5860cc2`, same account as both zones). Deploy:
+`wrangler@4.144.0 pages deploy site --project-name=subsidy-clock --branch=master`
+with token `cloudflare-pages-subsidy-clock` (1Password Automation; Pages-edit only).
+`update.yml` deploys after the daily commit; `deploy.yml` deploys hand pushes to
+`site/**`. DNS: `subsidyclock.co.uk` + `www` CNAME → `subsidy-clock.pages.dev`
+(proxied); `subsidyclock.uk` + `www` are proxied dummy A `192.0.2.1` and a
+dynamic-redirect rule sends them to the `.co.uk` apex (308, path + query kept);
+`www.subsidyclock.co.uk` likewise. Headers: `site/_headers` (pages revalidate,
+`/assets/vendor/*` immutable). Pretty URLs (`/about.html` → `/about`) are Pages
+defaults, matching the old Vercel `cleanUrls`.

@@ -96,11 +96,11 @@ Attribution rules and their confidence levels are quoted in full on the [methodo
 
 ## Automation
 
-A GitHub Action (`.github/workflows/update.yml`) runs daily at 05:30 UTC, after LCCC and Elexon publish: it updates all schemes (a failing scheme flags stale data on the site rather than blocking the others), extends the constraints backfill by one week, rebuilds the site data and share cards, commits, and triggers the production deploy via a Vercel deploy hook.
+A GitHub Action (`.github/workflows/update.yml`) runs daily at 05:30 UTC, after LCCC and Elexon publish: it updates all schemes (a failing scheme flags stale data on the site rather than blocking the others), extends the constraints backfill by one week, rebuilds the site data and share cards, commits, and publishes `site/` to Cloudflare Pages. A second workflow (`deploy.yml`) publishes any hand-made change to `site/` pushed to `master`.
 
 ## Deployment
 
-The site is static and hosted on Vercel (serving `site/`). The only build-time step is `scripts/inject-mapbox-token.js`, which writes the Mapbox access token from the `MAPBOX_TOKEN` environment variable into a git-ignored file the map page reads at runtime. The token is a public, domain-restricted client token; **it is never committed to the repository**. Everything except the map's basemap image is independent of it.
+The site is static and hosted on Cloudflare Pages (project `subsidy-clock`, serving `site/` with no build step). Response headers live in `site/_headers` and the not-found page in `site/404.html`. `subsidyclock.uk` and `www.` redirect to `subsidyclock.co.uk` by Cloudflare redirect rules. Deploys use the `CLOUDFLARE_API_TOKEN` repository secret, a Pages-only token kept in 1Password as `cloudflare-pages-subsidy-clock`.
 
 ## Data reuse
 
