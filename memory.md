@@ -170,3 +170,18 @@ Read at session start. Update when state changes. Durable knowledge lives in the
 - `uk-subsidy-tracker` — scholarly audit resource, **archived 2026-07-09**, superseded by the Clock; owes it the Q1 gas-counterfactual port.
 - `cfd-payment` / CfD Visualiser — **shelved 2026-07-09**; two charts queued as ports.
 - **Australia** — private development under disclosure embargo (D0), pushes to gitea only. See vault AU spokes.
+
+## The embed widget is most of the team's Vercel Edge Requests — 2026-10-01
+
+Vercel Hobby team went over **Edge Requests** (1.9M of 1M, 6 Sep – 1 Oct); bandwidth
+was only 13 GB of 100. This project made 1.33M of them. Matomo (core VM, `matomo-db`,
+idsite 2, event category `embed`) logs ~10k widget loads/day, **265k of 268k from
+dailysceptic.org** (iframe `/embed/widget?size=card&basis=real&scope=combined`,
+`loading=lazy`). Each load = 2 Vercel requests (widget.html + `data/totals.json`),
+both `max-age=0`, so nothing is cached in the browser. Matomo undercounts (ad
+blockers), which plausibly covers the rest. Main-site pageviews are only ~100/day.
+Options put to Richard, not yet chosen: stamp every basis/scope variant into the
+widget (drop the fetch) + cache `/embed/*` for an hour; or move the whole static
+site to Cloudflare Pages (zone already on Cloudflare, free unlimited requests).
+The Matomo API tokens in 1Password are dead again; query the DB via
+`qm guest exec 102` → `docker exec matomo-db mariadb -u$MARIADB_USER …`.
