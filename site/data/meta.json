@@ -1,26 +1,26 @@
 {
- "generated_at": "2026-10-01T05:18:59.412169+00:00",
+ "generated_at": "2026-10-01T06:53:43.657357+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-10-01T05:12:29.186219+00:00",
+   "retrieved_at": "2026-10-01T06:46:21.667714+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
    "row_count": 117111
   },
   "constraints": {
-   "retrieved_at": "2026-10-01T05:18:58.099353+00:00",
-   "source_date": "2024-02-01",
+   "retrieved_at": "2026-10-01T06:53:42.277215+00:00",
+   "source_date": "2024-01-25",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 50
+   "row_count": 64
   },
   "capacity_market": {
-   "retrieved_at": "2026-10-01T05:12:47.202387+00:00",
+   "retrieved_at": "2026-10-01T06:46:50.504435+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 793
   },
   "bsuos": {
-   "retrieved_at": "2026-10-01T05:13:16.962264+00:00",
+   "retrieved_at": "2026-10-01T06:47:12.808827+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/current-balancing-services-use-of-system-bsuos-data",
    "row_count": 165
@@ -77,11 +77,11 @@
   },
   {
    "slug": "homes",
-   "figure": "610,000",
+   "figure": "590,000",
    "basis": "full",
    "figure_label": "social homes",
    "frame": "the current \u00a3240bn+ full cost would have built",
-   "sentence": "The current \u00a3240bn+ full cost of subsidising UK renewables, including estimated indirect costs, would have built 610,000 social homes \u2014 land included \u2014 in today's money.",
+   "sentence": "The current \u00a3240bn+ full cost of subsidising UK renewables, including estimated indirect costs, would have built 590,000 social homes \u2014 land included \u2014 in today's money.",
    "label": "social homes (land included) the current \u00a3240bn+ full UK renewables cost would have built, in today's money",
    "source_name": "Cebr for Shelter and the National Housing Federation (2024)",
    "source_url": "https://england.shelter.org.uk/professional_resources/policy_and_research/policy_library/economic_impact_social_housing"
