@@ -1,4 +1,4 @@
-# Cloudflare Pages response headers (replaces the "headers" block of vercel.json).
+# Cloudflare Pages response headers (carried over from the Vercel config when the site moved, 2026-10-01).
 # Every page and data file revalidates, so the daily figure is never stale.
 /*
   Cache-Control: public, max-age=0, must-revalidate

@@ -2,7 +2,7 @@
 # pre-push — guard against forking history away from the daily data bot.
 #
 # These repos have a scheduled GitHub Action that commits generated data to this
-# branch and pushes; that push IS the daily Vercel release. If your local branch
+# branch and pushes; that push is followed by the daily Cloudflare Pages deploy. If your local branch
 # is behind the remote when you push, you fork history (the divergence you hit).
 # This hook blocks that early and tells you the one-command fix. It does NOT rebase
 # for you — mutating refs inside pre-push is unreliable; use `git up` (see setup).

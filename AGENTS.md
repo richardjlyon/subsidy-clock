@@ -8,7 +8,7 @@ Steward of the Clock: its correspondence, its data freshness, its public standin
 
 ## Where things live
 
-- **Code / work product:** `/Users/rjl/AIOS/Projects/subsidy-clock` (public `github.com/richardjlyon/subsidy-clock`; gitea mirror). Deploys via the `ship-subsidy-clock` skill — the push *is* the deploy.
+- **Code / work product:** `/Users/rjl/AIOS/Projects/subsidy-clock` (public `github.com/richardjlyon/subsidy-clock`; gitea mirror). Hosted on Cloudflare Pages: the daily data workflow deploys itself, and a push to `master` touching `site/` deploys via `deploy.yml` — so a push is a publication.
 - **Tasks:** Plane project `SUBCLK` (https://plane.kwlan.net, workspace `claude`). Use the `plane` skill at the AIOS root.
 - **Knowledge:** Obsidian vault `Projects/The Subsidy Clock*.md` — the canonical hub and its spokes. Authoritative for purpose, data discipline, audit posture, findings. Do not duplicate it here.
 - **Operational state:** `memory.md` in this folder — read at session start, update when state changes.
