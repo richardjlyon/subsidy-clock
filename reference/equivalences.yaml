@@ -61,17 +61,23 @@
   source: DfE, School Rebuilding Programme — actual scheme costs for new large secondary schools
   source_url: https://www.gov.uk/government/publications/school-rebuilding-programme
   as_of: 2024
+# hospitals: the whole programme, not a per-hospital unit. NAO Figure 15 gives
+# scheme costs only as bands whose top band is "£2 billion or more", so no
+# per-hospital figure is a ceiling. The £60bn programme total (NAO Summary
+# para 16) includes future inflation, i.e. it is ABOVE today's money, so the
+# count understates. England only. No price_base: leave the £60bn as stated.
 - slug: hospitals
-  unit_gbp: 2000000000
+  unit_gbp: 60000000000
   basis: full
   round_to: 1
-  figure_label: the largest new NHS hospitals
-  frame: the current {full} full cost would have built
+  figure_label: complete New Hospital Programmes
+  frame: the current {full} full cost would have paid for
   sentence: >-
-    The current {full} full cost of subsidising UK renewables would have
-    built {n} of the largest new NHS hospitals, in today's money.
-  label: the largest new NHS hospitals the current {full} full UK renewables cost would have built, in today's money
-  source: National Audit Office, Update on the New Hospital Programme (2026) — largest schemes about £2bn each
+    The current {full} full cost of subsidising UK renewables would have paid
+    for England's entire New Hospital Programme — 46 hospital schemes — {n}
+    times over, in today's money.
+  label: complete New Hospital Programmes (46 schemes each) the current {full} full UK renewables cost would have paid for, in today's money
+  source: National Audit Office, Update on the New Hospital Programme (January 2026) — £60bn for all 46 schemes
   source_url: https://www.nao.org.uk/reports/update-on-the-new-hospital-programme/
   as_of: 2026
 - slug: aircraft-carriers
