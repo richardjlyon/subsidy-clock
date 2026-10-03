@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 200287206.54,
+ "hero_gbp": 200453468.31,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -14,8 +14,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 35241803.68,
-   "generation_mwh": 356593.209
+   "payment_gbp": 35241873.3,
+   "generation_mwh": 356594.114
   },
   {
    "q": "2025-Q4",
@@ -24,18 +24,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 45401416.67,
-   "generation_mwh": 579744.0599999999
+   "payment_gbp": 45401426.35,
+   "generation_mwh": 579744.129
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 26622632.21,
-   "generation_mwh": 338242.757
+   "payment_gbp": 26622690.77,
+   "generation_mwh": 338243.552
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 13182905.28,
-   "generation_mwh": 254886.408
+   "payment_gbp": 13349029.19,
+   "generation_mwh": 251630.484
   }
  ],
  "contracts": [
@@ -44,7 +44,7 @@
    "unit_name": "Neart na Gaoithe",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 200287206.54,
+   "cumulative_gbp": 200453468.31,
    "first_settlement": "2025-04-16",
    "latest_strike_gbp_mwh": 167.68
   }
@@ -55,7 +55,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-22"
+  "data_to": "2026-09-23"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -147,8 +147,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 2354665.7209999994,
-  "rate_gbp_per_mwh": 85.05971983782918,
+  "generation_mwh": 2351411.566,
+  "rate_gbp_per_mwh": 85.24814252359597,
   "rate_label": "payment per subsidised MWh"
  }
 }

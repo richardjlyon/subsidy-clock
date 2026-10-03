@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 2611679598.12,
+ "hero_gbp": 2614682251.47,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -94,8 +94,8 @@
   },
   {
    "q": "2023-Q3",
-   "payment_gbp": 106650535.90000005,
-   "generation_mwh": 932998.7429999992
+   "payment_gbp": 106650535.9,
+   "generation_mwh": 932998.7429999993
   },
   {
    "q": "2023-Q4",
@@ -109,8 +109,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 109291895.98999994,
-   "generation_mwh": 829293.928
+   "payment_gbp": 109291893.64999993,
+   "generation_mwh": 829293.905
   },
   {
    "q": "2024-Q3",
@@ -124,7 +124,7 @@
   },
   {
    "q": "2025-Q1",
-   "payment_gbp": 126804802.57999998,
+   "payment_gbp": 126804802.57999995,
    "generation_mwh": 1311251.4009999998
   },
   {
@@ -134,8 +134,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 132295076.64999996,
-   "generation_mwh": 990549.174
+   "payment_gbp": 132294969.48999996,
+   "generation_mwh": 990548.382
   },
   {
    "q": "2025-Q4",
@@ -144,8 +144,8 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 191395989.27000013,
-   "generation_mwh": 1622252.780000001
+   "payment_gbp": 191396046.61000013,
+   "generation_mwh": 1622253.1770000008
   },
   {
    "q": "2026-Q2",
@@ -154,8 +154,8 @@
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 81030048.46999995,
-   "generation_mwh": 878388.1209999999
+   "payment_gbp": 84032753.97999994,
+   "generation_mwh": 886417.7060000001
   }
  ],
  "contracts": [
@@ -164,7 +164,7 @@
    "unit_name": "Hornsea Offshore Wind Farm Phase 1",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 1088267317.59,
+   "cumulative_gbp": 1089239393.84,
    "first_settlement": "2019-05-02",
    "latest_strike_gbp_mwh": 206.06
   },
@@ -173,7 +173,7 @@
    "unit_name": "Hornsea Offshore Wind Farm Phase 2",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 867646384.49,
+   "cumulative_gbp": 868607474.03,
    "first_settlement": "2020-03-31",
    "latest_strike_gbp_mwh": 206.06
   },
@@ -182,7 +182,7 @@
    "unit_name": "Hornsea Offshore Wind Farm Phase 3",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 655765896.04,
+   "cumulative_gbp": 656835383.6,
    "first_settlement": "2021-03-31",
    "latest_strike_gbp_mwh": 206.06
   }
@@ -193,7 +193,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-22"
+  "data_to": "2026-09-23"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -573,8 +573,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 30684851.469,
-  "rate_gbp_per_mwh": 85.1129946240249,
+  "generation_mwh": 30692880.636,
+  "rate_gbp_per_mwh": 85.18855830049434,
   "rate_label": "payment per subsidised MWh"
  }
 }
