@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 35095518.72,
+ "hero_gbp": 35086514.23,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -114,8 +114,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 2567220.960000002,
-   "generation_mwh": 41531.92599999999
+   "payment_gbp": 2567220.920000002,
+   "generation_mwh": 41531.924999999996
   },
   {
    "q": "2024-Q3",
@@ -139,8 +139,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 2633757.71,
-   "generation_mwh": 43829.457
+   "payment_gbp": 2633757.79,
+   "generation_mwh": 43829.46
   },
   {
    "q": "2025-Q4",
@@ -149,18 +149,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 2458862.0999999996,
-   "generation_mwh": 69334.27699999999
+   "payment_gbp": 2458834.8,
+   "generation_mwh": 69333.67899999999
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 1838568.250000001,
-   "generation_mwh": 45444.475999999995
+   "payment_gbp": 1838568.970000001,
+   "generation_mwh": 45444.51699999999
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 822509.2799999999,
-   "generation_mwh": 37846.195
+   "payment_gbp": 813531.33,
+   "generation_mwh": 38448.795000000006
   }
  ],
  "contracts": [
@@ -169,7 +169,7 @@
    "unit_name": "Kype Muir Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 35095518.72,
+   "cumulative_gbp": 35086514.23,
    "first_settlement": "2019-03-28",
    "latest_strike_gbp_mwh": 120.28
   }
@@ -180,15 +180,15 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-23"
+  "data_to": "2026-09-24"
  },
  "outages": {
   "coverage_from": "2016-01-01",
   "windows": []
  },
  "tiles": {
-  "generation_mwh": 1479860.791,
-  "rate_gbp_per_mwh": 23.715418999840235,
+  "generation_mwh": 1480462.836,
+  "rate_gbp_per_mwh": 23.699692675027745,
   "rate_label": "payment per subsidised MWh"
  }
 }

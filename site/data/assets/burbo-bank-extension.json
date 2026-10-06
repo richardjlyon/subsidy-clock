@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 900744562.55,
+ "hero_gbp": 900794597.13,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -149,8 +149,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 29361359.090000004,
-   "generation_mwh": 190668.25200000004
+   "payment_gbp": 29361357.6,
+   "generation_mwh": 190668.24000000002
   },
   {
    "q": "2024-Q3",
@@ -174,8 +174,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 26615177.650000006,
-   "generation_mwh": 171428.894
+   "payment_gbp": 26615188.590000007,
+   "generation_mwh": 171428.976
   },
   {
    "q": "2025-Q4",
@@ -184,18 +184,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 36498323.25,
-   "generation_mwh": 276379.014
+   "payment_gbp": 36498088.5,
+   "generation_mwh": 276377.385
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 25683419.400000006,
-   "generation_mwh": 187996.15199999997
+   "payment_gbp": 25683428.450000007,
+   "generation_mwh": 187996.22699999998
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 18214568.770000003,
-   "generation_mwh": 162047.16900000005
+   "payment_gbp": 18264819.6,
+   "generation_mwh": 162957.695
   }
  ],
  "contracts": [
@@ -204,7 +204,7 @@
    "unit_name": "Burbo Bank Extension Offshore Wind Farm",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 900744562.55,
+   "cumulative_gbp": 900794597.13,
    "first_settlement": "2017-04-11",
    "latest_strike_gbp_mwh": 220.95
   }
@@ -215,7 +215,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-23"
+  "data_to": "2026-09-24"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -313,8 +313,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 8237994.37,
-  "rate_gbp_per_mwh": 109.34027411213198,
+  "generation_mwh": 8238903.412,
+  "rate_gbp_per_mwh": 109.33428298455212,
   "rate_label": "payment per subsidised MWh"
  }
 }
