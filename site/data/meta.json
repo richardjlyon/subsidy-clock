@@ -1,20 +1,20 @@
 {
- "generated_at": "2026-10-06T12:15:47.590195+00:00",
+ "generated_at": "2026-10-07T12:03:09.987535+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-10-06T12:10:31.813754+00:00",
+   "retrieved_at": "2026-10-07T11:56:21.621197+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
-   "row_count": 117367
+   "row_count": 117622
   },
   "constraints": {
-   "retrieved_at": "2026-10-06T12:15:46.569120+00:00",
-   "source_date": "2023-12-07",
+   "retrieved_at": "2026-10-07T12:03:08.703426+00:00",
+   "source_date": "2023-11-30",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 17
+   "row_count": 0
   },
   "capacity_market": {
-   "retrieved_at": "2026-10-06T12:10:51.632154+00:00",
+   "retrieved_at": "2026-10-07T11:56:41.459600+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 793
@@ -61,16 +61,16 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 240170849655.6209
+  "combined_real": 240182370775.1732
  },
  "factoids": [
   {
    "slug": "nurses",
-   "figure": "308,000",
+   "figure": "307,000",
    "basis": "runrate",
    "figure_label": "NHS nurses",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of direct UK renewable subsidy pays the salaries of 308,000 NHS nurses, in today's money.",
+   "sentence": "A year of direct UK renewable subsidy pays the salaries of 307,000 NHS nurses, in today's money.",
    "label": "NHS nurses' annual salaries paid by one year of direct renewable subsidy, in today's money",
    "source_name": "NHS Employers, Agenda for Change pay scales 2026/27",
    "source_url": "https://www.nhsemployers.org/articles/pay-scales-202627"
