@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 64025963.05,
+ "hero_gbp": 64011147.24,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -49,8 +49,8 @@
   },
   {
    "q": "2020-Q4",
-   "payment_gbp": 4743051.7700000005,
-   "generation_mwh": 94281.448
+   "payment_gbp": 4743051.770000001,
+   "generation_mwh": 94281.44799999999
   },
   {
    "q": "2021-Q1",
@@ -90,7 +90,7 @@
   {
    "q": "2022-Q4",
    "payment_gbp": -4734715.120000001,
-   "generation_mwh": 72335.57
+   "generation_mwh": 72335.56999999998
   },
   {
    "q": "2023-Q1",
@@ -129,8 +129,8 @@
   },
   {
    "q": "2024-Q4",
-   "payment_gbp": 1376151.4999999998,
-   "generation_mwh": 50397.277999999984
+   "payment_gbp": 1376151.4999999995,
+   "generation_mwh": 50397.27799999999
   },
   {
    "q": "2025-Q1",
@@ -144,8 +144,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 3129591.1800000006,
-   "generation_mwh": 56897.319
+   "payment_gbp": 3129593.0900000003,
+   "generation_mwh": 56897.39300000001
   },
   {
    "q": "2025-Q4",
@@ -154,18 +154,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 3921657.4000000004,
-   "generation_mwh": 115884.12000000002
+   "payment_gbp": 3921655.9400000004,
+   "generation_mwh": 115884.06600000002
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 2724821.4899999998,
-   "generation_mwh": 67356.715
+   "payment_gbp": 2725077.68,
+   "generation_mwh": 67359.30399999999
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 1102105.6600000001,
-   "generation_mwh": 84041.57600000002
+   "payment_gbp": 1087033.2100000002,
+   "generation_mwh": 84460.603
   }
  ],
  "contracts": [
@@ -174,7 +174,7 @@
    "unit_name": "Dorenell Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 64025963.05,
+   "cumulative_gbp": 64011147.24,
    "first_settlement": "2018-12-20",
    "latest_strike_gbp_mwh": 120.28
   }
@@ -185,7 +185,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-27"
+  "data_to": "2026-09-28"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -205,8 +205,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 2729649.976,
-  "rate_gbp_per_mwh": 23.45574107044412,
+  "generation_mwh": 2730071.6119999997,
+  "rate_gbp_per_mwh": 23.446691639384003,
   "rate_label": "payment per subsidised MWh"
  }
 }

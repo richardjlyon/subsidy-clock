@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 124522358.97999999,
+ "hero_gbp": 124441319.86,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -94,8 +94,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 22852336.930000003,
-   "generation_mwh": 532071.9529999996
+   "payment_gbp": 22852350.73,
+   "generation_mwh": 532072.918
   },
   {
    "q": "2025-Q4",
@@ -104,18 +104,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 23026530.090000007,
-   "generation_mwh": 927033.0580000004
+   "payment_gbp": 23026530.220000006,
+   "generation_mwh": 927032.4130000005
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 10524653.789999994,
-   "generation_mwh": 583023.6630000004
+   "payment_gbp": 10525348.879999993,
+   "generation_mwh": 583036.7900000004
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": -2840451.0799999977,
-   "generation_mwh": 517676.177
+   "payment_gbp": -2922199.219999998,
+   "generation_mwh": 518819.137
   }
  ],
  "contracts": [
@@ -124,7 +124,7 @@
    "unit_name": "Triton Knoll Offshore Wind Farm Phase 3",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 133072038.63,
+   "cumulative_gbp": 133032453.35,
    "first_settlement": "2023-03-31",
    "latest_strike_gbp_mwh": 108.2
   },
@@ -133,7 +133,7 @@
    "unit_name": "Triton Knoll Offshore Wind Farm Phase 2",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": -3535380.55,
+   "cumulative_gbp": -3555153.79,
    "first_settlement": "2021-07-06",
    "latest_strike_gbp_mwh": 108.2
   },
@@ -142,7 +142,7 @@
    "unit_name": "Triton Knoll Offshore Wind Farm Phase 1",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": -5014299.100000001,
+   "cumulative_gbp": -5035979.7,
    "first_settlement": "2021-05-17",
    "latest_strike_gbp_mwh": 108.2
   }
@@ -153,7 +153,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-27"
+  "data_to": "2026-09-28"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -221,8 +221,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 12167675.293,
-  "rate_gbp_per_mwh": 10.233866041086506,
+  "generation_mwh": 12168831.7,
+  "rate_gbp_per_mwh": 10.22623394980473,
   "rate_label": "payment per subsidised MWh"
  }
 }
