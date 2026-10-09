@@ -1,23 +1,23 @@
 {
- "generated_at": "2026-10-08T12:19:45.062172+00:00",
+ "generated_at": "2026-10-09T12:11:03.349475+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-10-08T12:11:31.341796+00:00",
+   "retrieved_at": "2026-10-09T12:03:09.082266+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
-   "row_count": 117707
+   "row_count": 117792
   },
   "constraints": {
-   "retrieved_at": "2026-10-08T12:19:43.757794+00:00",
-   "source_date": "2023-11-23",
+   "retrieved_at": "2026-10-09T12:11:02.300923+00:00",
+   "source_date": "2023-11-16",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 76
+   "row_count": 0
   },
   "capacity_market": {
-   "retrieved_at": "2026-10-08T12:11:55.541505+00:00",
+   "retrieved_at": "2026-10-09T12:03:46.407355+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
-   "row_count": 793
+   "row_count": 805
   },
   "bsuos": {
    "retrieved_at": "2026-10-01T11:46:35.245557+00:00",
@@ -61,7 +61,7 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 240184203199.4198
+  "combined_real": 240319020199.29065
  },
  "factoids": [
   {
@@ -165,11 +165,11 @@
   },
   {
    "slug": "police",
-   "figure": "239,000",
+   "figure": "238,000",
    "basis": "runrate",
    "figure_label": "police officers",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of UK renewable subsidy pays the salaries of 239,000 police officers, in today's money.",
+   "sentence": "A year of UK renewable subsidy pays the salaries of 238,000 police officers, in today's money.",
    "label": "police officers' annual salaries paid by one year of UK renewable subsidy, in today's money",
    "source_name": "Police Federation of England & Wales, constable pay scales (top of scale, from 1 September 2025)",
    "source_url": "https://polfed.org/resources/pay-scales/constable-pay-scales/"
