@@ -212,7 +212,6 @@
   var els = {
     heroValue: document.getElementById('hero-value'),
     sinceOpened: document.getElementById('since-opened'),
-    month: document.getElementById('strip-month'),
     today: document.getElementById('strip-today'),
     year: document.getElementById('strip-year'),
     ftRate: document.getElementById('ft-rate')   // FT skin per-day descriptor
@@ -224,7 +223,6 @@
     var rate = active().rate_per_sec;
     els.heroValue.textContent = fmtFull(liveCumulative(t));
     els.sinceOpened.textContent = fmtPence(rate * (t - openedAt) / 1000);
-    els.month.textContent = fmtCompact(rate * 2629800); // avg month = 365.25/12 days
     els.today.textContent = fmtFull(rate * (t - startOfToday(d)) / 1000);
     els.year.textContent = fmtCompact(rate * (t - startOfYear(d)) / 1000);
     if (els.ftRate) els.ftRate.textContent = 'and counting, at ' + fmtCompact(rate * 86400) + ' a day';
@@ -436,6 +434,10 @@
   // Single value per the active basis + scope (no brackets); the switches
   // carry the basis/scope meaning.
   function renderStripExtras() {
+    // Annual run-rate: static between renders, so it lives here (re-run on
+    // every basis/scope switch) rather than in the per-frame tick.
+    document.getElementById('strip-annual').textContent =
+      fmtCompact(active().runrate_per_year);
     document.getElementById('strip-household').textContent =
       fmtPence(active().per_household_per_year);
     document.getElementById('strip-permwh').textContent =
