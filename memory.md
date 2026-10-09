@@ -185,6 +185,20 @@ requests), Richard's choice over trimming the widget.
 The Matomo API tokens in 1Password are dead again; query the DB via
 `qm guest exec 102` → `docker exec matomo-db mariadb -u$MARIADB_USER …`.
 
+## Strip: "Every year" card replaced "Every month" — 2026-10-09
+
+First strip card is now **Every year · at the current rate** (`#strip-annual`),
+reading `active().runrate_per_year`, so it follows both the inflation and the
+indirect-costs switches. Live values 9 Oct: £21.6bn (real, combined, default),
+£12.0bn (real, direct), £12.5bn (nominal, direct), £22.5bn (nominal, combined).
+Commit `ca4733c1`, deployed and verified on the live site; Richard confirmed.
+**`app.js` is served with max-age=14400** (Cloudflare default for .js; `_headers`
+`/*` rule does not reach it), so `index.html` now loads `app.js?v=<hash>`. Bump
+the hash on any `app.js` change paired with markup changes, or returning
+visitors run old script against new HTML for up to four hours.
+Background workings (2025 direct subsidy £13.0bn cash; OBR levy rise like-for-like
++56%, not +76%): `scratch/2026-10-08-annual-direct-2025-and-obr-rise.md`.
+
 ## Hosting: Cloudflare Pages since 2026-10-01
 
 Pages project `subsidy-clock` in **richlyon@mac.com's** Cloudflare account
