@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en-gb" data-skin="ft">
+<head>
+<script>(function(){var s=new URLSearchParams(location.search).get('skin');if(s==='ft'||s==='energy-trap')document.documentElement.setAttribute('data-skin',s);})();</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paid to switch on (constraint turn-up) — The Subsidy Clock</title>
+  <meta name="description" content="When wind farms are paid to switch off, other power stations, mostly gas, are paid to switch on and replace them. What that has cost UK billpayers.">
+  <link rel="canonical" href="https://subsidyclock.co.uk/explainers/constraint-turnup">
+  <meta property="og:title" content="Paid to switch on (constraint turn-up) — The Subsidy Clock">
+  <meta property="og:description" content="When wind farms are paid to switch off, other power stations, mostly gas, are paid to switch on and replace them. What that has cost UK billpayers.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Subsidy Clock">
+  <meta property="og:url" content="https://subsidyclock.co.uk/explainers/constraint-turnup">
+  <meta property="og:image" content="https://subsidyclock.co.uk/share/bsuos.png?v=32e8515c6c">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="explainer.css">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head>
+<body data-scheme-id="constraint_turnup" data-scheme-slug="constraint-turnup">
+<header class="masthead">
+  <div class="masthead-inner">
+    <p class="brand"><span class="brand-tick" aria-hidden="true"></span><a href="/">The Subsidy Clock</a></p>
+    <nav><a href="/data">Data</a><a href="/map">Map</a><a href="/methodology">Methodology</a><a href="/share">Share</a><a href="/about">About</a></nav>
+  </div>
+</header>
+<div class="xwrap">
+  <p class="crumb"><a href="/">← All subsidies</a> · The Subsidy Clock</p>
+  <div class="xhead">
+    <span class="chip" style="background:var(--c-tu)"></span>
+    <h1>Paid to switch on (constraint turn-up)</h1>
+    <span class="badge est">indirect · estimated</span>
+  </div>
+
+  <div class="xstrip">
+    <div class="m"><div class="k">Total since 2015 (cash as paid)</div><div class="v num" id="x-total">&nbsp;</div><div class="basis" id="x-total-basis"></div></div>
+    <div class="m"><div class="k">Right now</div><div class="v num" id="x-rate">&nbsp;</div></div>
+    <div class="m"><div class="k">Your household</div><div class="v num" id="x-household">&nbsp;</div></div>
+  </div>
+
+  <div class="xbody">
+    <h2>What is it?</h2>
+    <p>When the cables cannot carry all the power from wind farms, most often from Scotland to
+    England, the grid operator pays some wind farms to switch off. Those
+    <a href="/explainers/constraints">switch-off payments</a> are counted on their own line. But
+    homes and businesses south of the bottleneck still need the electricity the wind farms would
+    have made, so the grid operator also pays other power stations, mostly gas, to switch on and
+    make it instead. That second payment is the turn-up. The same unit of electricity is paid for
+    twice: once to the wind farm not to make it, and once to a gas station to make it.</p>
+
+    <h2>Why does it exist?</h2>
+    <p>Wind farms were built faster than the transmission lines to carry their output. Until the
+    network catches up, every unit switched off behind a bottleneck has to be replaced by a
+    station on the other side of it.</p>
+
+    <h2>What has it cost?</h2>
+    <div class="spark" id="x-spark" style="--spark-c: var(--c-tu)"></div>
+    <p><span data-live="cumulative"></span> in cash as paid since 2015, currently growing at about
+    <span data-live="runrate"></span> a year — <span data-live="rate"></span> every second.
+    Spread across Britain's households, that is about <span data-live="household"></span>
+    per household per year, paid through electricity bills.</p>
+
+    <h2>Where it hides on your bill</h2>
+    <div class="bill">
+      <div class="ln"><span>Unit rate (per kWh)</span><span class="num">26p</span></div>
+      <div class="ln hi"><span>&nbsp;&nbsp;↳ inside it: balancing costs (BSUoS)</span><span class="num">≈ 1p</span></div>
+      <div class="ln"><span>Standing charge (per day)</span><span class="num">57p</span></div>
+    </div>
+    <p>Illustrative bill, not your tariff. The grid operator recovers turn-up through its
+    balancing charge (BSUoS), which suppliers fold into the unit rate. This money used to sit
+    inside the <a href="/explainers/bsuos">balancing line</a>; it is now shown on its own, and
+    the balancing line is smaller by the same amount, so the total does not change.</p>
+
+    <h2>How sure are we?</h2>
+    <p>This is an estimate, which is why it sits with the indirect costs rather than with the
+    payments to renewable generators. It follows the method used by Octopus Energy's Wasted Wind
+    tracker. For each half-hour, we take the amount of wind energy switched off for network
+    reasons and price it at what the grid operator paid that half-hour to buy energy from other
+    stations. We reproduce Octopus's published figures to within 0.1%: £1,466.8m for 2025,
+    against Octopus's £1,467.0m. The amount of wind switched off is measured; what is estimated
+    is its price. The grid operator's own figure for all its thermal-constraint costs is higher
+    still, at £1,831m for 2025, because it covers more than replacing switched-off wind.</p>
+    <p>We also count what was actually paid, half-hour by half-hour, to stations other than wind
+    farms, on offers the grid operator marked as constraint actions, while wind was being
+    switched off. That came to <span data-live="paid-measured"></span> since 2015, about
+    <span data-live="gas-share"></span> of it to gas stations. It is lower than the estimate
+    because the grid operator buys much of the replacement energy through ordinary trading,
+    which is not marked; it is a floor, not a contradiction. Attribution confidence is
+    <strong>low</strong>.</p>
+
+    <h2>Sources</h2>
+    <p class="src">Elexon settlement data for every accepted bid and offer in every half-hour
+    since November 2015, the first month Elexon publishes it — see the
+    <a href="/methodology#attr-constraint_turnup">methodology</a>. Method:
+    <a href="https://wastedwind.energy/">Octopus Energy, Wasted Wind</a>. Totals are nominal £
+    as paid. Unit rate and standing charge from
+    <a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026">Ofgem Q3 2026 price cap announcement</a>.</p>
+  </div>
+
+  <footer class="footer">
+    <p class="footer-links">Made by <a href="https://richardlyon.net/">Richard Lyon</a> · <a href="/data">Data</a> · <a href="/methodology">Methodology &amp; sources</a> · <a href="/corrections">Corrections</a> · <a href="/about">About this site</a></p>
+    <p class="footer-small">Every figure traces to an official source.</p>
+  </footer>
+</div>
+<script src="../share.js"></script>
+<script src="common.js"></script>
+<script src="explainer.js"></script>
+</body>
+</html>

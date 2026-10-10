@@ -8,7 +8,7 @@ def test_cli_help():
         capture_output=True, text=True,
     )
     assert out.returncode == 0
-    for cmd in ("update", "backfill-constraints", "build-site"):
+    for cmd in ("update", "backfill-constraints", "backfill-turnup", "build-site"):
         assert cmd in out.stdout
 
     update_help = subprocess.run(

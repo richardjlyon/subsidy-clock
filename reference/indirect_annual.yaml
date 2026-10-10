@@ -301,7 +301,9 @@ schemes:
         Raw totals stored; attribution happens in the money model. Only the
         increase above the CPIH-indexed 2002-05 baseline (GBP 0.4bn/yr) is
         attributed, NET of wind constraint payments already counted in the
-        direct layer, floored at zero.
+        direct layer, floored at zero. The estimated cost of replacing
+        switched-off wind (constraint turn-up) is then shown as its own line
+        and taken out of this one.
       confidence: low
     note: >-
       Raw annual BSUoS for fiscal years starting 2002-2016, i.e. before the

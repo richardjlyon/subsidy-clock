@@ -18,7 +18,8 @@ from subsidy_engine import money, reconcile, reference, sitedata
 from subsidy_engine.store import SnapshotStore
 from subsidy_engine_uk import build as uk_build
 from subsidy_engine_uk import stations
-from subsidy_engine_uk.schemes import bsuos, capacity_market, cfd, constraints, remit
+from subsidy_engine_uk.schemes import (bsuos, capacity_market, cfd, constraint_turnup,
+                                      constraints, remit)
 
 
 def make_store(root: Path) -> SnapshotStore:
@@ -31,6 +32,7 @@ def cmd_update(args: argparse.Namespace) -> int:
     targets = {
         "cfd": lambda: cfd.update(store),
         "constraints": lambda: constraints.update(store),
+        "constraint_turnup": lambda: constraint_turnup.update(store),
         "cm": lambda: capacity_market.update(store),
         "bsuos": lambda: bsuos.update(store),
         "remit": lambda: remit.update(
@@ -53,6 +55,18 @@ def cmd_update(args: argparse.Namespace) -> int:
 def cmd_backfill_constraints(args: argparse.Namespace) -> int:
     store = make_store(args.root)
     constraints.backfill(store, date.fromisoformat(args.start), date.fromisoformat(args.end))
+    return 0
+
+
+def cmd_backfill_turnup(args: argparse.Namespace) -> int:
+    store = make_store(args.root)
+    n, failed = constraint_turnup.backfill(store, date.fromisoformat(args.start),
+                                           date.fromisoformat(args.end), progress=True)
+    print(f"[ok] constraint_turnup: {n} days written")
+    if failed:
+        print(f"[FAIL] constraint_turnup: {len(failed)} day(s) failed, rerun to retry: "
+              + ", ".join(d.isoformat() for d in failed), file=sys.stderr)
+        return 1
     return 0
 
 
@@ -84,7 +98,8 @@ def cmd_build_site(args: argparse.Namespace) -> int:
                            bmu_map=station_bmus)
     freshness = {}
     for scheme_id, table in [("cfd", "generation"), ("constraints", "daily"),
-                              ("capacity_market", "payments"), ("bsuos", "daily")]:
+                              ("capacity_market", "payments"), ("bsuos", "daily"),
+                              ("constraint_turnup", "daily")]:
         f = store.freshness(scheme_id, table)
         if f:
             freshness[scheme_id] = {k: f.get(k) for k in
@@ -132,7 +147,8 @@ def cmd_build_site(args: argparse.Namespace) -> int:
         for s in model["schemes"]:
             if s.layer == "indirect":
                 row = s.annual.filter(pl.col("year") == cc_year)
-                ours[s.scheme_id] = float(row["cost_gbp"][0]) if row.height else 0.0
+                key = REF_KEY.get(s.scheme_id, s.scheme_id)
+                ours[key] = ours.get(key, 0.0) + (float(row["cost_gbp"][0]) if row.height else 0.0)
         cc = reconcile.indirect_crosscheck(ours, ref_cc)
         (out_dir / "indirect_crosscheck.json").write_text(
             json.dumps(cc, indent=1, allow_nan=False))
@@ -150,7 +166,7 @@ def cmd_build_site(args: argparse.Namespace) -> int:
             nom = float(cut["cost_gbp"].sum()) if cut.height else 0.0
             if "cost_gbp_2024" in cut.columns and cut.height:
                 real_total += float(cut["cost_gbp_2024"].sum())
-            key = "cfd" if s.scheme_id in ("cfd_renewable", "cfd_low_carbon") else s.scheme_id
+            key = REF_KEY.get(s.scheme_id, s.scheme_id)
             comp[key] = comp.get(key, 0.0) + nom
         unmapped = set(comp) - set(ref_t["components"])
         if unmapped:
@@ -165,6 +181,13 @@ def cmd_build_site(args: argparse.Namespace) -> int:
 
     print(f"[ok] site data written to {out_dir}")
     return 0
+
+
+# How our schemes map onto REF's components for the like-for-like checks.
+# REF's BSUoS is the whole balancing charge, so constraint turn-up, which we
+# carve out of the BSUoS uplift, folds back into it for comparison.
+REF_KEY = {"cfd_renewable": "cfd", "cfd_low_carbon": "cfd",
+           "constraint_turnup": "bsuos"}
 
 
 def cmd_build_cards(args: argparse.Namespace) -> int:

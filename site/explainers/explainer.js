@@ -34,7 +34,20 @@
     }
 
     // live prose slots: <span data-live="cumulative|runrate|household|rate"></span>
+    // turn-up only: what was actually paid on constraint-flagged offers while
+    // wind was switched off, and the gas share of it
+    var paidMeasured = '', gasShare = '';
+    if (s.cross_check_cumulative && s.by_fuel_while_wind_constrained) {
+      var paid = s.cross_check_cumulative.accepted_offers_wind, gas = 0;
+      s.by_fuel_while_wind_constrained.forEach(function (f) {
+        if (f.fuel === 'CCGT' || f.fuel === 'OCGT') gas += f.cost;
+      });
+      paidMeasured = SC.fmtCompact(paid);
+      gasShare = paid > 0 ? Math.round(100 * gas / paid) + '%' : '';
+    }
     var liveVals = {
+      'paid-measured': paidMeasured,
+      'gas-share': gasShare,
       cumulative: SC.fmtCompact(s.cumulative),
       runrate: SC.fmtCompact(s.runrate_per_year),
       household: SC.fmtPence(perHousehold),
@@ -51,7 +64,9 @@
     });
 
     // sparkline from the annual series
-    var annual = data.timeseries.schemes[id].annual;
+    // leading zero years are years before the series exists, not years of nil cost
+    var annual = data.timeseries.schemes[id].annual.slice();
+    while (annual.length > 1 && !annual[0].cost) annual.shift();
     var max = 0;
     annual.forEach(function (a) { if (a.cost > max) max = a.cost; });
     document.getElementById('x-spark').innerHTML = annual.map(function (a) {
