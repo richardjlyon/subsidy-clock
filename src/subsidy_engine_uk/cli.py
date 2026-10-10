@@ -18,6 +18,7 @@ from subsidy_engine import money, reconcile, reference, sitedata
 from subsidy_engine.store import SnapshotStore
 from subsidy_engine_uk import build as uk_build
 from subsidy_engine_uk import stations
+from subsidy_engine_uk import scotland
 from subsidy_engine_uk.schemes import (bsuos, capacity_market, cfd, constraint_turnup,
                                       constraints, remit)
 
@@ -123,6 +124,19 @@ def cmd_build_site(args: argparse.Namespace) -> int:
                         generated=generated_at)
     changelog = sitedata.load_changelog(args.root / "changelog.jsonl")
     sitedata.write_changelog(changelog, out_dir, generated=generated_at)
+
+    con_daily = store.read_all_partitions("constraints", "daily")
+    if con_daily is not None and con_daily.height:
+        cons = ctx["electricity_consumption_by_nation"]
+        scot = scotland.build_payload(
+            con_daily, scotland.load_bmu_zones(args.root / "reference" / "bmu_zone.csv"),
+            scot_twh=cons["scotland_gwh"] / 1000, gb_twh=cons["gb_gwh"] / 1000,
+            consumption_source=cons["source"], consumption_url=cons["source_url"],
+            generated_at=generated_at, turnup_daily=constraint_turnup.daily_cost(store))
+        (out_dir / "scotland.json").write_text(json.dumps(scot, indent=1, allow_nan=False))
+        print(f"[scotland] £{scot['scotland_cost'] / 1e6:,.0f}m of £{scot['gb_cost'] / 1e6:,.0f}m "
+              f"({scot['scotland_share']:.1%}) to Scottish wind, {scot['window']['from']} to "
+              f"{scot['window']['to']}")
 
     totals_json = json.loads((out_dir / "totals.json").read_text())
     sitedata.write_widget(totals_json, args.root / "site" / "embed" / "widget.html")

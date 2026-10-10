@@ -678,3 +678,11 @@ tr.out-of-tolerance td { color: var(--amber-dark); font-weight: 500; }
 @media (max-width: 400px) {
   .hero-value { font-size: clamp(1.8rem, 8.6vw, 2.2rem); }
 }
+
+/* ---- Scotland page ---- */
+.scot h2 { margin-top: 34px; }
+.scot-stats { margin: 22px 0 8px; }
+.sc-svg { display: block; max-width: 760px; }
+.sc-ax { font-size: 11px; fill: var(--muted); font-family: var(--sans, inherit); }
+.scot ul.table-note { padding-left: 1.1em; }
+.scot ul.table-note li { margin-bottom: 8px; }

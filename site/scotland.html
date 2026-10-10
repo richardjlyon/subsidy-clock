@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en-GB" data-skin="ft">
+<head>
+<script>(function(){var s=new URLSearchParams(location.search).get('skin');if(s==='ft'||s==='energy-trap')document.documentElement.setAttribute('data-skin',s);})();</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scotland: paid to switch off — The Subsidy Clock</title>
+<meta name="description" content="How much of Britain’s wind constraint bill goes to Scottish wind farms, which farms are paid most, and who pays.">
+<meta property="og:title" content="The Subsidy Clock — Scotland: paid to switch off">
+<meta property="og:description" content="Almost all the money Britain pays wind farms to switch off goes to farms in Scotland.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Subsidy Clock">
+<meta property="og:url" content="https://subsidyclock.co.uk/scotland">
+<meta property="og:image" content="https://subsidyclock.co.uk/share/headline.png?v=a26dede0f3">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://subsidyclock.co.uk/scotland">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="skin-ft.css">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <!-- Matomo (self-hosted, cookieless) -->
+  <script>
+    var _paq = window._paq = window._paq || [];
+    _paq.push(['disableCookies']);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      var u = 'https://stats.kwlan.net/';
+      _paq.push(['setTrackerUrl', u + 'matomo.php']);
+      _paq.push(['setSiteId', '2']);
+      var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+      g.async = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);
+    })();
+  </script>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container masthead-inner">
+    <div class="brand-block">
+      <p class="brand"><a href="/"><span class="brand-tick" aria-hidden="true"></span>The Subsidy Clock</a></p>
+      <p class="brand-tag">What UK energy subsidies cost</p>
+    </div>
+    <nav><a href="/">← Back to the clock</a><a href="/data">Data</a><a href="/map">Map</a><a href="/methodology">Methodology</a><a href="/corrections">Corrections</a><a href="/changelog">Change log</a></nav>
+  </div>
+</header>
+
+<main class="container prose scot">
+  <h1>Scotland: paid to switch off</h1>
+  <p class="lede">When the grid cannot carry wind power south, it pays wind farms to stop generating. Almost all of that money goes to farms in Scotland.</p>
+
+  <div class="stat-row scot-stats">
+    <div class="stat"><span class="stat-value money num" id="sc-total">–</span><span class="stat-label" id="sc-total-label">paid to Scottish wind farms to switch off</span></div>
+    <div class="stat"><span class="stat-value num" id="sc-share">–</span><span class="stat-label">of all payments to wind farms to switch off in Great Britain</span></div>
+    <div class="stat"><span class="stat-value money num" id="sc-12m">–</span><span class="stat-label">in the last 12 months</span></div>
+  </div>
+
+  <h2>Month by month</h2>
+  <div class="chart" id="sc-chart" role="img" aria-label="Monthly switch-off payments, Scotland and the rest of Great Britain"></div>
+  <div class="legend"><span><span class="swatch" style="background:var(--c-con)"></span>Scottish wind farms</span><span><span class="swatch" style="background:var(--faint)"></span>Rest of Great Britain</span></div>
+
+  <h2>Who pays</h2>
+  <p id="sc-whopays"></p>
+
+  <h2>The second bill</h2>
+  <p id="sc-turnup"></p>
+
+  <h2>The farms paid most</h2>
+  <table class="data-table" id="sc-table">
+    <thead><tr><th>Wind farm</th><th class="num-col">Paid to switch off</th><th class="num-col">Electricity not made (MWh)</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <p class="table-note" id="sc-table-note"></p>
+
+  <p class="table-note"><a href="https://gridmargin.co.uk/scotland">When Scotland’s wind does not blow: half-hourly output of every Scottish wind farm →</a></p>
+
+  <h2 id="method">How this is worked out</h2>
+  <ul class="table-note">
+    <li><strong>Payments</strong> are the bids accepted from each wind unit in the Balancing Mechanism to cut its output, unit by unit and half-hour by half-hour, from Elexon’s public settlement data. The same figures feed the <a href="/#switch-off">switch-off card</a> on the front page. This record starts on <span id="sc-from"></span>.</li>
+    <li><strong>Which farms are Scottish</strong> comes from Elexon’s own register of units, not a hand-kept list. Elexon sets a transmission loss factor for each grid zone; North Scotland and South Scotland are two of the zones. Every unit paid in this period is placed; <a href="/data/scotland.json">the full data</a> lists them.</li>
+    <li><strong>Who pays</strong> assumes the bill is shared in proportion to the electricity each nation uses. Switch-off costs are recovered through balancing charges, which suppliers pay for every unit of electricity their customers use. Consumption figures: <a id="sc-cons-src" href=""></a>.</li>
+    <li><strong>What it leaves out:</strong> small wind farms connected to local networks rather than the national grid, which are not in the Balancing Mechanism; and the cost of the new lines being built to reduce constraints, which is charged separately.</li>
+  </ul>
+</main>
+<footer class="footer">
+  <div class="container">
+    <p class="footer-links">Made by <a href="https://richardlyon.net/">Richard Lyon</a> · <a href="/data">Data</a> · <a href="/methodology">Methodology &amp; sources</a> · <a href="/corrections">Corrections</a> · <a href="/changelog">Change log</a> · <a href="/about">About this site</a></p>
+    <p class="footer-small">Every figure traces to an official source.</p>
+  </div>
+</footer>
+
+<script src="scotland.js"></script>
+</body>
+</html>
