@@ -46,19 +46,34 @@ Read at session start. Update when state changes. Durable knowledge lives in the
   be revised before the review goes out. Awaiting Richard's decision on whether
   to revise the review or publish the correction first.
 
-## One change log, two kinds — branch `changelog`, 10 Oct 2026 (unmerged)
+## One change log, two kinds — live 10 Oct 2026
 
 - `changelog.jsonl` (repo root) replaced `corrections.jsonl`. Every entry has a
   required `kind`: `correction` (we published something wrong) or `change`
   (method, scope or source moved on purpose). Build fails on any other kind.
-  `was`/`now` are required for both; a change that moved no figure says so.
-- One load, two outputs: `changelog.json/.csv` (all published entries) and
-  `corrections.json/.csv` (the correction subset, old shape). `status: draft`
-  entries are validated but never published — the turn-up split waits there.
-- `/changelog` page built (new public copy: needs Richard's approval). Not yet
-  linked from `site/index.html`, which is bot-owned.
-- Back-filled 8 changes from git history (June to Oct 2026); figures read from
-  `site/data` at each commit and its parent. Anything unrecoverable says so.
+  `was`/`now` required for both. `status: draft` entries are validated, never
+  published. `/corrections` is the correction subset of the same file.
+- **Every material change to a published figure gets an entry, in the same
+  commit as the change.** Richard's rulings (10 Oct): launch date is 11 Jun
+  2026; household-count updates and factoid corrections are logged.
+- `site/index.html` is bot-stamped (og:image only); hand edits to its nav and
+  footer are safe but need `git commit --no-verify` past the pre-commit hook.
+
+## Constraint turn-up — own indirect line, live 10 Oct 2026
+
+- Paying other plant (mostly gas) to switch on when wind is constrained off.
+  Taken out of the BSUoS uplift, never more than it: headline, direct and
+  indirect totals unchanged (proved: identical to the penny with and without).
+- Octopus Wasted Wind method (replacement estimate), reproduced to 0.1%.
+  **Richard ruled 10 Oct: stays indirect** (paid to gas, and an estimate).
+  Moving to direct (+£5.39bn real) would need the hero to say "caused by".
+- Store: `data/raw/constraint_turnup/daily`, from 1 Nov 2015, 63 MB. Nightly
+  `update all` fetches the last 3 days. Counted only to the BSUoS `data_to`.
+- REF checks fold turn-up back into BSUoS (`REF_KEY` in `cli.py`): REF's
+  BSUoS is the whole charge.
+- Tools: `tools/constraint_reconciliation.py` (monthly vs Octopus and NESO),
+  `tools/turnup_attribution_options.py`. Write-up:
+  `scratch/2026-10-10-constraint-reconciliation.md`.
 
 ## Price basis must be stated on every figure — 30 Sep 2026
 
