@@ -36,6 +36,6 @@ Tests: `uv run --group dev python -m pytest -q`. Golden master:
 
 ## 4. Hand-over (Richard)
 
-- [ ] 4.1 Richard chooses an attribution option (unchecked until he does)
-- [ ] 4.2 Site wiring for the new scheme id lands with the merge — MERGE BLOCKER
-- [ ] 4.3 memory.md updated; Plane SUBCLK comment if an item exists
+- [x] 4.1 Richard chose option A (stays indirect), 10 Oct 2026
+- [x] 4.2 Site wiring landed with the merge (live 10 Oct 2026)
+- [x] 4.3 memory.md updated; Plane SUBCLK-24
