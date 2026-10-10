@@ -130,6 +130,32 @@
   <p>Conservative direction: as for TNUoS, only the uplift above the inflation-indexed baseline is attributed, floored at zero.</p>
   <p><strong>Corrected 30 September 2026.</strong> This series previously came from NESO’s <em>Daily Balancing Costs</em> dataset, which breaks down balancing-mechanism and ancillary spend. That is not the same quantity as the balancing cost recovered from bill-payers through BSUoS: it ran 23–39% below the outturn in NESO’s own <em>Annual Balancing Costs Report</em> in every year from 2018-19. Because the pre-2017 history and the baseline are both on the gross BSUoS basis, the old series joined two different definitions mid-run. The series now reads NESO’s settled BSUoS charge data — the half-hourly charge up to 31 March 2023, and actual BSUoS cost thereafter, because the April 2023 fixed-tariff reform broke the identity between what users are charged and what balancing costs. Full detail, and the effect on the totals, is on the <a href="corrections.html">corrections page</a>.</p>
 
+  <h3 id="attr-constraint_turnup">Paid to switch on (constraint turn-up)</h3>
+  <p class="scheme-meta" id="im-constraint_turnup"></p>
+  <blockquote id="attr-constraint_turnup-rule"></blockquote>
+  <p>When wind farms are paid to switch off behind a network bottleneck, the grid operator also
+  pays other stations, mostly gas, to switch on and replace the lost energy. That cost is
+  recovered through BSUoS, so it was already inside the balancing uplift. It is now taken out of
+  the uplift and shown as its own line; the balancing line falls by the same amount and no total
+  changes.</p>
+  <p>The figure is an estimate, built daily from Elexon settlement data for every half-hour since
+  November 2015, using the method of Octopus Energy's
+  <a href="https://wastedwind.energy/">Wasted Wind</a> tracker. In each half-hour, the volume of
+  wind bids accepted as constraint actions is priced against that half-hour's accepted offers:
+  offers not marked as constraint actions first, then in the order they were accepted, with a
+  part-share of the offer that crosses the volume. Short-duration offers are left out, as Octopus
+  leaves them out. We reproduce Octopus's published figures to within 0.1% (2025: £1,466.8m
+  against £1,467.0m). It is counted with the indirect costs, not the direct payments, because
+  the money goes to the replacement stations, not to renewable generators, and because it is an
+  estimate rather than a record of payments.</p>
+  <p>As a cross-check we also total what was actually paid on offers marked as constraint
+  actions, from stations other than wind farms, in the half-hours when wind was being switched
+  off. That figure is lower than the estimate, because much of the replacement energy is bought
+  through offers not marked as constraint actions; it is a floor, not a contradiction. NESO's own
+  thermal-constraint cost is higher than the estimate (2025: £1,831m), because it covers every
+  thermal constraint, not only replacing switched-off wind. Conservative direction: the line can
+  never exceed the balancing uplift it is taken from.</p>
+
   <h3>The double-counting guard</h3>
   <p>Constraint payments to wind farms are counted in the <strong>direct</strong> layer (‘paid to switch off’). Those same payments are recovered from bill-payers through BSUoS, so the BSUoS series is <strong>netted of direct constraint payments before attribution</strong> — the same pound is never counted twice across the direct and indirect layers.</p>
 
@@ -431,7 +457,7 @@
 
   // per-scheme retrieval detail (moved here from the dashboard footer)
   (function () {
-    var labels = { cfd: 'CfD (LCCC)', constraints: 'Constraints (Elexon)', capacity_market: 'Capacity Market (LCCC)', bsuos: 'BSUoS (NESO)' };
+    var labels = { cfd: 'CfD (LCCC)', constraints: 'Constraints (Elexon)', constraint_turnup: 'Constraint turn-up (Elexon)', capacity_market: 'Capacity Market (LCCC)', bsuos: 'BSUoS (NESO)' };
     document.getElementById('freshness-detail').innerHTML =
       Object.keys(meta.freshness).map(function (k) {
         var f = meta.freshness[k];
@@ -477,9 +503,10 @@
     ccl: 'HMRC Environmental Taxes Bulletin',
     ets: 'BEIS/DESNZ Annual Report and Accounts Trust Statements; EC UK auction platform reports',
     tnuos: 'NESO Final TNUoS Tariffs publications',
-    bsuos: 'NESO settled BSUoS charge data; NAO Electricity Balancing Services'
+    bsuos: 'NESO settled BSUoS charge data; NAO Electricity Balancing Services',
+    constraint_turnup: 'Elexon settlement stacks (accepted bids and offers)'
   };
-  ['capacity_market', 'ccl', 'ets', 'tnuos', 'bsuos'].forEach(function (id) {
+  ['capacity_market', 'ccl', 'ets', 'tnuos', 'bsuos', 'constraint_turnup'].forEach(function (id) {
     var s = byId[id];
     if (!s) return;
     var srcLabel = esc(INDIRECT_SOURCE_NAMES[id] || s.source_url || id);
@@ -490,7 +517,7 @@
       ' · attribution confidence: ' + esc(s.attribution_confidence) +
       (s.verified === true ? ' · <span class="tick-ok">✓ verified against the published source</span>' : '') +
       (s.verified === false ? ' · not yet fully verified — see source notes' : '');
-    document.getElementById('attr-' + id).textContent = s.attribution_note;
+    document.getElementById(id === 'constraint_turnup' ? 'attr-constraint_turnup-rule' : 'attr-' + id).textContent = s.attribution_note;
   });
 
   // raw vs attributed cumulative for the uplift-attributed components
@@ -509,7 +536,7 @@
   // REF cross-check table
   var XCHECK_LABELS = {
     capacity_market: 'Capacity Market', ccl: 'CCL + CPS', ets: 'ETS (power-sector share)',
-    tnuos: 'TNUoS', bsuos: 'BSUoS (net of constraints)'
+    tnuos: 'TNUoS', bsuos: 'BSUoS, including turn-up (net of constraints)'
   };
   document.getElementById('crosscheck-summary').innerHTML =
     'Each component’s ' + esc(xcheck.comparison_year) + ' value is compared against <a href="' +
@@ -532,7 +559,7 @@
   if (refRecon) {
     var REF_NAMES = { ro: 'Renewables Obligation', fit: 'Feed-in Tariffs', cfd: 'Contracts for Difference',
       constraints: 'Constraint payments', rego: 'REGO certificates', ccl: 'Climate Change Levy',
-      tnuos: 'Transmission (TNUoS)', bsuos: 'Balancing (BSUoS)', ets: 'Emissions trading',
+      tnuos: 'Transmission (TNUoS)', bsuos: 'Balancing (BSUoS, including turn-up)', ets: 'Emissions trading',
       capacity_market: 'Capacity Market' };
     var refBn = function (v) { return '£' + (v / 1e9).toFixed(1) + 'bn'; };
     var totalPct = (refRecon.ours_total - refRecon.ref_total) / refRecon.ref_total * 100;

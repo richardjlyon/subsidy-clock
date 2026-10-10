@@ -423,6 +423,7 @@ CSV_NAMES = {
     "ets":             "emissions-trading",
     "tnuos":           "tnuos",
     "bsuos":           "bsuos",
+    "constraint_turnup": "constraint-turnup",
 }
 
 RESTATEMENT_COLS = ["scheme", "table", "detected_at", "partition",
@@ -472,7 +473,7 @@ def load_corrections(path: Path | str) -> list[dict]:
 
 # indirect schemes with their own attribution-rule anchor on /methodology;
 # the rest fall back to the #indirect section. Anchors are public contracts.
-ATTR_ANCHORS = {"bsuos", "ccl", "ets", "tnuos"}
+ATTR_ANCHORS = {"bsuos", "ccl", "ets", "tnuos", "constraint_turnup"}
 
 
 def _attribution(generated: str) -> str:

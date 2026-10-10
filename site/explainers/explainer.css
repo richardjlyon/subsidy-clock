@@ -9,7 +9,7 @@
   --faint: #8f94a0; --line: #d9d2c4; --line-soft: #e7e1d4;
   --money: #16243a; --money-deep: #101b2d; --amber: #e3a13c;
   --c-ro: #e3a13c; --c-fit: #c8862a; --c-cfdr: #a86e22; --c-cfdl: #855417; --c-con: #5e3a0e;
-  --c-cm: #16243a; --c-ccl: #274b73; --c-ets: #3f74a3; --c-tnuos: #7ba6c9; --c-bsuos: #b8d0e2;
+  --c-cm: #16243a; --c-ccl: #274b73; --c-ets: #3f74a3; --c-tnuos: #7ba6c9; --c-bsuos: #b8d0e2; --c-tu: #5d7f99;
   --serif: "Equity", Georgia, "Times New Roman", serif;
   --sans: "Concourse", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -90,7 +90,7 @@ html[data-skin="ft"] {
   --money: #1f242b; --money-deep: #14181e;
   --amber: #9e1b32;            /* claret accent */
   --c-ro:#990f3d; --c-fit:#e0a93e; --c-cfdr:#c56b2f; --c-cfdl:#9a6a2e; --c-con:#7a3b23;
-  --c-cm:#1b5a8a; --c-ccl:#2e7e86; --c-ets:#5193b0; --c-tnuos:#8fb8ce; --c-bsuos:#c5dae6;
+  --c-cm:#1b5a8a; --c-ccl:#2e7e86; --c-ets:#5193b0; --c-tnuos:#8fb8ce; --c-bsuos:#c5dae6; --c-tu:#6b8799;
 }
 html[data-skin="ft"] body { font-family: var(--serif); }   /* serif reading, as the main site */
 html[data-skin="ft"] .xhead h1 { font-family: var(--sans); font-size: 2rem; letter-spacing: -0.015em; color: var(--ink); }

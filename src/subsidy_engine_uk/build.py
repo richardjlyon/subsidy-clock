@@ -402,10 +402,12 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
                 data_to=tu_daily["date"].max(),
                 attribution_pct=1.0,
                 attribution_note=(
-                    "Estimated cost of replacing the wind energy switched off "
-                    "for constraints (Octopus Wasted Wind method: curtailed "
-                    "volume priced against the period's accepted offers), split "
-                    "out of the BSUoS uplift; counted within the indirect layer."),
+                    "Estimated cost of paying other stations to replace the wind "
+                    "energy switched off for network constraints: each half-hour's "
+                    "switched-off wind volume priced against that half-hour's "
+                    "accepted offers (Octopus Energy Wasted Wind method). Taken out "
+                    "of the balancing (BSUoS) uplift, never more than it, so no "
+                    "total changes."),
                 attribution_confidence="low",
                 extras={"by_fuel_while_wind_constrained": by_fuel,
                         "cross_check_cumulative": cross_check,

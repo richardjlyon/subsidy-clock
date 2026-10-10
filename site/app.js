@@ -83,6 +83,7 @@
     tnuos:           { slug: 'tnuos',                    name: 'Grid upgrades for renewables (TNUoS)', color: 'var(--c-tnuos)' },
     ccl:             { slug: 'climate-change-levy',      name: 'Climate Change Levy',                  color: 'var(--c-ccl)' },
     bsuos:           { slug: 'bsuos',                    name: 'Balancing the grid (BSUoS)',           color: 'var(--c-bsuos)' },
+    constraint_turnup: { slug: 'constraint-turnup',      name: 'Paid to switch on (constraint turn-up)', color: 'var(--c-tu)' },
     ets:             { slug: 'emissions-trading',        name: 'Emissions trading',                    color: 'var(--c-ets)' },
     capacity_market: { slug: 'capacity-market',          name: 'Capacity Market',                      color: 'var(--c-cm)' }
   };
@@ -330,10 +331,11 @@
   // ~20-day lag is normal and healthy. 7 would have flagged correct data as
   // stale every single day. The trade is deliberate: the old source was ~8 days
   // fresher but measured the wrong quantity (see /corrections).
+  // constraint_turnup: 30, because it is counted only up to the BSUoS date.
   var STALE_DAYS = {
     cfd: 21, cfd_renewable: 21, cfd_low_carbon: 21,
     constraints: 3, capacity_market: 75, ro: 730, fit: 730,
-    bsuos: 30
+    bsuos: 30, constraint_turnup: 30
   };
   var STALE_FALLBACK_MS = { daily: 2 * 864e5, monthly: 2 * 30.44 * 864e5, annual: 2 * 365.25 * 864e5 };
   function dataCoverageEnd(s) {
@@ -575,11 +577,11 @@
     ro: 'var(--c-ro)', fit: 'var(--c-fit)', cfd_renewable: 'var(--c-cfdr)',
     cfd_low_carbon: 'var(--c-cfdl)', constraints: 'var(--c-con)',
     capacity_market: 'var(--c-cm)', ccl: 'var(--c-ccl)', ets: 'var(--c-ets)',
-    tnuos: 'var(--c-tnuos)', bsuos: 'var(--c-bsuos)'
+    tnuos: 'var(--c-tnuos)', bsuos: 'var(--c-bsuos)', constraint_turnup: 'var(--c-tu)'
   };
   var STACK_ORDER = [
     'ro', 'fit', 'cfd_renewable', 'cfd_low_carbon', 'constraints',
-    'capacity_market', 'ccl', 'ets', 'tnuos', 'bsuos'
+    'capacity_market', 'ccl', 'ets', 'tnuos', 'bsuos', 'constraint_turnup'
   ];
   function isIndirectScheme(id) {
     var s = schemesById[id];

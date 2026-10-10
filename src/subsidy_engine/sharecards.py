@@ -25,7 +25,7 @@ CHART_STACK = [
     ("ro", "#990f3d"), ("fit", "#e0a93e"), ("cfd_renewable", "#c56b2f"),
     ("cfd_low_carbon", "#9a6a2e"), ("constraints", "#7a3b23"),
     ("capacity_market", "#1b5a8a"), ("ccl", "#2e7e86"), ("ets", "#5193b0"),
-    ("tnuos", "#8fb8ce"), ("bsuos", "#c5dae6"),
+    ("tnuos", "#8fb8ce"), ("bsuos", "#c5dae6"), ("constraint_turnup", "#6b8799"),
 ]
 
 # explainer slug + display name per scheme id (mirrors SCHEME_META in site/app.js)
@@ -37,6 +37,7 @@ EXPLAINERS = {
     "capacity_market": ("capacity-market",          "Capacity Market"),
     "ccl":             ("climate-change-levy",      "Climate Change Levy"),
     "bsuos":           ("bsuos",                    "Balancing the grid (BSUoS)"),
+    "constraint_turnup": ("constraint-turnup",      "Paid to switch on (constraint turn-up)"),
     "ets":             ("emissions-trading",        "Emissions trading"),
     "tnuos":           ("tnuos",                    "Grid upgrades for renewables (TNUoS)"),
     # constraints explainer reuses the switch-off dashboard card
