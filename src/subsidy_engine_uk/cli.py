@@ -18,7 +18,8 @@ from subsidy_engine import money, reconcile, reference, sitedata
 from subsidy_engine.store import SnapshotStore
 from subsidy_engine_uk import build as uk_build
 from subsidy_engine_uk import stations
-from subsidy_engine_uk.schemes import bsuos, capacity_market, cfd, constraints, remit
+from subsidy_engine_uk.schemes import (bsuos, capacity_market, cfd, constraint_turnup,
+                                      constraints, remit)
 
 
 def make_store(root: Path) -> SnapshotStore:
@@ -31,6 +32,7 @@ def cmd_update(args: argparse.Namespace) -> int:
     targets = {
         "cfd": lambda: cfd.update(store),
         "constraints": lambda: constraints.update(store),
+        "constraint_turnup": lambda: constraint_turnup.update(store),
         "cm": lambda: capacity_market.update(store),
         "bsuos": lambda: bsuos.update(store),
         "remit": lambda: remit.update(
@@ -53,6 +55,18 @@ def cmd_update(args: argparse.Namespace) -> int:
 def cmd_backfill_constraints(args: argparse.Namespace) -> int:
     store = make_store(args.root)
     constraints.backfill(store, date.fromisoformat(args.start), date.fromisoformat(args.end))
+    return 0
+
+
+def cmd_backfill_turnup(args: argparse.Namespace) -> int:
+    store = make_store(args.root)
+    n, failed = constraint_turnup.backfill(store, date.fromisoformat(args.start),
+                                           date.fromisoformat(args.end), progress=True)
+    print(f"[ok] constraint_turnup: {n} days written")
+    if failed:
+        print(f"[FAIL] constraint_turnup: {len(failed)} day(s) failed, rerun to retry: "
+              + ", ".join(d.isoformat() for d in failed), file=sys.stderr)
+        return 1
     return 0
 
 
@@ -84,7 +98,8 @@ def cmd_build_site(args: argparse.Namespace) -> int:
                            bmu_map=station_bmus)
     freshness = {}
     for scheme_id, table in [("cfd", "generation"), ("constraints", "daily"),
-                              ("capacity_market", "payments"), ("bsuos", "daily")]:
+                              ("capacity_market", "payments"), ("bsuos", "daily"),
+                              ("constraint_turnup", "daily")]:
         f = store.freshness(scheme_id, table)
         if f:
             freshness[scheme_id] = {k: f.get(k) for k in

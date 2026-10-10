@@ -34,7 +34,7 @@ from subsidy_engine.money import (
 from subsidy_engine.reference import ReferenceScheme
 from subsidy_engine.store import SnapshotStore
 from subsidy_engine_uk.stations import group_by_station
-from subsidy_engine_uk.schemes import cfd
+from subsidy_engine_uk.schemes import cfd, constraint_turnup
 
 BASELINE_YEARS = (2002, 2005)  # inclusive 4-year calendar window (2002,2003,2004,2005) for uplift baselines
 
@@ -354,15 +354,70 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
             raw_annual = hist.annual
             raw_runrate = float(raw_annual["cost_gbp"][-1])
             data_to = date(int(raw_annual["year"].max()), 12, 31)
-        attributed = baseline_uplift(raw_annual, float(baselines["bsuos"]["value"]),
-                                     deflators, subtract=constraints_annual)
+        # Uplift after wind constraint payments, then split constraint turn-up
+        # out of it (spec: constraint-turnup). The turn-up line is capped at the
+        # uplift, so BSUoS residual + turn-up == uplift exactly and the indirect
+        # total cannot move; where no cap binds, residual + turn-up + wind
+        # constraints + indexed baseline == raw BSUoS.
+        uplift = baseline_uplift(raw_annual, float(baselines["bsuos"]["value"]),
+                                 deflators, subtract=constraints_annual)
         latest_baseline = (float(baselines["bsuos"]["value"])
                            * _latest_index(deflators)
                            / float(deflators.filter(
                                pl.col("year").is_between(*BASELINE_YEARS))["index"].mean()))
         constraints_runrate = next(
             s.runrate_gbp_per_year for s in schemes if s.scheme_id == "constraints")
-        runrate = max(0.0, raw_runrate - latest_baseline - constraints_runrate)
+        uplift_runrate = max(0.0, raw_runrate - latest_baseline - constraints_runrate)
+        # Same window as the BSUoS data, so a lagging BSUoS feed never has
+        # turn-up subtracted for days it does not yet cover.
+        tu_daily = constraint_turnup.daily_cost(store).filter(pl.col("date") <= data_to)
+        if tu_daily.height:
+            tu_measured = annualise_daily(tu_daily).rename({"cost_gbp": "tu"})
+            split = (uplift.join(tu_measured, on="year", how="left")
+                     .with_columns(pl.col("tu").fill_null(0.0))
+                     .with_columns(pl.min_horizontal("tu", "cost_gbp").alias("tu")))
+            tu_annual = split.select("year", pl.col("tu").alias("cost_gbp"))
+            attributed = split.select("year", (pl.col("cost_gbp") - pl.col("tu"))
+                                      .alias("cost_gbp"))
+            tu_runrate = min(trailing_runrate(tu_daily), uplift_runrate)
+            runrate = uplift_runrate - tu_runrate
+            measured = constraint_turnup.read(store).filter(
+                pl.col("date") <= data_to)
+            by_fuel = (measured.filter(pl.col("basis") == constraint_turnup.ACCEPTED_WIND)
+                       .group_by("fuel")
+                       .agg(pl.col("cost_gbp").sum().alias("cost"),
+                            pl.col("volume_mwh").sum())
+                       .sort("cost", descending=True).to_dicts())
+            cross_check = {b: float(measured.filter(pl.col("basis") == b)["cost_gbp"].sum())
+                           for b in (constraint_turnup.ACCEPTED,
+                                     constraint_turnup.ACCEPTED_WIND)}
+            tu_cum = float(tu_annual["cost_gbp"].sum())
+            schemes.append(SchemeResult(
+                scheme_id="constraint_turnup",
+                label="Constraint turn-up (paid to switch on)",
+                perspectives=[], cadence="daily", layer="indirect",
+                annual=tu_annual,
+                cumulative_gbp=tu_cum,
+                runrate_gbp_per_year=tu_runrate,
+                data_to=tu_daily["date"].max(),
+                attribution_pct=1.0,
+                attribution_note=(
+                    "Estimated cost of replacing the wind energy switched off "
+                    "for constraints (Octopus Wasted Wind method: curtailed "
+                    "volume priced against the period's accepted offers), split "
+                    "out of the BSUoS uplift; counted within the indirect layer."),
+                attribution_confidence="low",
+                extras={"by_fuel_while_wind_constrained": by_fuel,
+                        "cross_check_cumulative": cross_check,
+                        "measured_from": tu_daily["date"].min().isoformat(),
+                        "measured_annual": tu_measured.rename(
+                            {"tu": "cost"}).to_dicts(),
+                        "source": "Elexon Insights settlement stacks (bids and offers)",
+                        "source_url": constraint_turnup.SOURCE_URL},
+            ))
+        else:
+            attributed = uplift
+            runrate = uplift_runrate
         raw_total = float(raw_annual["cost_gbp"].sum())
         cum = float(attributed["cost_gbp"].sum())
         schemes.append(SchemeResult(

@@ -15,11 +15,13 @@ now being quoted, so the gap needs closing.
 
 - New daily scheme `constraint_turnup`, measured from Elexon's settlement stacks
   (the same public API the `constraints` line already reads), backfilled to the
-  first date Elexon publishes stack data (mid-November 2015). Each day stores:
-  - **accepted offers** (method a, the engine's figure): accepted offers flagged
-    as system actions (`soFlag`) from units that are not wind, by fuel type;
-  - **replacement estimate** (method b, reconciliation only): Octopus's method,
-    pricing the switched-off wind volume against that period's accepted offers;
+  first date Elexon publishes stack data (November 2015). Each day stores:
+  - **replacement estimate** (method b, the engine's figure): Octopus's method,
+    pricing the switched-off wind volume against that period's accepted offers.
+    Tied to the wind volume by construction, and reproducible against Octopus;
+  - **accepted offers** (method a, cross-check): accepted offers flagged as
+    system actions (`soFlag`) from units that are not wind, by fuel type, in all
+    periods, and separately in periods when wind was switched off;
   - **system-flagged wind bids**: Octopus's curtailment definition, kept so the
     curtailment gap can be explained.
 - The `bsuos` line becomes balancing above baseline, net of wind constraint

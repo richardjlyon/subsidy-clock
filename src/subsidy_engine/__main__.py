@@ -23,7 +23,8 @@ def main(argv: list[str] | None = None) -> int:
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_update = sub.add_parser("update", help="fetch latest data for scheme(s)")
-    p_update.add_argument("scheme", choices=["all", "cfd", "constraints", "cm", "bsuos", "remit"],
+    p_update.add_argument("scheme", choices=["all", "cfd", "constraints", "constraint_turnup", "cm",
+                                   "bsuos", "remit"],
                           nargs="?", default="all")
     p_update.set_defaults(fn=cli.cmd_update)
 
@@ -32,6 +33,12 @@ def main(argv: list[str] | None = None) -> int:
     p_bf.add_argument("--start", required=True)
     p_bf.add_argument("--end", required=True)
     p_bf.set_defaults(fn=cli.cmd_backfill_constraints)
+
+    p_tu = sub.add_parser("backfill-turnup",
+                          help="backfill constraint turn-up daily data for a date range")
+    p_tu.add_argument("--start", required=True)
+    p_tu.add_argument("--end", required=True)
+    p_tu.set_defaults(fn=cli.cmd_backfill_turnup)
 
     p_site = sub.add_parser("build-site", help="build dashboard JSON site data")
     p_site.set_defaults(fn=cli.cmd_build_site)

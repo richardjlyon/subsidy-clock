@@ -219,3 +219,103 @@ def test_update_rereads_every_year_so_resettlement_is_picked_up(tmp_path):
     calls.clear()
     bsuos.update(store, client=client)
     assert set(calls) == {"rf_hist", "sf_2324"}   # re-read, not skipped
+
+
+# --- Constraint turn-up split out of the BSUoS uplift (spec: constraint-turnup)
+
+import polars as pl  # noqa: E402
+
+from subsidy_engine_uk import build as uk_build  # noqa: E402
+from subsidy_engine_uk.schemes import constraint_turnup  # noqa: E402
+
+BASE_IDX = 71.5      # mean of the 2002-05 deflator index below
+LATEST_IDX = 136.0   # 2026 has no index of its own: latest is used
+
+
+def _deflators():
+    return pl.DataFrame({"year": [2002, 2003, 2004, 2005, 2023, 2024, 2025],
+                         "index": [70.0, 71.0, 72.0, 73.0, 128.0, 132.0, LATEST_IDX]},
+                        schema={"year": pl.Int64, "index": pl.Float64})
+
+
+def _annual_ref(scheme_id, annual_map, perspectives=()):
+    from subsidy_engine.reference import ReferenceScheme
+    annual = pl.DataFrame({"year": list(annual_map), "cost_gbp": list(annual_map.values())},
+                          schema={"year": pl.Int64, "cost_gbp": pl.Float64})
+    return ReferenceScheme(scheme_id, scheme_id, list(perspectives), "annual", "s",
+                           "https://s", True, annual, attribution_rule="r",
+                           attribution_confidence="low")
+
+
+def _model(tmp_path, turnup_gbp_per_day=None):
+    """Raw BSUoS 2026 = 1,000; wind constraint payments 2026 = 100;
+    indexed baseline = 100 x 136/71.5. Turn-up, if given, on both BSUoS days."""
+    store = SnapshotStore(tmp_path)
+    store.write("constraints", "daily", pl.DataFrame({
+        "date": [date(2026, 4, 10)], "bmu": ["T_W-1"], "lead_party": ["W"],
+        "volume_mwh": [-10.0], "cost_gbp": [100.0]}),
+        source_url="u", partition="2026-04-10")
+    store.write("bsuos", "daily", pl.DataFrame(
+        {"date": [date(2026, 4, 10), date(2026, 4, 11)], "cost_gbp": [600.0, 400.0]},
+        schema={"date": pl.Date, "cost_gbp": pl.Float64}),
+        source_url="u", partition="2026-2027")
+    if turnup_gbp_per_day is not None:
+        for d in (date(2026, 4, 10), date(2026, 4, 11)):
+            rows = [{"date": d, "basis": constraint_turnup.ESTIMATE, "fuel": "ALL",
+                     "volume_mwh": 1.0, "cost_gbp": turnup_gbp_per_day},
+                    # cross-check bases must never reach the published line
+                    {"date": d, "basis": constraint_turnup.ACCEPTED, "fuel": "CCGT",
+                     "volume_mwh": 1.0, "cost_gbp": 10_000.0},
+                    {"date": d, "basis": constraint_turnup.ACCEPTED_WIND, "fuel": "CCGT",
+                     "volume_mwh": 1.0, "cost_gbp": 5_000.0}]
+            store.write(constraint_turnup.SCHEME, constraint_turnup.TABLE,
+                        pl.DataFrame(rows, schema=constraint_turnup.SCHEMA),
+                        source_url="u", partition=d.isoformat())
+    refs = {"constraints_history": _annual_ref("constraints_history", {2024: 200.0},
+                                               ("renewables", "low_carbon")),
+            "ro": _annual_ref("ro", {2024: 1000.0}, ("renewables", "low_carbon")),
+            "fit": _annual_ref("fit", {2024: 500.0}, ("renewables", "low_carbon")),
+            "bsuos_history": _annual_ref("bsuos_history", {2023: 500.0})}
+    model = uk_build.build(store, refs, deflators=_deflators(),
+                           baselines={"bsuos": {"value": 100.0}})
+    return model, {s.scheme_id: s for s in model["schemes"]}
+
+
+def _year(scheme, year):
+    return {r["year"]: r["cost_gbp"] for r in scheme.annual.to_dicts()}.get(year, 0.0)
+
+
+def test_bsuos_residual_plus_parts_sums_to_raw_bsuos(tmp_path):
+    _, by_id = _model(tmp_path, turnup_gbp_per_day=150.0)
+    raw = 1000.0
+    baseline = 100.0 * LATEST_IDX / BASE_IDX
+    wind = _year(by_id["constraints"], 2026)
+    turnup = _year(by_id["constraint_turnup"], 2026)
+    residual = _year(by_id["bsuos"], 2026)
+    assert (wind, turnup) == (100.0, 300.0)
+    assert abs(residual - (raw - baseline - wind - turnup)) < 1e-9
+    assert abs(residual + turnup + wind + baseline - raw) < 1e-9
+    # the published line is method (b) only: cross-check bases never leak in
+    assert by_id["constraint_turnup"].layer == "indirect"
+    assert by_id["constraint_turnup"].cumulative_gbp == 300.0
+
+
+def test_turnup_is_capped_at_the_uplift_so_bsuos_never_goes_negative(tmp_path):
+    _, by_id = _model(tmp_path, turnup_gbp_per_day=10_000.0)
+    uplift = 1000.0 - 100.0 * LATEST_IDX / BASE_IDX - 100.0
+    assert abs(_year(by_id["constraint_turnup"], 2026) - uplift) < 1e-9
+    assert _year(by_id["bsuos"], 2026) == 0.0
+
+
+def test_turnup_split_leaves_every_headline_total_unchanged(tmp_path):
+    base, base_ids = _model(tmp_path / "without")
+    split, split_ids = _model(tmp_path / "with", turnup_gbp_per_day=150.0)
+    assert "constraint_turnup" not in base_ids
+    for key in ("cumulative_gbp", "runrate_gbp_per_year"):
+        assert abs(split["indirect"][key] - base["indirect"][key]) < 1e-6, key
+        for p in base["perspectives"]:
+            assert split["perspectives"][p][key] == base["perspectives"][p][key]
+    # the BSUoS line fell by exactly the turn-up line
+    assert abs(base_ids["bsuos"].cumulative_gbp
+               - (split_ids["bsuos"].cumulative_gbp
+                  + split_ids["constraint_turnup"].cumulative_gbp)) < 1e-9

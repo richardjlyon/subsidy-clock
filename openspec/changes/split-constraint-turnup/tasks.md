@@ -5,21 +5,22 @@ Tests: `uv run --group dev python -m pytest -q`. Golden master:
 
 ## 1. Turn-up scheme
 
-- [ ] 1.1 `schemes/constraint_turnup.py`: parse accepted offers (method a) by fuel,
-      replacement estimate (method b), system-flagged wind bids; verify with
+- [x] 1.1 `schemes/constraint_turnup.py`: replacement estimate (method b, engine
+      figure), accepted offers (method a) by fuel, all periods and wind-constrained
+      periods, system-flagged wind bids; verify with
       `tests/test_constraint_turnup.py` (fixture tests incl. the pro-rata margin)
-- [ ] 1.2 Concurrent day fetch with retries, backfill and 3-day update; verify a
+- [x] 1.2 Concurrent day fetch with backed-off retries, backfill and 3-day update; verify a
       real one-day fetch matches the prototype figures for that day
-- [ ] 1.3 CLI `update constraint_turnup` (and in `update all`) and `backfill-turnup`;
+- [x] 1.3 CLI `update constraint_turnup` (and in `update all`) and `backfill-turnup`;
       verify `tests/test_cli.py`
 - Gate: full suite green
 
 ## 2. BSUoS netting
 
-- [ ] 2.1 `build.py`: turn-up indirect scheme capped inside the BSUoS uplift, BSUoS
+- [x] 2.1 `build.py`: turn-up indirect scheme capped inside the BSUoS uplift, BSUoS
       net of it, same rule on run-rates; verify the parts-sum-to-raw test in
       `tests/test_bsuos.py` and the headline-unchanged test
-- [ ] 2.2 Build-site freshness entry for turn-up; verify build-site runs
+- [x] 2.2 Build-site freshness entry for turn-up; verify build-site runs
 - Gate: full suite green; golden-master diff confined to BSUoS/turn-up outputs,
   headline `combined_real` unchanged
 
