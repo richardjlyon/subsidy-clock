@@ -428,20 +428,38 @@ CSV_NAMES = {
 RESTATEMENT_COLS = ["scheme", "table", "detected_at", "partition",
                     "previous_version", "new_version", "origin", "cause"]
 
-CORRECTION_FIELDS = ["date", "figure", "figure_label", "was", "now", "cause"]
+CHANGELOG_FIELDS = ["date", "kind", "figure", "figure_label", "was", "now", "cause"]
+# correction: we published something wrong. change: method, scope or source
+# moved on purpose. Nothing else — a third kind would be a second log in
+# disguise, and a correction must never be filed as a change to soften it.
+CHANGELOG_KINDS = ("correction", "change")
+# An entry with status "draft" is validated with the rest but never published:
+# it lets a pending change sit in the one log, checked by the build, until
+# Richard approves it. Absent status means published.
+CHANGELOG_STATUSES = ("draft",)
 
 
-def load_corrections(path: Path | str) -> list[dict]:
-    """Append-only log of confirmed errors in our own published figures
-    (corrections C4) — the restatement-log honesty pattern applied to our own
-    mistakes. A missing file means no corrections; a malformed entry fails the
-    build loudly — never publish a half-readable log.
+def load_changelog(path: Path | str) -> list[dict]:
+    """The one public change log: every confirmed error in our own published
+    figures (kind "correction", corrections C4 — the restatement-log honesty
+    pattern applied to our own mistakes) and every deliberate change of method,
+    scope or source (kind "change"). /corrections is the correction-only view
+    of this same file, so the two can never disagree.
 
-    `cause` may be a string or a list of paragraphs, and is always published as
-    a list. An explanation of a real error runs to several hundred words, which
-    is prose, not a table cell: /corrections renders it as numbered notes at
-    reading measure, so the paragraph breaks are part of the data rather than
-    something the page invents by guessing at sentence boundaries."""
+    A missing file means an empty log; a malformed entry fails the build
+    loudly — never publish a half-readable log. Every field in
+    CHANGELOG_FIELDS is required for both kinds: a change that moved no
+    published figure says so in `was`/`now` rather than leaving them blank, so
+    a blank can only ever mean a broken entry.
+
+    `cause` may be a string or a list of paragraphs, and is always returned as
+    a list. An explanation runs to several hundred words, which is prose, not
+    a table cell: the pages render it as numbered notes at reading measure, so
+    the paragraph breaks are part of the data rather than something the page
+    invents by guessing at sentence boundaries.
+
+    Drafts are returned (and validated) with `status: "draft"`; the writer
+    leaves them out of everything it publishes."""
     p = Path(path)
     if not p.is_file():
         return []
@@ -452,19 +470,28 @@ def load_corrections(path: Path | str) -> list[dict]:
         try:
             rec = json.loads(line)
         except json.JSONDecodeError as exc:
-            raise ValueError(f"corrections.jsonl line {i}: invalid JSON") from exc
-        missing = [k for k in CORRECTION_FIELDS if not rec.get(k)]
+            raise ValueError(f"{p.name} line {i}: invalid JSON") from exc
+        missing = [k for k in CHANGELOG_FIELDS if not rec.get(k)]
         if missing:
-            raise ValueError(f"corrections.jsonl line {i}: missing {missing}")
-        out = {k: rec[k] for k in CORRECTION_FIELDS}
+            raise ValueError(f"{p.name} line {i}: missing {missing}")
+        if rec["kind"] not in CHANGELOG_KINDS:
+            raise ValueError(f"{p.name} line {i}: kind must be one of "
+                             f"{list(CHANGELOG_KINDS)}, got {rec['kind']!r}")
+        if "status" in rec and rec["status"] not in CHANGELOG_STATUSES:
+            raise ValueError(f"{p.name} line {i}: status must be one of "
+                             f"{list(CHANGELOG_STATUSES)} or absent, "
+                             f"got {rec['status']!r}")
+        out = {k: rec[k] for k in CHANGELOG_FIELDS}
         cause = rec["cause"]
         paras = [cause] if isinstance(cause, str) else list(cause)
         if any(not isinstance(x, str) or not x.strip() for x in paras):
             raise ValueError(
-                f"corrections.jsonl line {i}: cause must be a non-empty string "
+                f"{p.name} line {i}: cause must be a non-empty string "
                 "or a list of non-empty strings")
         out["cause"] = [" ".join(x.split()) for x in paras]
         out["credit"] = rec.get("credit") or ""
+        if "status" in rec:
+            out["status"] = rec["status"]
         entries.append(out)
     entries.sort(key=lambda r: r["date"])
     return entries
@@ -487,23 +514,43 @@ def _attribution(generated: str) -> str:
             f'{generated[11:16]} UTC\n')
 
 
-def write_corrections(entries: list[dict], out_dir: Path | str,
-                      *, generated: str) -> None:
-    """Publish the corrections log (corrections C4): JSON for the /corrections
-    page, CSV for the /data table. Written even when empty — the absence of
-    corrections is itself published, not implied."""
-    out = Path(out_dir)
-    out.mkdir(parents=True, exist_ok=True)
-    (out / "corrections.json").write_text(json.dumps(
-        {"generated_at": generated, "corrections": entries}, indent=1))
-    cols = CORRECTION_FIELDS + ["credit"]
+def _write_log_csv(path: Path, entries: list[dict], cols: list[str],
+                   note: str, generated: str) -> None:
     rows = [{k: (" ".join(r[k]) if k == "cause" else str(r.get(k, "")))
              for k in cols} for r in entries]
-    note = ("# Corrections to our own published figures — every confirmed "
-            "error: subsidyclock.co.uk/corrections\n")
-    (out / "corrections.csv").write_text(
+    path.write_text(
         _attribution(generated) + note +
         pl.DataFrame(rows, schema={k: pl.String for k in cols}).write_csv())
+
+
+def write_changelog(entries: list[dict], out_dir: Path | str,
+                    *, generated: str) -> None:
+    """Publish the change log and its corrections view from ONE list.
+
+    changelog.json/.csv carry every published entry, both kinds (/changelog).
+    corrections.json/.csv are the kind == "correction" subset (/corrections and
+    the /data table), in the shape the corrections page has always read.
+    Deriving both here from the same list is what guarantees they cannot
+    disagree. Drafts are never published. Written even when empty — the
+    absence of corrections is itself published, not implied."""
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    published = [r for r in entries if r.get("status") != "draft"]
+    corrections = [r for r in published if r["kind"] == "correction"]
+    (out / "changelog.json").write_text(json.dumps(
+        {"generated_at": generated, "entries": published}, indent=1))
+    (out / "corrections.json").write_text(json.dumps(
+        {"generated_at": generated, "corrections": corrections}, indent=1))
+    _write_log_csv(
+        out / "changelog.csv", published, CHANGELOG_FIELDS + ["credit"],
+        "# Change log — every correction to our own published figures and "
+        "every deliberate change of method, scope or source: "
+        "subsidyclock.co.uk/changelog\n", generated)
+    _write_log_csv(
+        out / "corrections.csv", corrections,
+        [k for k in CHANGELOG_FIELDS if k != "kind"] + ["credit"],
+        "# Corrections to our own published figures — every confirmed "
+        "error: subsidyclock.co.uk/corrections\n", generated)
 
 
 def _series_note(scheme) -> str:

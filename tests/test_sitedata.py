@@ -344,133 +344,223 @@ def test_write_widget_stamps_figure_and_rate(tmp_path):
     assert "subsidyclock.co.uk" in html         # locked attribution
 
 
-# ---- corrections log (corrections C4) ----
+# ---- change log: one file, two kinds; /corrections is its filtered view ----
 
-CORR_VALID = ('{"date": "2026-07-01", "figure": "switch-off", '
+CORR_VALID = ('{"date": "2026-07-01", "kind": "correction", "figure": "switch-off", '
               '"figure_label": "Paid to switch off", "was": "£1.62bn", '
               '"now": "£1.59bn", "cause": "Double-counted two settlement days", '
               '"credit": "J. Smith"}')
+CHANGE_VALID = ('{"date": "2026-08-01", "kind": "change", "figure": "constraints", '
+                '"figure_label": "Paid to switch off — source", '
+                '"was": "No published figure moved", "now": "No published figure moved", '
+                '"cause": ["Source moved from X to Y."], "credit": "Richard Lyon"}')
+DRAFT_VALID = CHANGE_VALID.replace('"date": "2026-08-01"',
+                                   '"date": "2026-09-01", "status": "draft"')
+GEN = "2026-06-12T17:00:00+00:00"
 
 
 def _corr_file(tmp_path, lines):
-    p = tmp_path / "corrections.jsonl"
+    p = tmp_path / "changelog.jsonl"
     p.write_text("\n".join(lines) + ("\n" if lines else ""))
     return p
 
 
-def test_load_corrections_missing_file_is_empty(tmp_path):
-    assert sitedata.load_corrections(tmp_path / "corrections.jsonl") == []
+def _published(tmp_path, lines):
+    entries = sitedata.load_changelog(_corr_file(tmp_path, lines))
+    sitedata.write_changelog(entries, tmp_path / "out", generated=GEN)
+    out = tmp_path / "out"
+    return (json.loads((out / "changelog.json").read_text()),
+            json.loads((out / "corrections.json").read_text()),
+            (out / "changelog.csv").read_text(),
+            (out / "corrections.csv").read_text())
 
 
-def test_load_corrections_valid_entry(tmp_path):
-    entries = sitedata.load_corrections(_corr_file(tmp_path, [CORR_VALID]))
+def test_load_changelog_missing_file_is_empty(tmp_path):
+    assert sitedata.load_changelog(tmp_path / "changelog.jsonl") == []
+
+
+def test_load_changelog_valid_entry(tmp_path):
+    entries = sitedata.load_changelog(_corr_file(tmp_path, [CORR_VALID]))
     assert len(entries) == 1
+    assert entries[0]["kind"] == "correction"
     assert entries[0]["figure"] == "switch-off"
     assert entries[0]["now"] == "£1.59bn"
     assert entries[0]["credit"] == "J. Smith"
 
 
-def test_load_corrections_cause_string_becomes_one_paragraph(tmp_path):
-    # /corrections renders the cause as paragraphs at reading measure, so the
+def test_load_changelog_kind_is_required(tmp_path):
+    line = CORR_VALID.replace('"kind": "correction", ', '')
+    with pytest.raises(ValueError, match="kind"):
+        sitedata.load_changelog(_corr_file(tmp_path, [line]))
+
+
+@pytest.mark.parametrize("kind", ["Correction", "fix", "method", "erratum"])
+def test_load_changelog_unknown_kind_raises(tmp_path, kind):
+    # two kinds only: anything else fails the build rather than publishing an
+    # entry that neither page knows how to show
+    line = CORR_VALID.replace('"kind": "correction"', f'"kind": "{kind}"')
+    with pytest.raises(ValueError, match="kind must be one of"):
+        sitedata.load_changelog(_corr_file(tmp_path, [line]))
+
+
+def test_load_changelog_change_still_needs_was_and_now(tmp_path):
+    # a change that moved no figure says so; it never leaves was/now blank
+    line = CHANGE_VALID.replace('"was": "No published figure moved"', '"was": ""')
+    with pytest.raises(ValueError, match="was"):
+        sitedata.load_changelog(_corr_file(tmp_path, [line]))
+
+
+def test_load_changelog_unknown_status_raises(tmp_path):
+    line = CHANGE_VALID.replace('"kind": "change"',
+                                '"kind": "change", "status": "pending"')
+    with pytest.raises(ValueError, match="status"):
+        sitedata.load_changelog(_corr_file(tmp_path, [line]))
+
+
+def test_load_changelog_cause_string_becomes_one_paragraph(tmp_path):
+    # the pages render the cause as paragraphs at reading measure, so the
     # shape is always a list even when the log holds a single string
-    entries = sitedata.load_corrections(_corr_file(tmp_path, [CORR_VALID]))
+    entries = sitedata.load_changelog(_corr_file(tmp_path, [CORR_VALID]))
     assert entries[0]["cause"] == ["Double-counted two settlement days"]
 
 
-def test_load_corrections_cause_keeps_its_paragraph_breaks(tmp_path):
+def test_load_changelog_cause_keeps_its_paragraph_breaks(tmp_path):
     # a real explanation runs to several hundred words; the author's paragraph
     # breaks are data, not something the page may guess at from full stops
     line = CORR_VALID.replace(
         '"cause": "Double-counted two settlement days"',
         '"cause": ["First, the wrong dataset.", "Second, a short first year."]')
-    entries = sitedata.load_corrections(_corr_file(tmp_path, [line]))
+    entries = sitedata.load_changelog(_corr_file(tmp_path, [line]))
     assert entries[0]["cause"] == ["First, the wrong dataset.",
                                    "Second, a short first year."]
 
 
-def test_load_corrections_cause_paragraph_whitespace_is_normalised(tmp_path):
+def test_load_changelog_cause_paragraph_whitespace_is_normalised(tmp_path):
     # JSONL authors wrap long paragraphs; the newlines must not reach the page
     line = CORR_VALID.replace(
         '"cause": "Double-counted two settlement days"',
         '"cause": ["Two   settlement\\n  days were counted twice."]')
-    entries = sitedata.load_corrections(_corr_file(tmp_path, [line]))
+    entries = sitedata.load_changelog(_corr_file(tmp_path, [line]))
     assert entries[0]["cause"] == ["Two settlement days were counted twice."]
 
 
-def test_load_corrections_empty_cause_paragraph_raises(tmp_path):
+def test_load_changelog_empty_cause_paragraph_raises(tmp_path):
     # an empty paragraph would render as a blank gap in the note
     line = CORR_VALID.replace(
         '"cause": "Double-counted two settlement days"',
         '"cause": ["A real reason.", "   "]')
     with pytest.raises(ValueError, match="cause"):
-        sitedata.load_corrections(_corr_file(tmp_path, [line]))
+        sitedata.load_changelog(_corr_file(tmp_path, [line]))
 
 
-def test_load_corrections_credit_optional(tmp_path):
+def test_load_changelog_credit_optional(tmp_path):
     line = CORR_VALID.replace(', "credit": "J. Smith"', '')
-    entries = sitedata.load_corrections(_corr_file(tmp_path, [line]))
+    entries = sitedata.load_changelog(_corr_file(tmp_path, [line]))
     assert entries[0]["credit"] == ""
 
 
-def test_load_corrections_missing_field_raises(tmp_path):
+def test_load_changelog_missing_field_raises(tmp_path):
     line = CORR_VALID.replace('"cause": "Double-counted two settlement days", ', '')
     with pytest.raises(ValueError, match="cause"):
-        sitedata.load_corrections(_corr_file(tmp_path, [line]))
+        sitedata.load_changelog(_corr_file(tmp_path, [line]))
 
 
-def test_load_corrections_bad_json_raises(tmp_path):
+def test_load_changelog_bad_json_raises(tmp_path):
     with pytest.raises(ValueError, match="line 1"):
-        sitedata.load_corrections(_corr_file(tmp_path, ["{not json"]))
+        sitedata.load_changelog(_corr_file(tmp_path, ["{not json"]))
 
 
-def test_load_corrections_sorted_oldest_first(tmp_path):
+def test_load_changelog_sorted_oldest_first(tmp_path):
     older = CORR_VALID.replace("2026-07-01", "2026-05-01")
-    entries = sitedata.load_corrections(_corr_file(tmp_path, [CORR_VALID, older]))
+    entries = sitedata.load_changelog(_corr_file(tmp_path, [CORR_VALID, older]))
     assert [e["date"] for e in entries] == ["2026-05-01", "2026-07-01"]
 
 
-def test_write_corrections_files(tmp_path):
-    entries = sitedata.load_corrections(_corr_file(tmp_path, [CORR_VALID]))
-    sitedata.write_corrections(entries, tmp_path / "out",
-                               generated="2026-06-12T17:00:00+00:00")
-    data = json.loads((tmp_path / "out" / "corrections.json").read_text())
-    assert data["generated_at"] == "2026-06-12T17:00:00+00:00"
-    assert data["corrections"][0]["now"] == "£1.59bn"
-    lines = (tmp_path / "out" / "corrections.csv").read_text().splitlines()
+def test_corrections_view_is_exactly_the_correction_entries(tmp_path):
+    other_corr = CORR_VALID.replace("2026-07-01", "2026-09-30").replace(
+        "switch-off", "bsuos")
+    log, corr, _, _ = _published(tmp_path, [CHANGE_VALID, CORR_VALID, other_corr])
+    assert [e["kind"] for e in log["entries"]] == ["correction", "change", "correction"]
+    assert corr["corrections"] == [e for e in log["entries"]
+                                   if e["kind"] == "correction"]
+    assert [e["figure"] for e in corr["corrections"]] == ["switch-off", "bsuos"]
+
+
+def test_changelog_and_corrections_derive_from_one_file(tmp_path):
+    # edit the one file, and both published outputs move together
+    log, corr, _, _ = _published(tmp_path, [CORR_VALID, CHANGE_VALID])
+    assert len(log["entries"]) == 2 and len(corr["corrections"]) == 1
+    edited = CORR_VALID.replace("£1.59bn", "£1.58bn")
+    log, corr, _, _ = _published(tmp_path, [edited, CHANGE_VALID])
+    assert log["entries"][0]["now"] == corr["corrections"][0]["now"] == "£1.58bn"
+    cli = Path("src/subsidy_engine_uk/cli.py").read_text()
+    assert cli.count("load_changelog(") == 1 and "changelog.jsonl" in cli
+    assert not Path("corrections.jsonl").exists()   # no second log, no alias
+    assert Path("changelog.jsonl").is_file()
+
+
+def test_draft_is_validated_but_never_published(tmp_path):
+    entries = sitedata.load_changelog(_corr_file(tmp_path, [CORR_VALID, DRAFT_VALID]))
+    assert [e.get("status") for e in entries] == [None, "draft"]
+    log, corr, log_csv, corr_csv = _published(tmp_path, [CORR_VALID, DRAFT_VALID])
+    assert all(e.get("status") != "draft" for e in log["entries"])
+    assert [e["date"] for e in log["entries"]] == ["2026-07-01"]
+    assert "2026-09-01" not in log_csv and "2026-09-01" not in corr_csv
+    # a draft that is malformed still fails the build
+    bad = DRAFT_VALID.replace('"kind": "change"', '"kind": "draft"')
+    with pytest.raises(ValueError, match="kind"):
+        sitedata.load_changelog(_corr_file(tmp_path, [bad]))
+
+
+def test_write_changelog_files(tmp_path):
+    log, corr, log_csv, corr_csv = _published(tmp_path, [CORR_VALID, CHANGE_VALID])
+    assert log["generated_at"] == corr["generated_at"] == GEN
+    assert corr["corrections"][0]["now"] == "£1.59bn"
+    lines = corr_csv.splitlines()
     assert lines[0].startswith("# The Subsidy Clock")
     assert lines[1].startswith("# Licence: CC BY 4.0")
     assert lines[2] == ("# Corrections to our own published figures — every "
                         "confirmed error: subsidyclock.co.uk/corrections")
     assert lines[3] == "date,figure,figure_label,was,now,cause,credit"
-    assert "£1.59bn" in lines[4]
+    assert "£1.59bn" in lines[4] and len(lines) == 5
+    lines = log_csv.splitlines()
+    assert lines[2].endswith("subsidyclock.co.uk/changelog")
+    assert lines[3] == "date,kind,figure,figure_label,was,now,cause,credit"
+    assert len(lines) == 6
 
 
-def test_write_corrections_csv_cause_is_flat_prose(tmp_path):
+def test_write_changelog_csv_cause_is_flat_prose(tmp_path):
     # the page wants paragraphs, a CSV cell wants one string: a reader opening
     # the CSV must not find a Python list repr in the cause column
     line = CORR_VALID.replace(
         '"cause": "Double-counted two settlement days"',
         '"cause": ["The wrong dataset.", "And a short first year."]')
-    entries = sitedata.load_corrections(_corr_file(tmp_path, [line]))
-    sitedata.write_corrections(entries, tmp_path / "out",
-                               generated="2026-06-12T17:00:00+00:00")
-    csv = (tmp_path / "out" / "corrections.csv").read_text()
-    assert "The wrong dataset. And a short first year." in csv
-    assert "['" not in csv and '["' not in csv
-    # the JSON keeps the paragraphs the page renders
-    data = json.loads((tmp_path / "out" / "corrections.json").read_text())
-    assert data["corrections"][0]["cause"] == ["The wrong dataset.",
+    log, corr, log_csv, corr_csv = _published(tmp_path, [line])
+    for csv in (log_csv, corr_csv):
+        assert "The wrong dataset. And a short first year." in csv
+        assert "['" not in csv and '["' not in csv
+    # the JSON keeps the paragraphs the pages render
+    assert corr["corrections"][0]["cause"] == ["The wrong dataset.",
                                               "And a short first year."]
 
 
-def test_write_corrections_empty_log(tmp_path):
-    sitedata.write_corrections([], tmp_path / "out",
-                               generated="2026-06-12T17:00:00+00:00")
-    data = json.loads((tmp_path / "out" / "corrections.json").read_text())
-    assert data["corrections"] == []
-    lines = (tmp_path / "out" / "corrections.csv").read_text().splitlines()
+def test_write_changelog_empty_log(tmp_path):
+    log, corr, log_csv, corr_csv = _published(tmp_path, [])
+    assert log["entries"] == [] and corr["corrections"] == []
+    lines = corr_csv.splitlines()
     assert lines[3] == "date,figure,figure_label,was,now,cause,credit"
     assert len(lines) == 4
+    assert len(log_csv.splitlines()) == 4
+
+
+def test_repo_changelog_loads_and_keeps_its_corrections():
+    # the real log must pass validation, and its corrections are unchanged
+    entries = sitedata.load_changelog("changelog.jsonl")
+    corr = [e for e in entries if e["kind"] == "correction"]
+    assert [(e["date"], e["figure"]) for e in corr] == [
+        ("2026-09-01", "emissions-trading"), ("2026-09-30", "bsuos"),
+        ("2026-09-30", "headline-caption")]
+    assert all(e.get("status") is None for e in corr)
 
 
 def test_full_pool_resolves(tmp_path):

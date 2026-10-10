@@ -75,7 +75,7 @@ data/raw/{scheme}/{table}/{partition}/{retrieved-at}/manifest.json
 `manifest.json` records `source_url`, `retrieved_at`, `sha256` (content hash of the table's canonical CSV serialisation) and `row_count`. The store is append-only:
 
 - **Nothing is ever deleted.** When a source revises history, the new version is stored alongside the old and the change is logged in `restatements.jsonl` — published at [/data](https://subsidyclock.co.uk/data) as `restatements.csv`.
-- **Our own mistakes are logged the same way.** Confirmed errors in published figures go to `corrections.jsonl`, published at [/corrections](https://subsidyclock.co.uk/corrections). A published figure is never silently edited.
+- **Our own mistakes are logged the same way.** Confirmed errors in published figures go to `changelog.jsonl` as kind `correction`, published at [/corrections](https://subsidyclock.co.uk/corrections); deliberate changes of method, scope or source go in the same file as kind `change`. A published figure is never silently edited.
 - **Reconciliation guards run at build time.** Bottom-up totals are checked against official aggregates and REF's published series; the build fails loudly if they drift out of tolerance.
 
 ## Schemes
