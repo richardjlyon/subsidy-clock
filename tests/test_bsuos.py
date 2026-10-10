@@ -319,3 +319,33 @@ def test_turnup_split_leaves_every_headline_total_unchanged(tmp_path):
     assert abs(base_ids["bsuos"].cumulative_gbp
                - (split_ids["bsuos"].cumulative_gbp
                   + split_ids["constraint_turnup"].cumulative_gbp)) < 1e-9
+
+
+def test_parse_tolerates_a_unit_suffix_on_the_cost_column():
+    """NESO republished the cost column as 'Actual BSUoS Cost_GBP' (Oct 2026),
+    alongside 'BSUoS Total Recovery_GBP'. The unit moved from '(£)' to a
+    '_GBP' suffix; the parse must still find the cost, not the recovery."""
+    df = bsuos.parse_periods([{"Settlement Date": "2026-09-13",
+                               "BSUoS Total Recovery_GBP": 999.0,
+                               "Actual BSUoS Cost_GBP": 333.0}])
+    assert df["date"][0] == date(2026, 9, 13)
+    assert df["cost_gbp"][0] == 333.0
+
+
+def test_resettlement_after_the_basis_change_is_logged_as_the_publishers(tmp_path):
+    """The basis-change cause belongs only to the first re-read of a year
+    stored under the old basis. Once a year is on the new basis, a later
+    change is NESO re-settling it, and must be credited to NESO."""
+    import json
+    store = SnapshotStore(tmp_path)
+    old = pl.DataFrame({"date": [date(2023, 5, 1)], "cost_gbp": [1.0]}, schema=bsuos.SCHEMA)
+    store.write("bsuos", "daily", old, source_url="x", partition="2023-2024", date_col="date")
+    # pretend that version predates the basis change
+    vdir = next((tmp_path / "raw/bsuos/daily/2023-2024").iterdir())
+    vdir.rename(vdir.with_name("20260610T000000.000000"))
+    for cost in (2.0, 3.0):
+        df = pl.DataFrame({"date": [date(2023, 5, 1)], "cost_gbp": [cost]}, schema=bsuos.SCHEMA)
+        bsuos.write_year(store, "2023-2024", df)
+    log = [json.loads(l) for l in
+           (tmp_path / "raw/bsuos/daily/restatements.jsonl").read_text().splitlines()]
+    assert [e["origin"] for e in log] == ["ours", "publisher"]

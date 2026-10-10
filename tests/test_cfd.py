@@ -151,3 +151,37 @@ def test_parse_portfolio_maps_id_to_status():
     assert df.height == 2
     assert dict(zip(df["cfd_id"], df["status"])) == {
         "AAA-ACH-183": "Live (Post-FIC)", "AR2-DRK-414": "Terminated"}
+
+
+def test_tracking_resource_is_found_by_dataset_not_a_fixed_id():
+    """LCCC republished In-period Tracking under a new resource id (Oct 2026);
+    the old id returns 404. The live datastore resource is read from the
+    dataset, so a republish cannot break the fetch."""
+    resources = [
+        {"id": "csv-1", "format": "CSV", "datastore_active": False},
+        {"id": "json-1", "format": "JSON", "datastore_active": True},
+    ]
+    assert cfd.datastore_resource_id(resources) == "json-1"
+
+
+def test_tracking_resource_missing_raises():
+    import pytest
+    with pytest.raises(ValueError, match="no datastore resource"):
+        cfd.datastore_resource_id([{"id": "x", "datastore_active": False}])
+
+
+def test_tracking_keeps_stored_actuals_the_new_publication_omits():
+    """The republished resource starts at the current month and carries only
+    forecasts. Actual payments already captured must not be lost: stored rows
+    are kept, and a fresh actual wins where both exist."""
+    import polars as pl
+    stored = pl.DataFrame({"date": [date(2026, 6, 22), date(2026, 6, 23)],
+                           "payment_gbp": [1.0, 2.0]})
+    fresh = pl.DataFrame({"date": [date(2026, 6, 23), date(2026, 10, 1)],
+                          "payment_gbp": [5.0, 7.0]})
+    out = cfd.merge_tracking(stored, fresh)
+    assert out.to_dicts() == [
+        {"date": date(2026, 6, 22), "payment_gbp": 1.0},
+        {"date": date(2026, 6, 23), "payment_gbp": 5.0},
+        {"date": date(2026, 10, 1), "payment_gbp": 7.0}]
+    assert cfd.merge_tracking(None, fresh).height == 2

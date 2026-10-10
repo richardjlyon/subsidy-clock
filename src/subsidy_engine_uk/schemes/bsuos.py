@@ -67,10 +67,11 @@ COST_COL_POST = "Actual BSUoS Cost (£)"
 # "Actual BSUoS Cost(£)" (no space) in the II 2023-2024 file; and recovery
 # appears as both "BSUoS Total Recovery ()" and "...(£)". Matching on exact
 # strings therefore breaks a fetch whenever a resource is republished with a
-# different spelling. We match on a normalised key instead — case, whitespace
+# different spelling. In Oct 2026 the unit moved to a suffix: "Actual BSUoS
+# Cost_GBP" and "BSUoS Total Recovery_GBP". We match on a normalised key instead — case, whitespace
 # and punctuation stripped — and still fail loudly when nothing matches.
 DAY_KEYS = ("settlementday", "settlementdate")
-COST_KEYS_POST = ("actualbsuoscost",)
+COST_KEYS_POST = ("actualbsuoscost", "actualbsuoscostgbp")
 COST_KEYS_PRE = ("halfhourlycharge",)
 
 
@@ -104,6 +105,20 @@ SCHEMA = {"date": pl.Date, "cost_gbp": pl.Float64}
 RESTATEMENT_CAUSE = ("basis change 2026-09-30: series moved from NESO's Daily "
                      "Balancing Costs dataset to settled BSUoS charge data "
                      "(gross BSUoS basis) — see /corrections")
+
+
+# Versions written before this were on the old basis. Only a re-read of one
+# of those is our basis change; any later difference is NESO re-settling.
+BASIS_CHANGE_VERSION = "20260930T"
+
+
+def write_year(store: SnapshotStore, fy: str, part: pl.DataFrame) -> None:
+    prev = store.latest_version("bsuos", "daily", fy)
+    ours = prev is not None and prev < BASIS_CHANGE_VERSION
+    store.write("bsuos", "daily", part,
+                source_url=DATASET_URL, partition=fy, source_date=fy,
+                date_col="date",
+                restatement_cause=RESTATEMENT_CAUSE if ours else None)
 
 
 def _fiscal_year(d: date) -> str:
@@ -208,10 +223,7 @@ def update(store: SnapshotStore, *, client: httpx.Client | None = None) -> None:
             by_fy.setdefault(_fiscal_year(d), []).append(d)
         for fy, days in sorted(by_fy.items()):
             part = daily.filter(pl.col("date").is_in(days))
-            store.write("bsuos", "daily", part,
-                        source_url=DATASET_URL, partition=fy, source_date=fy,
-                        date_col="date",
-                        restatement_cause=RESTATEMENT_CAUSE)
+            write_year(store, fy, part)
     finally:
         if own:
             client.close()

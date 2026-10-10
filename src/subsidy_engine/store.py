@@ -121,6 +121,10 @@ class SnapshotStore:
                 rows.append(dict(rec, scheme=scheme, table=table))
         return rows
 
+    def latest_version(self, scheme: str, table: str, partition: str = "full") -> str | None:
+        versions = self._versions(scheme, table, partition)
+        return versions[-1].name if versions else None
+
     def latest(self, scheme: str, table: str, partition: str = "full") -> pl.DataFrame | None:
         versions = self._versions(scheme, table, partition)
         if not versions:

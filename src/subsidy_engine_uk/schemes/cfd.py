@@ -6,11 +6,13 @@ from __future__ import annotations
 import httpx
 import polars as pl
 
-from subsidy_engine.ckan import fetch_all_records
+from subsidy_engine.ckan import dataset_resources, fetch_all_records
 from subsidy_engine.store import SnapshotStore
 
 GENERATION_RESOURCE = "37d1bef4-55d7-4b8e-8a47-1d24b123a20e"
-TRACKING_RESOURCE = "003f527c-aa35-4198-adbb-21a61fc760eb"
+# In-period Tracking is read through its dataset, not a fixed resource id:
+# LCCC republished it under a new id in Oct 2026 and the old one went 404.
+TRACKING_DATASET = "in-period-tracking"
 DATASET_URL = (
     "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions"
 )
@@ -128,6 +130,25 @@ def parse_tracking(records: list[dict]) -> pl.DataFrame:
     )
 
 
+def datastore_resource_id(resources: list[dict]) -> str:
+    """The queryable (datastore-backed) resource of a CKAN dataset."""
+    for r in resources:
+        if r.get("datastore_active"):
+            return r["id"]
+    raise ValueError(f"dataset has no datastore resource: {[r.get('id') for r in resources]}")
+
+
+def merge_tracking(stored: pl.DataFrame | None, fresh: pl.DataFrame) -> pl.DataFrame:
+    """Stored actuals plus fresh ones; a fresh actual wins on the same day.
+
+    LCCC's republished tracking resource starts at the current month, so a
+    plain overwrite would discard every actual already captured."""
+    if stored is None or stored.height == 0:
+        return fresh.sort("date")
+    keep = stored.join(fresh.select("date"), on="date", how="anti")
+    return pl.concat([keep, fresh.select(stored.columns)]).sort("date")
+
+
 def parse_portfolio(records: list[dict]) -> pl.DataFrame:
     """Contract id -> lifecycle status, one row per contract."""
     return (
@@ -143,7 +164,9 @@ def parse_portfolio(records: list[dict]) -> pl.DataFrame:
 def update(store: SnapshotStore, *, client: httpx.Client | None = None) -> None:
     gen = parse_generation(fetch_all_records(GENERATION_RESOURCE, client=client))
     store.write("cfd", "generation", gen, source_url=DATASET_URL, date_col="date")
-    trk = parse_tracking(fetch_all_records(TRACKING_RESOURCE, client=client))
+    trk_id = datastore_resource_id(dataset_resources(TRACKING_DATASET, client=client))
+    trk = merge_tracking(store.latest("cfd", "tracking"),
+                         parse_tracking(fetch_all_records(trk_id, client=client)))
     store.write("cfd", "tracking", trk, source_url=TRACKING_URL, date_col="date")
     port = parse_portfolio(fetch_all_records(PORTFOLIO_RESOURCE, client=client))
     store.write("cfd", "portfolio", port, source_url=PORTFOLIO_URL)
