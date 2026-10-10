@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-10T11:24:33.200671+00:00",
+ "generated_at": "2026-10-10T16:44:30.253212+00:00",
  "freshness": {
   "cfd": {
    "retrieved_at": "2026-10-10T11:18:58.815534+00:00",
@@ -8,7 +8,7 @@
    "row_count": 117877
   },
   "constraints": {
-   "retrieved_at": "2026-10-10T11:24:26.170124+00:00",
+   "retrieved_at": "2026-10-10T16:44:14.184296+00:00",
    "source_date": "2023-10-26",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
    "row_count": 19
@@ -53,6 +53,15 @@
    "source": "DESNZ Energy Trends, March 2026 statistical release (2025 annual data, section 5 / table 5.2)",
    "source_url": "https://www.gov.uk/government/statistics/electricity-section-5-energy-trends",
    "as_of": 2025
+  },
+  "electricity_consumption_by_nation": {
+   "scotland_gwh": 21657.3,
+   "gb_gwh": 249247.7,
+   "description": "Metered electricity consumption, all sectors, 2024 (Scotland and GB, both including unallocated). Used to apportion who pays for constraint payments: balancing costs are recovered from suppliers per MWh of final demand, so a nation's share of the bill tracks its share of consumption.",
+   "source": "DESNZ, Subnational electricity consumption statistics, Electricity consumption by Region, 2005 to 2024",
+   "source_url": "https://www.gov.uk/government/statistics/regional-and-local-authority-electricity-consumption-statistics",
+   "data_url": "https://assets.publishing.service.gov.uk/media/6942957636f089d38be1f1f8/elec_region_stacked_2005-2024.csv",
+   "as_of": 2024
   }
  },
  "deflator": {
@@ -67,7 +76,7 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 240668132211.7225
+  "combined_real": 240668132211.72247
  },
  "factoids": [
   {
@@ -171,11 +180,11 @@
   },
   {
    "slug": "police",
-   "figure": "239,000",
+   "figure": "238,000",
    "basis": "runrate",
    "figure_label": "police officers",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of UK renewable subsidy pays the salaries of 239,000 police officers, in today's money.",
+   "sentence": "A year of UK renewable subsidy pays the salaries of 238,000 police officers, in today's money.",
    "label": "police officers' annual salaries paid by one year of UK renewable subsidy, in today's money",
    "source_name": "Police Federation of England & Wales, constable pay scales (top of scale, from 1 September 2025)",
    "source_url": "https://polfed.org/resources/pay-scales/constable-pay-scales/"

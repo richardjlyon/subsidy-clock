@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-10T11:24:33.200671+00:00",
+ "generated_at": "2026-10-10T16:44:30.253212+00:00",
  "entries": [
   {
    "date": "2026-06-12",
@@ -222,6 +222,20 @@
     "The new line is estimated from Elexon settlement data for every half-hour since November 2015, using the method of Octopus Energy's Wasted Wind tracker; it reproduces Octopus's published figure for 2025 to within 0.1%. It is counted with the indirect costs because the money goes to the replacement stations rather than to renewable generators, and because it is an estimate rather than a record of payments. The method is set out on the methodology page."
    ],
    "credit": ""
+  },
+  {
+   "date": "2026-10-10",
+   "kind": "correction",
+   "figure": "constraints",
+   "figure_label": "Payments to switch wind farms off",
+   "was": "\u00a32.670bn cumulative; \u00a3358m a year",
+   "now": "\u00a32.631bn cumulative; \u00a3345m a year",
+   "cause": [
+    "Switch-off payments since October 2023 were costed as volume times bid price. Elexon settles each payment at volume times price times a transmission loss multiplier, which scales a unit's metered output for losses on the grid in its zone. For wind farms in northern Scotland the multiplier is about 0.96, so leaving it out overstated the cost of switch-offs by 3.7\u20133.9% a year.",
+    "The fault showed up in a check against the Renewable Energy Foundation's independent count. Volumes matched exactly (8.36 TWh in 2024, 10.24 TWh in 2025), but costs did not: \u00a3410.8m against \u00a3394.3m for 2024, and \u00a3397.4m against \u00a3382.1m for 2025. With the multiplier the figures are \u00a3395.7m and \u00a3382.1m.",
+    "The combined headline does not move: the switch-off line is carried inside the balancing-cost total, so the \u00a340m it loses returns to the balancing line it is split from."
+   ],
+   "credit": "Richard Lyon"
   }
  ]
 }
