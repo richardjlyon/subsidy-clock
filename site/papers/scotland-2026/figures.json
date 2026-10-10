@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-10T16:44:31.995025+00:00",
+ "generated_at": "2026-10-10T17:49:40.167848+00:00",
  "checked": "2026-10-10",
  "quoted": {
   "load_factor_2025": {
@@ -43,7 +43,7 @@
    },
    {
     "what": "Offshore wind",
-    "target": "8\u201311 GW by 2030",
+    "target": "8–11 GW by 2030",
     "now_mw": 4301,
     "now_label": "4.3 GW",
     "source": "Scottish Government, Offshore Wind Policy Statement, October 2020",
@@ -183,7 +183,7 @@
    },
    {
     "farm": "Tralorg Wind Farm",
-    "paid": 2151745
+    "paid": 2151746
    },
    {
     "farm": "Achlachan Wind Farm",
@@ -196,24 +196,21 @@
   ],
   "source": "LCCC, Contracts for Difference generation and payments (the Clock's CfD series)"
  },
- "switch_off": {
-  "gb_cost": 1109074255.88,
-  "scotland_cost": 1064338637.33,
-  "scotland_share": 0.9597,
-  "window": {
-   "from": "2023-10-20",
-   "to": "2026-10-09"
-  }
+ "consumption": {
+  "share": 0.0869,
+  "source": "DESNZ, Subnational electricity consumption statistics, Electricity consumption by Region, 2005 to 2024",
+  "url": "https://www.gov.uk/government/statistics/regional-and-local-authority-electricity-consumption-statistics"
  },
- "consumption_share": 0.0869,
  "switch_off_2025": {
+  "gb_cost": 382110755,
   "scotland_cost": 361774750,
+  "scotland_share": 0.9468,
   "scotland_gwh": 10070,
-  "scotland_offshore_gwh": 6111
- },
- "top_day": {
-  "date": "2024-09-10",
-  "cost": 7534718,
-  "mwh": 109722
+  "scotland_offshore_gwh": 6111,
+  "top_day": {
+   "date": "2025-06-28",
+   "cost": 6564952,
+   "mwh": 116667
+  }
  }
 }

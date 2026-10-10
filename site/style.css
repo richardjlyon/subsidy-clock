@@ -698,5 +698,9 @@ tr.out-of-tolerance td { color: var(--amber-dark); font-weight: 500; }
 .claim-reply, .claim-rejoin { font-size: .95em; }
 .claim-src { font-size: 13px; }
 .claim-table { margin: 6px 0 0; font-size: 14px; }
-.evidence-head { margin-top: 44px !important; border-top: 1px solid var(--line-soft); padding-top: 24px; }
 @media print { .masthead nav, .footer { display: none; } .claim { break-inside: avoid; } }
+.paper-kind { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; font-weight: 600; }
+.paper-meta { font-size: 14px; color: var(--muted); }
+.paper-actions { font-size: 14px; }
+.paper-callout { border-left: 4px solid var(--c-con); padding: 10px 14px; background: var(--paper-dim); }
+@media print { .paper-actions { display: none; } }

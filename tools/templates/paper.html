@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en-GB" data-skin="ft">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}} — The Subsidy Clock</title>
+<meta name="description" content="Six claims about Scotland’s renewable electricity, set against official figures for 2025. A fixed briefing paper, published {{PUBLISHED}}.">
+<meta property="og:title" content="{{TITLE}}">
+<meta property="og:description" content="Six claims about Scotland’s renewable electricity, set against official figures for 2025.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="The Subsidy Clock">
+<meta property="og:url" content="{{URL}}">
+<meta property="og:image" content="https://subsidyclock.co.uk/share/headline.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="{{URL}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/skin-ft.css">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <!-- Matomo (self-hosted, cookieless) -->
+  <script>
+    var _paq = window._paq = window._paq || [];
+    _paq.push(['disableCookies']);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      var u = 'https://stats.kwlan.net/';
+      _paq.push(['setTrackerUrl', u + 'matomo.php']);
+      _paq.push(['setSiteId', '2']);
+      var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+      g.async = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);
+    })();
+  </script>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container masthead-inner">
+    <div class="brand-block">
+      <p class="brand"><a href="/"><span class="brand-tick" aria-hidden="true"></span>The Subsidy Clock</a></p>
+      <p class="brand-tag">What UK energy subsidies cost</p>
+    </div>
+    <nav><a href="/">← Back to the clock</a><a href="/scotland">Scotland, live</a><a href="/methodology">Methodology</a><a href="/corrections">Corrections</a></nav>
+  </div>
+</header>
+
+<main class="container prose scot paper">
+  <p class="paper-kind">Briefing paper · {{EDITION}} edition</p>
+  <h1>{{TITLE}}</h1>
+  <p class="paper-meta">Published {{PUBLISHED}}. Figures are for 2025, checked against their sources on {{CHECKED}}, and do not change. A new edition follows when DESNZ publishes its 2026 figures.</p>
+  <p class="lede">Six things said about Scotland’s renewable electricity, each set against official figures. Every number links to its source.</p>
+  <p class="paper-actions"><a href="{{PDF}}">Download as PDF</a> · <a href="figures.json">All figures (JSON)</a> · <a href="/scotland">Switch-off payments to Scottish wind farms, updated daily →</a></p>
+
+  <div class="claims">{{CARDS}}</div>
+
+  <h2 id="method">How the figures are worked out</h2>
+  <ul class="table-note">
+    <li><strong>Claims</strong> are paraphrased; they are not quotations.</li>
+    <li><strong>Switch-off payments</strong> are the bids accepted from each wind unit in the Balancing Mechanism to cut its output, half-hour by half-hour, from Elexon’s settlement data, priced as Elexon settles them (volume × price × transmission loss multiplier). Volumes match the Renewable Energy Foundation’s independent count exactly, and costs agree to within 0.4%.</li>
+    <li><strong>Which farms are Scottish</strong> comes from Elexon’s register: each unit sits in a grid zone, and North and South Scotland are two of them.</li>
+    <li><strong>Scotland’s generation totals</strong> come from DESNZ, not from adding up metered farms. Elexon meters only the larger farms connected to the national grid, and those farms account for less than DESNZ’s published total. Metered data is used only for named farms and named days.</li>
+    <li><strong>“Net importer”</strong> means power flowing from England into Scotland exceeded Scotland’s exports to Northern Ireland (NESO’s Scotland–England and Moyle flows).</li>
+    <li><strong>Who pays</strong> assumes the bill is shared in proportion to the electricity each nation uses.</li>
+  </ul>
+
+  <h2>How to cite</h2>
+  <p class="table-note">{{CITE}}</p>
+</main>
+<footer class="footer">
+  <div class="container">
+    <p class="footer-links">Made by <a href="https://richardlyon.net/">Richard Lyon</a> · <a href="/data">Data</a> · <a href="/methodology">Methodology &amp; sources</a> · <a href="/corrections">Corrections</a> · <a href="/about">About this site</a></p>
+    <p class="footer-small">Every figure traces to an official source.</p>
+  </div>
+</footer>
+</body>
+</html>
