@@ -4,7 +4,7 @@
 <script>(function(){var s=new URLSearchParams(location.search).get('skin');if(s==='ft'||s==='energy-trap')document.documentElement.setAttribute('data-skin',s);})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scotland: paid to switch off — The Subsidy Clock</title>
+<title>Scotland’s energy claims, against the record — The Subsidy Clock</title>
 <meta name="description" content="How much of Britain’s wind constraint bill goes to Scottish wind farms, which farms are paid most, and who pays.">
 <meta property="og:title" content="The Subsidy Clock — Scotland: paid to switch off">
 <meta property="og:description" content="Almost all the money Britain pays wind farms to switch off goes to farms in Scotland.">
@@ -51,8 +51,13 @@
 </header>
 
 <main class="container prose scot">
-  <h1>Scotland: paid to switch off</h1>
-  <p class="lede">When the grid cannot carry wind power south, it pays wind farms to stop generating. Almost all of that money goes to farms in Scotland.</p>
+  <h1>Scotland’s energy claims, against the record</h1>
+  <p class="lede">Six things said about Scotland’s renewable electricity, each set against official figures. Every number links to its source; the evidence charts are further down. <a href="/assets/scotland-claims-briefing.pdf">Printable briefing (PDF)</a>.</p>
+  <div id="claims" class="claims"></div>
+  <p class="table-note" id="claims-note"></p>
+
+  <h2 class="evidence-head">The evidence: paid to switch off</h2>
+  <p>When the grid cannot carry wind power south, it pays wind farms to stop generating. Almost all of that money goes to farms in Scotland.</p>
 
   <div class="stat-row scot-stats">
     <div class="stat"><span class="stat-value money num" id="sc-total">–</span><span class="stat-label" id="sc-total-label">paid to Scottish wind farms to switch off</span></div>
@@ -95,5 +100,6 @@
 </footer>
 
 <script src="scotland.js"></script>
+<script src="scotland-claims.js"></script>
 </body>
 </html>

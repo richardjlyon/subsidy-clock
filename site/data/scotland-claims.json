@@ -1,0 +1,219 @@
+{
+ "generated_at": "2026-10-10T16:09:32.289597+00:00",
+ "checked": "2026-10-10",
+ "quoted": {
+  "load_factor_2025": {
+   "scotland_offshore": 0.2354,
+   "england_offshore": 0.4129,
+   "scotland_onshore": 0.2412,
+   "england_onshore": 0.2414,
+   "source": "DESNZ, Regional renewable statistics: load factors 2009-2025, sheet LF 2025",
+   "url": "https://www.gov.uk/government/statistics/regional-renewable-statistics"
+  },
+  "generation_2025_gwh": {
+   "onshore": 21980,
+   "offshore": 8870,
+   "source": "DESNZ, Regional renewable statistics: generation 2003-2025, sheet GWh 2025",
+   "url": "https://www.gov.uk/government/statistics/regional-renewable-statistics"
+  },
+  "capacity_mw": {
+   "onshore_2022": 9027,
+   "offshore_2022": 2166,
+   "onshore_2025": 10490,
+   "offshore_2025": 4301,
+   "source": "DESNZ, Regional renewable statistics: installed capacity 2003-2025 (end of year)",
+   "url": "https://www.gov.uk/government/statistics/regional-renewable-statistics"
+  },
+  "supply_2025_gwh": {
+   "generated": 54015,
+   "consumed": 27997,
+   "to_england_net": 18519,
+   "to_ni_net": 2232,
+   "source": "DESNZ, Electricity generation and supply in Scotland, Wales, Northern Ireland and England, 2004 to 2025, table 1",
+   "url": "https://www.gov.uk/government/statistics/energy-trends-september-2026-special-feature-article-electricity-generation-and-supply-in-scotland-wales-northern-ireland-and-england-2021-to-2025"
+  },
+  "targets": [
+   {
+    "what": "Onshore wind",
+    "target": "20 GW by 2030",
+    "now_mw": 10490,
+    "now_label": "10.5 GW",
+    "source": "Scottish Government, Onshore Wind Policy Statement, December 2022",
+    "url": "https://www.gov.scot/publications/onshore-wind-policy-statement-2022/"
+   },
+   {
+    "what": "Offshore wind",
+    "target": "8\u201311 GW by 2030",
+    "now_mw": 4301,
+    "now_label": "4.3 GW",
+    "source": "Scottish Government, Offshore Wind Policy Statement, October 2020",
+    "url": "https://www.gov.scot/publications/offshore-wind-policy-statement/"
+   },
+   {
+    "what": "Hydrogen production",
+    "target": "5 GW by 2030",
+    "now_mw": null,
+    "now_label": "no official figure",
+    "source": "Scottish Government, Hydrogen Action Plan, December 2022",
+    "url": "https://www.gov.scot/publications/hydrogen-action-plan/"
+   },
+   {
+    "what": "Emissions: 75% cut by 2030",
+    "target": "in law since 2019",
+    "now_mw": null,
+    "now_label": "repealed November 2024",
+    "source": "Climate Change (Emissions Reduction Targets) (Scotland) Act 2024, section 2",
+    "url": "https://www.legislation.gov.uk/asp/2024/15/section/2/enacted"
+   }
+  ],
+  "firm": {
+   "torness_close": "2030",
+   "peterhead_mw": 1180,
+   "torness_source": "EDF, 4 December 2024: Heysham 2 and Torness to generate until 2030",
+   "torness_url": "https://www.edfenergy.com/media-centre/edf-confirms-boost-uks-clean-power-targets-nuclear-life-extensions",
+   "peterhead_source": "SSE Thermal, Peterhead Power Station",
+   "peterhead_url": "https://www.ssethermal.com/flexible-generation/operational/peterhead/",
+   "nuclear_policy": "We oppose the building of new nuclear stations using current technologies.",
+   "nuclear_policy_url": "https://www.gov.scot/policies/nuclear-energy/nuclear-stations/"
+  },
+  "consent": {
+   "text": "Scottish Ministers decide applications for onshore generating stations over 50 MW, and for offshore wind in Scottish waters.",
+   "url": "https://www.energyconsents.scot/",
+   "offshore_url": "https://www.gov.scot/publications/marine-licensing-and-consent-section-36-consent/"
+  }
+ },
+ "border": {
+  "source": "NESO, Historic Demand Data 2025 (SCOTTISH_TRANSFER less MOYLE_FLOW)",
+  "url": "https://www.neso.energy/data-portal/historic-demand-data",
+  "half_hours": 17520,
+  "importing_half_hours": 1730,
+  "importing_share": 0.0987,
+  "days_net_importer": 18,
+  "imported_gwh": 439.5,
+  "calm_day_import_half_hours": 26,
+  "calm_day_peak_import_mw": 1060
+ },
+ "farms_2025": [
+  {
+   "farm": "Seagreen",
+   "offshore": true,
+   "capacity_mw": 1773,
+   "metered_gwh": 1587,
+   "switched_off_gwh": 2855,
+   "paid_to_switch_off": 31080709,
+   "share_switched_off": 0.643
+  },
+  {
+   "farm": "Moray East",
+   "offshore": true,
+   "capacity_mw": 900,
+   "metered_gwh": 1714,
+   "switched_off_gwh": 1758,
+   "paid_to_switch_off": 85635653,
+   "share_switched_off": 0.506
+  },
+  {
+   "farm": "Moray West",
+   "offshore": true,
+   "capacity_mw": 860,
+   "metered_gwh": 1147,
+   "switched_off_gwh": 1381,
+   "paid_to_switch_off": 58761810,
+   "share_switched_off": 0.546
+  },
+  {
+   "farm": "Viking",
+   "offshore": false,
+   "capacity_mw": 487,
+   "metered_gwh": 590,
+   "switched_off_gwh": 1103,
+   "paid_to_switch_off": 9648602,
+   "share_switched_off": 0.652
+  }
+ ],
+ "calm_day": {
+  "date": "2025-10-13",
+  "firm_mean_mw": 2030,
+  "wind_mean_mw": 112,
+  "wind_max_mw": 305,
+  "wind_units": 166
+ },
+ "cfd_2025": {
+  "total": 391383369,
+  "farms": [
+   {
+    "farm": "Beatrice",
+    "paid": 230873037
+   },
+   {
+    "farm": "Neart na Gaoithe",
+    "paid": 115080461
+   },
+   {
+    "farm": "Dorenell Wind Farm",
+    "paid": 11463585
+   },
+   {
+    "farm": "Kype Muir Wind Farm",
+    "paid": 9585204
+   },
+   {
+    "farm": "Middle Muir Wind Farm",
+    "paid": 4992538
+   },
+   {
+    "farm": "Nanclach Wind Farm",
+    "paid": 3970413
+   },
+   {
+    "farm": "Solwaybank Wind Farm",
+    "paid": 3788090
+   },
+   {
+    "farm": "Sneddon Law Community Wind Farm",
+    "paid": 3340427
+   },
+   {
+    "farm": "Bad A Cheo Wind Farm",
+    "paid": 3184118
+   },
+   {
+    "farm": "Coire Na Cloiche Windfarm",
+    "paid": 2740608
+   },
+   {
+    "farm": "Tralorg Wind Farm",
+    "paid": 2151745
+   },
+   {
+    "farm": "Achlachan Wind Farm",
+    "paid": 1154259
+   },
+   {
+    "farm": "Moray Offshore Windfarm (East)",
+    "paid": -941117
+   }
+  ],
+  "source": "LCCC, Contracts for Difference generation and payments (the Clock's CfD series)"
+ },
+ "switch_off": {
+  "gb_cost": 1100267420.37,
+  "scotland_cost": 1055611302.44,
+  "scotland_share": 0.9594,
+  "window": {
+   "from": "2023-10-27",
+   "to": "2026-10-09"
+  }
+ },
+ "consumption_share": 0.0869,
+ "switch_off_2025": {
+  "scotland_cost": 361774750,
+  "scotland_gwh": 10070,
+  "scotland_offshore_gwh": 6111
+ },
+ "top_day": {
+  "date": "2024-09-10",
+  "cost": 7534718,
+  "mwh": 109722
+ }
+}
