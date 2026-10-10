@@ -557,9 +557,10 @@ def test_repo_changelog_loads_and_keeps_its_corrections():
     # the real log must pass validation, and its corrections are unchanged
     entries = sitedata.load_changelog("changelog.jsonl")
     corr = [e for e in entries if e["kind"] == "correction"]
-    assert [(e["date"], e["figure"]) for e in corr] == [
-        ("2026-09-01", "emissions-trading"), ("2026-09-30", "bsuos"),
-        ("2026-09-30", "headline-caption")]
+    assert sorted((e["date"], e["figure"]) for e in corr) == [
+        ("2026-06-24", "factoid-police"), ("2026-09-01", "emissions-trading"),
+        ("2026-09-30", "bsuos"), ("2026-09-30", "headline-caption"),
+        ("2026-10-01", "factoid-homes"), ("2026-10-01", "factoid-hospitals")]
     assert all(e.get("status") is None for e in corr)
 
 
