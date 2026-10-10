@@ -26,11 +26,11 @@ Tests: `uv run --group dev python -m pytest -q`. Golden master:
 
 ## 3. Backfill and reconciliation
 
-- [ ] 3.1 Backfill turn-up from the first Elexon stack date to yesterday; verify
+- [x] 3.1 Backfill turn-up from the first Elexon stack date to yesterday; verify
       partition count and empty-day report
-- [ ] 3.2 `tools/constraint_reconciliation.py`: monthly table 2024–date vs Octopus
+- [x] 3.2 `tools/constraint_reconciliation.py`: monthly table 2024–date vs Octopus
       and NESO; verify it runs against live sources
-- [ ] 3.3 `scratch/2026-10-10-constraint-reconciliation.md`: table, gap
+- [x] 3.3 `scratch/2026-10-10-constraint-reconciliation.md`: table, gap
       explanations, named totals, verdict, attribution options table
 - Gate: full suite green; reconciliation doc written from a real run
 

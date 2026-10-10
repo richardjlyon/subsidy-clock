@@ -147,7 +147,8 @@ def cmd_build_site(args: argparse.Namespace) -> int:
         for s in model["schemes"]:
             if s.layer == "indirect":
                 row = s.annual.filter(pl.col("year") == cc_year)
-                ours[s.scheme_id] = float(row["cost_gbp"][0]) if row.height else 0.0
+                key = REF_KEY.get(s.scheme_id, s.scheme_id)
+                ours[key] = ours.get(key, 0.0) + (float(row["cost_gbp"][0]) if row.height else 0.0)
         cc = reconcile.indirect_crosscheck(ours, ref_cc)
         (out_dir / "indirect_crosscheck.json").write_text(
             json.dumps(cc, indent=1, allow_nan=False))
@@ -165,7 +166,7 @@ def cmd_build_site(args: argparse.Namespace) -> int:
             nom = float(cut["cost_gbp"].sum()) if cut.height else 0.0
             if "cost_gbp_2024" in cut.columns and cut.height:
                 real_total += float(cut["cost_gbp_2024"].sum())
-            key = "cfd" if s.scheme_id in ("cfd_renewable", "cfd_low_carbon") else s.scheme_id
+            key = REF_KEY.get(s.scheme_id, s.scheme_id)
             comp[key] = comp.get(key, 0.0) + nom
         unmapped = set(comp) - set(ref_t["components"])
         if unmapped:
@@ -180,6 +181,13 @@ def cmd_build_site(args: argparse.Namespace) -> int:
 
     print(f"[ok] site data written to {out_dir}")
     return 0
+
+
+# How our schemes map onto REF's components for the like-for-like checks.
+# REF's BSUoS is the whole balancing charge, so constraint turn-up, which we
+# carve out of the BSUoS uplift, folds back into it for comparison.
+REF_KEY = {"cfd_renewable": "cfd", "cfd_low_carbon": "cfd",
+           "constraint_turnup": "bsuos"}
 
 
 def cmd_build_cards(args: argparse.Namespace) -> int:
