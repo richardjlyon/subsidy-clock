@@ -40,12 +40,10 @@ Read at session start. Update when state changes. Durable knowledge lives in the
   "Settlement Day" or "Settlement Date"; cost is "Actual BSUoS Cost (£)" or
   "...Cost(£)" (no space). Exact-string matching broke the live fetch. Matching
   is now on a normalised key, still fail-loud when nothing matches.
-- **Consequence for the REF review (unsent).** Review §5.1 tells Constable the
-  correction "raises the Clock's BSUoS line by about £4.7bn and its headline by
-  2.5%". Measured: **+£10.3bn on the line and +4.92% on the headline.** §5.1 must
-  be revised before the review goes out. The correction is published (live
-  since 30 Sep), so §5.1 just needs rewriting: tracked on Plane ETRAP-72.
-  SUBCLK-23 (the original fault report) closed 10 Oct after re-checking against ABCR.
+- **REF review: sent 29 Sep** to Hughes and Constable; its §5.1 sized the error
+  at about £4.7bn. Richard's 30 Sep email ("UPDATE: UK Subsidy Clock") told them
+  it was about ten billion and the site was updated. Nothing owed. SUBCLK-11,
+  -17, -23 and ETRAP-72 closed 10 Oct.
 
 ## One change log, two kinds — live 10 Oct 2026
 
