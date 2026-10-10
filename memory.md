@@ -46,6 +46,20 @@ Read at session start. Update when state changes. Durable knowledge lives in the
   be revised before the review goes out. Awaiting Richard's decision on whether
   to revise the review or publish the correction first.
 
+## One change log, two kinds — branch `changelog`, 10 Oct 2026 (unmerged)
+
+- `changelog.jsonl` (repo root) replaced `corrections.jsonl`. Every entry has a
+  required `kind`: `correction` (we published something wrong) or `change`
+  (method, scope or source moved on purpose). Build fails on any other kind.
+  `was`/`now` are required for both; a change that moved no figure says so.
+- One load, two outputs: `changelog.json/.csv` (all published entries) and
+  `corrections.json/.csv` (the correction subset, old shape). `status: draft`
+  entries are validated but never published — the turn-up split waits there.
+- `/changelog` page built (new public copy: needs Richard's approval). Not yet
+  linked from `site/index.html`, which is bot-owned.
+- Back-filled 8 changes from git history (June to Oct 2026); figures read from
+  `site/data` at each commit and its parent. Anything unrecoverable says so.
+
 ## Price basis must be stated on every figure — 30 Sep 2026
 
 - **The defect.** The front page showed BSUoS as £26.3bn, `/explainers/bsuos`
