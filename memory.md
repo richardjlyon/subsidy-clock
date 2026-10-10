@@ -43,8 +43,9 @@ Read at session start. Update when state changes. Durable knowledge lives in the
 - **Consequence for the REF review (unsent).** Review §5.1 tells Constable the
   correction "raises the Clock's BSUoS line by about £4.7bn and its headline by
   2.5%". Measured: **+£10.3bn on the line and +4.92% on the headline.** §5.1 must
-  be revised before the review goes out. Awaiting Richard's decision on whether
-  to revise the review or publish the correction first.
+  be revised before the review goes out. The correction is published (live
+  since 30 Sep), so §5.1 just needs rewriting: tracked on Plane ETRAP-72.
+  SUBCLK-23 (the original fault report) closed 10 Oct after re-checking against ABCR.
 
 ## One change log, two kinds — live 10 Oct 2026
 
