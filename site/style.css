@@ -352,29 +352,29 @@ main > .card-pair { margin: 24px 0; }
    overflow on a phone). So the table indexes what changed and the notes below
    carry why, at reading width. Notes are addressable so a single correction
    can be cited, and none of it hides behind a click: the page prints whole. */
-#corrections-table td { vertical-align: baseline; }
-#corrections-table .corr-fig { font-family: var(--sans); font-weight: 700; }
+#corrections-table td, #changelog-table td { vertical-align: baseline; }
+#corrections-table .corr-fig, #changelog-table .corr-fig { font-family: var(--sans); font-weight: 700; }
 /* Every cell in .data-table has padding-left:0 and .num-col zeroes the right
    padding too — fine for a final right-aligned column, but here WAS, NOW and
    NOTE sit mid-table and collided ("£22.85bn cumulativenote 1"). This table
    spaces its own columns and does not use .num-col. */
-#corrections-table th, #corrections-table td { padding-right: 22px; }
-#corrections-table th:last-child, #corrections-table td:last-child { padding-right: 0; }
+#corrections-table th, #corrections-table td, #changelog-table th, #changelog-table td { padding-right: 22px; }
+#corrections-table th:last-child, #corrections-table td:last-child, #changelog-table th:last-child, #changelog-table td:last-child { padding-right: 0; }
 /* width:1% + nowrap shrinks a column to its content, so the figure name (the
    only cell wanting to wrap) takes the slack instead of the money columns
    hoarding it and forcing three-line rows. A correction to a DESCRIPTION
    carries prose in was/now rather than a figure, which would stretch those
    columns and crush the figure name to one word per line — so prose cells
    wrap within a fixed share and the figure name keeps its room. */
-#corrections-table th:not(:nth-child(2)), #corrections-table td:not(:nth-child(2)) {
+#corrections-table th:not(:nth-child(2)), #corrections-table td:not(:nth-child(2)), #changelog-table th:not(:nth-child(2)), #changelog-table td:not(:nth-child(2)) {
   width: 1%; white-space: nowrap;
 }
-#corrections-table th:nth-child(2), #corrections-table td:nth-child(2) { min-width: 15ch; }
-#corrections-table td.corr-prose {
+#corrections-table th:nth-child(2), #corrections-table td:nth-child(2), #changelog-table th:nth-child(2), #changelog-table td:nth-child(2) { min-width: 15ch; }
+#corrections-table td.corr-prose, #changelog-table td.corr-prose {
   white-space: normal; width: auto; min-width: 20ch; max-width: 26ch;
   font-size: 0.86em; line-height: 1.35;
 }
-#corrections-table .corr-money {
+#corrections-table .corr-money, #changelog-table .corr-money {
   text-align: right;
   font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1;
 }
@@ -386,6 +386,14 @@ main > .card-pair { margin: 24px 0; }
   border-bottom: 1px solid var(--line);
 }
 .corr-ref:hover { color: var(--amber-dark); border-bottom-color: var(--amber); }
+/* /changelog: the same table and notes, with each entry's kind shown as a
+   small caption above the figure name, and again in its note */
+.corr-kind {
+  display: block; font-family: var(--sans); font-size: 0.62rem;
+  text-transform: uppercase; letter-spacing: 0.09em; font-weight: 700;
+  color: var(--faint);
+}
+.corr-kind-correction { color: var(--amber-dark); }
 
 .corr-notes { margin: 34px 0 0; }
 .corr-notes h3 {
@@ -600,11 +608,11 @@ tr.out-of-tolerance td { color: var(--amber-dark); font-weight: 500; }
   .data-table { font-size: 0.82rem; }
   #recipients-table th:nth-child(3), #recipients-table td:nth-child(3) { display: none; }
   /* the credit column is restated in the note, so dropping it loses nothing */
-  #corrections-table th:nth-child(6), #corrections-table td:nth-child(6) { display: none; }
+  #corrections-table th:nth-child(6), #corrections-table td:nth-child(6), #changelog-table th:nth-child(6), #changelog-table td:nth-child(6) { display: none; }
   /* a 20ch floor on prose cells is a desktop comfort; on a phone it forces the
      row wider than the screen, so let prose shrink with the viewport */
-  #corrections-table td.corr-prose { min-width: 0; max-width: none; }
-  #corrections-table th:nth-child(2), #corrections-table td:nth-child(2) { min-width: 0; }
+  #corrections-table td.corr-prose, #changelog-table td.corr-prose { min-width: 0; max-width: none; }
+  #corrections-table th:nth-child(2), #corrections-table td:nth-child(2), #changelog-table th:nth-child(2), #changelog-table td:nth-child(2) { min-width: 0; }
   .corr-note { grid-template-columns: 1.9em 1fr; }
 
   /* Audit tables (the REF cross-check and reconciliation) print figures to the
@@ -656,15 +664,15 @@ tr.out-of-tolerance td { color: var(--amber-dark); font-weight: 500; }
    note states both figures in full, so the table keeps the current one and the
    link to the reasoning. */
 @media (max-width: 430px) {
-  #corrections-table th:nth-child(3), #corrections-table td:nth-child(3) { display: none; }
-  #corrections-table .corr-fig { font-weight: 400; }
-  #corrections-table th, #corrections-table td { padding-right: 12px; }
+  #corrections-table th:nth-child(3), #corrections-table td:nth-child(3), #changelog-table th:nth-child(3), #changelog-table td:nth-child(3) { display: none; }
+  #corrections-table .corr-fig, #changelog-table .corr-fig { font-weight: 400; }
+  #corrections-table th, #corrections-table td, #changelog-table th, #changelog-table td { padding-right: 12px; }
 }
 
 /* Narrowest phones: the date column's "30 Sept 2026" is the last thing that
    will not fit alongside a figure name. It is restated in the note. */
 @media (max-width: 380px) {
-  #corrections-table th:nth-child(1), #corrections-table td:nth-child(1) { display: none; }
+  #corrections-table th:nth-child(1), #corrections-table td:nth-child(1), #changelog-table th:nth-child(1), #changelog-table td:nth-child(1) { display: none; }
 }
 
 @media (max-width: 400px) {

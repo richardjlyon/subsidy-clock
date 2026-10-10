@@ -1,7 +1,7 @@
 # Reviewed reports (not corrections)
 
 Reports reviewed and judged **not** a data error — scope/methodology questions that
-don't belong in `corrections.jsonl` (confirmed errors only). Logged here for the record.
+don't belong in `changelog.jsonl` as corrections (confirmed errors only). Logged here for the record.
 
 ---
 
