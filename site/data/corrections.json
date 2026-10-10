@@ -1,8 +1,22 @@
 {
- "generated_at": "2026-10-09T12:11:03.349475+00:00",
+ "generated_at": "2026-10-10T08:31:12.144843+00:00",
  "corrections": [
   {
+   "date": "2026-06-24",
+   "kind": "correction",
+   "figure": "factoid-police",
+   "figure_label": "Equivalence \u2014 police officers' salaries",
+   "was": "255,000 police officers",
+   "now": "245,000 police officers",
+   "cause": [
+    "The police-officer equivalence divided a year of subsidy by a constable's pay that was out of date: \u00a348,231, the 2024 rate. The pay award of 1 September 2025 raised it to \u00a350,256, so the same year of subsidy pays fewer officers. The count fell from 255,000 to 245,000.",
+    "Recorded retrospectively on 10 October 2026 from the public repository history (commit 51d10136)."
+   ],
+   "credit": ""
+  },
+  {
    "date": "2026-09-01",
+   "kind": "correction",
    "figure": "emissions-trading",
    "figure_label": "Emissions trading (power-sector share of UK auction revenue)",
    "was": "\u00a3895.6m (2024 run-rate)",
@@ -16,6 +30,7 @@
   },
   {
    "date": "2026-09-30",
+   "kind": "correction",
    "figure": "bsuos",
    "figure_label": "Balancing costs (BSUoS uplift)",
    "was": "\u00a312.54bn cumulative (\u00a31.62bn/yr run-rate)",
@@ -31,6 +46,7 @@
   },
   {
    "date": "2026-09-30",
+   "kind": "correction",
    "figure": "headline-caption",
    "figure_label": "Headline total \u2014 how it was described",
    "was": "described as payments to generators",
@@ -43,6 +59,33 @@
     "Found while reconciling this site against a review of a Renewable Energy Foundation paper."
    ],
    "credit": "Richard Lyon"
+  },
+  {
+   "date": "2026-10-01",
+   "kind": "correction",
+   "figure": "factoid-hospitals",
+   "figure_label": "Equivalence \u2014 hospitals",
+   "was": "120 of the largest new NHS hospitals",
+   "now": "England's entire New Hospital Programme (46 hospital schemes), 4 times over",
+   "cause": [
+    "The hospital equivalence divided the full cost by \u00a32bn, treated as the cost of one of the largest new NHS hospitals. The National Audit Office's figure is the bottom of its top cost band ('\u00a32 billion or more'), not a typical cost, so 120 hospitals overstated what the money would buy. The programme's scheme costs also include future inflation, so they are not in today's money.",
+    "The equivalence now divides by the NAO's \u00a360bn total for the whole New Hospital Programme (46 schemes). Because that total includes future inflation, the count of 4 understates rather than overstates.",
+    "Recorded retrospectively on 10 October 2026 from the public repository history (commit c9e4eb90)."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-10-01",
+   "kind": "correction",
+   "figure": "factoid-homes",
+   "figure_label": "Equivalence \u2014 social homes",
+   "was": "610,000 social homes",
+   "now": "590,000 social homes",
+   "cause": [
+    "The cost of one social home, \u00a3393,333 (Cebr: \u00a335.4bn for 90,000 homes), is stated in 2023 prices. It was divided into a total in 2024 prices without first being brought up to 2024 prices, which overstated the number of homes by about 3%. Converted to 2024 prices, the count is 590,000.",
+    "Recorded retrospectively on 10 October 2026 from the public repository history (commit 68c39523)."
+   ],
+   "credit": ""
   }
  ]
 }

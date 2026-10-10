@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 901845074.44,
+ "hero_gbp": 902183582.43,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -149,7 +149,7 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 29361357.580000006,
+   "payment_gbp": 29361357.75,
    "generation_mwh": 190668.24100000004
   },
   {
@@ -174,8 +174,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 26615270.85000001,
-   "generation_mwh": 171429.557
+   "payment_gbp": 26615264.94000001,
+   "generation_mwh": 171429.487
   },
   {
    "q": "2025-Q4",
@@ -184,18 +184,18 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 36498034.91,
-   "generation_mwh": 276376.97400000005
+   "payment_gbp": 36498036.599999994,
+   "generation_mwh": 276376.987
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 25684816.930000007,
-   "generation_mwh": 188004.05
+   "payment_gbp": 25684816.08000001,
+   "generation_mwh": 188004.04099999997
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 19313879.779999997,
-   "generation_mwh": 173827.078
+   "payment_gbp": 19652392.669999998,
+   "generation_mwh": 176775.17
   }
  ],
  "contracts": [
@@ -204,7 +204,7 @@
    "unit_name": "Burbo Bank Extension Offshore Wind Farm",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 901845074.44,
+   "cumulative_gbp": 902183582.43,
    "first_settlement": "2017-04-11",
    "latest_strike_gbp_mwh": 220.95
   }
@@ -215,7 +215,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-09-29"
+  "data_to": "2026-09-30"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -313,8 +313,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 8249780.789,
-  "rate_gbp_per_mwh": 109.31745915509563,
+  "generation_mwh": 8252728.815,
+  "rate_gbp_per_mwh": 109.3194266592413,
   "rate_label": "payment per subsidised MWh"
  }
 }

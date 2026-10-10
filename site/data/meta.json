@@ -1,20 +1,20 @@
 {
- "generated_at": "2026-10-09T12:11:03.349475+00:00",
+ "generated_at": "2026-10-10T08:31:12.144843+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-10-09T12:03:09.082266+00:00",
+   "retrieved_at": "2026-10-10T08:25:18.508189+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
-   "row_count": 117792
+   "row_count": 117877
   },
   "constraints": {
-   "retrieved_at": "2026-10-09T12:11:02.300923+00:00",
-   "source_date": "2023-11-16",
+   "retrieved_at": "2026-10-10T08:31:05.324875+00:00",
+   "source_date": "2023-11-09",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 0
+   "row_count": 18
   },
   "capacity_market": {
-   "retrieved_at": "2026-10-09T12:03:46.407355+00:00",
+   "retrieved_at": "2026-10-10T08:25:47.713212+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 805
@@ -24,6 +24,12 @@
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/current-balancing-services-use-of-system-bsuos-data",
    "row_count": 165
+  },
+  "constraint_turnup": {
+   "retrieved_at": "2026-10-10T08:25:46.824633+00:00",
+   "source_date": "2026-10-09",
+   "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/offer",
+   "row_count": 16
   }
  },
  "context": {
@@ -61,7 +67,7 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 240319020199.29065
+  "combined_real": 240325421093.78802
  },
  "factoids": [
   {
@@ -165,11 +171,11 @@
   },
   {
    "slug": "police",
-   "figure": "238,000",
+   "figure": "239,000",
    "basis": "runrate",
    "figure_label": "police officers",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of UK renewable subsidy pays the salaries of 238,000 police officers, in today's money.",
+   "sentence": "A year of UK renewable subsidy pays the salaries of 239,000 police officers, in today's money.",
    "label": "police officers' annual salaries paid by one year of UK renewable subsidy, in today's money",
    "source_name": "Police Federation of England & Wales, constable pay scales (top of scale, from 1 September 2025)",
    "source_url": "https://polfed.org/resources/pay-scales/constable-pay-scales/"

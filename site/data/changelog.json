@@ -1,0 +1,227 @@
+{
+ "generated_at": "2026-10-10T08:31:12.144843+00:00",
+ "entries": [
+  {
+   "date": "2026-06-12",
+   "kind": "change",
+   "figure": "full-cost",
+   "figure_label": "Full cost, including estimated indirect costs \u2014 price basis",
+   "was": "above \u00a3180 billion (cash as paid)",
+   "now": "over \u00a3220 billion (in today's money, 2024 prices)",
+   "cause": [
+    "The sentence beneath the counter that gives the full cost \u2014 the measured direct payments plus the estimated indirect costs \u2014 was restated from cash as paid to today's money (2024 prices, deflated by CPIH). On that day's data the combined total was \u00a3183.3bn in cash and \u00a3223.4bn in 2024 prices; the sentence floors to the \u00a310bn below, so it moved from 'above \u00a3180 billion' to 'over \u00a3220 billion'. The cost-per-year chart moved to 2024 prices the same day, so its final bar matches the sentence.",
+    "Nothing about what is counted changed. Cash totals add pounds from 2002 and pounds from 2024 as though they were worth the same; 2024 prices put every year on one footing.",
+    "Recorded retrospectively on 10 October 2026 from the public repository history (commits 58af477e and 98758034)."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-06-12",
+   "kind": "change",
+   "figure": "per-household",
+   "figure_label": "Cost per household \u2014 household count",
+   "was": "\u00a3430 a year per household (28.4 million households)",
+   "now": "\u00a3421 a year per household (29.0 million households)",
+   "cause": [
+    "The household count used to turn the yearly cost into a cost per household was updated from 28.4 million to 29.0 million, the Office for National Statistics' 2025 figure. More households sharing the same cost lowers each one's share: the direct figure in cash as paid moved from \u00a3430.16 to \u00a3421.26 a year. Nothing about the subsidy totals changed.",
+    "Recorded retrospectively on 10 October 2026 from the public repository history (commit e7ff6c9c)."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-06-14",
+   "kind": "change",
+   "figure": "contracts-for-difference",
+   "figure_label": "Contracts for Difference \u2014 biomass counted as renewable",
+   "was": "\u00a3105.5bn renewables total (cash as paid); CfD renewables \u00a310.20bn",
+   "now": "\u00a3108.6bn renewables total (cash as paid); CfD renewables \u00a313.35bn",
+   "cause": [
+    "Biomass Contracts for Difference (Drax and others) had been held in a separate 'nuclear and biomass' line outside the renewables total. Biomass is now counted as renewable, so its \u00a33.15bn moved into the Contracts for Difference line and into the headline, which rose from \u00a3105.5bn to \u00a3108.6bn in cash terms. Which contracts count as renewable is now derived at build time from a single list, with a check that stops the build if that classification fails.",
+    "Nuclear contracts stay outside the renewables total. No nuclear CfD had yet received a payment, so the separate nuclear line is shown only once it has payments.",
+    "Recorded retrospectively on 10 October 2026 from the public repository history (commit ed21b85a)."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-06-17",
+   "kind": "change",
+   "figure": "tnuos",
+   "figure_label": "Grid upgrades for renewables (TNUoS) \u2014 source for 2013 to 2021",
+   "was": "\u00a323.70bn attributed, cumulative (cash as paid)",
+   "now": "\u00a324.14bn attributed, cumulative (cash as paid)",
+   "cause": [
+    "Transmission charges for 2013 to 2021 had come from round-number estimates in a Renewable Energy Foundation table. They now come from NESO's own TNUoS charging statements, as compiled by David Turver, with the calendar mapping checked against three NESO figures the Clock already held for 2022 to 2024. The 2023 figure was also refined from \u00a34,414m to NESO's directly stated \u00a34,416.4m.",
+    "The attributed TNUoS line rose by \u00a30.445bn. Years before 2013 still rest on the earlier estimates, and the methodology page says so.",
+    "Recorded retrospectively on 10 October 2026 from the public repository history (commit 4b0451d1)."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-06-18",
+   "kind": "change",
+   "figure": "headline",
+   "figure_label": "Headline counter \u2014 price basis",
+   "was": "\u00a3108.7bn (cash as paid)",
+   "now": "\u00a3131.8bn (in today's money, 2024 prices)",
+   "cause": [
+    "The ticking counter and the dashboard cards defaulted to cash as paid, while the full-cost sentence above them was already in 2024 prices, so the direct and indirect cards (\u00a3108.7bn and \u00a378.3bn) did not add up to the full cost quoted beside them. The dashboard now defaults to 2024 prices, which put the direct total at \u00a3131.8bn and the indirect at \u00a395.8bn. Cash figures remain one switch away and in every published data file.",
+    "Cumulative figures rise in today's money because older pounds are worth more; per-year figures such as the household cost fall slightly.",
+    "Recorded retrospectively on 10 October 2026 from the public repository history (commit 6fe06769)."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-06-23",
+   "kind": "change",
+   "figure": "share-cards",
+   "figure_label": "Share cards and equivalences \u2014 price basis",
+   "was": "\u00a3108.7bn total; \u00a3441 per household a year (cash as paid)",
+   "now": "\u00a3131.8bn total; \u00a3425 per household a year (in today's money)",
+   "cause": [
+    "The share cards, their link previews and the equivalence sentences on the front page still quoted cash-as-paid figures after the dashboard moved to 2024 prices, so the household card read \u00a3441 while the dashboard read \u00a3425 for the same thing. All of them now use 2024 prices, labelled 'in today's money'. The /data page keeps cash-as-paid figures.",
+    "Recorded retrospectively on 10 October 2026 from the public repository history (commit 0363afcc)."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-06-23",
+   "kind": "change",
+   "figure": "headline",
+   "figure_label": "Headline counter \u2014 scope",
+   "was": "\u00a3131.8bn, direct payments to generators only (2024 prices)",
+   "now": "\u00a3227.6bn, including estimated indirect costs (2024 prices)",
+   "cause": [
+    "The counter had shown only the four measured direct schemes: the Renewables Obligation, Contracts for Difference, Feed-in Tariffs and constraint payments. Two switches were added \u2014 price basis, and whether to include the estimated indirect costs (network and balancing charges, carbon pricing and the capacity levy) \u2014 and the counter now defaults to including them. On that day's data the direct total was \u00a3131.8bn and the indirect \u00a395.8bn, both in 2024 prices.",
+    "The indirect costs are estimates, attributed to renewables by rules set out on the methodology page; the direct payments are measured. Turning the switch off shows the measured total alone. The caption beneath the counter did not say that indirect costs were included until 30 September 2026; that is logged as a correction.",
+    "Recorded retrospectively on 10 October 2026 from the public repository history (commit 4e191a61)."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-06-24",
+   "kind": "correction",
+   "figure": "factoid-police",
+   "figure_label": "Equivalence \u2014 police officers' salaries",
+   "was": "255,000 police officers",
+   "now": "245,000 police officers",
+   "cause": [
+    "The police-officer equivalence divided a year of subsidy by a constable's pay that was out of date: \u00a348,231, the 2024 rate. The pay award of 1 September 2025 raised it to \u00a350,256, so the same year of subsidy pays fewer officers. The count fell from 255,000 to 245,000.",
+    "Recorded retrospectively on 10 October 2026 from the public repository history (commit 51d10136)."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-08-14",
+   "kind": "change",
+   "figure": "constraints",
+   "figure_label": "Paid to switch off (constraints) \u2014 2025 source",
+   "was": "\u00a3382.1m in 2025 (Renewable Energy Foundation database)",
+   "now": "\u00a3397.4m in 2025 (measured from Elexon settlement data)",
+   "cause": [
+    "Constraint payments are measured day by day from Elexon's Balancing Mechanism data. Each night the Clock extends that daily series one week further back; years it does not yet cover in full are taken from the Renewable Energy Foundation's annual database, which is built from the same Elexon bid acceptances. Once the daily series covers a whole calendar year, that year switches to the Clock's own measurement.",
+    "2025 became fully covered on this date. The year moved from REF's \u00a3382.1m to the Clock's measured \u00a3397.4m, a rise of \u00a315.3m (4.0%).",
+    "Recorded retrospectively on 10 October 2026 from the public repository history (data commit cc697b2f)."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-09-01",
+   "kind": "correction",
+   "figure": "emissions-trading",
+   "figure_label": "Emissions trading (power-sector share of UK auction revenue)",
+   "was": "\u00a3895.6m (2024 run-rate)",
+   "now": "\u00a3882.8m (2024 run-rate)",
+   "cause": [
+    "The power sector's share of UK ETS emissions was taken as 30.4 of 85.6 MtCO2e. No published source gives 30.4 Mt: DESNZ's Functioning of the UK carbon market, 2024 (section 7.3) gives 29,484,524 tCO2e of 85,634,344, a share of 34.43% rather than 35.51%.",
+    "The 2022 denominator was likewise held as 110.0 Mt against a published 110.6 Mt, and 2023 was held at the 2023 report's 37.1 Mt after DESNZ restated it to 36,084,695 tCO2e. Revenue for 2024 now uses the published calendar-year auction total (\u00a32,564,090,000 across 25 auctions) instead of converting a financial-year accounts figure. 2022 and 2023 also move, to \u00a32,635.4m and \u00a31,270.7m.",
+    "Found during routine checking of this site's figures against primary sources."
+   ],
+   "credit": "Richard Lyon"
+  },
+  {
+   "date": "2026-09-30",
+   "kind": "correction",
+   "figure": "bsuos",
+   "figure_label": "Balancing costs (BSUoS uplift)",
+   "was": "\u00a312.54bn cumulative (\u00a31.62bn/yr run-rate)",
+   "now": "\u00a322.85bn cumulative (\u00a33.39bn/yr run-rate)",
+   "cause": [
+    "The series was built from NESO's Daily Balancing Costs dataset, which is a breakdown of balancing-mechanism and ancillary spend rather than the balancing cost recovered through BSUoS. Its columns sum to 23-39% below the outturn in NESO's Annual Balancing Costs Report in every year from 2018-19 (2023-24: \u00a31,824m against \u00a32,455m).",
+    "Two faults compounded. The dataset is narrower than the charge it was taken to represent; and the fetched series began on 1 April 2017, so the published 2017 figure covered nine months rather than twelve. Together they produced a 63% fall between raw 2016 (\u00a31,200m) and raw 2017 (\u00a3439m). On the corrected basis the missing quarter accounts for 26% of calendar 2017, and the narrow basis understated the nine months actually fetched by a further 52%.",
+    "The series now reads NESO's settled BSUoS charge data: the half-hourly charge to 31 March 2023, and actual BSUoS cost thereafter, the fixed-tariff reform of April 2023 having broken the identity between what users are charged and what balancing costs. Both are on the gross BSUoS basis, matching the pre-2017 history and the \u00a30.4bn/yr 2002-05 baseline. The corrected series runs 1.10-1.23 times the Annual Balancing Costs Report outturn with no step at either seam, and the 2016-to-2017 change is +3.2%.",
+    "The combined total in 2024 prices rises from \u00a3228.6bn to \u00a3239.9bn; the published headline of over \u00a3220 billion is unchanged. The error understated the cost, so the correction raises the figure.",
+    "Found while checking this site's own figures against primary sources during a review of a Renewable Energy Foundation paper."
+   ],
+   "credit": "Richard Lyon"
+  },
+  {
+   "date": "2026-09-30",
+   "kind": "correction",
+   "figure": "headline-caption",
+   "figure_label": "Headline total \u2014 how it was described",
+   "was": "described as payments to generators",
+   "now": "stated as including estimated indirect costs",
+   "cause": [
+    "The headline counter includes the estimated indirect costs \u2014 network and balancing charges, carbon pricing and the capacity levy \u2014 whenever the 'Include indirect costs' switch is on, which is its default. The sentence printed directly beneath the figure named only the four direct schemes: the Renewables Obligation, Contracts for Difference, Feed-in Tariffs and constraint payments. Those four are \u00a3132.3bn of the \u00a3229.2bn shown. The remaining \u00a396.9bn, about two pounds in every five, is the estimated indirect layer, and the caption did not say so.",
+    "The figure itself was not wrong, and the switch controlling it was visible and correctly labelled. What was wrong was the description: a reader who took the caption as the definition of the number \u2014 the ordinary reading \u2014 would have understood a measured total of payments to generators, when more than two fifths of it is an attributed estimate. This site's own rule is that estimated and measured money must never be presented as the same thing.",
+    "The cause was a display change of 18 June 2026. Two sentences that did carry the disclosure \u2014 'including estimated indirect costs' above the figure, and 'plus estimated indirect system costs' below it \u2014 were written correctly but hidden by the stylesheet of the new page design, which replaced them with the shorter caption. From 23 June 2026, when the indirect switch began defaulting to on, the combined figure was published under a description of the direct schemes alone. It stood for 99 days.",
+    "The caption now names the indirect costs in both states of the switch, and links to the attribution method. The methodology page has also been corrected: it stated that indirect costs were never folded into the headline, which was true of an earlier design and not of the one shipped.",
+    "Found while reconciling this site against a review of a Renewable Energy Foundation paper."
+   ],
+   "credit": "Richard Lyon"
+  },
+  {
+   "date": "2026-10-01",
+   "kind": "correction",
+   "figure": "factoid-hospitals",
+   "figure_label": "Equivalence \u2014 hospitals",
+   "was": "120 of the largest new NHS hospitals",
+   "now": "England's entire New Hospital Programme (46 hospital schemes), 4 times over",
+   "cause": [
+    "The hospital equivalence divided the full cost by \u00a32bn, treated as the cost of one of the largest new NHS hospitals. The National Audit Office's figure is the bottom of its top cost band ('\u00a32 billion or more'), not a typical cost, so 120 hospitals overstated what the money would buy. The programme's scheme costs also include future inflation, so they are not in today's money.",
+    "The equivalence now divides by the NAO's \u00a360bn total for the whole New Hospital Programme (46 schemes). Because that total includes future inflation, the count of 4 understates rather than overstates.",
+    "Recorded retrospectively on 10 October 2026 from the public repository history (commit c9e4eb90)."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-10-01",
+   "kind": "correction",
+   "figure": "factoid-homes",
+   "figure_label": "Equivalence \u2014 social homes",
+   "was": "610,000 social homes",
+   "now": "590,000 social homes",
+   "cause": [
+    "The cost of one social home, \u00a3393,333 (Cebr: \u00a335.4bn for 90,000 homes), is stated in 2023 prices. It was divided into a total in 2024 prices without first being brought up to 2024 prices, which overstated the number of homes by about 3%. Converted to 2024 prices, the count is 590,000.",
+    "Recorded retrospectively on 10 October 2026 from the public repository history (commit 68c39523)."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-10-02",
+   "kind": "change",
+   "figure": "constraints",
+   "figure_label": "Paid to switch off (constraints) \u2014 2024 source",
+   "was": "\u00a3394.3m in 2024 (Renewable Energy Foundation database)",
+   "now": "\u00a3410.8m in 2024 (measured from Elexon settlement data)",
+   "cause": [
+    "The daily series described in the 14 August 2026 entry reached the start of 2024, so 2024 switched from the Renewable Energy Foundation's annual figure to the Clock's own measurement. The year moved from \u00a3394.3m to \u00a3410.8m, a rise of \u00a316.5m (4.2%). 2023 and earlier still use REF's figures and will switch the same way as the daily series reaches them.",
+    "Recorded retrospectively on 10 October 2026 from the public repository history (data commit c4fbee5b)."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-10-10",
+   "kind": "change",
+   "figure": "bsuos",
+   "figure_label": "Balancing costs (BSUoS) \u2014 constraint turn-up shown on its own line",
+   "was": "Balancing the grid (BSUoS) \u00a326.3bn (2024 prices), including turn-up",
+   "now": "Balancing the grid (BSUoS) \u00a321.0bn and Paid to switch on (constraint turn-up) \u00a35.4bn (2024 prices)",
+   "cause": [
+    "When wind farms are paid to switch off behind a network bottleneck, the grid operator also pays other power stations, mostly gas, to switch on and replace the lost electricity. That cost is recovered through the balancing charge, so it was already counted inside the balancing line. It is now shown on its own line, 'Paid to switch on', and the balancing line is smaller by the same amount. The headline, the direct total and the indirect total do not change.",
+    "The new line is estimated from Elexon settlement data for every half-hour since November 2015, using the method of Octopus Energy's Wasted Wind tracker; it reproduces Octopus's published figure for 2025 to within 0.1%. It is counted with the indirect costs because the money goes to the replacement stations rather than to renewable generators, and because it is an estimate rather than a record of payments. The method is set out on the methodology page."
+   ],
+   "credit": ""
+  }
+ ]
+}
