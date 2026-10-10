@@ -244,3 +244,14 @@ defaults, matching the old Vercel `cleanUrls`.
 Vercel retired the same day: Vercel project `subsidy-clock` deleted, both domains
 removed from the Vercel team, `vercel.json` and the `VERCEL_DEPLOY_HOOK` repo secret
 deleted. `subsidy-clock.vercel.app` now 404s.
+
+## Feed fixes — 10 Oct 2026
+
+- NESO renamed the BSUoS cost column to `Actual BSUoS Cost_GBP`; the parser now matches it.
+- LCCC republished In-period Tracking under a new resource id. It is now read by
+  dataset name (`in-period-tracking`), and stored actuals are merged, not
+  overwritten: the new resource starts Oct 2026 and has forecasts only, so the
+  CfD reconciliation check stays at 23 Jun 2026 until LCCC publishes actuals.
+- BSUoS restatements: only the first re-read of a pre-30-Sep-2026 version is
+  "ours" (basis change). Later ones are NESO re-settling. Five entries
+  (1 and 10 Oct) were mislabelled and have been corrected.
