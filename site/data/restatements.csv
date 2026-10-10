@@ -1,5 +1,5 @@
 # The Subsidy Clock — subsidyclock.co.uk
-# Licence: CC BY 4.0 (credit "The Subsidy Clock — subsidyclock.co.uk") · contains public sector information licensed under OGL v3.0 — generated 2026-10-10 08:31 UTC
+# Licence: CC BY 4.0 (credit "The Subsidy Clock — subsidyclock.co.uk") · contains public sector information licensed under OGL v3.0 — generated 2026-10-10 09:03 UTC
 # Data revisions log: origin=publisher is a source restating its own history; origin=ours is a basis change we made, with the cause named — see subsidyclock.co.uk/corrections
 scheme,table,detected_at,partition,previous_version,new_version,origin,cause
 bsuos,daily,2026-06-10T06:31:04.650394+00:00,2026-2027,20260610T063012.224599,20260610T063104.650394,publisher,source revision
@@ -37,9 +37,11 @@ bsuos,daily,2026-09-30T03:13:08.555186+00:00,2023-2024,20260610T063010.203137,20
 bsuos,daily,2026-09-30T03:13:08.556912+00:00,2024-2025,20260610T063011.086946,20260930T031308.556912,ours,basis change 2026-09-30: series moved from NESO's Daily Balancing Costs dataset to settled BSUoS charge data (gross BSUoS basis) — see /corrections
 bsuos,daily,2026-09-30T03:13:08.558603+00:00,2025-2026,20260909T100301.125215,20260930T031308.558603,ours,basis change 2026-09-30: series moved from NESO's Daily Balancing Costs dataset to settled BSUoS charge data (gross BSUoS basis) — see /corrections
 bsuos,daily,2026-09-30T03:13:08.561394+00:00,2026-2027,20260909T100301.542380,20260930T031308.561394,ours,basis change 2026-09-30: series moved from NESO's Daily Balancing Costs dataset to settled BSUoS charge data (gross BSUoS basis) — see /corrections
-bsuos,daily,2026-10-01T05:13:16.956599+00:00,2025-2026,20260930T111939.509898,20261001T051316.956599,ours,basis change 2026-09-30: series moved from NESO's Daily Balancing Costs dataset to settled BSUoS charge data (gross BSUoS basis) — see /corrections
-bsuos,daily,2026-10-01T05:13:16.962264+00:00,2026-2027,20260930T111939.515479,20261001T051316.962264,ours,basis change 2026-09-30: series moved from NESO's Daily Balancing Costs dataset to settled BSUoS charge data (gross BSUoS basis) — see /corrections
-bsuos,daily,2026-10-01T11:46:35.236529+00:00,2024-2025,20261001T064712.791773,20261001T114635.236529,ours,basis change 2026-09-30: series moved from NESO's Daily Balancing Costs dataset to settled BSUoS charge data (gross BSUoS basis) — see /corrections
+bsuos,daily,2026-10-01T05:13:16.956599+00:00,2025-2026,20260930T111939.509898,20261001T051316.956599,publisher,source revision
+bsuos,daily,2026-10-01T05:13:16.962264+00:00,2026-2027,20260930T111939.515479,20261001T051316.962264,publisher,source revision
+bsuos,daily,2026-10-01T11:46:35.236529+00:00,2024-2025,20261001T064712.791773,20261001T114635.236529,publisher,source revision
+bsuos,daily,2026-10-10T08:53:57.089171+00:00,2025-2026,20261001T114635.239938,20261010T085357.089171,publisher,source revision
+bsuos,daily,2026-10-10T08:53:57.092183+00:00,2026-2027,20261001T114635.245557,20261010T085357.092183,publisher,source revision
 capacity_market,payments,2026-06-12T07:04:57.421142+00:00,full,20260611T201635.344897,20260612T070457.421142,"",""
 capacity_market,payments,2026-07-09T08:57:07.635346+00:00,full,20260708T075525.911839,20260709T085707.635346,"",""
 capacity_market,payments,2026-08-08T06:08:30.577839+00:00,full,20260807T064849.575079,20260808T060830.577839,"",""
@@ -131,6 +133,7 @@ cfd,generation,2026-10-07T11:56:21.621197+00:00,full,20261006T121031.813754,2026
 cfd,generation,2026-10-08T12:11:31.341796+00:00,full,20261007T115621.621197,20261008T121131.341796,publisher,source revision
 cfd,generation,2026-10-09T12:03:09.082266+00:00,full,20261008T121131.341796,20261009T120309.082266,publisher,source revision
 cfd,generation,2026-10-10T08:25:18.508189+00:00,full,20261009T120309.082266,20261010T082518.508189,publisher,source revision
+cfd,portfolio,2026-10-10T08:53:42.470737+00:00,full,20260729T162748.692584,20261010T085342.470737,publisher,source revision
 cfd,tracking,2026-06-17T07:18:28.498175+00:00,full,20260616T072049.119187,20260617T071828.498175,"",""
 cfd,tracking,2026-06-23T10:40:11.962719+00:00,full,20260623T064939.973664,20260623T104011.962719,"",""
 cfd,tracking,2026-07-01T06:57:44.129992+00:00,full,20260630T065030.661879,20260701T065744.129992,"",""
