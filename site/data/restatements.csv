@@ -1,5 +1,5 @@
 # The Subsidy Clock — subsidyclock.co.uk
-# Licence: CC BY 4.0 (credit "The Subsidy Clock — subsidyclock.co.uk") · contains public sector information licensed under OGL v3.0 — generated 2026-10-10 17:50 UTC
+# Licence: CC BY 4.0 (credit "The Subsidy Clock — subsidyclock.co.uk") · contains public sector information licensed under OGL v3.0 — generated 2026-10-11 11:39 UTC
 # Data revisions log: origin=publisher is a source restating its own history; origin=ours is a basis change we made, with the cause named — see subsidyclock.co.uk/corrections
 scheme,table,detected_at,partition,previous_version,new_version,origin,cause
 bsuos,daily,2026-06-10T06:31:04.650394+00:00,2026-2027,20260610T063012.224599,20260610T063104.650394,publisher,source revision
@@ -138,6 +138,7 @@ cfd,tracking,2026-06-17T07:18:28.498175+00:00,full,20260616T072049.119187,202606
 cfd,tracking,2026-06-23T10:40:11.962719+00:00,full,20260623T064939.973664,20260623T104011.962719,"",""
 cfd,tracking,2026-07-01T06:57:44.129992+00:00,full,20260630T065030.661879,20260701T065744.129992,"",""
 cfd,tracking,2026-07-08T07:55:04.697105+00:00,full,20260707T085037.487726,20260708T075504.697105,"",""
+constraint_turnup,daily,2026-10-11T11:33:01.916071+00:00,2026-10-09,20261010T111938.459866,20261011T113301.916071,publisher,source revision
 constraints,daily,2026-06-23T06:49:57.929540+00:00,2026-06-21,20260622T072037.280366,20260623T064957.929540,"",""
 constraints,daily,2026-06-26T06:50:24.388371+00:00,2026-06-24,20260625T064917.236714,20260626T065024.388371,"",""
 constraints,daily,2026-07-02T06:47:58.149959+00:00,2026-06-29,20260701T065758.310743,20260702T064758.149959,"",""
@@ -1116,6 +1117,8 @@ constraints,daily,2026-10-10T15:59:48.559289+00:00,2026-10-09,20261010T085647.01
 constraints,daily,2026-10-10T16:44:04.614255+00:00,2023-10-20,20261010T112357.075069,20261010T164404.614255,ours,"basis change 2026-10-10: switch-off cost now applies Elexon's transmission loss multiplier, as settled — see /corrections"
 constraints,daily,2026-10-10T16:44:12.697869+00:00,2023-10-25,20261010T112421.364341,20261010T164412.697869,ours,"basis change 2026-10-10: switch-off cost now applies Elexon's transmission loss multiplier, as settled — see /corrections"
 constraints,daily,2026-10-10T16:44:14.184296+00:00,2023-10-26,20261010T112426.170124,20261010T164414.184296,ours,"basis change 2026-10-10: switch-off cost now applies Elexon's transmission loss multiplier, as settled — see /corrections"
+constraints,daily,2026-10-11T11:32:37.837352+00:00,2026-10-08,20261010T155948.557724,20261011T113237.837352,publisher,source revision
+constraints,daily,2026-10-11T11:32:47.680872+00:00,2026-10-09,20261010T155948.559289,20261011T113247.680872,publisher,source revision
 remit,outages,2026-07-30T07:58:43.738509+00:00,full,20260729T162911.242923,20260730T075843.738509,"",""
 remit,outages,2026-07-31T08:25:19.980859+00:00,full,20260730T075843.738509,20260731T082519.980859,"",""
 remit,outages,2026-08-01T07:45:47.042212+00:00,full,20260731T082519.980859,20260801T074547.042212,"",""
@@ -1191,3 +1194,4 @@ remit,outages,2026-10-07T12:01:51.562972+00:00,full,20261006T121501.006071,20261
 remit,outages,2026-10-08T12:18:28.953222+00:00,full,20261007T120151.562972,20261008T121828.953222,publisher,source revision
 remit,outages,2026-10-09T12:10:04.498241+00:00,full,20261008T121828.953222,20261009T121004.498241,publisher,source revision
 remit,outages,2026-10-10T08:30:13.863174+00:00,full,20261009T121004.498241,20261010T083013.863174,publisher,source revision
+remit,outages,2026-10-11T11:38:11.897369+00:00,full,20261010T112350.621578,20261011T113811.897369,publisher,source revision
