@@ -254,3 +254,4 @@ deleted. `subsidy-clock.vercel.app` now 404s.
 - BSUoS restatements: only the first re-read of a pre-30-Sep-2026 version is
   "ours" (basis change). Later ones are NESO re-settling. Five entries
   (1 and 10 Oct) were mislabelled and have been corrected.
+- **11 Oct, Richard approved: one method with the Subsidy Clock** (renewables-cost/brief.md §3a). Shared rulers: 2002–05 baseline (CPIH); national cost ÷ households, worded 'cost to Britain per household'; carbon = all carbon charges collected on electricity (CCL elec share + CPS + ETS power share); Capacity Market = only the extra over a gas-only system's own backup. Renewables-cost moves to the Clock on the first three; the Clock moves on the Capacity Market (a published-figure correction, needs Richard's approval before publishing). Nothing built yet.
