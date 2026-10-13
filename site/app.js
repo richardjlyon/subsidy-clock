@@ -194,12 +194,12 @@
       ftLead.innerHTML = state.combined
         // counter IS the combined figure: name the direct schemes, then say
         // plainly that the estimated indirect layer is inside this total.
-        ? 'Paid to renewable &amp; low-carbon generators through ' + directNames +
+        ? 'Paid to renewable generators through ' + directNames +
           ', <strong>plus estimated indirect costs</strong> — network and balancing ' +
           'charges, carbon pricing and the capacity levy. ' +
           '<a href="/methodology#indirect">How indirect costs are attributed</a>.'
         // counter is direct-only: name what the fuller picture would be.
-        : 'Paid to renewable &amp; low-carbon generators through ' + directNames + '.' +
+        : 'Paid to renewable generators through ' + directNames + '.' +
           (combinedBn != null
             ? ' With estimated indirect costs, <strong>£' + combinedBn + 'bn+</strong>.'
             : '');
