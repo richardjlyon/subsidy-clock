@@ -283,3 +283,8 @@ deleted. `subsidy-clock.vercel.app` now 404s.
 - Stale drafts quoting old figures (not edited): reports-programme `review-substack.md`,
   `review-tweet.txt` (£240bn); energy-trap essay `2026-09-30-browne-jackson-two-systems/draft.md`
   (£746.65, £21.65bn).
+
+## Scope named exactly — LIVE (13 Oct 2026, Richard approved)
+- Tagline/title/og everywhere: "What renewable electricity support costs Britain" (was "What UK energy subsidies cost"). Hero line drops "low-carbon". Commits 9f7a3ec0, b6d0c86d; deploy run 38438121312 green; verified live.
+- Scope stays renewable electricity only (decision C; hostile reviews in review/2026-10-13-scope-widening/). Heat (~£9.6bn cash) and RTFO (≥£11.9bn cash 2018-24) are named as not counted in Report No. 1.
+- Methods "prices" section was stale: said the headline counts nominal pounds; headline is real 2024 (state.real = true). Rewritten "Today's money, and cash".
