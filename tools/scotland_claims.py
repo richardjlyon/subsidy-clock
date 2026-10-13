@@ -365,6 +365,12 @@ def render() -> None:
                  "CARDS": body, "CITE": cite, "PDF": f"scotland-claims-{EDITION}.pdf"}.items():
         html = html.replace("{{" + k + "}}", v)
     assert "{{" not in html
+    # The share image is the live headline card, so it carries the same
+    # content-hash ?v= the build stamps on every page (sharecards). Without it
+    # the build re-stamped this frozen page and the page no longer matched its
+    # own render. site/share is the rendered cards, not live site data.
+    from subsidy_engine import sharecards
+    html, _ = sharecards.stamp_og_html(html, sharecards.png_versions(ROOT / "site/share"))
     (PAPER / "index.html").write_text(html)
     print("wrote", PAPER / "index.html")
 

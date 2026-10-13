@@ -390,6 +390,15 @@ def stamp_og_images(page_path: Path | str, versions: dict[str, str]) -> int:
     to anyone sharing them. Idempotent: an existing query string is replaced.
     Unknown slugs are left alone rather than stamped with an empty token."""
     page = Path(page_path)
+    html, stamped = stamp_og_html(page.read_text(), versions)
+    page.write_text(html)
+    return stamped
+
+
+def stamp_og_html(html: str, versions: dict[str, str]) -> tuple[str, int]:
+    """stamp_og_images on a string: the one place the token is written, so a
+    page rendered by another tool (the frozen papers) carries the identical
+    token the build would stamp, and the build's re-stamp is a no-op on it."""
     stamped = 0
 
     def sub(m: re.Match) -> str:
@@ -401,9 +410,7 @@ def stamp_og_images(page_path: Path | str, versions: dict[str, str]) -> int:
         stamped += 1
         return f"{m.group(1)}{SITE_URL}/share/{slug}.png?v={version}{m.group(3)}"
 
-    html = _OG_SHARE_IMAGE.sub(sub, page.read_text())
-    page.write_text(html)
-    return stamped
+    return _OG_SHARE_IMAGE.sub(sub, html), stamped
 
 
 def stamp_index_og(index_path: Path | str, version: str) -> None:
