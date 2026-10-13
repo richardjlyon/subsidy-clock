@@ -3,12 +3,12 @@
  "ours_through_year": 2023,
  "ref_source": "REF, \"UK Renewable Electricity Subsidy Totals 2002 to the Present Day\", April 2025, Tables 1 and 2",
  "ref_source_url": "https://web.archive.org/web/20260412090644/https://ref.org.uk/ref-blog/390-uk-renewable-electricity-subsidy-totals-2002-to-the-present-day",
- "ours_total": 166113922674.19,
+ "ours_total": 161835340230.95,
  "ref_total": 185100000000.0,
  "ref_total_published": 185000000000.0,
- "gap": 18986077325.81,
- "stricter_gap": 19789171807.07,
- "ours_real": 208072825371.24,
+ "gap": 23264659769.05,
+ "stricter_gap": 24620078667.05,
+ "ours_real": 203026673631.74,
  "ref_real": 223000000000.0,
  "components": [
   {
@@ -85,11 +85,11 @@
   },
   {
    "component": "capacity_market",
-   "ours": 5247675583.26,
+   "ours": 969093140.02,
    "ref": 5800000000.0,
-   "divergence_pct": -9.5,
-   "note": "",
-   "stricter": false
+   "divergence_pct": -83.3,
+   "note": "REF counts the whole Capacity Market levy; we count only the part net zero caused - the levy less what the same system without net-zero policy would have paid for its own backup (method change, 13 October 2026).",
+   "stricter": true
   }
  ]
 }

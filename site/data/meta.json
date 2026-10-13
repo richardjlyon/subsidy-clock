@@ -1,32 +1,32 @@
 {
- "generated_at": "2026-10-13T12:59:45.632018+00:00",
+ "generated_at": "2026-10-13T13:31:40.969203+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-10-13T12:53:34.232841+00:00",
+   "retrieved_at": "2026-10-13T13:24:39.602201+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
    "row_count": 117962
   },
   "constraints": {
-   "retrieved_at": "2026-10-13T12:59:39.968223+00:00",
-   "source_date": "2023-10-05",
+   "retrieved_at": "2026-10-13T13:31:33.882489+00:00",
+   "source_date": "2023-09-28",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 75
+   "row_count": 79
   },
   "capacity_market": {
-   "retrieved_at": "2026-10-13T12:53:58.647710+00:00",
+   "retrieved_at": "2026-10-13T13:25:07.808202+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 805
   },
   "bsuos": {
-   "retrieved_at": "2026-10-13T12:54:22.414038+00:00",
+   "retrieved_at": "2026-10-13T13:25:30.019767+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/current-balancing-services-use-of-system-bsuos-data",
    "row_count": 188
   },
   "constraint_turnup": {
-   "retrieved_at": "2026-10-13T12:53:57.685893+00:00",
+   "retrieved_at": "2026-10-13T13:25:07.019798+00:00",
    "source_date": "2026-10-12",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/offer",
    "row_count": 14
@@ -76,7 +76,7 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 240788545467.47913
+  "combined_real": 232979241267.36255
  },
  "factoids": [
   {
@@ -92,56 +92,56 @@
   },
   {
    "slug": "homes",
-   "figure": "590,000",
+   "figure": "565,000",
    "basis": "full",
    "figure_label": "social homes",
-   "frame": "the current \u00a3240bn+ full cost would have built",
-   "sentence": "The current \u00a3240bn+ full cost of subsidising UK renewables, including estimated indirect costs, would have built 590,000 social homes \u2014 land included \u2014 in today's money.",
-   "label": "social homes (land included) the current \u00a3240bn+ full UK renewables cost would have built, in today's money",
+   "frame": "the current \u00a3230bn+ full cost would have built",
+   "sentence": "The current \u00a3230bn+ full cost of subsidising UK renewables, including estimated indirect costs, would have built 565,000 social homes \u2014 land included \u2014 in today's money.",
+   "label": "social homes (land included) the current \u00a3230bn+ full UK renewables cost would have built, in today's money",
    "source_name": "Cebr for Shelter and the National Housing Federation (2024)",
    "source_url": "https://england.shelter.org.uk/professional_resources/policy_and_research/policy_library/economic_impact_social_housing"
   },
   {
    "slug": "hinkley",
-   "figure": "5",
+   "figure": "4",
    "basis": "full",
    "figure_label": "Hinkley Point C-scale nuclear stations",
-   "frame": "the current \u00a3240bn+ full cost would have built",
-   "sentence": "The current \u00a3240bn+ full cost of subsidising UK renewables, including estimated indirect costs, would have built 5 Hinkley Point C-scale nuclear stations in the UK, in today's money.",
-   "label": "Hinkley Point C-scale nuclear stations the current \u00a3240bn+ full UK renewables cost would have built, in today's money",
+   "frame": "the current \u00a3230bn+ full cost would have built",
+   "sentence": "The current \u00a3230bn+ full cost of subsidising UK renewables, including estimated indirect costs, would have built 4 Hinkley Point C-scale nuclear stations in the UK, in today's money.",
+   "label": "Hinkley Point C-scale nuclear stations the current \u00a3230bn+ full UK renewables cost would have built, in today's money",
    "source_name": "New Civil Engineer, reporting EDF's 2025 annual results (20 February 2026)",
    "source_url": "https://www.newcivilengineer.com/latest/hinkley-point-cs-cost-climbs-to-35bn-with-confirmation-unit-1-will-power-up-in-2030-20-02-2026/"
   },
   {
    "slug": "secondary-schools",
-   "figure": "4,800",
+   "figure": "4,600",
    "basis": "full",
    "figure_label": "large secondary schools",
-   "frame": "the current \u00a3240bn+ full cost would have built",
-   "sentence": "The current \u00a3240bn+ full cost of subsidising UK renewables would have built 4,800 large new secondary schools, in today's money.",
-   "label": "large new secondary schools the current \u00a3240bn+ full UK renewables cost would have built, in today's money",
+   "frame": "the current \u00a3230bn+ full cost would have built",
+   "sentence": "The current \u00a3230bn+ full cost of subsidising UK renewables would have built 4,600 large new secondary schools, in today's money.",
+   "label": "large new secondary schools the current \u00a3230bn+ full UK renewables cost would have built, in today's money",
    "source_name": "DfE, School Rebuilding Programme \u2014 actual scheme costs for new large secondary schools",
    "source_url": "https://www.gov.uk/government/publications/school-rebuilding-programme"
   },
   {
    "slug": "hospitals",
-   "figure": "4",
+   "figure": "3",
    "basis": "full",
    "figure_label": "complete New Hospital Programmes",
-   "frame": "the current \u00a3240bn+ full cost would have paid for",
-   "sentence": "The current \u00a3240bn+ full cost of subsidising UK renewables would have paid for England's entire New Hospital Programme \u2014 46 hospital schemes \u2014 4 times over, in today's money.",
-   "label": "complete New Hospital Programmes (46 schemes each) the current \u00a3240bn+ full UK renewables cost would have paid for, in today's money",
+   "frame": "the current \u00a3230bn+ full cost would have paid for",
+   "sentence": "The current \u00a3230bn+ full cost of subsidising UK renewables would have paid for England's entire New Hospital Programme \u2014 46 hospital schemes \u2014 3 times over, in today's money.",
+   "label": "complete New Hospital Programmes (46 schemes each) the current \u00a3230bn+ full UK renewables cost would have paid for, in today's money",
    "source_name": "National Audit Office, Update on the New Hospital Programme (January 2026) \u2014 \u00a360bn for all 46 schemes",
    "source_url": "https://www.nao.org.uk/reports/update-on-the-new-hospital-programme/"
   },
   {
    "slug": "aircraft-carriers",
-   "figure": "58",
+   "figure": "55",
    "basis": "full",
    "figure_label": "aircraft carriers",
-   "frame": "the current \u00a3240bn+ full cost would have built",
-   "sentence": "The current \u00a3240bn+ full cost of subsidising UK renewables would have built 58 Queen Elizabeth-class aircraft carriers, in today's money.",
-   "label": "Queen Elizabeth-class aircraft carriers the current \u00a3240bn+ full UK renewables cost would have built, in today's money",
+   "frame": "the current \u00a3230bn+ full cost would have built",
+   "sentence": "The current \u00a3230bn+ full cost of subsidising UK renewables would have built 55 Queen Elizabeth-class aircraft carriers, in today's money.",
+   "label": "Queen Elizabeth-class aircraft carriers the current \u00a3230bn+ full UK renewables cost would have built, in today's money",
    "source_name": "National Audit Office, Delivering Carrier Strike (2017) \u2014 \u00a36.212bn for both ships",
    "source_url": "https://www.nao.org.uk/reports/delivering-carrier-strike/"
   },
@@ -150,20 +150,20 @@
    "figure": "11",
    "basis": "full",
    "figure_label": "Elizabeth Lines (Crossrail)",
-   "frame": "the current \u00a3240bn+ full cost would have built",
-   "sentence": "The current \u00a3240bn+ full cost of subsidising UK renewables would have built 11 Elizabeth Lines \u2014 London's Crossrail \u2014 in today's money.",
-   "label": "Crossrail / Elizabeth Lines the current \u00a3240bn+ full UK renewables cost would have built, in today's money",
+   "frame": "the current \u00a3230bn+ full cost would have built",
+   "sentence": "The current \u00a3230bn+ full cost of subsidising UK renewables would have built 11 Elizabeth Lines \u2014 London's Crossrail \u2014 in today's money.",
+   "label": "Crossrail / Elizabeth Lines the current \u00a3230bn+ full UK renewables cost would have built, in today's money",
    "source_name": "National Audit Office, Crossrail \u2014 a progress update (2021); \u00a318.9bn cost estimate",
    "source_url": "https://www.nao.org.uk/reports/crossrail-progress-update/"
   },
   {
    "slug": "stadiums",
-   "figure": "240",
+   "figure": "230",
    "basis": "full",
    "figure_label": "Premier League stadiums",
-   "frame": "the current \u00a3240bn+ full cost would have built",
-   "sentence": "The current \u00a3240bn+ full cost of subsidising UK renewables would have built 240 billion-pound football stadiums, in today's money.",
-   "label": "billion-pound football stadiums the current \u00a3240bn+ full UK renewables cost would have built, in today's money",
+   "frame": "the current \u00a3230bn+ full cost would have built",
+   "sentence": "The current \u00a3230bn+ full cost of subsidising UK renewables would have built 230 billion-pound football stadiums, in today's money.",
+   "label": "billion-pound football stadiums the current \u00a3230bn+ full UK renewables cost would have built, in today's money",
    "source_name": "Tottenham Hotspur Stadium reported build cost (about \u00a31.2bn, 2019-20)",
    "source_url": "https://en.wikipedia.org/wiki/Tottenham_Hotspur_Stadium"
   },
