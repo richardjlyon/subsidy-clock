@@ -227,9 +227,13 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
         since = f" since {first}" if first else ""
         indirect = s["layer"] == "indirect"
         est = ", estimated" if indirect else ""
+        # the CM line is not the levy: only the part net zero caused is
+        # counted, so the card must say so or a reader takes it for the levy
+        what = ("the part net zero caused, cumulative"
+                if scheme_id == "capacity_market" else "cumulative cost")
         facts.append({"slug": slug,
                       "figure": fmt_full(_real_cum(scheme_id, s["cumulative"])),
-                      "label": f"{name} — cumulative cost{since}{est}, in today’s money",
+                      "label": f"{name} — {what}{since}{est}, in today’s money",
                       "anchor": None, "stub": True,
                       "target_path": f"/explainers/{slug}",
                       "group": INDIRECT_G if indirect else DIRECT_G})

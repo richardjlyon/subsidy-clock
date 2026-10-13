@@ -1,0 +1,64 @@
+# Capacity Market: the part net zero caused (method change of 13 October 2026).
+#
+# The Clock counts, for each indirect line, only the cost that net-zero policy
+# added: TNUoS and BSUoS count growth above a pre-renewables baseline. This file
+# brings the Capacity Market under the same rule. Any power system needs backup
+# for the coldest, stillest evening, so the levy is not counted in full. What is
+# counted is
+#
+#     counted(y) = CM paid(y) - what "Reliable Britain" would have paid for its own backup in y
+#
+# where Reliable Britain is the actual GB system with net-zero policy removed
+# (no wind or solar build, coal kept open where economic, gas built to meet the
+# residual peak; nuclear, imports and pumped storage as they were). Its own
+# capacity payment = that year's CM price (GBP/kW/yr: CM paid / average
+# obligation in force, LCCC; 2016-17 the T-1 Early Auction clearing price,
+# Ofgem CM annual report 2025/26 Table 4) x the de-rated firm capacity it would
+# have needed a CM agreement for (existing plant it did not keep open specially,
+# unlisted firm plant, nuclear/imports/pumped storage at its peak). New plant,
+# the spare margin and kept-open coal are excluded because that model already
+# charges them at full build/keep-open cost; counting a capacity payment on them
+# as well would pay for the same backup twice.
+#
+# The Clock applies share(y) = netzero_gbp / cm_paid_gbp to each month's LCCC
+# payment in year y (it does not paste in the engine's pounds, so a later LCCC
+# restatement of a month moves the line in proportion). The build fails if the
+# Clock's own annual CM total drifts more than 2% from cm_paid_gbp in any year
+# listed here: the share would then be stale and the engine must be rerun.
+#
+# FLOOR, not central-high: Reliable Britain is charged the actual GBP/kW. The
+# 550 gCO2/kWh CM emissions limit (introduced 2019; binding on existing plant
+# from delivery year 2024/25) has kept the ~11 GW of coal that bid into earlier
+# T-4 auctions out of every T-4 auction since 2021 (Ofgem, Annual Report on the
+# Operation of the CM 2020/21 and 2021/22, section 4), and clearing prices then
+# rose; Reliable Britain's coal would have bid in and held
+# its price down. No primary source quantifies the net-zero share of that price
+# rise, so it is not added. Range: low = kept coal also needs a CM agreement;
+# high = the whole levy (the Clock's rule before 13 October 2026).
+#
+# Years after the last engine year use that year's share (carry_forward_from),
+# until the engine is rerun to cover them. Richard Lyon's decision, 13 Oct 2026.
+#
+# All money nominal GBP, calendar year, as paid.
+provenance:
+  engine: gas-counterfactual ("net zero vs Reliable Britain" model; not yet public)
+  repo: gas-counterfactual (Richard Lyon; not yet public - to be published with the model)
+  commit: e0bfd735d4f0e1ba43b0bfbafb52dd11043bba64
+  commit_date: "2026-10-13"
+  file: out/v4/2026-10-13.json
+  file_sha256: 9b8ac97a3bb2f19e8b6a01d789b66ac9f449735b8f751faa21aaf6d3fc560260
+  block: clock_cm_correction (cm_paid, nz5 central/low/high); capacity_market (price, GW, own backup)
+  method: spec.md section 5.4; work/s32-cm-roast/before-after.md
+  verified_against_clock: "2026-10-13: cm_paid_gbp equals the Clock's own annual CM total for every year 2016-2025 to the penny"
+carry_forward_from: 2025
+years:
+  2016: {cm_paid_gbp: 5048474.70, netzero_gbp: 5048474.70, netzero_low_gbp: 5048474.70, netzero_high_gbp: 5048474.70, own_backup_gbp: 0.00, price_gbp_per_kw_yr: 0.0000, own_backup_gw: 50.146}   # share 1.0000
+  2017: {cm_paid_gbp: 117562461.67, netzero_gbp: 31270034.88, netzero_low_gbp: 26792757.91, netzero_high_gbp: 117562461.67, own_backup_gbp: 86292426.79, price_gbp_per_kw_yr: 1.7375, own_backup_gw: 49.665}   # share 0.2660
+  2018: {cm_paid_gbp: 549449341.35, netzero_gbp: 45467658.97, netzero_low_gbp: 16298654.93, netzero_high_gbp: 549449341.35, own_backup_gbp: 503981682.38, price_gbp_per_kw_yr: 10.1298, own_backup_gw: 49.752}   # share 0.0828
+  2019: {cm_paid_gbp: 962991821.40, netzero_gbp: 126825663.01, netzero_low_gbp: 59887978.43, netzero_high_gbp: 962991821.40, own_backup_gbp: 836166158.39, price_gbp_per_kw_yr: 18.4143, own_backup_gw: 45.408}   # share 0.1317
+  2020: {cm_paid_gbp: 1005762270.75, netzero_gbp: 177635697.11, netzero_low_gbp: 84297547.85, netzero_high_gbp: 1005762270.75, own_backup_gbp: 828126573.64, price_gbp_per_kw_yr: 19.5321, own_backup_gw: 42.398}   # share 0.1766
+  2021: {cm_paid_gbp: 1061708952.85, netzero_gbp: 200557514.36, netzero_low_gbp: 108404585.74, netzero_high_gbp: 1061708952.85, own_backup_gbp: 861151438.49, price_gbp_per_kw_yr: 20.1284, own_backup_gw: 42.783}   # share 0.1889
+  2022: {cm_paid_gbp: 646942043.17, netzero_gbp: 145618431.36, netzero_low_gbp: 89625992.77, netzero_high_gbp: 646942043.17, own_backup_gbp: 501323611.81, price_gbp_per_kw_yr: 12.2301, own_backup_gw: 40.991}   # share 0.2251
+  2023: {cm_paid_gbp: 898210217.37, netzero_gbp: 236669665.63, netzero_low_gbp: 123285606.83, netzero_high_gbp: 898210217.37, own_backup_gbp: 661540551.74, price_gbp_per_kw_yr: 16.7938, own_backup_gw: 39.392}   # share 0.2635
+  2024: {cm_paid_gbp: 1256981395.40, netzero_gbp: 343819210.62, netzero_low_gbp: 151175267.38, netzero_high_gbp: 1256981395.40, own_backup_gbp: 913162184.78, price_gbp_per_kw_yr: 23.9404, own_backup_gw: 38.143}   # share 0.2735
+  2025: {cm_paid_gbp: 1431463285.03, netzero_gbp: 396333094.27, netzero_low_gbp: 141377161.00, netzero_high_gbp: 1431463285.03, own_backup_gbp: 1035130190.76, price_gbp_per_kw_yr: 27.0920, own_backup_gw: 38.208}   # share 0.2769

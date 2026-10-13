@@ -86,3 +86,34 @@ def load_electricity_bill(path: Path) -> pl.DataFrame:
          "total_bill_gbp": [float(v) for v in raw["bill"].values()]},
         schema={"year": pl.Int64, "total_bill_gbp": pl.Float64},
     ).sort("year")
+
+
+def load_cm_netzero_share(path: Path) -> dict:
+    """reference/capacity_market_netzero_share.yaml -> the per-year Capacity
+    Market share net zero caused, with its low/high range and provenance.
+
+    Returns {"years": {year: row}, "carry_forward_from": int, "provenance": {...}}
+    where each row carries cm_paid_gbp, netzero_gbp, netzero_low_gbp,
+    netzero_high_gbp and the derived share/share_low/share_high. Validates
+    that every share lies in [0, 1] and that low <= central <= high, so a
+    mistyped row fails the build rather than publishing."""
+    raw = yaml.safe_load(Path(path).read_text())
+    years: dict[int, dict] = {}
+    for y, row in raw["years"].items():
+        paid = float(row["cm_paid_gbp"])
+        if paid <= 0:
+            raise ValueError(f"{Path(path).name} {y}: cm_paid_gbp must be positive")
+        r = dict(row)
+        r["share"] = float(row["netzero_gbp"]) / paid
+        r["share_low"] = float(row["netzero_low_gbp"]) / paid
+        r["share_high"] = float(row["netzero_high_gbp"]) / paid
+        if not (0.0 <= r["share_low"] <= r["share"] <= r["share_high"] <= 1.0 + 1e-12):
+            raise ValueError(f"{Path(path).name} {y}: shares must satisfy "
+                             f"0 <= low <= central <= high <= 1, got "
+                             f"{r['share_low']:.4f}/{r['share']:.4f}/{r['share_high']:.4f}")
+        years[int(y)] = r
+    carry = int(raw["carry_forward_from"])
+    if carry not in years:
+        raise ValueError(f"{Path(path).name}: carry_forward_from {carry} has no row")
+    return {"years": years, "carry_forward_from": carry,
+            "provenance": raw.get("provenance") or {}}

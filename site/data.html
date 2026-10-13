@@ -11,7 +11,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="The Subsidy Clock">
 <meta property="og:url" content="https://subsidyclock.co.uk/data">
-<meta property="og:image" content="https://subsidyclock.co.uk/share/headline.png?v=a26dede0f3">
+<meta property="og:image" content="https://subsidyclock.co.uk/share/headline.png?v=6dadd31804">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -83,7 +83,7 @@
   metadata in <a href="data/meta.json"><code>meta.json</code></a> — read
   <code>deflator.base_year</code> for the base year <code>cost_real</code> is expressed in.
   The current year is a partial year. Amounts for indirect schemes are the estimated share
-  attributed to renewables — the attribution rules are
+  attributed to renewables (for the Capacity Market, the part net zero caused) — the attribution rules are
   <a href="/methodology#indirect">on the methodology page</a>.
   Each file begins with three <code>#</code> comment lines recording the source, licence,
   build time and method;
@@ -97,7 +97,7 @@
       <tr><td><a href="data/renewables-obligation.csv" download>renewables-obligation.csv</a></td><td>Renewables Obligation</td><td>Ofgem</td><td>direct</td></tr>
       <tr><td><a href="data/feed-in-tariffs.csv" download>feed-in-tariffs.csv</a></td><td>Feed-in Tariffs</td><td>Ofgem</td><td>direct</td></tr>
       <tr><td><a href="data/constraints.csv" download>constraints.csv</a></td><td>Constraint payments to wind farms</td><td>Elexon / REF</td><td>direct</td></tr>
-      <tr><td><a href="data/capacity-market.csv" download>capacity-market.csv</a></td><td>Capacity Market</td><td>LCCC (EMRS)</td><td>indirect, estimated</td></tr>
+      <tr><td><a href="data/capacity-market.csv" download>capacity-market.csv</a></td><td>Capacity Market: only the part net zero caused (the levy less the backup the same system without net-zero policy would have bought)</td><td>LCCC (EMRS)</td><td>indirect, estimated</td></tr>
       <tr><td><a href="data/climate-change-levy.csv" download>climate-change-levy.csv</a></td><td>Climate Change Levy</td><td>HMRC</td><td>indirect, estimated</td></tr>
       <tr><td><a href="data/emissions-trading.csv" download>emissions-trading.csv</a></td><td>Emissions trading</td><td>HMRC / DESNZ</td><td>indirect, estimated</td></tr>
       <tr><td><a href="data/tnuos.csv" download>tnuos.csv</a></td><td>Grid upgrades for renewables (TNUoS)</td><td>NESO</td><td>indirect, estimated</td></tr>

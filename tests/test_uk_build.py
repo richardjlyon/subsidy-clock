@@ -127,7 +127,12 @@ def test_build_indirect_layer(tmp_path):
         "bsuos_history": _ref("bsuos_history", "BSUoS hist", {2023: 500.0}, conf="low"),
     }
     baselines = {"bsuos": {"value": 100.0}, "tnuos": {"value": 100.0}}
-    model = uk_build.build(store, refs, deflators=deflators(), baselines=baselines)
+    # CM: the net-zero share of 2026 carries forward from 2025 (40%)
+    cm_share = {"years": {2025: {"cm_paid_gbp": 100.0, "share": 0.4,
+                                 "share_low": 0.1, "share_high": 1.0}},
+                "carry_forward_from": 2025, "provenance": {}}
+    model = uk_build.build(store, refs, deflators=deflators(), baselines=baselines,
+                           cm_share=cm_share)
     by_id = {s.scheme_id: s for s in model["schemes"]}
 
     # layer assignment
@@ -156,14 +161,14 @@ def test_build_indirect_layer(tmp_path):
         assert "cost_gbp_2024" in s.annual.columns, s.scheme_id
 
     # indirect total = sum of the five components
-    expected_indirect = (50.0 + 80.0 + 90.0 + expected_tnuos
+    expected_indirect = (50.0 * 0.4 + 80.0 + 90.0 + expected_tnuos
                          + bs_annual[2023] + bs_annual[2026])
     assert abs(model["indirect"]["cumulative_gbp"] - expected_indirect) < 1e-6
 
     # direct perspectives unchanged by the indirect components (leakage guard)
     refs_direct_only = {k: refs[k] for k in ("constraints_history", "ro", "fit")}
     model2 = uk_build.build(store, refs_direct_only, deflators=deflators(),
-                            baselines=baselines)
+                            baselines=baselines, cm_share=cm_share)
     assert (model["perspectives"]["renewables"]["cumulative_gbp"]
             == model2["perspectives"]["renewables"]["cumulative_gbp"])
 

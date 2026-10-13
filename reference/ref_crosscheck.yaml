@@ -18,6 +18,11 @@ components:        # nominal GBP for 2023/24, exactly as published in REF Table 
   bsuos: 2200000000   # REF's renewables-attributed BSUoS figure (total charge 2.9bn)
   tnuos: 2900000000   # REF's renewables-attributed TNUoS figure (total charge 4.4bn)
 notes:
+  capacity_market: >-
+    REF counts the whole Capacity Market levy; since 13 October 2026 we count
+    only the part net zero caused - the levy less what the same system without
+    net-zero policy would have paid for its own backup (2023: 26% of the levy).
+    Our figure is expected to be much lower.
   bsuos: >-
     We net off direct constraint payments and REF does not, which pulls our
     figure down; but our gross BSUoS base is larger than REF's stated total

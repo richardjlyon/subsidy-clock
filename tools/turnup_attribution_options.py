@@ -33,7 +33,8 @@ def run_build():
         baselines=reference.load_baselines(r / "baselines.yaml"),
         station_map=stations.load_station_map(r / "cfd_stations.csv"),
         ro_stations=stations.load_ro_stations(r / "ro_stations.csv"),
-        bmu_map=stations.load_station_bmus(r / "station_bmu_map.csv"))
+        bmu_map=stations.load_station_bmus(r / "station_bmu_map.csv"),
+        cm_share=reference.load_cm_netzero_share(r / "capacity_market_netzero_share.yaml"))
     return m, deflators
 
 

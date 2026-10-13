@@ -11,7 +11,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="The Subsidy Clock">
 <meta property="og:url" content="https://subsidyclock.co.uk/methodology">
-<meta property="og:image" content="https://subsidyclock.co.uk/share/headline.png?v=a26dede0f3">
+<meta property="og:image" content="https://subsidyclock.co.uk/share/headline.png?v=1756ef18ae">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -96,7 +96,11 @@
   <h3>Capacity Market</h3>
   <p class="scheme-meta" id="im-capacity_market"></p>
   <blockquote id="attr-capacity_market"></blockquote>
-  <p>Availability payments procure firm backup capacity for a system with a growing share of intermittent generation. The full levy is counted; attribution confidence is <strong>medium</strong> because some capacity would be procured in any system. This component was previously shown in the dashboard’s ‘All levy’ total, which has been removed.</p>
+  <p>The Capacity Market pays power stations, batteries, interconnectors and demand response to be available at times of system stress; bill-payers fund it through a levy. <strong>Any power system needs backup</strong> for the coldest, stillest evening, so the whole levy is not a cost of net zero. Since 13 October 2026 the Clock counts only the part net zero caused, the same rule it applies to network and balancing charges, which count only growth above a pre-renewables baseline.</p>
+  <p><strong>What is counted.</strong> For each year: the Capacity Market actually paid (LCCC), less what the same system with net-zero policy removed would have paid for its own backup at that year’s capacity price. That system keeps the actual demand, nuclear, interconnectors and pumped storage; builds no wind or solar; keeps coal open where it pays; and builds gas to meet the remaining peak. Its own capacity bill is the actual price per kilowatt times the firm capacity it would have contracted. New and kept-open plant in that system are already charged at their full build and keep-open cost in the model, so they are not charged a capacity payment as well. The resulting share is applied to each month’s payment in that year.</p>
+  <p id="raw-capacity_market"></p>
+  <p><strong>Why the figure is a floor.</strong> The system without net-zero policy is charged the capacity price that actually cleared. Since 2021 a 550&nbsp;g/kWh emissions limit has kept the 11&nbsp;GW of coal that bid into earlier four-year-ahead auctions out of them (<a href="https://www.ofgem.gov.uk/publications/annual-report-operation-capacity-market-202021-and-202122">Ofgem, Annual Report on the Operation of the Capacity Market 2020/21 and 2021/22</a>), and clearing prices rose after it. Without net zero that coal would have bid and held prices down. No published source measures how much of the price rise net zero caused, so none of it is counted.</p>
+  <p><strong>Range.</strong> Low: kept-open coal in the system without net zero would also have needed a capacity agreement. High: the whole levy, the rule the Clock used before 13 October 2026. Both are shown below. The shares for 2016–2025 come from Richard Lyon’s model of the system without net-zero policy, which is not yet published; it will be linked here when it is. <strong>2026 onward</strong> uses the 2025 share until the model is run for those years. The per-year shares, the amounts and their provenance are published in <a href="data/breakdown.json">breakdown.json</a> (<code>netzero_share</code>) and summarised on the <a href="changelog">change log</a>. Attribution confidence stays <strong>medium</strong>.</p>
 
   <h3>Climate Change Levy and Carbon Price Support</h3>
   <p class="scheme-meta" id="im-ccl"></p>
@@ -284,7 +288,7 @@
 
   <h2 id="equivalences">The equivalence figures</h2>
   <p>The dashboard's comparison lines use deliberately conservative denominators, and every
-  count divides the quoted £220bn+ floor — not the raw total — then rounds down:</p>
+  count divides the quoted £230bn+ floor — not the raw total — then rounds down:</p>
   <ul>
     <li><strong>NHS nurses</strong> — Band 5 annual salary at the top of the band
     (<a href="https://www.nhsemployers.org/articles/pay-scales-202627">Agenda for Change,
@@ -295,7 +299,7 @@
     homes). The full cost is used, not the far lower public grant per home.</li>
     <li><strong>Hinkley Point C</strong> — EDF's <a href="https://www.newcivilengineer.com/latest/hinkley-point-cs-cost-climbs-to-35bn-with-confirmation-unit-1-will-power-up-in-2030-20-02-2026/">£35bn
     estimate</a> is in 2015 prices; the Clock converts it to 2024 prices with the same ONS
-    CPIH series it uses everywhere (about £46.5bn) before dividing. Dividing £220bn by the
+    CPIH series it uses everywhere (about £46.5bn) before dividing. Dividing £230bn by the
     unadjusted £35bn would give 6 stations; the like-for-like comparison gives 4.</li>
     <li><strong>Per MWh</strong> — divides by electricity finally consumed by end users
     (273.8&nbsp;TWh/year), not total demand including network losses (320.2&nbsp;TWh), so
@@ -533,6 +537,26 @@
       '</strong> (<span class="num">' + (s.attribution_pct * 100).toFixed(1) + '%</span>) is attributed.';
   });
 
+  // Capacity Market: levy paid vs the part net zero caused, with its range
+  (function () {
+    var s = byId.capacity_market;
+    var el = document.getElementById('raw-capacity_market');
+    if (!s || !s.raw_annual || !el) return;
+    var raw = 0;
+    s.raw_annual.forEach(function (a) { raw += a.cost; });
+    var firstYr = s.raw_annual[0].year, lastYr = s.raw_annual[s.raw_annual.length - 1].year;
+    var shares = (s.netzero_share || []).map(function (r) {
+      return r.year + ' ' + Math.round(r.share * 100) + '%' + (r.basis === 'modelled' ? '' : '*');
+    }).join(', ');
+    el.innerHTML =
+      'Capacity Market paid ' + firstYr + '–' + lastYr + ' totals (cash as paid) <strong class="num">' + gbp(raw) +
+      '</strong>; <strong class="num">' + gbp(s.cumulative) + '</strong> (<span class="num">' +
+      (s.attribution_pct * 100).toFixed(1) + '%</span>) is counted' +
+      (s.range ? ' (range <span class="num">' + gbp(s.range.low.cumulative) + '</span> to <span class="num">' +
+        gbp(s.range.high.cumulative) + '</span>)' : '') +
+      '. Share counted by year: ' + esc(shares) + (s.carry_forward_from ? ' (* = ' + s.carry_forward_from + ' share carried forward)' : '') + '.';
+  })();
+
   // REF cross-check table
   var XCHECK_LABELS = {
     capacity_market: 'Capacity Market', ccl: 'CCL + CPS', ets: 'ETS (power-sector share)',
@@ -596,7 +620,7 @@
       'Like-for-like, the Clock lands <strong>' + Math.abs(totalPct).toFixed(0) +
       (totalPct < 0 ? '% below' : '% above') + ' REF’s total</strong>. The components its attributions deliberately count more ' +
       'strictly — the power-sector-only ETS and CCL shares, BSUoS with constraint payments ' +
-      'netted off — or decline to count at all (REGO) remove ' + refBn(refRecon.stricter_gap) +
+      'netted off, the Capacity Market net of the backup any power system needs — or decline to count at all (REGO) remove ' + refBn(refRecon.stricter_gap) +
       coverage + '; everywhere else the two ' +
       'reconstructions agree within ten per cent.';
   }

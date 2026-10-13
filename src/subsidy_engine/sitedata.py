@@ -500,7 +500,7 @@ def load_changelog(path: Path | str) -> list[dict]:
 
 # indirect schemes with their own attribution-rule anchor on /methodology;
 # the rest fall back to the #indirect section. Anchors are public contracts.
-ATTR_ANCHORS = {"bsuos", "ccl", "ets", "tnuos", "constraint_turnup"}
+ATTR_ANCHORS = {"bsuos", "capacity_market", "ccl", "ets", "tnuos", "constraint_turnup"}
 
 
 def _attribution(generated: str) -> str:
@@ -560,6 +560,13 @@ def _series_note(scheme) -> str:
     if scheme.layer == "indirect":
         anchor = (f"attr-{scheme.scheme_id}"
                   if scheme.scheme_id in ATTR_ANCHORS else "indirect")
+        if scheme.scheme_id == "capacity_market":
+            # not a renewables share: the part of the levy net zero caused
+            # (levy less the backup any system would buy); saying "share
+            # attributed to renewables" here contradicted the method
+            return ("# Estimated: only the part of the Capacity Market net zero "
+                    "caused (levy less the backup any system needs) — method: "
+                    f"subsidyclock.co.uk/methodology#{anchor}\n")
         return ("# Estimated share attributed to renewables — method: "
                 f"subsidyclock.co.uk/methodology#{anchor}\n")
     slug = EXPLAINERS.get(scheme.scheme_id,

@@ -28,8 +28,9 @@ components:        # cumulative nominal GBP, exactly as published
   bsuos: 18500000000
   ets: 19000000000
   capacity_market: 5800000000
-stricter: [ccl, bsuos, ets, rego]   # components where the gap is our deliberate choice
+stricter: [ccl, bsuos, ets, rego, capacity_market]   # components where the gap is our deliberate choice
 notes:
+  capacity_market: REF counts the whole Capacity Market levy; we count only the part net zero caused - the levy less what the same system without net-zero policy would have paid for its own backup (method change, 13 October 2026).
   cfd: REF's CfD line covers renewable generators including biomass; ours is CfD-renewables, which likewise already includes biomass (Drax and the like). CfD-nuclear contributes nothing in this window - Hinkley Point C payments begin in 2025.
   rego: REGO certificate costs are excluded from the Clock entirely (listed under "What is not included").
   ccl: REF counts total CCL receipts (OBR series, all fuels); we count electricity's share of main-rate receipts plus Carbon Price Support.

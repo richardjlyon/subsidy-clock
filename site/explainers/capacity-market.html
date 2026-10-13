@@ -12,7 +12,7 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="The Subsidy Clock">
   <meta property="og:url" content="https://subsidyclock.co.uk/explainers/capacity-market">
-  <meta property="og:image" content="https://subsidyclock.co.uk/share/capacity-market.png?v=47ed021382">
+  <meta property="og:image" content="https://subsidyclock.co.uk/share/capacity-market.png?v=cddcf3a438">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
@@ -39,7 +39,7 @@
   </div>
 
   <div class="xstrip">
-    <div class="m"><div class="k">Total since 2016 (cash as paid)</div><div class="v num" id="x-total">&nbsp;</div><div class="basis" id="x-total-basis"></div></div>
+    <div class="m"><div class="k">Net-zero share since 2016 (cash as paid)</div><div class="v num" id="x-total">&nbsp;</div><div class="basis" id="x-total-basis"></div></div>
     <div class="m"><div class="k">Right now</div><div class="v num" id="x-rate">&nbsp;</div></div>
     <div class="m"><div class="k">Your household</div><div class="v num" id="x-household">&nbsp;</div></div>
   </div>
@@ -51,13 +51,23 @@
     when wind and solar produce little.</p>
 
     <h2>Why does it exist?</h2>
-    <p>A grid with large amounts of weather-dependent generation needs guaranteed backup for the
-    hours when that generation disappears. The Capacity Market buys that guarantee years in advance
-    through auctions, and the cost is levied on suppliers.</p>
+    <p>Every power system needs guaranteed backup for its coldest, stillest evening. A grid with
+    large amounts of weather-dependent generation needs more of it, because that generation can
+    disappear when demand peaks. The Capacity Market buys the guarantee years in advance through
+    auctions, and the cost is levied on suppliers.</p>
+
+    <h2>What the Clock counts</h2>
+    <p>Not the whole levy. Britain would have paid for backup without net zero, so the Clock counts
+    only the part net zero caused: each year's levy, less what the same system with net-zero policy
+    removed would have paid at that year's capacity price for its own backup. That is the same rule
+    the Clock uses for network and balancing charges, which count only growth above a
+    pre-renewables baseline. In 2025 about 28% of the levy is counted. Years from 2026 use the 2025
+    share until the model covers them. Details, the range and the per-year shares are in the
+    <a href="/methodology#attr-capacity_market">methodology</a>.</p>
 
     <h2>What has it cost?</h2>
     <div class="spark" id="x-spark" style="--spark-c: var(--c-cm)"></div>
-    <p><span data-live="cumulative"></span> in cash as paid since 2016, currently growing at about
+    <p>The part net zero caused: <span data-live="cumulative"></span> in cash as paid since 2016, currently growing at about
     <span data-live="runrate"></span> a year — <span data-live="rate"></span> every second.
     Spread across Britain's households, that is about <span data-live="household"></span>
     per household per year, paid through electricity bills.</p>
@@ -68,16 +78,18 @@
       <div class="ln hi"><span>&nbsp;&nbsp;↳ inside it: the capacity levy</span><span class="num">≈ 1p</span></div>
       <div class="ln"><span>Standing charge (per day)</span><span class="num">57p</span></div>
     </div>
-    <p>Illustrative bill, not your tariff. Suppliers pay in proportion to their customers' demand
-    on winter evenings and pass it into bills.</p>
+    <p>Illustrative bill, not your tariff. The penny is the whole levy; the Clock counts only the
+    net-zero part of it. Suppliers pay in proportion to their customers' demand on winter evenings
+    and pass it into bills.</p>
 
     <h2>How sure are we?</h2>
-    <p>Capacity Market settlement payments are measured from LCCC's published data — the total is
-    solid. What is estimated is the attribution to renewables. The rule counts the full levy:
-    availability payments exist to procure firm backup capacity for a system with a growing share of
-    intermittent generation, so the whole cost is attributed. The caveat is that some backup
-    capacity would be procured in any system — the full-attribution approach therefore errs high
-    rather than low. Attribution confidence is <strong>medium</strong>.</p>
+    <p>Capacity Market settlement payments are measured from LCCC's published data — the levy is
+    solid. What is estimated is the share net zero caused, which comes from a model of the system
+    without net-zero policy (not yet published). The figure is a floor: that system is charged the
+    capacity price that actually cleared, though an emissions limit that kept about 11&nbsp;GW of coal
+    out of the auctions from 2021 pushed prices up, and no published source measures how much of
+    that rise net zero caused. Until 13 October 2026 the Clock counted the whole levy; see the
+    <a href="/changelog">change log</a>. Attribution confidence is <strong>medium</strong>.</p>
 
     <h2>Sources</h2>
     <p class="src">Capacity Market registers and auction results (EMR Delivery Body / LCCC settlements) — see the
