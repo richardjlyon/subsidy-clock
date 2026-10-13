@@ -255,3 +255,31 @@ deleted. `subsidy-clock.vercel.app` now 404s.
   "ours" (basis change). Later ones are NESO re-settling. Five entries
   (1 and 10 Oct) were mislabelled and have been corrected.
 - **11 Oct, Richard approved: one method with the Subsidy Clock** (renewables-cost/brief.md §3a). Shared rulers: 2002–05 baseline (CPIH); national cost ÷ households, worded 'cost to Britain per household'; carbon = all carbon charges collected on electricity (CCL elec share + CPS + ETS power share); Capacity Market = only the extra over a gas-only system's own backup. Renewables-cost moves to the Clock on the first three; the Clock moves on the Capacity Market (a published-figure correction, needs Richard's approval before publishing). Nothing built yet.
+
+## Capacity Market: net-zero share only — PREPARED, NOT PUBLISHED (13 Oct 2026)
+
+- **State:** branch `cm-netzero-share` (local only), 2 commits on origin/master 13c902a0:
+  `72870646` Scotland-paper og:image token fix (separate defect), and the CM method change.
+  Changelog entry is `status: draft`. Publish = `scratch/2026-10-13-cm-publish.sh`
+  (flip draft, test, push branch to master, `gh workflow run update.yml`, verify live).
+- **Rule now:** CM counted = levy x share(year); share = (CM paid − Reliable Britain's own
+  backup at that year's price) / CM paid, from `reference/capacity_market_netzero_share.yaml`
+  (gas-counterfactual e0bfd73, `out/v4/2026-10-13.json` `clock_cm_correction`). 2026+ carry
+  the 2025 share (27.7%) until the engine covers them (Richard's decision). Build FAILS if the
+  Clock's annual CM drifts >2% from the engine's cm_paid (rerun the engine) or a year predates it.
+  Engine cm_paid = Clock annual CM to the penny for 2016-25. 2016 share is 100% (£5m; RB price 0).
+- **Effect (13 Oct data):** headline £240.79bn → £232.98bn real (£199.31bn → £192.19bn cash);
+  CM £9.98bn → £2.17bn real (range £1.00–9.98bn); run-rate £21.85bn → £20.57bn;
+  per household £753.50 → £709.44. Rounded sentence "over £240 billion" → "over £230 billion";
+  equivalences move (58 → 55 carriers etc). CM is now a REF "stricter" component.
+- **Golden gate:** committed `tools/golden/master.json` is stale (predates turn-up, changelog,
+  scotland outputs) — never re-baseline it to pass. Compare against a fresh capture from a
+  detached origin/master worktree with `data/` symlinked; on 13 Oct the diff was exactly the
+  CM artefacts + headline-derived cards; 17 stubs differ only by `?v=` (PNG re-render).
+- **Frozen papers carry the headline card's `?v=`:** `scotland_claims.py render()` stamps via
+  `sharecards.stamp_og_html` + `png_versions(site/share)`; update.yml now commits `site/papers`.
+- Figures for Report No.1 (not edited here — Richard's separate thread):
+  `scratch/2026-10-13-cm-change-for-report.md`. Tweet draft: `scratch/2026-10-13-cm-change-tweet.md`.
+- Stale drafts quoting old figures (not edited): reports-programme `review-substack.md`,
+  `review-tweet.txt` (£240bn); energy-trap essay `2026-09-30-browne-jackson-two-systems/draft.md`
+  (£746.65, £21.65bn).
