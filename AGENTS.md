@@ -1,6 +1,6 @@
 # The Subsidy Clock — Promotion & Stewardship
 
-The live public dashboard at **subsidyclock.co.uk** measuring, in pounds, what UK energy subsidies have cost since 2002. A credibility instrument first, a promotion asset for *The Energy Trap* second — the ordering is strict and load-bearing. Companion to the book, not a subordinate of it.
+The live public dashboard at **subsidyclock.co.uk** measuring, in pounds, what renewable electricity support has cost Britain since 2002. A credibility instrument first, a promotion asset for *The Energy Trap* second — the ordering is strict and load-bearing. Companion to the book, not a subordinate of it.
 
 ## Who I am here
 
