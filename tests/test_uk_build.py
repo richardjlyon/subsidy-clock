@@ -3,6 +3,7 @@ from datetime import date
 import polars as pl
 
 from subsidy_engine_uk import build as uk_build
+from tests.cf_helpers import cf_series, indexed
 
 
 def deflators():
@@ -11,18 +12,40 @@ def deflators():
                         schema={"year": pl.Int64, "index": pl.Float64})
 
 
-def test_baseline_uplift_floors_at_zero_and_nets_subtraction():
+def _cf100():
+    idx = dict(zip(deflators()["year"].to_list(), deflators()["index"].to_list()))
+    ser = indexed(100.0, idx, 71.5)
+    return {"bsuos": cf_series(ser), "tnuos": cf_series(ser)}
+
+
+def test_counterfactual_uplift_floors_at_zero_and_nets_subtraction():
     raw = pl.DataFrame({"year": [2003, 2023], "cost_gbp": [60.0, 1000.0]},
                        schema={"year": pl.Int64, "cost_gbp": pl.Float64})
     constraints = pl.DataFrame({"year": [2023], "cost_gbp": [100.0]},
                                schema={"year": pl.Int64, "cost_gbp": pl.Float64})
-    out = uk_build.baseline_uplift(raw, 100.0, deflators(), subtract=constraints)
+    cf = cf_series({2002: 95.0, 2003: 99.0, 2004: 101.0, 2005: 105.0, 2023: 180.0})
+    out = uk_build.counterfactual_uplift(raw, cf, deflators(), subtract=constraints)
     rows = {r["year"]: r["cost_gbp"] for r in out.to_dicts()}
-    # baseline index = mean(70,71,72,73) = 71.5
-    # 2003: 60 - 100*(71/71.5) = negative -> floored to 0
+    # 2003: 60 - 99 = negative -> floored to 0
     assert rows[2003] == 0.0
-    # 2023: 1000 - 100*(128/71.5) - 100 = 1000 - 179.02... - 100
-    assert abs(rows[2023] - (1000.0 - 100.0 * 128.0 / 71.5 - 100.0)) < 1e-9
+    # 2023: 1000 - 180 (the engine's own figure for the year) - 100
+    assert abs(rows[2023] - (1000.0 - 180.0 - 100.0)) < 1e-9
+
+
+def test_counterfactual_carries_last_engine_year_by_cpih():
+    """Years after the engine's last year carry it by CPIH (index(y)/index(last)); a year
+    without an index (the run-rate's year) uses the latest index; a year before the engine's
+    first year is an error, never a silent zero."""
+    cf = cf_series({2023: 128.0, 2024: 132.0})
+    s = uk_build.counterfactual_series([2023, 2024, 2025, 2026], cf, deflators())
+    got = dict(zip(s["year"].to_list(), s["cf"].to_list()))
+    assert got[2023] == 128.0 and got[2024] == 132.0
+    assert abs(got[2025] - 132.0 * 136.0 / 132.0) < 1e-9
+    assert abs(got[2026] - 132.0 * 136.0 / 132.0) < 1e-9          # no 2026 index: latest
+    assert abs(uk_build.counterfactual_runrate(cf, deflators()) - 136.0) < 1e-9
+    import pytest
+    with pytest.raises(ValueError, match="engine starts 2023"):
+        uk_build.counterfactual_series([2022], cf, deflators())
 
 
 def test_build_integration(tmp_path):
@@ -64,8 +87,7 @@ def test_build_integration(tmp_path):
                                pl.DataFrame({"year": [2024], "cost_gbp": [1.8e9]},
                                             schema={"year": pl.Int64, "cost_gbp": pl.Float64})),
     }
-    model = uk_build.build(store, refs, deflators=deflators(),
-                           baselines={"bsuos": {"value": 100.0}, "tnuos": {"value": 100.0}})
+    model = uk_build.build(store, refs, deflators=deflators(), counterfactual=_cf100())
     by_id = {s.scheme_id: s for s in model["schemes"]}
     # CfD split: renewable vs low-carbon, no leakage
     assert by_id["cfd_renewable"].cumulative_gbp == 5000.0
@@ -126,12 +148,14 @@ def test_build_indirect_layer(tmp_path):
         "tnuos": _ref("tnuos", "TNUoS", {2023: 1000.0}, conf="low"),
         "bsuos_history": _ref("bsuos_history", "BSUoS hist", {2023: 500.0}, conf="low"),
     }
-    baselines = {"bsuos": {"value": 100.0}, "tnuos": {"value": 100.0}}
+    # engine no-net-zero costs equal to the old 100-at-2002-05 CPIH-carried example, so the
+    # worked figures below are unchanged; 2026 carries 2025 forward by CPIH
+    cfs = _cf100()
     # CM: the net-zero share of 2026 carries forward from 2025 (40%)
     cm_share = {"years": {2025: {"cm_paid_gbp": 100.0, "share": 0.4,
                                  "share_low": 0.1, "share_high": 1.0}},
                 "carry_forward_from": 2025, "provenance": {}}
-    model = uk_build.build(store, refs, deflators=deflators(), baselines=baselines,
+    model = uk_build.build(store, refs, deflators=deflators(), counterfactual=cfs,
                            cm_share=cm_share)
     by_id = {s.scheme_id: s for s in model["schemes"]}
 
@@ -145,13 +169,13 @@ def test_build_indirect_layer(tmp_path):
     # ccl/ets pass through as stored
     assert by_id["ccl"].cumulative_gbp == 80.0
 
-    # tnuos: uplift = max(0, 1000 - 100*(128/71.5)) for 2023
+    # tnuos: uplift = max(0, 1000 - engine 2023 figure 100*(128/71.5))
     expected_tnuos = 1000.0 - 100.0 * 128.0 / 71.5
     assert abs(by_id["tnuos"].cumulative_gbp - expected_tnuos) < 1e-6
 
     # bsuos 2023 (history year): max(0, 500 - 100*(128/71.5) - 0 constraints)
     # bsuos 2026 (bottom-up partial year after history): raw 1000,
-    #   baseline indexed by latest index (136): 100*136/71.5, constraints 2026 = 100
+    #   engine 2025 figure carried by CPIH to the latest index (136): 100*136/71.5, constraints 2026 = 100
     bs_annual = {r["year"]: r["cost_gbp"] for r in by_id["bsuos"].annual.to_dicts()}
     assert abs(bs_annual[2023] - (500.0 - 100.0 * 128.0 / 71.5)) < 1e-6
     assert abs(bs_annual[2026] - (1000.0 - 100.0 * 136.0 / 71.5 - 100.0)) < 1e-6
@@ -168,7 +192,7 @@ def test_build_indirect_layer(tmp_path):
     # direct perspectives unchanged by the indirect components (leakage guard)
     refs_direct_only = {k: refs[k] for k in ("constraints_history", "ro", "fit")}
     model2 = uk_build.build(store, refs_direct_only, deflators=deflators(),
-                            baselines=baselines, cm_share=cm_share)
+                            counterfactual=cfs, cm_share=cm_share)
     assert (model["perspectives"]["renewables"]["cumulative_gbp"]
             == model2["perspectives"]["renewables"]["cumulative_gbp"])
 

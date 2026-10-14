@@ -2,11 +2,13 @@
 13 October 2026). Pins the per-year share, the carry-forward of the last
 modelled year, that the headline is the sum of its parts, and that the
 public change-log entry for the change validates."""
+import json
 from datetime import date
 from pathlib import Path
 
 import polars as pl
 import pytest
+import yaml
 
 from subsidy_engine import reference, sitedata
 from subsidy_engine_uk import build as uk_build
@@ -47,7 +49,7 @@ def _build_cm(tmp_path, payments: dict[date, float], cm_share):
                       schema={"date": pl.Date, "auction": pl.String, "payment_gbp": pl.Float64})
     store.write("capacity_market", "payments", cm, source_url="u", date_col="date")
     refs = {k: _ref(k) for k in ("constraints_history", "ro", "fit")}
-    model = uk_build.build(store, refs, deflators=deflators(), baselines={},
+    model = uk_build.build(store, refs, deflators=deflators(), counterfactual={},
                            cm_share=cm_share)
     return model, {s.scheme_id: s for s in model["schemes"]}["capacity_market"]
 
@@ -112,7 +114,12 @@ def test_reference_file_shares_match_the_engine_and_2025_carries():
     y25 = cm["years"][2025]
     # Richard's decision: 2026 onward uses 396.33 / 1431.46
     assert y25["share"] == pytest.approx(396.333094 / 1431.463285, rel=1e-6)
-    assert cm["provenance"]["commit"].startswith("e0bfd73")
+    # provenance: the run behind the pinned release (v4-s32 was e0bfd73; v4-s33's CM block is
+    # identical to the penny, from the s33 run commit)
+    pin = yaml.safe_load((REF / "model_pin.yaml").read_text())
+    exp = json.loads((REF.parent / pin["clock_export_file"]).read_text())
+    assert cm["provenance"]["commit"] == exp["meta"]["run_commit"]
+    assert cm["provenance"]["engine_version"] == pin["engine_version"]
     for y, r in cm["years"].items():
         assert 0.0 <= r["share_low"] <= r["share"] <= r["share_high"] == pytest.approx(1.0), y
     assert all(cm["years"][y]["share"] < 0.5 for y in range(2017, 2026))

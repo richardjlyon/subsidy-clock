@@ -92,21 +92,28 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+CLOCK_EXPORT_SCHEMA = "clock-export/2"
+
+
 def load_model_pin(ref_dir: Path) -> dict:
     """reference/model_pin.yaml + the vendored engine export it pins -> every
     counterfactual figure the Clock uses, and nothing else (Richard, 14 Oct 2026).
 
     The Clock measures what was paid; the only figures in it about what would
-    have happened without net zero (the Capacity Market net-zero share and the
-    2002-05 TNUoS/BSUoS baselines) come from ONE source, a released export of
-    the gas-counterfactual engine, vendored at reference/engine/<version>.json
-    and pinned by version and sha256. A new engine release never flows in by
-    itself: the build fails unless the vendored file's sha256 and
-    meta.engine_version equal the pin, so updating means editing the pin and
-    vendoring the new file on purpose.
+    have happened without net zero (the Capacity Market net-zero share, and the
+    no-net-zero grid and balancing cost per year) come from ONE source, a
+    released export of the gas-counterfactual engine, vendored at
+    reference/engine/<version>.json and pinned by version and sha256. A new
+    engine release never flows in by itself: the build fails unless the
+    vendored file's sha256 and meta.engine_version equal the pin, so updating
+    means editing the pin and vendoring the new file on purpose.
 
-    Returns {"pin": {engine_version, sha256, ...}, "cm_share": <load_cm_netzero_share
-    shape>, "baselines": {"tnuos": {"value", ...}, "bsuos": {"value", ...}}}."""
+    Returns {"pin": {engine_version, sha256, ...}, "cm_share": <_cm_share shape>,
+    "counterfactual": {"tnuos": <series>, "bsuos": <series>}}; each series is
+    {"years": {year: GBP nominal central}, "low", "high" (same shape),
+    "carry_forward_from", "carry_index", "rule", "method", "source_ids",
+    "engine_version"} (engine GO5 grid / GO4 balancing, generators' share
+    included; one method in both models, Richard 14 Oct 2026)."""
     import json
     ref_dir = Path(ref_dir)
     pin = yaml.safe_load((ref_dir / MODEL_PIN).read_text())
@@ -125,6 +132,10 @@ def load_model_pin(ref_dir: Path) -> dict:
     if exp["meta"]["engine_version"] != pin["engine_version"]:
         raise ValueError(f"{MODEL_PIN}: vendored meta.engine_version "
                          f"{exp['meta']['engine_version']} != pinned {pin['engine_version']}")
+    if exp["meta"].get("schema") != CLOCK_EXPORT_SCHEMA:
+        raise ValueError(f"{MODEL_PIN}: vendored schema {exp['meta'].get('schema')} != "
+                         f"{CLOCK_EXPORT_SCHEMA} (the Clock needs the per-year grid and "
+                         "balancing series)")
     cm = exp["capacity_market"]
     cm_share = _cm_share({int(y): r for y, r in cm["years"].items()},
                          int(cm["carry_forward_from"]),
@@ -135,19 +146,37 @@ def load_model_pin(ref_dir: Path) -> dict:
                           "file": exp["meta"]["run_file"],
                           "file_sha256": exp["meta"]["run_sha256"]},
                          pin["clock_export_file"])
-    baselines = {}
-    for k in ("tnuos", "bsuos"):
-        b = exp["baselines"][k]
-        if b["period"] != "2002-2005":
-            raise ValueError(f"{pin['clock_export_file']}: {k} baseline period {b['period']}")
-        baselines[k] = {"value": float(b["value_gbp_nominal"]), "period": b["period"],
-                        "basis": b["basis"], "source_ids": b["source_ids"],
-                        "engine_version": pin["engine_version"]}
+    cf = exp["carry_forward"]
+    counterfactual = {k: _cf_series(exp[block], cf, pin["engine_version"], pin["clock_export_file"])
+                      for k, block in (("tnuos", "grid"), ("bsuos", "balancing"))}
     return {"pin": {"engine_version": pin["engine_version"], "sha256": pin["sha256"],
                     "engine_commit": pin["engine_commit"],
                     "release_date": str(pin["release_date"]),
                     "clock_export_file": pin["clock_export_file"]},
-            "cm_share": cm_share, "baselines": baselines}
+            "cm_share": cm_share, "counterfactual": counterfactual}
+
+
+def _cf_series(block: dict, carry: dict, version: str, name: str) -> dict:
+    """One engine no-net-zero cost series (GBP nominal per calendar year).
+    Validates contiguity, positivity and that the carry-forward starts at the
+    engine's last year, so a malformed export fails the build."""
+    if block.get("gen_share") != "included":
+        raise ValueError(f"{name}: series must include generators' share (the Clock has no "
+                         f"power-price line), got {block.get('gen_share')}")
+    if carry.get("index") != "CPIH":
+        raise ValueError(f"{name}: carry-forward index {carry.get('index')} != CPIH")
+    rows = {int(y): r for y, r in block["years"].items()}
+    ys = sorted(rows)
+    if ys != list(range(ys[0], ys[-1] + 1)) or int(carry["from"]) != ys[-1]:
+        raise ValueError(f"{name}: years {ys[0]}-{ys[-1]} not contiguous or carry-forward "
+                         f"from {carry['from']} is not the last year")
+    out = {t: {y: float(rows[y][f"{t}_gbp"]) for y in ys} for t in ("central", "low", "high")}
+    if any(v <= 0 for t in out.values() for v in t.values()):
+        raise ValueError(f"{name}: non-positive no-net-zero cost")
+    return {"years": out["central"], "low": out["low"], "high": out["high"],
+            "carry_forward_from": ys[-1], "carry_index": "CPIH", "rule": carry["rule"],
+            "method": block["method"], "source_ids": block["source_ids"],
+            "engine_version": version}
 
 
 def _cm_share(raw_years: dict, carry: int, provenance: dict, name: str) -> dict:

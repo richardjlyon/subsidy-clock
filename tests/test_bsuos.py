@@ -5,6 +5,7 @@ import pytest
 
 from subsidy_engine_uk.schemes import bsuos
 from subsidy_engine.store import SnapshotStore
+from tests.cf_helpers import cf_series, indexed
 
 # Pre-reform shape: BSUoS was an ex-post pass-through, so the published
 # half-hourly charge IS the cost, and it foots to the dataset's own daily total.
@@ -249,7 +250,7 @@ def _annual_ref(scheme_id, annual_map, perspectives=()):
 
 def _model(tmp_path, turnup_gbp_per_day=None):
     """Raw BSUoS 2026 = 1,000; wind constraint payments 2026 = 100;
-    indexed baseline = 100 x 136/71.5. Turn-up, if given, on both BSUoS days."""
+    engine no-net-zero cost 2026 = 100 x 136/71.5 (2025 carried by CPIH). Turn-up, if given, on both BSUoS days."""
     store = SnapshotStore(tmp_path)
     store.write("constraints", "daily", pl.DataFrame({
         "date": [date(2026, 4, 10)], "bmu": ["T_W-1"], "lead_party": ["W"],
@@ -276,8 +277,12 @@ def _model(tmp_path, turnup_gbp_per_day=None):
             "ro": _annual_ref("ro", {2024: 1000.0}, ("renewables", "low_carbon")),
             "fit": _annual_ref("fit", {2024: 500.0}, ("renewables", "low_carbon")),
             "bsuos_history": _annual_ref("bsuos_history", {2023: 500.0})}
+    # engine no-net-zero balancing cost: 100 x index/71.5 for its years (2002-05 and
+    # 2023-25); 2026 carries 2025 forward by CPIH (latest index 136, so unchanged)
+    idx = dict(zip(_deflators()["year"].to_list(), _deflators()["index"].to_list()))
     model = uk_build.build(store, refs, deflators=_deflators(),
-                           baselines={"bsuos": {"value": 100.0}})
+                           counterfactual={"bsuos": cf_series(
+                               indexed(100.0, {y: idx[y] for y in (2023, 2024, 2025)}, BASE_IDX))})
     return model, {s.scheme_id: s for s in model["schemes"]}
 
 
@@ -288,13 +293,13 @@ def _year(scheme, year):
 def test_bsuos_residual_plus_parts_sums_to_raw_bsuos(tmp_path):
     _, by_id = _model(tmp_path, turnup_gbp_per_day=150.0)
     raw = 1000.0
-    baseline = 100.0 * LATEST_IDX / BASE_IDX
+    nnz = 100.0 * LATEST_IDX / BASE_IDX      # engine no-net-zero cost, 2026
     wind = _year(by_id["constraints"], 2026)
     turnup = _year(by_id["constraint_turnup"], 2026)
     residual = _year(by_id["bsuos"], 2026)
     assert (wind, turnup) == (100.0, 300.0)
-    assert abs(residual - (raw - baseline - wind - turnup)) < 1e-9
-    assert abs(residual + turnup + wind + baseline - raw) < 1e-9
+    assert abs(residual - (raw - nnz - wind - turnup)) < 1e-9
+    assert abs(residual + turnup + wind + nnz - raw) < 1e-9
     # the published line is method (b) only: cross-check bases never leak in
     assert by_id["constraint_turnup"].layer == "indirect"
     assert by_id["constraint_turnup"].cumulative_gbp == 300.0

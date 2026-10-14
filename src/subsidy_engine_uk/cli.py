@@ -87,17 +87,18 @@ def cmd_build_site(args: argparse.Namespace) -> int:
     bill_yaml = yaml.safe_load((args.root / "reference" / "electricity_bill.yaml").read_text())
     bill_info = {"source": bill_yaml["source"], "source_url": bill_yaml["source_url"],
                  "verified": bill_yaml.get("verified", False)}
-    # every counterfactual figure (CM net-zero share, TNUoS/BSUoS 2002-05
-    # baselines) from the pinned engine release; fails on any sha/version drift
+    # every counterfactual figure (CM net-zero share, the no-net-zero grid and
+    # balancing cost per year) from the pinned engine release; fails on any
+    # sha/version/schema drift
     pinned = reference.load_model_pin(args.root / "reference")
-    baselines, cm_share = pinned["baselines"], pinned["cm_share"]
+    counterfactual, cm_share = pinned["counterfactual"], pinned["cm_share"]
     station_map = stations.load_station_map(args.root / "reference" / "cfd_stations.csv")
     ro_stations = stations.load_ro_stations(args.root / "reference" / "ro_stations.csv")
     station_coords = stations.load_station_coords(args.root / "reference" / "station_coords.csv")
     station_bmus = stations.load_station_bmus(args.root / "reference" / "station_bmu_map.csv")
     enforcement_notes = stations.load_enforcement_notes(args.root / "reference" / "enforcement_notes.csv")
     map_tiles = json.loads((args.root / "reference" / "map_tiles.json").read_text())
-    model = uk_build.build(store, refs, deflators=deflators, baselines=baselines,
+    model = uk_build.build(store, refs, deflators=deflators, counterfactual=counterfactual,
                            station_map=station_map, ro_stations=ro_stations,
                            bmu_map=station_bmus, cm_share=cm_share,
                            model_pin=pinned["pin"])

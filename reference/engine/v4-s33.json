@@ -1,0 +1,610 @@
+{
+ "meta": {
+  "engine_version": "v4-s33",
+  "schema": "clock-export/2",
+  "commit": "20b7bba7174783553a9f6f7f03c1c7dfa19f4993",
+  "run_commit": "20b7bba7174783553a9f6f7f03c1c7dfa19f4993",
+  "run_file": "out/v4/2026-10-14.json",
+  "run_sha256": "e8f4b444d8787d5538345e80d754e9f1e192fa96344a3b6612da85b1f62d44f3",
+  "run_date": "2026-10-14",
+  "created": "2026-10-14T11:18:22+00:00",
+  "money": "nominal \u00a3, calendar year"
+ },
+ "capacity_market": {
+  "years": {
+   "2016": {
+    "cm_paid_gbp": 5048474.7,
+    "netzero_gbp": 5048474.7,
+    "netzero_low_gbp": 5048474.7,
+    "netzero_high_gbp": 5048474.7,
+    "own_backup_gbp": 0.0,
+    "price_gbp_per_kw_yr": 0.0,
+    "own_backup_gw": 50.146
+   },
+   "2017": {
+    "cm_paid_gbp": 117562461.67,
+    "netzero_gbp": 31270034.88,
+    "netzero_low_gbp": 26792757.91,
+    "netzero_high_gbp": 117562461.67,
+    "own_backup_gbp": 86292426.79,
+    "price_gbp_per_kw_yr": 1.7375,
+    "own_backup_gw": 49.665
+   },
+   "2018": {
+    "cm_paid_gbp": 549449341.35,
+    "netzero_gbp": 45467658.97,
+    "netzero_low_gbp": 16298654.93,
+    "netzero_high_gbp": 549449341.35,
+    "own_backup_gbp": 503981682.38,
+    "price_gbp_per_kw_yr": 10.1298,
+    "own_backup_gw": 49.752
+   },
+   "2019": {
+    "cm_paid_gbp": 962991821.4,
+    "netzero_gbp": 126825663.01,
+    "netzero_low_gbp": 59887978.43,
+    "netzero_high_gbp": 962991821.4,
+    "own_backup_gbp": 836166158.39,
+    "price_gbp_per_kw_yr": 18.4143,
+    "own_backup_gw": 45.408
+   },
+   "2020": {
+    "cm_paid_gbp": 1005762270.75,
+    "netzero_gbp": 177635697.11,
+    "netzero_low_gbp": 84297547.85,
+    "netzero_high_gbp": 1005762270.75,
+    "own_backup_gbp": 828126573.64,
+    "price_gbp_per_kw_yr": 19.5321,
+    "own_backup_gw": 42.398
+   },
+   "2021": {
+    "cm_paid_gbp": 1061708952.85,
+    "netzero_gbp": 200557514.36,
+    "netzero_low_gbp": 108404585.74,
+    "netzero_high_gbp": 1061708952.85,
+    "own_backup_gbp": 861151438.49,
+    "price_gbp_per_kw_yr": 20.1284,
+    "own_backup_gw": 42.783
+   },
+   "2022": {
+    "cm_paid_gbp": 646942043.17,
+    "netzero_gbp": 145618431.36,
+    "netzero_low_gbp": 89625992.77,
+    "netzero_high_gbp": 646942043.17,
+    "own_backup_gbp": 501323611.81,
+    "price_gbp_per_kw_yr": 12.2301,
+    "own_backup_gw": 40.991
+   },
+   "2023": {
+    "cm_paid_gbp": 898210217.37,
+    "netzero_gbp": 236669665.63,
+    "netzero_low_gbp": 123285606.83,
+    "netzero_high_gbp": 898210217.37,
+    "own_backup_gbp": 661540551.74,
+    "price_gbp_per_kw_yr": 16.7938,
+    "own_backup_gw": 39.392
+   },
+   "2024": {
+    "cm_paid_gbp": 1256981395.4,
+    "netzero_gbp": 343819210.62,
+    "netzero_low_gbp": 151175267.38,
+    "netzero_high_gbp": 1256981395.4,
+    "own_backup_gbp": 913162184.78,
+    "price_gbp_per_kw_yr": 23.9404,
+    "own_backup_gw": 38.143
+   },
+   "2025": {
+    "cm_paid_gbp": 1431463285.03,
+    "netzero_gbp": 396333094.27,
+    "netzero_low_gbp": 141377161.0,
+    "netzero_high_gbp": 1431463285.03,
+    "own_backup_gbp": 1035130190.76,
+    "price_gbp_per_kw_yr": 27.092,
+    "own_backup_gw": 38.208
+   }
+  },
+  "carry_forward_from": 2025,
+  "method": "spec.md \u00a75.4 (NZ5 = CM paid - Reliable Britain's own backup payment)",
+  "source_blocks": [
+   "clock_cm_correction",
+   "capacity_market"
+  ]
+ },
+ "grid": {
+  "years": {
+   "2002": {
+    "central_gbp": 942331716.59,
+    "low_gbp": 942331716.59,
+    "high_gbp": 942331716.59,
+    "carried_by_index_gbp": 942331716.59,
+    "renewal_allowance_gbp": 0.0,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 0.0
+   },
+   "2003": {
+    "central_gbp": 967642417.03,
+    "low_gbp": 967642417.03,
+    "high_gbp": 967642417.03,
+    "carried_by_index_gbp": 967642417.03,
+    "renewal_allowance_gbp": 0.0,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 0.0
+   },
+   "2004": {
+    "central_gbp": 996054428.59,
+    "low_gbp": 996054428.59,
+    "high_gbp": 996054428.59,
+    "carried_by_index_gbp": 996054428.59,
+    "renewal_allowance_gbp": 0.0,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 0.0
+   },
+   "2005": {
+    "central_gbp": 1025233431.06,
+    "low_gbp": 1025233431.06,
+    "high_gbp": 1025233431.06,
+    "carried_by_index_gbp": 1025233431.06,
+    "renewal_allowance_gbp": 0.0,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 0.0
+   },
+   "2006": {
+    "central_gbp": 1059381200.82,
+    "low_gbp": 1059381200.82,
+    "high_gbp": 1059381200.82,
+    "carried_by_index_gbp": 1059381200.82,
+    "renewal_allowance_gbp": 0.0,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 0.0
+   },
+   "2007": {
+    "central_gbp": 1106088952.97,
+    "low_gbp": 1110145340.35,
+    "high_gbp": 1102032565.59,
+    "carried_by_index_gbp": 1102032565.59,
+    "renewal_allowance_gbp": 4056387.38,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 8112774.76
+   },
+   "2008": {
+    "central_gbp": 1147021681.24,
+    "low_gbp": 1157262773.38,
+    "high_gbp": 1136780589.11,
+    "carried_by_index_gbp": 1136780589.11,
+    "renewal_allowance_gbp": 10241092.14,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 20482184.27
+   },
+   "2009": {
+    "central_gbp": 1168330231.89,
+    "low_gbp": 1185440436.88,
+    "high_gbp": 1151220026.91,
+    "carried_by_index_gbp": 1151220026.91,
+    "renewal_allowance_gbp": 17110204.99,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 34220409.97
+   },
+   "2010": {
+    "central_gbp": 1219612572.91,
+    "low_gbp": 1244486720.93,
+    "high_gbp": 1194738424.89,
+    "carried_by_index_gbp": 1194738424.89,
+    "renewal_allowance_gbp": 24874148.02,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 49748296.04
+   },
+   "2011": {
+    "central_gbp": 1284845311.85,
+    "low_gbp": 1318861819.19,
+    "high_gbp": 1250828804.51,
+    "carried_by_index_gbp": 1250828804.51,
+    "renewal_allowance_gbp": 34016507.34,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 68033014.69
+   },
+   "2012": {
+    "central_gbp": 1338607174.75,
+    "low_gbp": 1382366935.53,
+    "high_gbp": 1294847413.96,
+    "carried_by_index_gbp": 1294847413.96,
+    "renewal_allowance_gbp": 43759760.79,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 87519521.57
+   },
+   "2013": {
+    "central_gbp": 1389442337.1,
+    "low_gbp": 1445954493.58,
+    "high_gbp": 1332930180.62,
+    "carried_by_index_gbp": 1332930180.62,
+    "renewal_allowance_gbp": 56512156.48,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 113024312.96
+   },
+   "2014": {
+    "central_gbp": 1432958656.56,
+    "low_gbp": 1503407960.84,
+    "high_gbp": 1362509352.28,
+    "carried_by_index_gbp": 1362509352.28,
+    "renewal_allowance_gbp": 70449304.28,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 140898608.57
+   },
+   "2015": {
+    "central_gbp": 1465929831.3,
+    "low_gbp": 1550509011.58,
+    "high_gbp": 1381350651.02,
+    "carried_by_index_gbp": 1381350651.02,
+    "renewal_allowance_gbp": 84579180.28,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 169158360.56
+   },
+   "2016": {
+    "central_gbp": 1507583247.13,
+    "low_gbp": 1606570991.79,
+    "high_gbp": 1408595502.48,
+    "carried_by_index_gbp": 1408595502.48,
+    "renewal_allowance_gbp": 98987744.66,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 197975489.32
+   },
+   "2017": {
+    "central_gbp": 1567505033.44,
+    "low_gbp": 1681362184.58,
+    "high_gbp": 1453647882.3,
+    "carried_by_index_gbp": 1453647882.3,
+    "renewal_allowance_gbp": 113857151.14,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 227714302.28
+   },
+   "2018": {
+    "central_gbp": 1629807908.82,
+    "low_gbp": 1759014751.92,
+    "high_gbp": 1500601065.72,
+    "carried_by_index_gbp": 1500601065.72,
+    "renewal_allowance_gbp": 129206843.1,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 258413686.2
+   },
+   "2019": {
+    "central_gbp": 1682956146.3,
+    "low_gbp": 1827895408.85,
+    "high_gbp": 1538016883.75,
+    "carried_by_index_gbp": 1538016883.75,
+    "renewal_allowance_gbp": 144939262.55,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 289878525.1
+   },
+   "2020": {
+    "central_gbp": 1732478174.63,
+    "low_gbp": 1893491991.81,
+    "high_gbp": 1571464357.45,
+    "carried_by_index_gbp": 1571464357.45,
+    "renewal_allowance_gbp": 161013817.18,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 322027634.36
+   },
+   "2021": {
+    "central_gbp": 1794730389.63,
+    "low_gbp": 1963772311.45,
+    "high_gbp": 1625688467.82,
+    "carried_by_index_gbp": 1625688467.82,
+    "renewal_allowance_gbp": 169041921.82,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 338083843.64
+   },
+   "2022": {
+    "central_gbp": 1909551309.21,
+    "low_gbp": 2084025734.69,
+    "high_gbp": 1735076883.73,
+    "carried_by_index_gbp": 1735076883.73,
+    "renewal_allowance_gbp": 174474425.48,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 348948850.96
+   },
+   "2023": {
+    "central_gbp": 2023791695.75,
+    "low_gbp": 2203838938.08,
+    "high_gbp": 1843744453.41,
+    "carried_by_index_gbp": 1843744453.41,
+    "renewal_allowance_gbp": 180047242.33,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 360094484.67
+   },
+   "2024": {
+    "central_gbp": 2103954496.35,
+    "low_gbp": 2289737165.7,
+    "high_gbp": 1918171827.01,
+    "carried_by_index_gbp": 1918171827.01,
+    "renewal_allowance_gbp": 185782669.35,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 371565338.7
+   },
+   "2025": {
+    "central_gbp": 2167418661.83,
+    "low_gbp": 2359087903.76,
+    "high_gbp": 1975749419.9,
+    "carried_by_index_gbp": 1975749419.9,
+    "renewal_allowance_gbp": 191669241.93,
+    "renewal_allowance_low_gbp": 0.0,
+    "renewal_allowance_high_gbp": 383338483.87
+   }
+  },
+  "method": "GO5 (spec \u00a77.1, \u00a77.3): G0 carried by the transmission price controls' own index (RPI to FY2020/21, then CPIH; gascf.grid.control_index_fy), plus the grid renewal allowance R (central = midpoint; range R = 0 to the whole non-load-related allowance above the 2002-05 level). Generators' share included.",
+  "function": "gascf.grid.go5(PRICE_BASE, YEARS, index='rpi', gen_share='included')",
+  "gen_share": "included",
+  "source_ids": [
+   "ofgem-riio-ed2-fd-finance-annex-rav-rpi-to-cpih",
+   "ons-rpi-chaw",
+   "s20d-grid-baseline-assembled-ngc-a6.2-spt-shetl-t1-t2",
+   "s20d-renewal-allowance-tpcr4-riio-t1-riio2-nlr"
+  ]
+ },
+ "balancing": {
+  "years": {
+   "2002": {
+    "central_gbp": 436585879.87,
+    "low_gbp": 540212857.2,
+    "high_gbp": 446396363.58,
+    "energy_part_gbp": 220284734.1,
+    "services_part_gbp": 216301145.78,
+    "energy_share": 0.547835
+   },
+   "2003": {
+    "central_gbp": 456790540.43,
+    "low_gbp": 570892714.03,
+    "high_gbp": 463340667.26,
+    "energy_part_gbp": 237632047.94,
+    "services_part_gbp": 219158492.48,
+    "energy_share": 0.547835
+   },
+   "2004": {
+    "central_gbp": 486695558.24,
+    "low_gbp": 617164499.33,
+    "high_gbp": 487856019.24,
+    "energy_part_gbp": 264393984.38,
+    "services_part_gbp": 222301573.86,
+    "energy_share": 0.547835
+   },
+   "2005": {
+    "central_gbp": 576957813.02,
+    "low_gbp": 760729141.78,
+    "high_gbp": 559298349.89,
+    "energy_part_gbp": 350084484.42,
+    "services_part_gbp": 226873328.59,
+    "energy_share": 0.547835
+   },
+   "2006": {
+    "central_gbp": 679686705.32,
+    "low_gbp": 923716173.31,
+    "high_gbp": 640873610.65,
+    "energy_part_gbp": 447098683.31,
+    "services_part_gbp": 232588022.01,
+    "energy_share": 0.547835
+   },
+   "2007": {
+    "central_gbp": 665876708.45,
+    "low_gbp": 896884893.94,
+    "high_gbp": 633125462.74,
+    "energy_part_gbp": 427859727.7,
+    "services_part_gbp": 238016980.75,
+    "energy_share": 0.547835
+   },
+   "2008": {
+    "central_gbp": 820499027.09,
+    "low_gbp": 1142454951.79,
+    "high_gbp": 755744748.24,
+    "energy_part_gbp": 574195740.88,
+    "services_part_gbp": 246303286.21,
+    "energy_share": 0.547835
+   },
+   "2009": {
+    "central_gbp": 721227638.92,
+    "low_gbp": 976711709.02,
+    "high_gbp": 682305173.25,
+    "energy_part_gbp": 470066863.31,
+    "services_part_gbp": 251160775.61,
+    "energy_share": 0.547835
+   },
+   "2010": {
+    "central_gbp": 762468470.67,
+    "low_gbp": 1038973646.6,
+    "high_gbp": 717126806.57,
+    "energy_part_gbp": 505021532.3,
+    "services_part_gbp": 257446938.37,
+    "energy_share": 0.547835
+   },
+   "2011": {
+    "central_gbp": 937322981.41,
+    "low_gbp": 1316175973.71,
+    "high_gbp": 856117947.17,
+    "energy_part_gbp": 669875329.57,
+    "services_part_gbp": 267447651.84,
+    "energy_share": 0.547835
+   },
+   "2012": {
+    "central_gbp": 984643014.82,
+    "low_gbp": 1387897780.17,
+    "high_gbp": 895888115.85,
+    "energy_part_gbp": 710337730.88,
+    "services_part_gbp": 274305283.94,
+    "energy_share": 0.547835
+   },
+   "2013": {
+    "central_gbp": 1090811125.84,
+    "low_gbp": 1556039542.05,
+    "high_gbp": 980391808.99,
+    "energy_part_gbp": 810219679.14,
+    "services_part_gbp": 280591446.7,
+    "energy_share": 0.547835
+   },
+   "2014": {
+    "central_gbp": 880115788.08,
+    "low_gbp": 1209272907.35,
+    "high_gbp": 821245996.11,
+    "energy_part_gbp": 595524055.99,
+    "services_part_gbp": 284591732.09,
+    "energy_share": 0.547835
+   },
+   "2015": {
+    "central_gbp": 793185335.23,
+    "low_gbp": 1066604006.22,
+    "high_gbp": 755320723.19,
+    "energy_part_gbp": 507450664.45,
+    "services_part_gbp": 285734670.77,
+    "energy_share": 0.547835
+   },
+   "2016": {
+    "central_gbp": 700909934.91,
+    "low_gbp": 913857586.48,
+    "high_gbp": 686195794.1,
+    "energy_part_gbp": 412317917.43,
+    "services_part_gbp": 288592017.48,
+    "energy_share": 0.547835
+   },
+   "2017": {
+    "central_gbp": 832115713.15,
+    "low_gbp": 1121921879.0,
+    "high_gbp": 790451712.31,
+    "energy_part_gbp": 536094594.23,
+    "services_part_gbp": 296021118.92,
+    "energy_share": 0.547835
+   },
+   "2018": {
+    "central_gbp": 1021019449.27,
+    "low_gbp": 1424530575.18,
+    "high_gbp": 938561088.59,
+    "energy_part_gbp": 718140698.25,
+    "services_part_gbp": 302878751.02,
+    "energy_share": 0.547835
+   },
+   "2019": {
+    "central_gbp": 721004185.81,
+    "low_gbp": 931198418.87,
+    "high_gbp": 711661588.99,
+    "energy_part_gbp": 412982210.71,
+    "services_part_gbp": 308021975.09,
+    "energy_share": 0.547835
+   },
+   "2020": {
+    "central_gbp": 606319485.46,
+    "low_gbp": 741681270.34,
+    "high_gbp": 625537543.99,
+    "energy_part_gbp": 295154428.99,
+    "services_part_gbp": 311165056.47,
+    "energy_share": 0.547835
+   },
+   "2021": {
+    "central_gbp": 1697794110.94,
+    "low_gbp": 2515472131.93,
+    "high_gbp": 1464735210.64,
+    "energy_part_gbp": 1378914218.36,
+    "services_part_gbp": 318879892.58,
+    "energy_share": 0.547835
+   },
+   "2022": {
+    "central_gbp": 2860633404.73,
+    "low_gbp": 4391574066.71,
+    "high_gbp": 2367740289.81,
+    "energy_part_gbp": 2516323126.44,
+    "services_part_gbp": 344310278.28,
+    "energy_share": 0.547835
+   },
+   "2023": {
+    "central_gbp": 1547983269.15,
+    "low_gbp": 2232599469.86,
+    "high_gbp": 1375325046.47,
+    "energy_part_gbp": 1180528482.53,
+    "services_part_gbp": 367454786.61,
+    "energy_share": 0.547835
+   },
+   "2024": {
+    "central_gbp": 1391460047.5,
+    "low_gbp": 1967594245.62,
+    "high_gbp": 1261934479.39,
+    "energy_part_gbp": 1011718670.05,
+    "services_part_gbp": 379741377.46,
+    "energy_share": 0.547835
+   },
+   "2025": {
+    "central_gbp": 1455973489.84,
+    "low_gbp": 2061228385.13,
+    "high_gbp": 1318867196.95,
+    "energy_part_gbp": 1061659644.17,
+    "services_part_gbp": 394313845.67,
+    "energy_share": 0.547835
+   }
+  },
+  "method": "GO4 (spec \u00a77.2): B0 (option 'ibc', CY2002-05 mean) split into an energy part carried by the gas price gas(y)/gas(2002-05) and a services part carried by CPIH; energy share = NESO 2025 Annual Balancing Costs workbook, FY2018/19 (central). Generators' share included. Range: low = the stacked option 'nao_2005|max' (the engine's central to v4-s32), high = 'ibc|min', each as one rule for every year (chosen on the 2002-2025 total), so in a year where the gas index is below CPIH an option may cross the central.",
+  "function": "gascf.balancing.go4(PRICE_BASE, energy_share_2018(), 'ibc', YEARS, gen_share='included')",
+  "central_option": "ibc|first",
+  "low_option": "nao_2005|max",
+  "high_option": "ibc|min",
+  "gen_share": "included",
+  "source_ids": [
+   "nao-2014-electricity-balancing-services-para2.2",
+   "neso-2025-abc-workbook-total-outturn",
+   "s20d-balancing-baseline-ibc-grossed-up-gb"
+  ]
+ },
+ "carry_forward": {
+  "from": 2025,
+  "index": "CPIH",
+  "rule": "For a calendar year after carry_forward.from (the engine's last modelled year), the no-net-zero cost is that year's figure carried by CPIH: value(y) = value(from) x CPIH(y) / CPIH(from). The Clock applies it with its own CPIH series (and the latest index for a year without one, including the run-rate), the same series it deflates every line with."
+ },
+ "baselines": {
+  "tnuos": {
+   "value_gbp_nominal": 982334435.68,
+   "period": "2002-2005",
+   "geography": "GB",
+   "basis": "G0 (spec \u00a77.1): transmission owners' allowed revenues NGC (England & Wales, excluding connection revenue and all SO costs) + SP Transmission + SHETL, each restated from its RPI price base to nominal, summed by financial year, time-weighted to calendar years (0.25 x FY(y-1) + 0.75 x FY(y)), mean of CY2002-2005; nominal \u00a3",
+   "calendar_years_gbp_m": {
+    "2002": 961.1342481908686,
+    "2003": 974.957267237115,
+    "2004": 990.4130957684835,
+    "2005": 1002.8331315088598
+   },
+   "function": "gascf.grid.fy_to_cy(gascf.grid.baseline_fy_nominal(), BASE_WINDOW), mean",
+   "source_ids": [
+    "s20d-grid-baseline-assembled-ngc-a6.2-spt-shetl-t1-t2"
+   ],
+   "source_files": [
+    "data/raw/ofgem_s18b/transmission-price-control-review-of-ngc-from-2001---transmission-owner-final-proposals-2709_0.txt",
+    "data/raw/ofgem_s18b/7851-18204.txt"
+   ],
+   "pieces_price_base_fy": {
+    "ngc": 1999,
+    "spt": 2002,
+    "shetl": 2002
+   }
+  },
+  "bsuos": {
+   "value_gbp_nominal": 489379063.96,
+   "period": "2002-2005",
+   "geography": "GB",
+   "basis": "B0 (spec \u00a77.2, option 'ibc'): NGC incentivised balancing cost (England & Wales) grossed up to GB by the demand ratio and to the BSUoS basis by SO internal costs; FY2005/06 = NAO \u00a3642m (GB); time-weighted to calendar years, mean of CY2002-2005; nominal \u00a3 (= balancing.go4 b_nom)",
+   "calendar_years_gbp_m": {
+    "2002": 499.1118683702009,
+    "2003": 476.0325105180858,
+    "2004": 404.8351821224963,
+    "2005": 577.5366948321105
+   },
+   "function": "gascf.balancing.fy_to_cy(gascf.balancing.baseline_fy('ibc')), mean",
+   "source_ids": [
+    "nao-2014-electricity-balancing-services-para2.2",
+    "ng-2010-so-incentives-ip-table1",
+    "ofgem-2003-so-incentives-fp-para3.9",
+    "ofgem-2003-target-less-nget-2005-outperformance",
+    "s20d-balancing-baseline-ibc-grossed-up-gb"
+   ],
+   "alternative": {
+    "option": "nao_2005",
+    "value_gbp_nominal": 622251368.9,
+    "note": "NAO 2005/06 \u00a3642m for every year, CPIH-deflated. From v4-s33 used only in the LOW end of the balancing range (stacked with the top workbook energy share); the central is 'ibc' (Richard, 14 Oct 2026)."
+   }
+  }
+ },
+ "notes": [
+  "One method in both models (Richard, 14 Oct 2026; reports-programme no1-price-of-support/decisions.md): grid carried by the regulator's control index plus the renewal allowance; balancing split into a gas-price energy part and a CPIH services part, B0 'ibc', FY2018/19 energy share central. The Clock takes `grid` and `balancing` per year and computes no counterfactual itself; `baselines` (G0, B0) are kept for reference only.",
+  "Generators' share: included here (the Clock has no power-price line). The engine's own bills remove it from both sides (gen_share='removed'); the bridge table reconciles the two."
+ ]
+}

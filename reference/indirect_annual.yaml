@@ -248,8 +248,12 @@ schemes:
     attribution:
       rule: >-
         Raw totals stored; attribution happens in the money model. Only the
-        increase above the CPIH-indexed 2002-05 baseline ({baseline}) is
-        attributed to renewables, floored at zero.
+        cost above what the grid would have cost without net zero is
+        attributed to renewables, floored at zero. That cost, year by year,
+        comes from the gas-counterfactual model ({counterfactual}): the
+        2002-05 grid cost carried forward by the index the regulator used
+        (RPI to 2020/21, then CPIH), plus the regulator's allowance for
+        renewing the ageing grid. {carry_forward}
       confidence: low
     note: >-
       NESO-traced years: 2013-2024 (NESO TNUoS charging statements via the
@@ -303,9 +307,13 @@ schemes:
     attribution:
       rule: >-
         Raw totals stored; attribution happens in the money model. Only the
-        increase above the CPIH-indexed 2002-05 baseline ({baseline}) is
+        cost above what balancing would have cost without net zero is
         attributed, NET of wind constraint payments already counted in the
-        direct layer, floored at zero. The estimated cost of replacing
+        direct layer, floored at zero. That cost, year by year, comes from the
+        gas-counterfactual model ({counterfactual}): the 2002-05 balancing
+        cost split into an energy part that follows the gas price and a
+        services part that follows CPIH (energy share from NESO's 2018-19
+        outturn). {carry_forward} The estimated cost of replacing
         switched-off wind (constraint turn-up) is then shown as its own line
         and taken out of this one.
       confidence: low

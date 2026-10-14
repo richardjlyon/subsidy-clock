@@ -2,7 +2,7 @@
 
 Moved verbatim from subsidy_engine.money in the Phase 1 shared-core extraction.
 The generic money primitives stay in subsidy_engine.money; the UK-policy-specific
-pieces (the CPIH 2002-05 uplift baseline, the scheme wiring) live here.
+pieces (the uplift above the engine's no-net-zero cost, the scheme wiring) live here.
 """
 
 from __future__ import annotations
@@ -35,9 +35,6 @@ from subsidy_engine.reference import ReferenceScheme
 from subsidy_engine.store import SnapshotStore
 from subsidy_engine_uk.stations import group_by_station
 from subsidy_engine_uk.schemes import cfd, constraint_turnup
-
-BASELINE_YEARS = (2002, 2005)  # inclusive 4-year calendar window (2002,2003,2004,2005) for uplift baselines
-
 
 CM_SHARE_DRIFT = 0.02   # max relative gap between the Clock's annual CM and the engine's cm_paid
 
@@ -76,29 +73,65 @@ def cm_netzero_shares(raw_annual: pl.DataFrame, cm_share: dict) -> pl.DataFrame:
                                       "basis": pl.String})
 
 
-def _with_baseline(note: str | None, baseline: dict) -> str | None:
-    """Fill {baseline} in a published attribution rule with the pinned figure,
-    so the text can never state a baseline the build did not use."""
-    if note is None or "{baseline}" not in note:
+def _with_counterfactual(note: str | None, cf: dict) -> str | None:
+    """Fill {counterfactual} and {carry_forward} in a published attribution rule
+    from the pinned engine series, so the text can never state a figure or rule
+    the build did not use."""
+    if note is None:
         return note
-    return note.replace("{baseline}", f"GBP {float(baseline['value']) / 1e9:.2f}bn/yr")
+    last = cf["carry_forward_from"]
+    note = note.replace(
+        "{counterfactual}",
+        f"release {cf['engine_version']}; GBP {cf['years'][last] / 1e9:.2f}bn in {last}")
+    return note.replace(
+        "{carry_forward}",
+        f"Years after {last}, the model's last year, carry the {last} figure forward "
+        f"with CPIH.")
 
 
-def baseline_uplift(
+def counterfactual_series(years: list[int], cf: dict, deflators: pl.DataFrame,
+                          tag: str = "years") -> pl.DataFrame:
+    """The engine's no-net-zero cost (GBP nominal) for each Clock year.
+
+    Years the engine covers take its own figure; a later year carries the
+    engine's last-year figure by CPIH (index(y)/index(last), the latest index
+    for a year with none), the rule stated in the pinned export; a year before
+    the engine's first year is an error."""
+    series, last = cf[tag], cf["carry_forward_from"]
+    idx = dict(zip(deflators["year"].to_list(), deflators["index"].to_list()))
+    latest = _latest_index(deflators)
+    first = min(series)
+    out = []
+    for y in years:
+        if y in series:
+            out.append(series[y])
+        elif y > last:
+            out.append(series[last] * idx.get(y, latest) / idx[last])
+        else:
+            raise ValueError(f"no engine no-net-zero cost for {y} (engine starts {first})")
+    return pl.DataFrame({"year": years, "cf": out}, schema={"year": pl.Int64, "cf": pl.Float64})
+
+
+def counterfactual_runrate(cf: dict, deflators: pl.DataFrame) -> float:
+    """The no-net-zero cost at today's prices: the engine's last-year figure
+    carried by CPIH to the latest index (the run-rate's money)."""
+    last = cf["carry_forward_from"]
+    idx = dict(zip(deflators["year"].to_list(), deflators["index"].to_list()))
+    return cf["years"][last] * _latest_index(deflators) / idx[last]
+
+
+def counterfactual_uplift(
     raw_annual: pl.DataFrame,
-    baseline_gbp: float,
+    cf: dict,
     deflators: pl.DataFrame,
     *,
     subtract: pl.DataFrame | None = None,
 ) -> pl.DataFrame:
-    """Conservative attribution: cost above the CPIH-indexed 2002-05 baseline,
-    optionally net of costs already counted elsewhere, floored at zero."""
-    lo, hi = BASELINE_YEARS
-    base_idx = float(deflators.filter(
-        pl.col("year").is_between(lo, hi))["index"].mean())
-    latest = _latest_index(deflators)
-    df = raw_annual.join(deflators, on="year", how="left").with_columns(
-        (baseline_gbp * pl.col("index").fill_null(latest) / base_idx).alias("baseline"))
+    """Conservative attribution: measured cost above the pinned engine's
+    no-net-zero cost for the year, optionally net of costs already counted
+    elsewhere, floored at zero."""
+    years = [int(y) for y in raw_annual["year"].to_list()]
+    df = raw_annual.join(counterfactual_series(years, cf, deflators), on="year", how="left")
     if subtract is not None:
         df = (df.join(subtract.rename({"cost_gbp": "sub"}).select("year", "sub"),
                       on="year", how="left")
@@ -107,9 +140,27 @@ def baseline_uplift(
         df = df.with_columns(pl.lit(0.0).alias("sub"))
     return (df.with_columns(
                 pl.max_horizontal(pl.lit(0.0),
-                                  pl.col("cost_gbp") - pl.col("baseline") - pl.col("sub"))
+                                  pl.col("cost_gbp") - pl.col("cf") - pl.col("sub"))
                 .alias("cost_gbp"))
             .select("year", "cost_gbp"))
+
+
+def _cf_extras(cf: dict, years: list[int], deflators: pl.DataFrame, what: str) -> dict:
+    """The no-net-zero cost the build subtracted, per year, with its range and source."""
+    rows = []
+    for tag in ("years", "low", "high"):
+        ser = counterfactual_series(years, cf, deflators, tag)
+        rows.append(dict(zip(ser["year"].to_list(), ser["cf"].to_list())))
+    return {"counterfactual_annual": [
+                {"year": y, "cost": rows[0][y], "cost_low_netzero": rows[1][y],
+                 "cost_high_netzero": rows[2][y],
+                 "basis": ("modelled" if y <= cf["carry_forward_from"]
+                           else f"carried forward from {cf['carry_forward_from']} by CPIH")}
+                for y in years],
+            "counterfactual_source": (f"gas-counterfactual engine {cf['engine_version']} "
+                                      f"({what}; generators' share included)"),
+            "counterfactual_method": cf["method"],
+            "counterfactual_carry_forward": cf["rule"]}
 
 
 def _station_detail(sub: pl.DataFrame, station_rows: list,
@@ -210,7 +261,7 @@ def _attach_outages(station_detail: list, bmu_map: dict,
 
 
 def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
-          *, deflators: pl.DataFrame, baselines: dict | None = None,
+          *, deflators: pl.DataFrame, counterfactual: dict | None = None,
           station_map: dict | None = None,
           ro_stations: list | None = None,
           bmu_map: dict | None = None,
@@ -417,17 +468,19 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
                  if scheme_id == "ro" and ro_stations else None)
         schemes.append(annual_to_result(scheme_id, refs[scheme_id], extra_extras=extra))
 
-    # --- Indirect layer (phase 2): CCL, ETS as stored; TNUoS, BSUoS by uplift
-    baselines = baselines or {}
+    # --- Indirect layer (phase 2): CCL, ETS as stored; TNUoS, BSUoS by uplift above
+    # the pinned engine's no-net-zero cost (Richard, 14 Oct 2026: the Clock computes
+    # no counterfactual itself; one carry-forward method in both models).
+    cfs = counterfactual or {}
     for scheme_id in ("ccl", "ets"):
         if scheme_id in refs:
             schemes.append(annual_to_result(scheme_id, refs[scheme_id],
                                             layer="indirect"))
 
-    if "tnuos" in refs and "tnuos" in baselines:
+    if "tnuos" in refs and "tnuos" in cfs:
         ref = refs["tnuos"]
-        attributed = baseline_uplift(ref.annual, float(baselines["tnuos"]["value"]),
-                                     deflators)
+        cf = cfs["tnuos"]
+        attributed = counterfactual_uplift(ref.annual, cf, deflators)
         raw_total = float(ref.annual["cost_gbp"].sum())
         result = annual_to_result("tnuos", ref, layer="indirect")
         result.annual = attributed
@@ -436,16 +489,14 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         result.runrate_gbp_per_year = float(
             attributed.filter(pl.col("year") == latest)["cost_gbp"][0])
         result.attribution_pct = (result.cumulative_gbp / raw_total) if raw_total else 0.0
-        result.attribution_note = _with_baseline(result.attribution_note, baselines["tnuos"])
+        result.attribution_note = _with_counterfactual(result.attribution_note, cf)
         result.extras["raw_annual"] = ref.annual.rename({"cost_gbp": "cost"}).to_dicts()
-        result.extras["baseline_gbp_nominal"] = float(baselines["tnuos"]["value"])
-        if baselines["tnuos"].get("engine_version"):
-            result.extras["baseline_source"] = (
-                "gas-counterfactual engine " + baselines["tnuos"]["engine_version"]
-                + " (G0: 2002-05 transmission owners' allowed revenues, GB)")
+        result.extras.update(_cf_extras(cf, [int(y) for y in ref.annual["year"].to_list()],
+                                        deflators, "GO5: no-net-zero grid cost"))
         schemes.append(result)
 
-    if "bsuos_history" in refs and "bsuos" in baselines:
+    if "bsuos_history" in refs and "bsuos" in cfs:
+        cf = cfs["bsuos"]
         hist = refs["bsuos_history"]
         bs_daily = store.read_all_partitions("bsuos", "daily")
         if bs_daily is not None and bs_daily.height:
@@ -468,16 +519,13 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         # out of it (spec: constraint-turnup). The turn-up line is capped at the
         # uplift, so BSUoS residual + turn-up == uplift exactly and the indirect
         # total cannot move; where no cap binds, residual + turn-up + wind
-        # constraints + indexed baseline == raw BSUoS.
-        uplift = baseline_uplift(raw_annual, float(baselines["bsuos"]["value"]),
-                                 deflators, subtract=constraints_annual)
-        latest_baseline = (float(baselines["bsuos"]["value"])
-                           * _latest_index(deflators)
-                           / float(deflators.filter(
-                               pl.col("year").is_between(*BASELINE_YEARS))["index"].mean()))
+        # constraints + the engine's no-net-zero balancing cost == raw BSUoS.
+        uplift = counterfactual_uplift(raw_annual, cf, deflators,
+                                       subtract=constraints_annual)
+        latest_cf = counterfactual_runrate(cf, deflators)
         constraints_runrate = next(
             s.runrate_gbp_per_year for s in schemes if s.scheme_id == "constraints")
-        uplift_runrate = max(0.0, raw_runrate - latest_baseline - constraints_runrate)
+        uplift_runrate = max(0.0, raw_runrate - latest_cf - constraints_runrate)
         # Same window as the BSUoS data, so a lagging BSUoS feed never has
         # turn-up subtracted for days it does not yet cover.
         tu_daily = constraint_turnup.daily_cost(store).filter(pl.col("date") <= data_to)
@@ -540,16 +588,13 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
             runrate_gbp_per_year=runrate,
             data_to=data_to,
             attribution_pct=(cum / raw_total) if raw_total else 0.0,
-            attribution_note=_with_baseline(hist.attribution_rule, baselines["bsuos"]),
+            attribution_note=_with_counterfactual(hist.attribution_rule, cf),
             attribution_confidence=hist.attribution_confidence or "low",
             extras={"raw_annual": raw_annual.rename({"cost_gbp": "cost"}).to_dicts(),
                     "source": hist.source, "source_url": hist.source_url,
                     "verified": hist.verified,
-                    "baseline_gbp_nominal": float(baselines["bsuos"]["value"]),
-                    **({"baseline_source": (
-                        "gas-counterfactual engine " + baselines["bsuos"]["engine_version"]
-                        + " (B0: 2002-05 balancing cost, GB, BSUoS basis)")}
-                       if baselines["bsuos"].get("engine_version") else {})},
+                    **_cf_extras(cf, [int(y) for y in raw_annual["year"].to_list()],
+                                 deflators, "GO4: no-net-zero balancing cost, BSUoS basis")},
         ))
 
     # --- Real-terms columns on every scheme, then totals

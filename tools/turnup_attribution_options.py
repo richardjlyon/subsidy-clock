@@ -31,7 +31,7 @@ def run_build():
     pinned = reference.load_model_pin(r)    # counterfactual figures: pinned engine release only
     m = uk_build.build(
         SnapshotStore(ROOT / "data"), refs, deflators=deflators,
-        baselines=pinned["baselines"],
+        counterfactual=pinned["counterfactual"],
         station_map=stations.load_station_map(r / "cfd_stations.csv"),
         ro_stations=stations.load_ro_stations(r / "ro_stations.csv"),
         bmu_map=stations.load_station_bmus(r / "station_bmu_map.csv"),

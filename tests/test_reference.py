@@ -96,15 +96,21 @@ def test_load_electricity_bill():
     assert b2023 > b2002
 
 
-def test_load_baselines_from_the_pinned_engine_release():
-    b = reference.load_model_pin(REF_DIR)["baselines"]
+def test_load_counterfactual_series_from_the_pinned_engine_release():
+    cf = reference.load_model_pin(REF_DIR)["counterfactual"]
     for key in ("bsuos", "tnuos"):
-        assert b[key]["value"] > 0
-        assert b[key]["source_ids"]
-        assert b[key]["period"] == "2002-2005"
-    # engine G0 (GB TO allowed revenues) and B0 (IBC grossed up to GB), v4-s32
-    assert b["tnuos"]["value"] == pytest.approx(982_334_435.68, abs=0.01)
-    assert b["bsuos"]["value"] == pytest.approx(489_379_063.96, abs=0.01)
+        c = cf[key]
+        assert c["source_ids"] and c["carry_index"] == "CPIH"
+        assert sorted(c["years"]) == list(range(2002, c["carry_forward_from"] + 1))
+        assert all(v > 0 for v in c["years"].values())
+    # engine v4-s33 GO5 / GO4 (generators' share included), GBP nominal: 2002-05 means sit near
+    # G0 (GBP 982.3m, carried by the control index) and B0 (GBP 489.4m)
+    g = sum(cf["tnuos"]["years"][y] for y in range(2002, 2006)) / 4
+    b = sum(cf["bsuos"]["years"][y] for y in range(2002, 2006)) / 4
+    assert 0.95e9 < g < 1.02e9
+    assert 0.45e9 < b < 0.53e9
+    # grid 2024: control index carry + central renewal allowance
+    assert 2.0e9 < cf["tnuos"]["years"][2024] < 2.2e9
 
 
 def test_year_basis_defaults_and_calendar_override():
