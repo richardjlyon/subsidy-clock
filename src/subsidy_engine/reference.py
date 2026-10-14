@@ -176,6 +176,10 @@ def _cf_series(block: dict, carry: dict, version: str, name: str) -> dict:
     return {"years": out["central"], "low": out["low"], "high": out["high"],
             "carry_forward_from": ys[-1], "carry_index": "CPIH", "rule": carry["rule"],
             "method": block["method"], "source_ids": block["source_ids"],
+            # T1 (v4-s35): low/high are the ends of NET ZERO's cost range; the years where
+            # an end of the balancing range crosses the central are stated, not hidden
+            "range_labels": block.get("range_labels"),
+            "crossing_years": block.get("crossing_years", []),
             "engine_version": version}
 
 

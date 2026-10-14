@@ -18,7 +18,9 @@ def _cf100():
     return {"bsuos": cf_series(ser), "tnuos": cf_series(ser)}
 
 
-def test_counterfactual_uplift_floors_at_zero_and_nets_subtraction():
+def test_counterfactual_uplift_is_signed_and_nets_subtraction():
+    """T2 (Richard, 14 Oct 2026): per-year excess is SIGNED (was floored at zero each year
+    until v4-s35); only the line's whole-period total is floored (`floor_line_total`)."""
     raw = pl.DataFrame({"year": [2003, 2023], "cost_gbp": [60.0, 1000.0]},
                        schema={"year": pl.Int64, "cost_gbp": pl.Float64})
     constraints = pl.DataFrame({"year": [2023], "cost_gbp": [100.0]},
@@ -26,8 +28,8 @@ def test_counterfactual_uplift_floors_at_zero_and_nets_subtraction():
     cf = cf_series({2002: 95.0, 2003: 99.0, 2004: 101.0, 2005: 105.0, 2023: 180.0})
     out = uk_build.counterfactual_uplift(raw, cf, deflators(), subtract=constraints)
     rows = {r["year"]: r["cost_gbp"] for r in out.to_dicts()}
-    # 2003: 60 - 99 = negative -> floored to 0
-    assert rows[2003] == 0.0
+    # 2003: 60 - 99 = -39, kept negative
+    assert rows[2003] == -39.0
     # 2023: 1000 - 180 (the engine's own figure for the year) - 100
     assert abs(rows[2023] - (1000.0 - 180.0 - 100.0)) < 1e-9
 
@@ -176,9 +178,11 @@ def test_build_indirect_layer(tmp_path):
     # bsuos 2023 (history year): max(0, 500 - 100*(128/71.5) - 0 constraints)
     # bsuos 2026 (bottom-up partial year after history): raw 1000,
     #   engine 2025 figure carried by CPIH to the latest index (136): 100*136/71.5, constraints 2026 = 100
+    # (T11: the BSUoS data end 11 Apr 2026, so the 2026 no-net-zero cost is pro-rated to
+    # 101/365 of the year; the full year was subtracted until v4-s35)
     bs_annual = {r["year"]: r["cost_gbp"] for r in by_id["bsuos"].annual.to_dicts()}
     assert abs(bs_annual[2023] - (500.0 - 100.0 * 128.0 / 71.5)) < 1e-6
-    assert abs(bs_annual[2026] - (1000.0 - 100.0 * 136.0 / 71.5 - 100.0)) < 1e-6
+    assert abs(bs_annual[2026] - (1000.0 - 100.0 * 136.0 / 71.5 * 101 / 365 - 100.0)) < 1e-6
 
     # real columns exist everywhere
     for s in model["schemes"]:
@@ -288,3 +292,41 @@ def test_tnuos_and_bsuos_history_go_to_calendar_years_in_the_build(tmp_path):
     assert by_id["tnuos"].extras["raw_annual_fy"][1]["cost"] == 1000.0
     bs = {r["year"]: r["cost_gbp"] for r in by_id["bsuos"].annual.to_dicts()}
     assert bs[2023] == 0.25 * 400.0 + 0.75 * 600.0
+
+
+def test_floor_line_total_floors_only_the_whole_period():
+    """T2: a negative year stays negative when the line's total is positive; if the total
+    (2024 prices) is negative the line counts nothing."""
+    pos = pl.DataFrame({"year": [2003, 2023], "cost_gbp": [-39.0, 720.0]},
+                       schema={"year": pl.Int64, "cost_gbp": pl.Float64})
+    out, binds = uk_build.floor_line_total(pos, deflators())
+    assert not binds and out["cost_gbp"].to_list() == [-39.0, 720.0]
+    neg = pos.with_columns(pl.Series("cost_gbp", [-900.0, 100.0]))
+    out, binds = uk_build.floor_line_total(neg, deflators())
+    assert binds and out["cost_gbp"].to_list() == [0.0, 0.0]
+
+
+def test_counterfactual_part_year_pro_rates_only_data_to_year():
+    """T11: the no-net-zero cost of the year data_to falls in is scaled by the share of the
+    year covered; a 31 Dec data_to leaves it whole."""
+    raw = pl.DataFrame({"year": [2025, 2026], "cost_gbp": [500.0, 500.0]},
+                       schema={"year": pl.Int64, "cost_gbp": pl.Float64})
+    cf = cf_series({2025: 365.0})
+    out = uk_build.counterfactual_uplift(raw, cf, deflators(), data_to=date(2026, 3, 31))
+    rows = {r["year"]: r["cost_gbp"] for r in out.to_dicts()}
+    assert abs(rows[2025] - (500.0 - 365.0)) < 1e-9
+    assert abs(rows[2026] - (500.0 - 365.0 * 90 / 365)) < 1e-9
+    full = uk_build.counterfactual_uplift(raw, cf, deflators(), data_to=date(2026, 12, 31))
+    assert abs({r["year"]: r["cost_gbp"] for r in full.to_dicts()}[2026] - 135.0) < 1e-9
+    assert uk_build.part_year_fraction(date(2024, 12, 31)) == 1.0
+
+
+def test_grid_and_balancing_lines_are_called_costs_not_support():
+    """T14 (Richard, 14 Oct 2026): the grid and balancing lines are costs of net zero."""
+    from pathlib import Path
+    from subsidy_engine import reference
+    refs = reference.load_annual_costs(Path(__file__).resolve().parents[1] / "reference" / "indirect_annual.yaml")
+    assert refs["tnuos"].label == "Extra grid costs of net zero (TNUoS)"
+    assert uk_build.BSUOS_LABEL == "Extra balancing costs of net zero (BSUoS)"
+    for k in ("tnuos", "bsuos_history"):
+        assert "costs of net zero, not payments to generators" in " ".join(refs[k].attribution_rule.split())

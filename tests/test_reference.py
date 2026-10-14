@@ -54,18 +54,17 @@ def test_load_indirect_annual():
 
 
 def test_tnuos_neso_traced_values():
-    """TNUoS 2013-2024 traced to NESO charging statements (via David Turver's
-    'TNUoS and BSUoS summary' workbook, whose 2022-24 rows match our independent
-    NESO anchors exactly, validating the FYE-1 calendar mapping). Pins the
-    adopted values so accidental drift from the cited primary is caught.
-    See docs/superpowers/specs/2026-06-17-indirect-reconciliation-log.md."""
+    """TNUoS 2013-2024 from the National Grid / NESO charging statements themselves (v4-s35,
+    T9: the engine's primary series; until v4-s35 via David Turver's workbook, which differs
+    for 2013, 2014, 2018 and 2022). Pins the adopted values so drift from the primary is
+    caught."""
     schemes = reference.load_annual_costs(REF_DIR / "indirect_annual.yaml")
     annual = {r["year"]: r["cost_gbp"] for r in schemes["tnuos"].annual.to_dicts()}
     expected = {
-        2013: 2_196_600_000, 2014: 2_524_300_000, 2015: 2_636_700_000,
-        2016: 2_708_700_000, 2017: 2_631_500_000, 2018: 2_670_300_000,
+        2013: 2_153_000_000, 2014: 2_477_300_000, 2015: 2_636_700_000,
+        2016: 2_708_700_000, 2017: 2_631_500_000, 2018: 2_670_000_000,
         2019: 2_837_400_000, 2020: 2_843_000_000, 2021: 3_318_000_000,
-        2022: 3_594_000_000, 2023: 4_416_400_000, 2024: 4_188_500_000,
+        2022: 3_594_252_621, 2023: 4_416_417_554, 2024: 4_188_500_000,
     }
     for yr, val in expected.items():
         assert annual[yr] == val, (yr, annual[yr])
@@ -108,14 +107,15 @@ def test_load_counterfactual_series_from_the_pinned_engine_release():
         assert c["source_ids"] and c["carry_index"] == "CPIH"
         assert sorted(c["years"]) == list(range(2002, c["carry_forward_from"] + 1))
         assert all(v > 0 for v in c["years"].values())
-    # engine v4-s34 GO5 / GO4 (generators' share included), GBP nominal: 2002-05 means sit near
-    # G0 (GBP 982.3m, carried by the control index) and B0 (GBP 520.9m; 489.4m to v4-s33)
+    # engine v4-s35 GO5 / GO4 (generators' share included), GBP nominal: 2002-05 means sit near
+    # G0 (GBP 987.4m since v4-s35's BETTA final Table 2.3; 982.3m before) and B0 (GBP 520.9m)
     g = sum(cf["tnuos"]["years"][y] for y in range(2002, 2006)) / 4
     b = sum(cf["bsuos"]["years"][y] for y in range(2002, 2006)) / 4
     assert 0.95e9 < g < 1.02e9
     assert 0.45e9 < b < 0.53e9
-    # grid 2024: control index carry + central renewal allowance
-    assert 2.0e9 < cf["tnuos"]["years"][2024] < 2.2e9
+    # grid 2024: control index carry (1.93bn) + the WHOLE renewal allowance on the RAV
+    # roll-forward (0.43bn) since v4-s35 (T3/T4); was 2.0-2.2bn with half on an annuity
+    assert 2.3e9 < cf["tnuos"]["years"][2024] < 2.45e9
 
 
 def test_year_basis_defaults_and_calendar_override():
@@ -144,3 +144,30 @@ def test_ccl_counts_electricity_levy_only_while_renewables_were_exempt():
     assert el[2014] == 257_500_000 and cps[2014] == 893_000_000
     assert "to July 2015" in raw["label"] and "Carbon Price Support" in raw["label"]
     assert "1 August 2015" in raw["attribution"]["rule"]
+
+
+def test_tnuos_and_bsuos_history_have_no_secondary_source():
+    """T9 (v4-s35, Richard's rule: no secondary source in a line): every TNUoS and BSUoS history
+    year is the gas-counterfactual engine's primary series; REF Table 2 is gone."""
+    import yaml
+    raw = yaml.safe_load((REF_DIR / "indirect_annual.yaml").read_text())["schemes"]
+    for k in ("tnuos", "bsuos_history"):
+        s = raw[k]
+        assert s["verified"] is True
+        assert "REF April 2025 study Table 2 total-charge column" not in s["source"]
+        assert "per REF April 2025" not in s["source"]
+        assert min(s["annual"]) == 2001
+    t, b = raw["tnuos"]["annual"], raw["bsuos_history"]["annual"]
+    # engine primaries (gascf.grid.tnuos_fy / baseline_fy_nominal; balancing.bsuos_fy / baseline_fy)
+    assert t[2005] == 1_025_612_192 and t[2007] == 1_298_720_000 and t[2012] == 1_948_000_000
+    assert b[2002] == 503_428_871 and b[2005] == 642_000_000 and b[2014] == 989_800_000
+    assert b[2016] == 1_302_861_986
+
+
+def test_counterfactual_range_labels_and_crossing_years_pass_through():
+    """T1 (v4-s35): the range ends are labelled by net-zero cost, and the balancing range's
+    crossing years (2002-04 and 2020) are carried from the pinned engine release."""
+    cf = reference.load_model_pin(REF_DIR)["counterfactual"]
+    assert "NET ZERO's cost" in cf["tnuos"]["range_labels"]
+    assert cf["bsuos"]["crossing_years"] == [2002, 2003, 2004, 2020]
+    assert cf["tnuos"]["crossing_years"] == []

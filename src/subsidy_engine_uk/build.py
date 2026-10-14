@@ -37,6 +37,7 @@ from subsidy_engine_uk.stations import group_by_station
 from subsidy_engine_uk.schemes import cfd, constraint_turnup
 
 CM_SHARE_DRIFT = 0.02   # max relative gap between the Clock's annual CM and the engine's cm_paid
+FIRST_YEAR = 2002       # the Clock counts from calendar 2002; an FY2001 row only feeds CY2002
 
 
 def cm_netzero_shares(raw_annual: pl.DataFrame, cm_share: dict) -> pl.DataFrame:
@@ -128,8 +129,9 @@ def fy_start_to_calendar(fy_annual: pl.DataFrame) -> pl.DataFrame:
     CY(y) = 0.25 x FY(y-1) + 0.75 x FY(y), the gas-counterfactual engine's own rule (spec
     section 2), so the actual and the no-net-zero cost subtracted from it are on one year
     basis (Richard, 14 Oct 2026, fix F2). The first stored year has no FY(y-1) and takes
-    FY(y) alone (TNUoS and BSUoS history both hold one flat REF figure for 2002-04, so
-    the earlier year would carry the same value)."""
+    FY(y) alone. Since v4-s35 (T9) TNUoS and BSUoS history store FY2001/02 from the
+    primaries, so CY2002 = 0.25 x FY2001 + 0.75 x FY2002 exactly as the engine; the build
+    drops the CY2001 row (FIRST_YEAR)."""
     fy = dict(zip(fy_annual["year"].to_list(), fy_annual["cost_gbp"].to_list()))
     years = sorted(fy)
     out = [fy[y] if (y - 1) not in fy
@@ -144,23 +146,63 @@ def counterfactual_uplift(
     deflators: pl.DataFrame,
     *,
     subtract: pl.DataFrame | None = None,
+    data_to: date | None = None,
 ) -> pl.DataFrame:
-    """Conservative attribution: measured cost above the pinned engine's
-    no-net-zero cost for the year, optionally net of costs already counted
-    elsewhere, floored at zero."""
+    """Measured cost minus the pinned engine's no-net-zero cost for the year, optionally
+    net of costs already counted elsewhere. SIGNED: a year where the measured cost is
+    below the no-net-zero cost is negative. T2, 14 Oct 2026: the excess is netted over the
+    whole period and only the line's cumulative total is floored, by `floor_line_total`;
+    until then each year was floored at zero, which only ever pushed the total up.
+
+    T11 (v4-s35): if `data_to` falls inside its year, that year's measured cost covers
+    only part of it, so the no-net-zero cost for that year is pro-rated to the same days
+    ((data_to - 1 Jan + 1) / days in the year)."""
     years = [int(y) for y in raw_annual["year"].to_list()]
-    df = raw_annual.join(counterfactual_series(years, cf, deflators), on="year", how="left")
+    cfs = counterfactual_series(years, cf, deflators)
+    if data_to is not None:
+        frac = part_year_fraction(data_to)
+        if frac < 1.0:
+            cfs = cfs.with_columns(pl.when(pl.col("year") == data_to.year)
+                                   .then(pl.col("cf") * frac).otherwise(pl.col("cf"))
+                                   .alias("cf"))
+    df = raw_annual.join(cfs, on="year", how="left")
     if subtract is not None:
         df = (df.join(subtract.rename({"cost_gbp": "sub"}).select("year", "sub"),
                       on="year", how="left")
               .with_columns(pl.col("sub").fill_null(0.0)))
     else:
         df = df.with_columns(pl.lit(0.0).alias("sub"))
-    return (df.with_columns(
-                pl.max_horizontal(pl.lit(0.0),
-                                  pl.col("cost_gbp") - pl.col("cf") - pl.col("sub"))
-                .alias("cost_gbp"))
+    return (df.with_columns((pl.col("cost_gbp") - pl.col("cf") - pl.col("sub"))
+                            .alias("cost_gbp"))
             .select("year", "cost_gbp"))
+
+
+def part_year_fraction(data_to: date) -> float:
+    """Share of data_to's calendar year the data covers (1.0 on 31 Dec)."""
+    y0 = date(data_to.year, 1, 1)
+    return ((data_to - y0).days + 1) / ((date(data_to.year + 1, 1, 1) - y0).days)
+
+
+def floor_line_total(annual: pl.DataFrame, deflators: pl.DataFrame) -> tuple[pl.DataFrame, bool]:
+    """T2 (14 Oct 2026): the per-year excess stays signed and only the line's
+    cumulative total (2024 prices, the headline's basis) is floored at zero. If the
+    whole-period total is negative the line counts nothing: every year is set to zero.
+    Returns (annual, floor_binds)."""
+    total = float(add_real(annual.select("year", "cost_gbp"), deflators)["cost_gbp_2024"].sum())
+    if total >= 0:
+        return annual, False
+    return annual.with_columns(pl.lit(0.0).alias("cost_gbp")), True
+
+
+BSUOS_LABEL = "Extra balancing costs of net zero (BSUoS)"   # T14: 'costs', not 'support'
+NETTING_RULE = ("Netted over the whole period: each year's figure is the measured cost minus "
+                "the no-net-zero cost and may be negative; only the line's 2002-to-date total "
+                "is floored at zero (until 14 October 2026 each year was floored at zero).")
+
+
+def _netting_extras(annual: pl.DataFrame, floor_binds: bool) -> dict:
+    neg = {int(r["year"]): r["cost_gbp"] for r in annual.to_dicts() if r["cost_gbp"] < 0}
+    return {"rule": NETTING_RULE, "negative_years": neg, "total_floor_binds": floor_binds}
 
 
 def _cf_extras(cf: dict, years: list[int], deflators: pl.DataFrame, what: str) -> dict:
@@ -178,6 +220,8 @@ def _cf_extras(cf: dict, years: list[int], deflators: pl.DataFrame, what: str) -
             "counterfactual_source": (f"gas-counterfactual engine {cf['engine_version']} "
                                       f"({what}; generators' share included)"),
             "counterfactual_method": cf["method"],
+            "counterfactual_range_labels": cf.get("range_labels"),
+            "counterfactual_range_crossing_years": cf.get("crossing_years", []),
             "counterfactual_carry_forward": cf["rule"]}
 
 
@@ -500,11 +544,13 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         cf = cfs["tnuos"]
         # stored by financial year (NESO charging years); put on calendar years, the
         # basis of the engine's no-net-zero cost (F2, 14 Oct 2026)
-        tn_cy = fy_start_to_calendar(ref.annual)
-        attributed = counterfactual_uplift(tn_cy, cf, deflators)
+        tn_cy = fy_start_to_calendar(ref.annual).filter(pl.col("year") >= FIRST_YEAR)
+        data_to_tn = date(int(tn_cy["year"].max()), 12, 31)
+        attributed, floor_binds = floor_line_total(
+            counterfactual_uplift(tn_cy, cf, deflators, data_to=data_to_tn), deflators)
         raw_total = float(tn_cy["cost_gbp"].sum())
         result = annual_to_result("tnuos", ref, layer="indirect")
-        result.data_to = date(int(tn_cy["year"].max()), 12, 31)
+        result.data_to = data_to_tn
         result.annual = attributed
         result.cumulative_gbp = float(attributed["cost_gbp"].sum())
         latest = int(attributed["year"].max())
@@ -515,7 +561,8 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         result.extras["raw_annual"] = tn_cy.rename({"cost_gbp": "cost"}).to_dicts()
         result.extras["raw_annual_fy"] = ref.annual.rename({"cost_gbp": "cost"}).to_dicts()
         result.extras["raw_year_basis"] = ("calendar: 0.25 x FY(y-1) + 0.75 x FY(y) of the stored "
-                                           "financial-year charges (first year: FY(y))")
+                                           "financial-year charges (CY2002 uses FY2001/02)")
+        result.extras["netting"] = _netting_extras(attributed, floor_binds)
         result.extras.update(_cf_extras(cf, [int(y) for y in tn_cy["year"].to_list()],
                                         deflators, "GO5: no-net-zero grid cost"))
         schemes.append(result)
@@ -525,7 +572,7 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         hist = refs["bsuos_history"]
         # pre-2017 history is by financial year (NAO/REF); calendar years like the
         # fetched daily series and the engine's no-net-zero cost (F2, 14 Oct 2026)
-        hist_cy = fy_start_to_calendar(hist.annual)
+        hist_cy = fy_start_to_calendar(hist.annual).filter(pl.col("year") >= FIRST_YEAR)
         bs_daily = store.read_all_partitions("bsuos", "daily")
         if bs_daily is not None and bs_daily.height:
             daily = bs_daily.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date")
@@ -549,7 +596,10 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         # total cannot move; where no cap binds, residual + turn-up + wind
         # constraints + the engine's no-net-zero balancing cost == raw BSUoS.
         uplift = counterfactual_uplift(raw_annual, cf, deflators,
-                                       subtract=constraints_annual)
+                                       subtract=constraints_annual, data_to=data_to)
+        # T2: the balancing line (BSUoS residual + constraint turn-up) is netted over the
+        # whole period; only its cumulative total is floored
+        uplift, bal_floor_binds = floor_line_total(uplift, deflators)
         latest_cf = counterfactual_runrate(cf, deflators)
         constraints_runrate = next(
             s.runrate_gbp_per_year for s in schemes if s.scheme_id == "constraints")
@@ -559,9 +609,13 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         tu_daily = constraint_turnup.daily_cost(store).filter(pl.col("date") <= data_to)
         if tu_daily.height:
             tu_measured = annualise_daily(tu_daily).rename({"cost_gbp": "tu"})
+            # turn-up never exceeds the year's balancing excess, and is never negative: in a
+            # year where the excess is negative (T2) turn-up is nil and the residual
+            # carries the whole negative, so residual + turn-up == the excess every year
             split = (uplift.join(tu_measured, on="year", how="left")
                      .with_columns(pl.col("tu").fill_null(0.0))
-                     .with_columns(pl.min_horizontal("tu", "cost_gbp").alias("tu")))
+                     .with_columns(pl.min_horizontal(
+                         "tu", pl.max_horizontal(pl.lit(0.0), "cost_gbp")).alias("tu")))
             tu_annual = split.select("year", pl.col("tu").alias("cost_gbp"))
             attributed = split.select("year", (pl.col("cost_gbp") - pl.col("tu"))
                                       .alias("cost_gbp"))
@@ -609,7 +663,7 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         raw_total = float(raw_annual["cost_gbp"].sum())
         cum = float(attributed["cost_gbp"].sum())
         schemes.append(SchemeResult(
-            scheme_id="bsuos", label="Balancing costs (BSUoS uplift)",
+            scheme_id="bsuos", label=BSUOS_LABEL,
             perspectives=[], cadence="daily", layer="indirect",
             annual=attributed,
             cumulative_gbp=cum,
@@ -621,6 +675,10 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
             extras={"raw_annual": raw_annual.rename({"cost_gbp": "cost"}).to_dicts(),
                     "source": hist.source, "source_url": hist.source_url,
                     "verified": hist.verified,
+                    "netting": _netting_extras(uplift, bal_floor_binds),
+                    "counterfactual_part_year": {
+                        "year": data_to.year, "data_to": data_to.isoformat(),
+                        "fraction": round(part_year_fraction(data_to), 6)},
                     **_cf_extras(cf, [int(y) for y in raw_annual["year"].to_list()],
                                  deflators, "GO4: no-net-zero balancing cost, BSUoS basis")},
         ))

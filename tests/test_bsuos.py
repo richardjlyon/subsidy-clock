@@ -290,10 +290,15 @@ def _year(scheme, year):
     return {r["year"]: r["cost_gbp"] for r in scheme.annual.to_dicts()}.get(year, 0.0)
 
 
+# T11 (v4-s35): the BSUoS data run to 11 Apr 2026, so the 2026 no-net-zero cost is pro-rated
+# to 101/365 of the year (it was the full year until v4-s35, which this test then pinned)
+FRAC_2026 = 101 / 365
+
+
 def test_bsuos_residual_plus_parts_sums_to_raw_bsuos(tmp_path):
     _, by_id = _model(tmp_path, turnup_gbp_per_day=150.0)
     raw = 1000.0
-    nnz = 100.0 * LATEST_IDX / BASE_IDX      # engine no-net-zero cost, 2026
+    nnz = 100.0 * LATEST_IDX / BASE_IDX * FRAC_2026   # engine no-net-zero cost, 2026 part year
     wind = _year(by_id["constraints"], 2026)
     turnup = _year(by_id["constraint_turnup"], 2026)
     residual = _year(by_id["bsuos"], 2026)
@@ -307,7 +312,7 @@ def test_bsuos_residual_plus_parts_sums_to_raw_bsuos(tmp_path):
 
 def test_turnup_is_capped_at_the_uplift_so_bsuos_never_goes_negative(tmp_path):
     _, by_id = _model(tmp_path, turnup_gbp_per_day=10_000.0)
-    uplift = 1000.0 - 100.0 * LATEST_IDX / BASE_IDX - 100.0
+    uplift = 1000.0 - 100.0 * LATEST_IDX / BASE_IDX * FRAC_2026 - 100.0
     assert abs(_year(by_id["constraint_turnup"], 2026) - uplift) < 1e-9
     assert _year(by_id["bsuos"], 2026) == 0.0
 
@@ -354,3 +359,10 @@ def test_resettlement_after_the_basis_change_is_logged_as_the_publishers(tmp_pat
     log = [json.loads(l) for l in
            (tmp_path / "raw/bsuos/daily/restatements.jsonl").read_text().splitlines()]
     assert [e["origin"] for e in log] == ["ours", "publisher"]
+
+
+def test_part_year_counterfactual_is_recorded(tmp_path):
+    """T11: the fraction applied to the current year's no-net-zero cost is published."""
+    _, by_id = _model(tmp_path)
+    py = by_id["bsuos"].extras["counterfactual_part_year"]
+    assert py == {"year": 2026, "data_to": "2026-04-11", "fraction": round(FRAC_2026, 6)}
