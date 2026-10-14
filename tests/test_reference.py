@@ -1,3 +1,4 @@
+import pytest
 from pathlib import Path
 
 from subsidy_engine import reference
@@ -95,12 +96,15 @@ def test_load_electricity_bill():
     assert b2023 > b2002
 
 
-def test_load_baselines():
-    b = reference.load_baselines(REF_DIR / "baselines.yaml")
+def test_load_baselines_from_the_pinned_engine_release():
+    b = reference.load_model_pin(REF_DIR)["baselines"]
     for key in ("bsuos", "tnuos"):
         assert b[key]["value"] > 0
-        assert b[key]["source_url"].startswith("https://")
+        assert b[key]["source_ids"]
         assert b[key]["period"] == "2002-2005"
+    # engine G0 (GB TO allowed revenues) and B0 (IBC grossed up to GB), v4-s32
+    assert b["tnuos"]["value"] == pytest.approx(982_334_435.68, abs=0.01)
+    assert b["bsuos"]["value"] == pytest.approx(489_379_063.96, abs=0.01)
 
 
 def test_year_basis_defaults_and_calendar_override():

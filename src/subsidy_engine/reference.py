@@ -74,10 +74,6 @@ def load_deflators(path: Path) -> pl.DataFrame:
     ).sort("year")
 
 
-def load_baselines(path: Path) -> dict:
-    return yaml.safe_load(Path(path).read_text())
-
-
 def load_electricity_bill(path: Path) -> pl.DataFrame:
     """Total UK electricity consumer expenditure as (year, total_bill_gbp), sorted."""
     raw = yaml.safe_load(Path(path).read_text())
@@ -88,32 +84,93 @@ def load_electricity_bill(path: Path) -> pl.DataFrame:
     ).sort("year")
 
 
-def load_cm_netzero_share(path: Path) -> dict:
-    """reference/capacity_market_netzero_share.yaml -> the per-year Capacity
-    Market share net zero caused, with its low/high range and provenance.
+MODEL_PIN = "model_pin.yaml"
 
-    Returns {"years": {year: row}, "carry_forward_from": int, "provenance": {...}}
-    where each row carries cm_paid_gbp, netzero_gbp, netzero_low_gbp,
-    netzero_high_gbp and the derived share/share_low/share_high. Validates
-    that every share lies in [0, 1] and that low <= central <= high, so a
-    mistyped row fails the build rather than publishing."""
-    raw = yaml.safe_load(Path(path).read_text())
+
+def _sha256(path: Path) -> str:
+    import hashlib
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def load_model_pin(ref_dir: Path) -> dict:
+    """reference/model_pin.yaml + the vendored engine export it pins -> every
+    counterfactual figure the Clock uses, and nothing else (Richard, 14 Oct 2026).
+
+    The Clock measures what was paid; the only figures in it about what would
+    have happened without net zero (the Capacity Market net-zero share and the
+    2002-05 TNUoS/BSUoS baselines) come from ONE source, a released export of
+    the gas-counterfactual engine, vendored at reference/engine/<version>.json
+    and pinned by version and sha256. A new engine release never flows in by
+    itself: the build fails unless the vendored file's sha256 and
+    meta.engine_version equal the pin, so updating means editing the pin and
+    vendoring the new file on purpose.
+
+    Returns {"pin": {engine_version, sha256, ...}, "cm_share": <load_cm_netzero_share
+    shape>, "baselines": {"tnuos": {"value", ...}, "bsuos": {"value", ...}}}."""
+    import json
+    ref_dir = Path(ref_dir)
+    pin = yaml.safe_load((ref_dir / MODEL_PIN).read_text())
+    for k in ("engine_version", "clock_export_file", "sha256", "engine_commit", "release_date"):
+        if not pin.get(k):
+            raise ValueError(f"{MODEL_PIN}: {k} missing")
+    vend = ref_dir.parent / pin["clock_export_file"]
+    if not vend.is_file():
+        raise ValueError(f"{MODEL_PIN}: pinned file {pin['clock_export_file']} not found")
+    got = _sha256(vend)
+    if got != pin["sha256"]:
+        raise ValueError(f"{MODEL_PIN}: {pin['clock_export_file']} sha256 {got} != pinned "
+                         f"{pin['sha256']} (the vendored engine export was changed; re-vendor "
+                         "the released file or update the pin on purpose)")
+    exp = json.loads(vend.read_text())
+    if exp["meta"]["engine_version"] != pin["engine_version"]:
+        raise ValueError(f"{MODEL_PIN}: vendored meta.engine_version "
+                         f"{exp['meta']['engine_version']} != pinned {pin['engine_version']}")
+    cm = exp["capacity_market"]
+    cm_share = _cm_share({int(y): r for y, r in cm["years"].items()},
+                         int(cm["carry_forward_from"]),
+                         {"engine": "gas-counterfactual",
+                          "engine_version": pin["engine_version"],
+                          "commit": exp["meta"].get("run_commit") or pin["engine_commit"],
+                          "commit_date": exp["meta"].get("run_date"),
+                          "file": exp["meta"]["run_file"],
+                          "file_sha256": exp["meta"]["run_sha256"]},
+                         pin["clock_export_file"])
+    baselines = {}
+    for k in ("tnuos", "bsuos"):
+        b = exp["baselines"][k]
+        if b["period"] != "2002-2005":
+            raise ValueError(f"{pin['clock_export_file']}: {k} baseline period {b['period']}")
+        baselines[k] = {"value": float(b["value_gbp_nominal"]), "period": b["period"],
+                        "basis": b["basis"], "source_ids": b["source_ids"],
+                        "engine_version": pin["engine_version"]}
+    return {"pin": {"engine_version": pin["engine_version"], "sha256": pin["sha256"],
+                    "engine_commit": pin["engine_commit"],
+                    "release_date": str(pin["release_date"]),
+                    "clock_export_file": pin["clock_export_file"]},
+            "cm_share": cm_share, "baselines": baselines}
+
+
+def _cm_share(raw_years: dict, carry: int, provenance: dict, name: str) -> dict:
+    """Per-year Capacity Market share net zero caused, with its low/high range.
+
+    Each row carries cm_paid_gbp, netzero_gbp, netzero_low_gbp, netzero_high_gbp
+    and the derived share/share_low/share_high. Validates that every share lies
+    in [0, 1] and that low <= central <= high, so a bad row fails the build
+    rather than publishing."""
     years: dict[int, dict] = {}
-    for y, row in raw["years"].items():
+    for y, row in raw_years.items():
         paid = float(row["cm_paid_gbp"])
         if paid <= 0:
-            raise ValueError(f"{Path(path).name} {y}: cm_paid_gbp must be positive")
+            raise ValueError(f"{name} {y}: cm_paid_gbp must be positive")
         r = dict(row)
         r["share"] = float(row["netzero_gbp"]) / paid
         r["share_low"] = float(row["netzero_low_gbp"]) / paid
         r["share_high"] = float(row["netzero_high_gbp"]) / paid
         if not (0.0 <= r["share_low"] <= r["share"] <= r["share_high"] <= 1.0 + 1e-12):
-            raise ValueError(f"{Path(path).name} {y}: shares must satisfy "
+            raise ValueError(f"{name} {y}: shares must satisfy "
                              f"0 <= low <= central <= high <= 1, got "
                              f"{r['share_low']:.4f}/{r['share']:.4f}/{r['share_high']:.4f}")
         years[int(y)] = r
-    carry = int(raw["carry_forward_from"])
     if carry not in years:
-        raise ValueError(f"{Path(path).name}: carry_forward_from {carry} has no row")
-    return {"years": years, "carry_forward_from": carry,
-            "provenance": raw.get("provenance") or {}}
+        raise ValueError(f"{name}: carry_forward_from {carry} has no row")
+    return {"years": years, "carry_forward_from": carry, "provenance": provenance}

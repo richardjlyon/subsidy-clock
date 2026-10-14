@@ -11,7 +11,7 @@ import pytest
 from subsidy_engine import reference, sitedata
 from subsidy_engine_uk import build as uk_build
 
-REF = Path("reference/capacity_market_netzero_share.yaml")
+REF = Path("reference")      # the shares come from the pinned engine release (model_pin.yaml)
 
 
 def deflators():
@@ -106,7 +106,7 @@ def test_cm_data_without_a_share_table_fails_rather_than_counting_in_full(tmp_pa
 # ---- the committed reference file and the published data ----
 
 def test_reference_file_shares_match_the_engine_and_2025_carries():
-    cm = reference.load_cm_netzero_share(REF)
+    cm = reference.load_model_pin(REF)["cm_share"]
     assert sorted(cm["years"]) == list(range(2016, 2026))
     assert cm["carry_forward_from"] == 2025
     y25 = cm["years"][2025]
@@ -118,12 +118,11 @@ def test_reference_file_shares_match_the_engine_and_2025_carries():
     assert all(cm["years"][y]["share"] < 0.5 for y in range(2017, 2026))
 
 
-def test_reference_file_rejects_an_impossible_share(tmp_path):
-    p = tmp_path / "cm.yaml"
-    p.write_text("carry_forward_from: 2025\nyears:\n  2025: {cm_paid_gbp: 100, netzero_gbp: 120, "
-                 "netzero_low_gbp: 10, netzero_high_gbp: 100}\n")
+def test_reference_file_rejects_an_impossible_share():
+    rows = {2025: {"cm_paid_gbp": 100, "netzero_gbp": 120,
+                   "netzero_low_gbp": 10, "netzero_high_gbp": 100}}
     with pytest.raises(ValueError, match="shares must satisfy"):
-        reference.load_cm_netzero_share(p)
+        reference._cm_share(rows, 2025, {}, "engine export")
 
 
 def _published():
@@ -138,7 +137,7 @@ def _published():
 def test_published_cm_line_is_the_netzero_share_not_the_full_levy():
     bd, _, ts, _ = _published()
     cm = next(s for s in bd["schemes"] if s["id"] == "capacity_market")
-    ref = reference.load_cm_netzero_share(REF)
+    ref = reference.load_model_pin(REF)["cm_share"]
     raw = {r["year"]: r["cost"] for r in cm["raw_annual"]}
     counted = {r["year"]: r["cost"] for r in ts["schemes"]["capacity_market"]["annual"]}
     assert raw.keys() == counted.keys()

@@ -76,6 +76,14 @@ def cm_netzero_shares(raw_annual: pl.DataFrame, cm_share: dict) -> pl.DataFrame:
                                       "basis": pl.String})
 
 
+def _with_baseline(note: str | None, baseline: dict) -> str | None:
+    """Fill {baseline} in a published attribution rule with the pinned figure,
+    so the text can never state a baseline the build did not use."""
+    if note is None or "{baseline}" not in note:
+        return note
+    return note.replace("{baseline}", f"GBP {float(baseline['value']) / 1e9:.2f}bn/yr")
+
+
 def baseline_uplift(
     raw_annual: pl.DataFrame,
     baseline_gbp: float,
@@ -206,7 +214,8 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
           station_map: dict | None = None,
           ro_stations: list | None = None,
           bmu_map: dict | None = None,
-          cm_share: dict | None = None) -> dict:
+          cm_share: dict | None = None,
+          model_pin: dict | None = None) -> dict:
     """Assemble every scheme result plus perspective totals and the indirect layer total.
 
     ``station_map`` (cfd_id -> physical-station short name) collapses phased CfD
@@ -324,8 +333,8 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
     # in full: each month's LCCC payment is scaled by share(year) = (CM paid -
     # what "Reliable Britain", the actual system with net-zero policy removed,
     # would have paid for its own backup) / CM paid, from
-    # reference/capacity_market_netzero_share.yaml (gas-counterfactual engine,
-    # spec 5.4). The same rule as TNUoS/BSUoS: count only what net zero added.
+    # the pinned gas-counterfactual engine export (reference/model_pin.yaml ->
+    # reference/engine/<version>.json; engine spec 5.4). The same rule as TNUoS/BSUoS: count only what net zero added.
     # Years after the engine's last year carry its last share forward.
     # Rejected: pasting in the engine's pounds per year. Scaling the measured
     # months keeps the line on LCCC's live data, so a restated month moves it
@@ -336,7 +345,7 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
             raise ValueError(
                 "capacity_market data present but no cm_share table: the Clock "
                 "counts only the net-zero share of the Capacity Market "
-                "(reference/capacity_market_netzero_share.yaml)")
+                "(reference/model_pin.yaml -> the pinned engine export)")
         daily_like = cm.rename({"payment_gbp": "cost_gbp"})
         monthly = daily_like.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date")
         raw_annual_cm = annualise_daily(monthly)
@@ -394,7 +403,9 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
                     "range": rng,
                     "share_provenance": {
                         k: cm_share.get("provenance", {}).get(k)
-                        for k in ("engine", "commit", "commit_date", "file")},
+                        for k in ("engine", "engine_version", "commit", "commit_date",
+                                  "file", "file_sha256")
+                        if k in cm_share.get("provenance", {})},
                     "carry_forward_from": carry},
         ))
 
@@ -425,7 +436,13 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         result.runrate_gbp_per_year = float(
             attributed.filter(pl.col("year") == latest)["cost_gbp"][0])
         result.attribution_pct = (result.cumulative_gbp / raw_total) if raw_total else 0.0
+        result.attribution_note = _with_baseline(result.attribution_note, baselines["tnuos"])
         result.extras["raw_annual"] = ref.annual.rename({"cost_gbp": "cost"}).to_dicts()
+        result.extras["baseline_gbp_nominal"] = float(baselines["tnuos"]["value"])
+        if baselines["tnuos"].get("engine_version"):
+            result.extras["baseline_source"] = (
+                "gas-counterfactual engine " + baselines["tnuos"]["engine_version"]
+                + " (G0: 2002-05 transmission owners' allowed revenues, GB)")
         schemes.append(result)
 
     if "bsuos_history" in refs and "bsuos" in baselines:
@@ -523,11 +540,16 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
             runrate_gbp_per_year=runrate,
             data_to=data_to,
             attribution_pct=(cum / raw_total) if raw_total else 0.0,
-            attribution_note=hist.attribution_rule,
+            attribution_note=_with_baseline(hist.attribution_rule, baselines["bsuos"]),
             attribution_confidence=hist.attribution_confidence or "low",
             extras={"raw_annual": raw_annual.rename({"cost_gbp": "cost"}).to_dicts(),
                     "source": hist.source, "source_url": hist.source_url,
-                    "verified": hist.verified},
+                    "verified": hist.verified,
+                    "baseline_gbp_nominal": float(baselines["bsuos"]["value"]),
+                    **({"baseline_source": (
+                        "gas-counterfactual engine " + baselines["bsuos"]["engine_version"]
+                        + " (B0: 2002-05 balancing cost, GB, BSUoS basis)")}
+                       if baselines["bsuos"].get("engine_version") else {})},
         ))
 
     # --- Real-terms columns on every scheme, then totals
@@ -540,5 +562,9 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
     for block in [*out_perspectives.values(), out_indirect]:
         block["runrate_gbp_per_year_2024"] = block["runrate_gbp_per_year"] * factor
         block["rate_gbp_per_sec_2024"] = block["rate_gbp_per_sec"] * factor
-    return {"schemes": schemes, "perspectives": out_perspectives,
-            "indirect": out_indirect}
+    out = {"schemes": schemes, "perspectives": out_perspectives,
+           "indirect": out_indirect}
+    if model_pin is not None:
+        out["model_pin"] = {"engine_version": model_pin["engine_version"],
+                            "sha256": model_pin["sha256"]}
+    return out

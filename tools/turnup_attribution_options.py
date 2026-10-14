@@ -28,13 +28,14 @@ def run_build():
     refs = reference.load_annual_costs(r / "annual_scheme_costs.yaml")
     refs.update(reference.load_annual_costs(r / "indirect_annual.yaml"))
     deflators = reference.load_deflators(r / "deflators.yaml")
+    pinned = reference.load_model_pin(r)    # counterfactual figures: pinned engine release only
     m = uk_build.build(
         SnapshotStore(ROOT / "data"), refs, deflators=deflators,
-        baselines=reference.load_baselines(r / "baselines.yaml"),
+        baselines=pinned["baselines"],
         station_map=stations.load_station_map(r / "cfd_stations.csv"),
         ro_stations=stations.load_ro_stations(r / "ro_stations.csv"),
         bmu_map=stations.load_station_bmus(r / "station_bmu_map.csv"),
-        cm_share=reference.load_cm_netzero_share(r / "capacity_market_netzero_share.yaml"))
+        cm_share=pinned["cm_share"], model_pin=pinned["pin"])
     return m, deflators
 
 

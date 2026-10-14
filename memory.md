@@ -288,3 +288,32 @@ deleted. `subsidy-clock.vercel.app` now 404s.
 - Tagline/title/og everywhere: "What renewable electricity support costs Britain" (was "What UK energy subsidies cost"). Hero line drops "low-carbon". Commits 9f7a3ec0, b6d0c86d; deploy run 38438121312 green; verified live.
 - Scope stays renewable electricity only (decision C; hostile reviews in review/2026-10-13-scope-widening/). Heat (~£9.6bn cash) and RTFO (≥£11.9bn cash 2018-24) are named as not counted in Report No. 1.
 - Methods "prices" section was stale: said the headline counts nominal pounds; headline is real 2024 (state.real = true). Rewritten "Today's money, and cash".
+
+## Model pin — LOCAL BRANCH `model-pin`, NOT PUSHED, NOT PUBLISHED (14 Oct 2026)
+
+- **Why:** Richard's decision 14 Oct: don't merge the Clock and the gas-counterfactual engine;
+  every counterfactual figure in the Clock comes only from the engine, pinned by version +
+  sha256; drift detected automatically, never applied automatically. The Clock's method is
+  frozen until the joint release on Report No. 1 launch day (target 31 Oct, SUBCLK-25), so
+  this lives on local branch `model-pin` (from origin/master 557fe555). **Never push it**: the
+  repo is public and these are unreleased corrections.
+- **Where the figures live now:** `reference/model_pin.yaml` (engine_version v4-s32, sha256
+  19935049…) → `reference/engine/v4-s32.json` (engine `out/clock/v4-s32.json`, release in
+  `gas-counterfactual/releases.yaml`). Loader `reference.load_model_pin`. DELETED:
+  `reference/baselines.yaml` (REF £0.9bn E&W TNUoS / £0.4bn BSUoS) and
+  `reference/capacity_market_netzero_share.yaml` (CM shares now from the same file, identical
+  to the penny). Build output carries `model_pin` in breakdown.json and meta.json.
+- **Baselines now:** TNUoS = engine G0 £982,334,435.68 (GB TO allowed revenues NGC+SPT+SHETL,
+  CY2002-05 mean, nominal); BSUoS = engine B0 £489,379,063.96 (IBC grossed up to GB, BSUoS basis,
+  CY2002-05 mean, nominal). Still carried forward by CPIH (the Clock's method).
+- **Effect (14 Oct local data):** headline £232.98bn → £226.99bn real 2024 (TNUoS real
+  £29.44bn → £26.85bn; BSUoS uplift £21.18bn → £17.78bn; CM, turn-up unchanged). Report No. 1's
+  bau-demand case "A-alt" (£226.62bn) used B0 = FY-mean £499.1m; the engine's own CY mean is
+  £489.4m — that alone is the £0.37bn difference.
+- **Open (Richard):** the engine itself carries G0 by RPI + renewal allowance (GO5) and splits
+  B0 into a gas-indexed energy part (GO4); the Clock uses CPIH. See
+  reports-programme `no1-price-of-support/clock-corrections-pending.md` row 8.
+- **Golden gate:** committed master still stale (131 files); not re-captured. Against a fresh
+  origin/master capture on the same data the diff was exactly TNUoS/BSUoS series, indirect
+  totals, headline, headline-derived factoids/cards/csv/crosschecks, and the new model_pin key.
+

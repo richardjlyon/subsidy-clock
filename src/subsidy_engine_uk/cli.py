@@ -87,9 +87,10 @@ def cmd_build_site(args: argparse.Namespace) -> int:
     bill_yaml = yaml.safe_load((args.root / "reference" / "electricity_bill.yaml").read_text())
     bill_info = {"source": bill_yaml["source"], "source_url": bill_yaml["source_url"],
                  "verified": bill_yaml.get("verified", False)}
-    baselines = reference.load_baselines(args.root / "reference" / "baselines.yaml")
-    cm_share = reference.load_cm_netzero_share(
-        args.root / "reference" / "capacity_market_netzero_share.yaml")
+    # every counterfactual figure (CM net-zero share, TNUoS/BSUoS 2002-05
+    # baselines) from the pinned engine release; fails on any sha/version drift
+    pinned = reference.load_model_pin(args.root / "reference")
+    baselines, cm_share = pinned["baselines"], pinned["cm_share"]
     station_map = stations.load_station_map(args.root / "reference" / "cfd_stations.csv")
     ro_stations = stations.load_ro_stations(args.root / "reference" / "ro_stations.csv")
     station_coords = stations.load_station_coords(args.root / "reference" / "station_coords.csv")
@@ -98,7 +99,8 @@ def cmd_build_site(args: argparse.Namespace) -> int:
     map_tiles = json.loads((args.root / "reference" / "map_tiles.json").read_text())
     model = uk_build.build(store, refs, deflators=deflators, baselines=baselines,
                            station_map=station_map, ro_stations=ro_stations,
-                           bmu_map=station_bmus, cm_share=cm_share)
+                           bmu_map=station_bmus, cm_share=cm_share,
+                           model_pin=pinned["pin"])
     freshness = {}
     for scheme_id, table in [("cfd", "generation"), ("constraints", "daily"),
                               ("capacity_market", "payments"), ("bsuos", "daily"),

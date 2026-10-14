@@ -1,0 +1,21 @@
+# The ONE source of every counterfactual figure in the Clock (Richard Lyon, 14 Oct 2026).
+#
+# The Clock measures what was paid (RO, FiT, CfD, constraint payments, CCL, ETS,
+# the raw TNUoS and BSUoS series). The only figures in it about what would have
+# happened without net zero are:
+#   - the Capacity Market net-zero share per year (spec 5.4 of the engine), and
+#   - the 2002-05 baselines subtracted from TNUoS (grid, engine G0) and BSUoS
+#     (balancing, engine B0), carried forward by the Clock with CPIH.
+# Both come from a RELEASED export of the gas-counterfactual engine, vendored
+# below and pinned by version and sha256. The build fails if the vendored file
+# does not match this pin (tests/test_model_pin.py says the same). A new engine
+# release is never applied automatically: to move the Clock to it, vendor the
+# new out/clock/<version>.json from the engine repo, edit this pin, rebuild,
+# and log the change (changelog.jsonl) - on purpose, with Richard's approval.
+#
+# Engine registry: gas-counterfactual/releases.yaml (private Gitea aios/gas-counterfactual).
+engine_version: v4-s32
+clock_export_file: reference/engine/v4-s32.json
+sha256: 199350495e3f4e78794bf9a3f9e99ae8f946e2c6efcde72e50ed88bc160b6135
+engine_commit: 0fd133792dc4558be5d747a52ed940ecdbad6347
+release_date: "2026-10-14"

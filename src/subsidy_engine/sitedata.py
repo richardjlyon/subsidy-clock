@@ -354,8 +354,10 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
         ).to_dicts()}
     (out / "timeseries.json").write_text(json.dumps(ts, indent=1, allow_nan=False))
 
+    model_pin = model.get("model_pin")
     (out / "breakdown.json").write_text(json.dumps({
         "generated_at": generated_at,
+        **({"model_pin": model_pin} if model_pin else {}),
         "schemes": [
             {
                 "id": s.scheme_id,
@@ -385,6 +387,7 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
         "deflator": deflator_info,
         "bill": bill_info,
         "headline": headline,
+        **({"model_pin": model_pin} if model_pin else {}),
         "factoids": _factoids(model, equivalences or [], deflators),
     }, indent=1, allow_nan=False))
 

@@ -1,0 +1,168 @@
+{
+ "meta": {
+  "engine_version": "v4-s32",
+  "schema": "clock-export/1",
+  "commit": "0fd133792dc4558be5d747a52ed940ecdbad6347",
+  "run_commit": "e0bfd735d4f0e1ba43b0bfbafb52dd11043bba64",
+  "run_file": "out/v4/2026-10-13.json",
+  "run_sha256": "9b8ac97a3bb2f19e8b6a01d789b66ac9f449735b8f751faa21aaf6d3fc560260",
+  "run_date": "2026-10-13",
+  "created": "2026-10-14T08:24:35+00:00",
+  "money": "nominal \u00a3, calendar year"
+ },
+ "capacity_market": {
+  "years": {
+   "2016": {
+    "cm_paid_gbp": 5048474.7,
+    "netzero_gbp": 5048474.7,
+    "netzero_low_gbp": 5048474.7,
+    "netzero_high_gbp": 5048474.7,
+    "own_backup_gbp": 0.0,
+    "price_gbp_per_kw_yr": 0.0,
+    "own_backup_gw": 50.146
+   },
+   "2017": {
+    "cm_paid_gbp": 117562461.67,
+    "netzero_gbp": 31270034.88,
+    "netzero_low_gbp": 26792757.91,
+    "netzero_high_gbp": 117562461.67,
+    "own_backup_gbp": 86292426.79,
+    "price_gbp_per_kw_yr": 1.7375,
+    "own_backup_gw": 49.665
+   },
+   "2018": {
+    "cm_paid_gbp": 549449341.35,
+    "netzero_gbp": 45467658.97,
+    "netzero_low_gbp": 16298654.93,
+    "netzero_high_gbp": 549449341.35,
+    "own_backup_gbp": 503981682.38,
+    "price_gbp_per_kw_yr": 10.1298,
+    "own_backup_gw": 49.752
+   },
+   "2019": {
+    "cm_paid_gbp": 962991821.4,
+    "netzero_gbp": 126825663.01,
+    "netzero_low_gbp": 59887978.43,
+    "netzero_high_gbp": 962991821.4,
+    "own_backup_gbp": 836166158.39,
+    "price_gbp_per_kw_yr": 18.4143,
+    "own_backup_gw": 45.408
+   },
+   "2020": {
+    "cm_paid_gbp": 1005762270.75,
+    "netzero_gbp": 177635697.11,
+    "netzero_low_gbp": 84297547.85,
+    "netzero_high_gbp": 1005762270.75,
+    "own_backup_gbp": 828126573.64,
+    "price_gbp_per_kw_yr": 19.5321,
+    "own_backup_gw": 42.398
+   },
+   "2021": {
+    "cm_paid_gbp": 1061708952.85,
+    "netzero_gbp": 200557514.36,
+    "netzero_low_gbp": 108404585.74,
+    "netzero_high_gbp": 1061708952.85,
+    "own_backup_gbp": 861151438.49,
+    "price_gbp_per_kw_yr": 20.1284,
+    "own_backup_gw": 42.783
+   },
+   "2022": {
+    "cm_paid_gbp": 646942043.17,
+    "netzero_gbp": 145618431.36,
+    "netzero_low_gbp": 89625992.77,
+    "netzero_high_gbp": 646942043.17,
+    "own_backup_gbp": 501323611.81,
+    "price_gbp_per_kw_yr": 12.2301,
+    "own_backup_gw": 40.991
+   },
+   "2023": {
+    "cm_paid_gbp": 898210217.37,
+    "netzero_gbp": 236669665.63,
+    "netzero_low_gbp": 123285606.83,
+    "netzero_high_gbp": 898210217.37,
+    "own_backup_gbp": 661540551.74,
+    "price_gbp_per_kw_yr": 16.7938,
+    "own_backup_gw": 39.392
+   },
+   "2024": {
+    "cm_paid_gbp": 1256981395.4,
+    "netzero_gbp": 343819210.62,
+    "netzero_low_gbp": 151175267.38,
+    "netzero_high_gbp": 1256981395.4,
+    "own_backup_gbp": 913162184.78,
+    "price_gbp_per_kw_yr": 23.9404,
+    "own_backup_gw": 38.143
+   },
+   "2025": {
+    "cm_paid_gbp": 1431463285.03,
+    "netzero_gbp": 396333094.27,
+    "netzero_low_gbp": 141377161.0,
+    "netzero_high_gbp": 1431463285.03,
+    "own_backup_gbp": 1035130190.76,
+    "price_gbp_per_kw_yr": 27.092,
+    "own_backup_gw": 38.208
+   }
+  },
+  "carry_forward_from": 2025,
+  "method": "spec.md \u00a75.4 (NZ5 = CM paid - Reliable Britain's own backup payment)",
+  "source_blocks": [
+   "clock_cm_correction",
+   "capacity_market"
+  ]
+ },
+ "baselines": {
+  "tnuos": {
+   "value_gbp_nominal": 982334435.68,
+   "period": "2002-2005",
+   "geography": "GB",
+   "basis": "G0 (spec \u00a77.1): transmission owners' allowed revenues NGC (England & Wales, excluding connection revenue and all SO costs) + SP Transmission + SHETL, each restated from its RPI price base to nominal, summed by financial year, time-weighted to calendar years (0.25 x FY(y-1) + 0.75 x FY(y)), mean of CY2002-2005; nominal \u00a3",
+   "calendar_years_gbp_m": {
+    "2002": 961.1342481908686,
+    "2003": 974.957267237115,
+    "2004": 990.4130957684835,
+    "2005": 1002.8331315088598
+   },
+   "function": "gascf.grid.fy_to_cy(gascf.grid.baseline_fy_nominal(), BASE_WINDOW), mean",
+   "source_ids": [
+    "s20d-grid-baseline-assembled-ngc-a6.2-spt-shetl-t1-t2"
+   ],
+   "source_files": [
+    "data/raw/ofgem_s18b/transmission-price-control-review-of-ngc-from-2001---transmission-owner-final-proposals-2709_0.txt",
+    "data/raw/ofgem_s18b/7851-18204.txt"
+   ],
+   "pieces_price_base_fy": {
+    "ngc": 1999,
+    "spt": 2002,
+    "shetl": 2002
+   }
+  },
+  "bsuos": {
+   "value_gbp_nominal": 489379063.96,
+   "period": "2002-2005",
+   "geography": "GB",
+   "basis": "B0 (spec \u00a77.2, option 'ibc'): NGC incentivised balancing cost (England & Wales) grossed up to GB by the demand ratio and to the BSUoS basis by SO internal costs; FY2005/06 = NAO \u00a3642m (GB); time-weighted to calendar years, mean of CY2002-2005; nominal \u00a3 (= balancing.go4 b_nom)",
+   "calendar_years_gbp_m": {
+    "2002": 499.1118683702009,
+    "2003": 476.0325105180858,
+    "2004": 404.8351821224963,
+    "2005": 577.5366948321105
+   },
+   "function": "gascf.balancing.fy_to_cy(gascf.balancing.baseline_fy('ibc')), mean",
+   "source_ids": [
+    "nao-2014-electricity-balancing-services-para2.2",
+    "ng-2010-so-incentives-ip-table1",
+    "ofgem-2003-so-incentives-fp-para3.9",
+    "ofgem-2003-target-less-nget-2005-outperformance",
+    "s20d-balancing-baseline-ibc-grossed-up-gb"
+   ],
+   "alternative": {
+    "option": "nao_2005",
+    "value_gbp_nominal": 622251368.9,
+    "note": "The engine's central GO4 run uses option 'nao_2005' (NAO 2005/06 \u00a3642m for every year, CPIH-deflated), chosen as the conservative central for its own GO4 path. Not used by the Clock; a larger baseline would lower the Clock's balancing line. Recorded for Richard's decision."
+   }
+  }
+ },
+ "notes": [
+  "Method difference still open: the Clock carries these baselines forward with CPIH; the engine carries G0 by RPI plus a grid-renewal allowance (GO5) and splits B0 into a gas-price-indexed energy part and a CPIH services part (GO4). Richard's decision before release."
+ ]
+}

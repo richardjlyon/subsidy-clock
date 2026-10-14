@@ -235,8 +235,10 @@ schemes:
       2022-24 calendar values reproduce our three independent NESO anchors
       exactly - "Final TNUoS Tariffs for 2023/24" (GBP 4,416.4m, our 2023) and
       "Final TNUoS Tariffs for 2024/25" (MAR Total Revenue GBP 4,188.5m, our
-      2024). 2002-2004: GBP 0.9bn/yr per the verified 2002-05 baseline
-      (reference/baselines.yaml). Earliest intermediate years 2005-2012: REF
+      2024). 2002-2004: GBP 0.9bn/yr per REF April 2025 study Table 2 (the
+      figure the Clock used as its baseline until the model pin of 14 Oct
+      2026; the baseline now comes from the pinned engine release,
+      reference/model_pin.yaml). Earliest intermediate years 2005-2012: REF
       April 2025 study Table 2 total-charge column (in parentheses), itself
       compiled from NESO/Ofgem charging statements - pending primary
       confirmation (not reached by the Turver/NESO series).
@@ -246,7 +248,7 @@ schemes:
     attribution:
       rule: >-
         Raw totals stored; attribution happens in the money model. Only the
-        increase above the CPIH-indexed 2002-05 baseline (GBP 0.9bn/yr) is
+        increase above the CPIH-indexed 2002-05 baseline ({baseline}) is
         attributed to renewables, floored at zero.
       confidence: low
     note: >-
@@ -289,8 +291,10 @@ schemes:
       from Ofgem/National Grid data): total balancing costs recovered through
       BSUoS GBP 642m in 2005-06 rising to GBP 1,002m in 2013-14; 2011-12 plus
       2012-13 expenditure totalled GBP 1,723m (split evenly here, the lower
-      of NAO and REF figures). 2002-2004: GBP 0.4bn/yr per the verified
-      2002-05 baseline (reference/baselines.yaml). 2006-2010 and 2014-2016:
+      of NAO and REF figures). 2002-2004: GBP 0.4bn/yr per REF April 2025
+      study Table 2 (the figure the Clock used as its baseline until the model
+      pin of 14 Oct 2026; the baseline now comes from the pinned engine
+      release, reference/model_pin.yaml). 2006-2010 and 2014-2016:
       REF April 2025 study Table 2 total-charge column, pending confirmation
       against National Grid Monthly Balancing Services Summary archives.
     source_url: https://www.nao.org.uk/wp-content/uploads/2014/05/Electricity-Balancing-Services.pdf
@@ -299,7 +303,7 @@ schemes:
     attribution:
       rule: >-
         Raw totals stored; attribution happens in the money model. Only the
-        increase above the CPIH-indexed 2002-05 baseline (GBP 0.4bn/yr) is
+        increase above the CPIH-indexed 2002-05 baseline ({baseline}) is
         attributed, NET of wind constraint payments already counted in the
         direct layer, floored at zero. The estimated cost of replacing
         switched-off wind (constraint turn-up) is then shown as its own line
