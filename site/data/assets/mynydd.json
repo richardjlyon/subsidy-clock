@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 10346691.88,
+ "hero_gbp": 10323441.08,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -115,7 +115,7 @@
   {
    "q": "2024-Q2",
    "payment_gbp": 1185869.2900000005,
-   "generation_mwh": 21649.246000000003
+   "generation_mwh": 21649.247000000003
   },
   {
    "q": "2024-Q3",
@@ -139,8 +139,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 873265.1000000002,
-   "generation_mwh": 15632.274999999998
+   "payment_gbp": 873262.8600000001,
+   "generation_mwh": 15632.214999999997
   },
   {
    "q": "2025-Q4",
@@ -150,22 +150,22 @@
   {
    "q": "2026-Q1",
    "payment_gbp": 846101.7800000003,
-   "generation_mwh": 27168.825
+   "generation_mwh": 27168.819
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 893347.7500000001,
-   "generation_mwh": 27486.984999999997
+   "payment_gbp": 893346.7200000001,
+   "generation_mwh": 27487.119999999995
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": -776.5999999999831,
-   "generation_mwh": 16041.073999999999
+   "payment_gbp": -898.9199999999901,
+   "generation_mwh": 16049.651
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": -25963.79,
-   "generation_mwh": 583.763
+   "payment_gbp": -49088.99999999999,
+   "generation_mwh": 1246.7809999999997
   }
  ],
  "contracts": [
@@ -174,7 +174,7 @@
    "unit_name": "Mynydd Y Gwair Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 10346691.88,
+   "cumulative_gbp": 10323441.08,
    "first_settlement": "2019-03-20",
    "latest_strike_gbp_mwh": 118.08
   }
@@ -185,11 +185,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-01"
+  "data_to": "2026-10-04"
  },
  "tiles": {
-  "generation_mwh": 736439.248,
-  "rate_gbp_per_mwh": 14.049620397200776,
+  "generation_mwh": 737110.9130000001,
+  "rate_gbp_per_mwh": 14.00527505146298,
   "rate_label": "payment per subsidised MWh"
  }
 }
