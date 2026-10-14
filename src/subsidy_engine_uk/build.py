@@ -120,6 +120,24 @@ def counterfactual_runrate(cf: dict, deflators: pl.DataFrame) -> float:
     return cf["years"][last] * _latest_index(deflators) / idx[last]
 
 
+FY_WEIGHT_PRIOR = 0.25   # Jan-Mar of calendar year y fall in the financial year starting y-1
+
+
+def fy_start_to_calendar(fy_annual: pl.DataFrame) -> pl.DataFrame:
+    """Financial-year series (keyed by the year the Apr-Mar year starts) to calendar years:
+    CY(y) = 0.25 x FY(y-1) + 0.75 x FY(y), the gas-counterfactual engine's own rule (spec
+    section 2), so the actual and the no-net-zero cost subtracted from it are on one year
+    basis (Richard, 14 Oct 2026, fix F2). The first stored year has no FY(y-1) and takes
+    FY(y) alone (TNUoS and BSUoS history both hold one flat REF figure for 2002-04, so
+    the earlier year would carry the same value)."""
+    fy = dict(zip(fy_annual["year"].to_list(), fy_annual["cost_gbp"].to_list()))
+    years = sorted(fy)
+    out = [fy[y] if (y - 1) not in fy
+           else FY_WEIGHT_PRIOR * fy[y - 1] + (1 - FY_WEIGHT_PRIOR) * fy[y] for y in years]
+    return pl.DataFrame({"year": years, "cost_gbp": out},
+                        schema={"year": pl.Int64, "cost_gbp": pl.Float64})
+
+
 def counterfactual_uplift(
     raw_annual: pl.DataFrame,
     cf: dict,
@@ -480,9 +498,13 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
     if "tnuos" in refs and "tnuos" in cfs:
         ref = refs["tnuos"]
         cf = cfs["tnuos"]
-        attributed = counterfactual_uplift(ref.annual, cf, deflators)
-        raw_total = float(ref.annual["cost_gbp"].sum())
+        # stored by financial year (NESO charging years); put on calendar years, the
+        # basis of the engine's no-net-zero cost (F2, 14 Oct 2026)
+        tn_cy = fy_start_to_calendar(ref.annual)
+        attributed = counterfactual_uplift(tn_cy, cf, deflators)
+        raw_total = float(tn_cy["cost_gbp"].sum())
         result = annual_to_result("tnuos", ref, layer="indirect")
+        result.data_to = date(int(tn_cy["year"].max()), 12, 31)
         result.annual = attributed
         result.cumulative_gbp = float(attributed["cost_gbp"].sum())
         latest = int(attributed["year"].max())
@@ -490,14 +512,20 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
             attributed.filter(pl.col("year") == latest)["cost_gbp"][0])
         result.attribution_pct = (result.cumulative_gbp / raw_total) if raw_total else 0.0
         result.attribution_note = _with_counterfactual(result.attribution_note, cf)
-        result.extras["raw_annual"] = ref.annual.rename({"cost_gbp": "cost"}).to_dicts()
-        result.extras.update(_cf_extras(cf, [int(y) for y in ref.annual["year"].to_list()],
+        result.extras["raw_annual"] = tn_cy.rename({"cost_gbp": "cost"}).to_dicts()
+        result.extras["raw_annual_fy"] = ref.annual.rename({"cost_gbp": "cost"}).to_dicts()
+        result.extras["raw_year_basis"] = ("calendar: 0.25 x FY(y-1) + 0.75 x FY(y) of the stored "
+                                           "financial-year charges (first year: FY(y))")
+        result.extras.update(_cf_extras(cf, [int(y) for y in tn_cy["year"].to_list()],
                                         deflators, "GO5: no-net-zero grid cost"))
         schemes.append(result)
 
     if "bsuos_history" in refs and "bsuos" in cfs:
         cf = cfs["bsuos"]
         hist = refs["bsuos_history"]
+        # pre-2017 history is by financial year (NAO/REF); calendar years like the
+        # fetched daily series and the engine's no-net-zero cost (F2, 14 Oct 2026)
+        hist_cy = fy_start_to_calendar(hist.annual)
         bs_daily = store.read_all_partitions("bsuos", "daily")
         if bs_daily is not None and bs_daily.height:
             daily = bs_daily.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date")
@@ -505,14 +533,14 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
             first_full = int(daily["date"].min().year) + (
                 0 if daily["date"].min().month == 1 and daily["date"].min().day == 1
                 else 1)
-            last_hist = int(hist.annual["year"].max())
+            last_hist = int(hist_cy["year"].max())
             usable = bottom_up.filter((pl.col("year") >= first_full)
                                       | (pl.col("year") > last_hist))
-            raw_annual = merge_annual(hist.annual, usable)
+            raw_annual = merge_annual(hist_cy, usable)
             raw_runrate = trailing_runrate(daily)
             data_to = daily["date"].max()
         else:
-            raw_annual = hist.annual
+            raw_annual = hist_cy
             raw_runrate = float(raw_annual["cost_gbp"][-1])
             data_to = date(int(raw_annual["year"].max()), 12, 31)
         # Uplift after wind constraint payments, then split constraint turn-up

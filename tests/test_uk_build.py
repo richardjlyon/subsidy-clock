@@ -254,3 +254,37 @@ def test_station_detail_quarters_contracts_and_negative_quarter(tmp_path):
     assert c["W-1"]["cumulative_gbp"] + c["W-2"]["cumulative_gbp"] == 675.0
     assert farm["generation_mwh"] == 115.0
     assert farm["data_to"] == "2022-01-03"
+
+
+def test_fy_start_to_calendar_weights_and_first_year():
+    """F2 (14 Oct 2026): FY-keyed TNUoS/BSUoS history to calendar years by the engine's rule
+    CY(y) = 0.25 FY(y-1) + 0.75 FY(y); the first stored year takes FY(y) alone."""
+    fy = pl.DataFrame({"year": [2002, 2003, 2004], "cost_gbp": [100.0, 200.0, 400.0]},
+                      schema={"year": pl.Int64, "cost_gbp": pl.Float64})
+    cy = {r["year"]: r["cost_gbp"] for r in uk_build.fy_start_to_calendar(fy).to_dicts()}
+    assert cy == {2002: 100.0, 2003: 175.0, 2004: 350.0}
+
+
+def test_tnuos_and_bsuos_history_go_to_calendar_years_in_the_build(tmp_path):
+    """The build subtracts the engine's calendar-year no-net-zero cost from a calendar-year
+    actual: TNUoS (stored by charging year) and pre-2017 BSUoS history are converted first."""
+    from subsidy_engine.store import SnapshotStore
+    store = SnapshotStore(tmp_path / "store")
+    refs = {
+        "constraints_history": _ref("constraints_history", "CH", {2024: 0.0},
+                                    perspectives=("renewables", "low_carbon")),
+        "ro": _ref("ro", "RO", {2024: 0.0}, perspectives=("renewables", "low_carbon")),
+        "fit": _ref("fit", "FIT", {2024: 0.0}, perspectives=("renewables", "low_carbon")),
+        "tnuos": _ref("tnuos", "TNUoS", {2022: 800.0, 2023: 1000.0}, conf="low"),
+        "bsuos_history": _ref("bsuos_history", "BSUoS hist", {2022: 400.0, 2023: 600.0}, conf="low"),
+    }
+    cf = cf_series({2022: 0.0, 2023: 0.0, 2024: 0.0, 2025: 0.0})
+    model = uk_build.build(store, refs, deflators=deflators(),
+                           counterfactual={"tnuos": cf, "bsuos": cf},
+                           cm_share={"years": {}, "carry_forward_from": 2025, "provenance": {}})
+    by_id = {s.scheme_id: s for s in model["schemes"]}
+    tn = {r["year"]: r["cost_gbp"] for r in by_id["tnuos"].annual.to_dicts()}
+    assert tn == {2022: 800.0, 2023: 0.25 * 800.0 + 0.75 * 1000.0}
+    assert by_id["tnuos"].extras["raw_annual_fy"][1]["cost"] == 1000.0
+    bs = {r["year"]: r["cost_gbp"] for r in by_id["bsuos"].annual.to_dicts()}
+    assert bs[2023] == 0.25 * 400.0 + 0.75 * 600.0

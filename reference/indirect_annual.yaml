@@ -7,7 +7,8 @@
 # exact source consulted.
 schemes:
   ccl:
-    label: Climate Change Levy (electricity share) + Carbon Price Support
+    # id kept stable (URLs, share cards, history); the label says what is counted (Richard, 14 Oct 2026, D2)
+    label: Climate Change Levy on electricity (to July 2015) + Carbon Price Support
     perspectives: []
     cadence: annual
     year_basis: calendar
@@ -15,28 +16,88 @@ schemes:
       HMRC Environmental Taxes Bulletin (formerly Climate Change Levy and
       Carbon Price Floor Bulletin), March 2026 edition, tables ODS
       (2026_March_env_tabs_test.ods), Table 1b "CCL and CPF receipts and
-      clearances data by calendar year". Value = electricity main-rate
-      declared liabilities (the only commodity split HMRC publishes) plus
-      estimated CPF receipts (CPS applies solely to fossil fuels used for
-      electricity generation, so it is wholly electricity-attributable).
-      Sums rounded down to the nearest GBP 0.1m.
+      clearances data by calendar year": electricity main-rate declared
+      liabilities (the only commodity split HMRC publishes) and estimated CPF
+      receipts (Carbon Price Support, which applies solely to fossil fuels used
+      for electricity generation). The two parts are stored separately below
+      (components) and summed into annual; each part rounded down to the
+      nearest GBP 0.1m. Exemption end: Finance (No. 2) Act 2015 s.49,
+      https://www.legislation.gov.uk/ukpga/2015/33/section/49/enacted , which
+      inserted "(za) it is generated before 1 August 2015" into the renewable
+      exemption, FA 2000 Sch 6 para 19(3).
     source_url: https://www.gov.uk/government/statistics/environmental-taxes-bulletin
     verified: true
     expected_next_update: 2027-03-31   # HMRC Environmental Taxes Bulletin, March edition
     attribution:
       rule: >-
-        Electricity's share of CCL main-rate liabilities (HMRC's published
-        commodity split of declarations) plus Carbon Price Support receipts,
-        which fall wholly on electricity generation. Gas/solid-fuel main-rate
-        CCL is excluded.
+        Two parts. (1) The Climate Change Levy on electricity, counted only up to
+        31 July 2015, while renewable electricity was exempt (it carried Levy
+        Exemption Certificates) and the levy therefore fell on fossil and nuclear
+        power alone; from 1 August 2015 renewable electricity paid it too
+        (Finance (No. 2) Act 2015 s.49), so later receipts are not counted.
+        2015 counts 7/12 of the year: HMRC publishes no monthly electricity
+        receipts, and its monthly declarations are booked by quarter. (2) Carbon
+        Price Support, counted in full: a tax only fossil-fuelled generators pay.
+        Gas/solid-fuel main-rate CCL is excluded throughout.
       confidence: medium
     note: >-
       HMRC publishes the CCL/CPF receipts split by calendar year only from
       2014; for 2013 (CPF started April 2013) the CPF component is therefore
-      omitted entirely, so 2013 is understated (conservative). Pre-2013 values
-      are electricity main-rate declarations only. Main-rate figures are
-      accrued declarations rather than cash receipts because receipts have no
-      commodity split.
+      omitted entirely, so 2013 is understated (conservative). Main-rate
+      figures are accrued declarations rather than cash receipts because
+      receipts have no commodity split. Until the 31 Oct 2026 release this line
+      counted the electricity levy in every year (GBP 6.3bn nominal more,
+      2015-2024); the gas-counterfactual engine still counts it all, because it
+      measures net zero's total cost (its bridge row M shows the difference).
+    components:
+      electricity_ccl_to_jul_2015:
+        2002: 622900000
+        2003: 621400000
+        2004: 570700000
+        2005: 533200000
+        2006: 525400000
+        2007: 513900000
+        2008: 542200000
+        2009: 529400000
+        2010: 484700000
+        2011: 499000000
+        2012: 447300000
+        2013: 309800000
+        2014: 257500000
+        2015: 189100000
+        2016: 0
+        2017: 0
+        2018: 0
+        2019: 0
+        2020: 0
+        2021: 0
+        2022: 0
+        2023: 0
+        2024: 0
+      carbon_price_support:
+        2002: 0
+        2003: 0
+        2004: 0
+        2005: 0
+        2006: 0
+        2007: 0
+        2008: 0
+        2009: 0
+        2010: 0
+        2011: 0
+        2012: 0
+        2013: 0
+        2014: 893000000
+        2015: 1182000000
+        2016: 1044000000
+        2017: 973000000
+        2018: 926000000
+        2019: 900100000
+        2020: 634500000
+        2021: 692100000
+        2022: 796100000
+        2023: 678600000
+        2024: 446200000
     annual:
       2002: 622900000
       2003: 621400000
@@ -51,16 +112,16 @@ schemes:
       2012: 447300000
       2013: 309800000
       2014: 1150500000
-      2015: 1506200000
-      2016: 1626700000
-      2017: 1628400000
-      2018: 1632000000
-      2019: 1810400000
-      2020: 1470200000
-      2021: 1499200000
-      2022: 1606600000
-      2023: 1465000000
-      2024: 1253000000
+      2015: 1371100000
+      2016: 1044000000
+      2017: 973000000
+      2018: 926000000
+      2019: 900100000
+      2020: 634500000
+      2021: 692100000
+      2022: 796100000
+      2023: 678600000
+      2024: 446200000
   ets:
     label: Emissions trading (power-sector share of UK auction revenue)
     perspectives: []
@@ -282,7 +343,7 @@ schemes:
       2018: 2670300000
       2019: 2837400000
       2020: 2843000000
-      2021: 3594000000
+      2021: 3318000000
       2022: 3594000000
       2023: 4416400000
       2024: 4188500000

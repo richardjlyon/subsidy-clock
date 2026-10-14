@@ -1,3 +1,4 @@
+import yaml
 import pytest
 from pathlib import Path
 
@@ -63,11 +64,15 @@ def test_tnuos_neso_traced_values():
     expected = {
         2013: 2_196_600_000, 2014: 2_524_300_000, 2015: 2_636_700_000,
         2016: 2_708_700_000, 2017: 2_631_500_000, 2018: 2_670_300_000,
-        2019: 2_837_400_000, 2020: 2_843_000_000, 2021: 3_594_000_000,
+        2019: 2_837_400_000, 2020: 2_843_000_000, 2021: 3_318_000_000,
         2022: 3_594_000_000, 2023: 4_416_400_000, 2024: 4_188_500_000,
     }
     for yr, val in expected.items():
         assert annual[yr] == val, (yr, annual[yr])
+    # 2021 was 3,594m (the 2022 row copied down) until 14 Oct 2026 (fix F1): NESO Final TNUoS
+    # Tariffs 2021/22, https://www.neso.energy/document/186176/download, "Total revenue to be
+    # collected is £3,318m"
+    assert annual[2021] != annual[2022]
 
 
 def test_load_ref_crosscheck():
@@ -103,8 +108,8 @@ def test_load_counterfactual_series_from_the_pinned_engine_release():
         assert c["source_ids"] and c["carry_index"] == "CPIH"
         assert sorted(c["years"]) == list(range(2002, c["carry_forward_from"] + 1))
         assert all(v > 0 for v in c["years"].values())
-    # engine v4-s33 GO5 / GO4 (generators' share included), GBP nominal: 2002-05 means sit near
-    # G0 (GBP 982.3m, carried by the control index) and B0 (GBP 489.4m)
+    # engine v4-s34 GO5 / GO4 (generators' share included), GBP nominal: 2002-05 means sit near
+    # G0 (GBP 982.3m, carried by the control index) and B0 (GBP 520.9m; 489.4m to v4-s33)
     g = sum(cf["tnuos"]["years"][y] for y in range(2002, 2006)) / 4
     b = sum(cf["bsuos"]["years"][y] for y in range(2002, 2006)) / 4
     assert 0.95e9 < g < 1.02e9
@@ -119,3 +124,23 @@ def test_year_basis_defaults_and_calendar_override():
     indirect = reference.load_annual_costs(REF_DIR / "indirect_annual.yaml")
     assert indirect["ccl"].year_basis == "calendar"
     assert indirect["ets"].year_basis == "calendar"
+
+
+def test_ccl_counts_electricity_levy_only_while_renewables_were_exempt():
+    """Richard, 14 Oct 2026 (D2): the electricity CCL is counted only to 31 July 2015 (Finance
+    (No. 2) Act 2015 s.49 ended the renewable exemption from 1 Aug 2015); Carbon Price Support in
+    full. The two parts are stored separately and annual is their sum."""
+    raw = yaml.safe_load((REF_DIR / "indirect_annual.yaml").read_text())["schemes"]["ccl"]
+    el = raw["components"]["electricity_ccl_to_jul_2015"]
+    cps = raw["components"]["carbon_price_support"]
+    assert set(el) == set(cps) == set(raw["annual"])
+    for y, v in raw["annual"].items():
+        assert v == el[y] + cps[y], y
+        if y > 2015:
+            assert el[y] == 0, y
+        if y < 2013:
+            assert cps[y] == 0, y
+    assert el[2015] == 189_100_000          # 7/12 of HMRC Table 1b 2015 (324.25m), rounded down
+    assert el[2014] == 257_500_000 and cps[2014] == 893_000_000
+    assert "to July 2015" in raw["label"] and "Carbon Price Support" in raw["label"]
+    assert "1 August 2015" in raw["attribution"]["rule"]
