@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 10346691.88,
+ "hero_gbp": 10338030.64,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -115,7 +115,7 @@
   {
    "q": "2024-Q2",
    "payment_gbp": 1185869.2900000005,
-   "generation_mwh": 21649.246000000003
+   "generation_mwh": 21649.247000000003
   },
   {
    "q": "2024-Q3",
@@ -139,8 +139,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 873265.1000000002,
-   "generation_mwh": 15632.274999999998
+   "payment_gbp": 873262.7200000002,
+   "generation_mwh": 15632.206999999999
   },
   {
    "q": "2025-Q4",
@@ -150,22 +150,22 @@
   {
    "q": "2026-Q1",
    "payment_gbp": 846101.7800000003,
-   "generation_mwh": 27168.825
+   "generation_mwh": 27168.819
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 893347.7500000001,
-   "generation_mwh": 27486.984999999997
+   "payment_gbp": 893335.76,
+   "generation_mwh": 27486.853999999996
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": -776.5999999999831,
-   "generation_mwh": 16041.073999999999
+   "payment_gbp": 16492.250000000004,
+   "generation_mwh": 16221.612
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": -25963.79,
-   "generation_mwh": 583.763
+   "payment_gbp": -51879.509999999995,
+   "generation_mwh": 1381.9699999999998
   }
  ],
  "contracts": [
@@ -174,7 +174,7 @@
    "unit_name": "Mynydd Y Gwair Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 10346691.88,
+   "cumulative_gbp": 10338030.64,
    "first_settlement": "2019-03-20",
    "latest_strike_gbp_mwh": 118.08
   }
@@ -185,11 +185,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-01"
+  "data_to": "2026-10-05"
  },
  "tiles": {
-  "generation_mwh": 736439.248,
-  "rate_gbp_per_mwh": 14.049620397200776,
+  "generation_mwh": 737417.789,
+  "rate_gbp_per_mwh": 14.019231423775702,
   "rate_label": "payment per subsidised MWh"
  }
 }
