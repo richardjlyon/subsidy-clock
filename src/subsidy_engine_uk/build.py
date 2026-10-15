@@ -570,7 +570,7 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
     if "bsuos_history" in refs and "bsuos" in cfs:
         cf = cfs["bsuos"]
         hist = refs["bsuos_history"]
-        # pre-2017 history is by financial year (NAO/REF); calendar years like the
+        # pre-2017 history is by financial year (engine primaries: NGET note, NAO, Ofgem TARs, MBSS); calendar years like the
         # fetched daily series and the engine's no-net-zero cost (F2, 14 Oct 2026)
         hist_cy = fy_start_to_calendar(hist.annual).filter(pl.col("year") >= FIRST_YEAR)
         bs_daily = store.read_all_partitions("bsuos", "daily")
