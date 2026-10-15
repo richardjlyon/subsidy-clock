@@ -1,0 +1,92 @@
+{
+ "_source": "Report No. 1 / Technical Paper No. 1 figures.json and data/breakdown.json (Clock build 2026-10-14T23:53:17Z, model-pin v4-s35). Vendored 15 Oct 2026 so the carry-forward test runs without the reports repo. Paper \u00a78.1 lag and \u00a710 Table 10.2 'lag added'.",
+ "build": "2026-10-14T23:53:17.083362+00:00",
+ "cpih_2024": 132.9,
+ "cpih_2025": 138.0,
+ "combined_real": 200261167348.45795,
+ "combined_nominal": 165228793385.03595,
+ "lag_total_nominal": 20691605424.84164,
+ "table_10_2_lag_added_real_bn": 220.19,
+ "lines": [
+  {
+   "id": "cfd_renewable",
+   "layer": "direct",
+   "data_to": "2026-10-01",
+   "runrate_per_year": 2564574984.86024,
+   "cumulative": 13843049382.55,
+   "lag": 91278507.33246577
+  },
+  {
+   "id": "constraints",
+   "layer": "direct",
+   "data_to": "2026-10-12",
+   "runrate_per_year": 348340727.1733394,
+   "cumulative": 2636792517.5998187,
+   "lag": 1907409.8681633917
+  },
+  {
+   "id": "capacity_market",
+   "layer": "indirect",
+   "data_to": "2026-08-01",
+   "runrate_per_year": 507985463.5825136,
+   "cumulative": 2048422912.513091,
+   "lag": 102918341.6977577
+  },
+  {
+   "id": "ro",
+   "layer": "direct",
+   "data_to": "2025-03-31",
+   "runrate_per_year": 7700000000.0,
+   "cumulative": 74590000000.0,
+   "lag": 11847775496.235456
+  },
+  {
+   "id": "fit",
+   "layer": "direct",
+   "data_to": "2025-03-31",
+   "runrate_per_year": 1844000000.0,
+   "cumulative": 18233000000.0,
+   "lag": 2837311430.5270367
+  },
+  {
+   "id": "ccl",
+   "layer": "indirect",
+   "data_to": "2024-12-31",
+   "runrate_per_year": 446200000.0,
+   "cumulative": 15812100000.0,
+   "lag": 796502121.83436
+  },
+  {
+   "id": "ets",
+   "layer": "indirect",
+   "data_to": "2024-12-31",
+   "runrate_per_year": 882834732.0,
+   "cumulative": 10516019346.0,
+   "lag": 1575929487.37577
+  },
+  {
+   "id": "tnuos",
+   "layer": "indirect",
+   "data_to": "2024-12-31",
+   "runrate_per_year": 1886113232.0900002,
+   "cumulative": 15251593743.689999,
+   "lag": 3366860581.307817
+  },
+  {
+   "id": "constraint_turnup",
+   "layer": "indirect",
+   "data_to": "2026-10-05",
+   "runrate_per_year": 1597872750.4035532,
+   "cumulative": 5431290444.449644,
+   "lag": 39372634.506863736
+  },
+  {
+   "id": "bsuos",
+   "layer": "indirect",
+   "data_to": "2026-10-05",
+   "runrate_per_year": 1288497057.829108,
+   "cumulative": 6866525038.233387,
+   "lag": 31749414.15595338
+  }
+ ]
+}

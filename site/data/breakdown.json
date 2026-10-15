@@ -1,5 +1,9 @@
 {
- "generated_at": "2026-10-13T13:31:40.969203+00:00",
+ "generated_at": "2026-10-15T10:48:21.741070+00:00",
+ "model_pin": {
+  "engine_version": "v4-s35",
+  "sha256": "6838a93ca701baef90c9f469821d426ee0d9470c550922eccdfaded6f73029ba"
+ },
  "schemes": [
   {
    "id": "cfd_renewable",
@@ -16,28 +20,40 @@
    "cumulative": 13843049382.55,
    "runrate_per_year": 2564574984.86024,
    "data_to": "2026-10-01",
+   "carry_forward": {
+    "published_cumulative": 13843049382.55,
+    "data_to": "2026-10-01",
+    "from": "2026-10-02T00:00:00+00:00",
+    "rate_per_year": 2564574984.86024,
+    "rate_per_sec": 81.26647732591324,
+    "rate_per_year_real": 2469797213.6806226,
+    "rate_per_sec_real": 78.26315098995558,
+    "estimated_since": 94439914.79106946,
+    "estimated_since_real": 90949744.02705167,
+    "at": "2026-10-15T10:48:21.741070+00:00"
+   },
    "gross": 15152924023.86,
-   "net": 13843049382.550001,
-   "mwh": 211610678.573,
+   "net": 13843049382.55,
+   "mwh": 211610678.57299998,
    "by_technology": [
     {
      "technology": "Offshore Wind",
-     "cost": 10313939328.659994,
-     "generation_mwh": 139894090.51199985
+     "cost": 10313939328.660006,
+     "generation_mwh": 139894090.51199996
     },
     {
      "technology": "Biomass Conversion",
-     "cost": 3022283327.080003,
-     "generation_mwh": 54402635.502999954
+     "cost": 3022283327.0800033,
+     "generation_mwh": 54402635.50299998
     },
     {
      "technology": "Dedicated Biomass",
-     "cost": 314942798.2499998,
+     "cost": 314942798.25,
      "generation_mwh": 3511598.9110000017
     },
     {
      "technology": "Onshore Wind",
-     "cost": 222891847.37000075,
+     "cost": 222891847.37000042,
      "generation_mwh": 11470748.250999998
     },
     {
@@ -48,12 +64,12 @@
     {
      "technology": "Energy from Waste",
      "cost": -9173669.050000008,
-     "generation_mwh": 788101.0690000007
+     "generation_mwh": 788101.0690000006
     },
     {
      "technology": "Solar PV",
-     "cost": -21834249.760000072,
-     "generation_mwh": 1543504.3269999956
+     "cost": -21834249.760000065,
+     "generation_mwh": 1543504.3270000014
     }
    ],
    "by_recipient": [
@@ -65,107 +81,107 @@
     {
      "unit_name": "Walney Extension Offshore Wind Farm Phase 1",
      "technology": "Offshore Wind",
-     "cost": 1169067302.9899998
+     "cost": 1169067302.9900002
     },
     {
      "unit_name": "Walney Extension Offshore Wind Farm Phase 2",
      "technology": "Offshore Wind",
-     "cost": 1160777460.8799996
+     "cost": 1160777460.88
     },
     {
      "unit_name": "Hornsea Offshore Wind Farm Phase 1",
      "technology": "Offshore Wind",
-     "cost": 1091444575.5000002
+     "cost": 1091444575.5
     },
     {
      "unit_name": "Lynemouth Power Station",
      "technology": "Biomass Conversion",
-     "cost": 993736196.8
+     "cost": 993736196.7999997
     },
     {
      "unit_name": "Burbo Bank Extension Offshore Wind Farm",
      "technology": "Offshore Wind",
-     "cost": 902242189.3000003
+     "cost": 902242189.3000004
     },
     {
      "unit_name": "Hornsea Offshore Wind Farm Phase 2",
      "technology": "Offshore Wind",
-     "cost": 870837277.4400003
+     "cost": 870837277.4400004
     },
     {
      "unit_name": "Dudgeon Phase 2",
      "technology": "Offshore Wind",
-     "cost": 822813126.6299993
+     "cost": 822813126.6299998
     },
     {
      "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 2)",
      "technology": "Offshore Wind",
-     "cost": 798727117.2499999
+     "cost": 798727117.2499998
     },
     {
      "unit_name": "Hornsea Offshore Wind Farm Phase 3",
      "technology": "Offshore Wind",
-     "cost": 659024793.3200002
+     "cost": 659024793.32
     },
     {
      "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 1)",
      "technology": "Offshore Wind",
-     "cost": 645057321.8599998
+     "cost": 645057321.8599999
     },
     {
      "unit_name": "EA 1, Phase 2",
      "technology": "Offshore Wind",
-     "cost": 433681259.03000003
+     "cost": 433681259.0299999
     },
     {
      "unit_name": "Dudgeon Phase 3",
      "technology": "Offshore Wind",
-     "cost": 399193037.1599997
+     "cost": 399193037.15999967
     },
     {
      "unit_name": "Dudgeon Phase 1",
      "technology": "Offshore Wind",
-     "cost": 367266986.09999996
+     "cost": 367266986.0999999
     },
     {
      "unit_name": "EA 1, Phase 3",
      "technology": "Offshore Wind",
-     "cost": 364520621.9700001
+     "cost": 364520621.96999985
     },
     {
      "unit_name": "Teesside Renewable Energy Project",
      "technology": "Dedicated Biomass",
-     "cost": 314942798.2499998
+     "cost": 314942798.25
     },
     {
      "unit_name": "EA 1, Phase 1",
      "technology": "Offshore Wind",
-     "cost": 299648504.21000004
+     "cost": 299648504.21
     },
     {
      "unit_name": "Neart na Gaoithe",
      "technology": "Offshore Wind",
-     "cost": 201085484.60000014
+     "cost": 201085484.59999987
     },
     {
      "unit_name": "Triton Knoll Offshore Wind Farm Phase 3",
      "technology": "Offshore Wind",
-     "cost": 132864752.1700001
+     "cost": 132864752.16999997
     },
     {
      "unit_name": "Dorenell Wind Farm",
      "technology": "Onshore Wind",
-     "cost": 63986913.950000055
+     "cost": 63986913.95000006
     },
     {
      "unit_name": "Kype Muir Wind Farm",
      "technology": "Onshore Wind",
-     "cost": 35058954.709999986
+     "cost": 35058954.71000001
     },
     {
      "unit_name": "Clocaenog Forest Wind Farm",
      "technology": "Onshore Wind",
-     "cost": 29779528.97000004
+     "cost": 29779528.97
     },
     {
      "unit_name": "Middle Muir Wind Farm",
@@ -175,12 +191,12 @@
     {
      "unit_name": "Brenig Wind Farm",
      "technology": "Onshore Wind",
-     "cost": 14132521.74000002
+     "cost": 14132521.739999998
     },
     {
      "unit_name": "Bad A Cheo Wind Farm",
      "technology": "Onshore Wind",
-     "cost": 13842618.030000005
+     "cost": 13842618.029999997
     }
    ],
    "by_station": [
@@ -632,8 +648,8 @@
       },
       {
        "q": "2021-Q2",
-       "payment_gbp": 81963123.58,
-       "generation_mwh": 841122.6549999998
+       "payment_gbp": 81963123.58000004,
+       "generation_mwh": 841122.6549999996
       },
       {
        "q": "2021-Q3",
@@ -642,8 +658,8 @@
       },
       {
        "q": "2021-Q4",
-       "payment_gbp": -28141815.570000004,
-       "generation_mwh": 1573826.314
+       "payment_gbp": -28141815.57,
+       "generation_mwh": 1573826.3139999998
       },
       {
        "q": "2022-Q1",
@@ -652,8 +668,8 @@
       },
       {
        "q": "2022-Q2",
-       "payment_gbp": 32647531.49,
-       "generation_mwh": 1016817.4119999999
+       "payment_gbp": 32647531.490000006,
+       "generation_mwh": 1016817.4119999997
       },
       {
        "q": "2022-Q3",
@@ -697,8 +713,8 @@
       },
       {
        "q": "2024-Q3",
-       "payment_gbp": 130333587.5499999,
-       "generation_mwh": 999070.2259999999
+       "payment_gbp": 130333587.54999995,
+       "generation_mwh": 999070.226
       },
       {
        "q": "2024-Q4",
@@ -707,8 +723,8 @@
       },
       {
        "q": "2025-Q1",
-       "payment_gbp": 126804802.57999995,
-       "generation_mwh": 1311251.4010000003
+       "payment_gbp": 126804802.57999997,
+       "generation_mwh": 1311251.401
       },
       {
        "q": "2025-Q2",
@@ -717,7 +733,7 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 132295899.16999996,
+       "payment_gbp": 132295899.17000002,
        "generation_mwh": 990556.2189999999
       },
       {
@@ -1212,7 +1228,7 @@
       },
       {
        "q": "2020-Q2",
-       "payment_gbp": 75577333.35000002,
+       "payment_gbp": 75577333.35000001,
        "generation_mwh": 496354.3080000001
       },
       {
@@ -1282,8 +1298,8 @@
       },
       {
        "q": "2023-Q4",
-       "payment_gbp": 98993952.23000003,
-       "generation_mwh": 788975.3100000002
+       "payment_gbp": 98993952.23,
+       "generation_mwh": 788975.31
       },
       {
        "q": "2024-Q1",
@@ -1297,8 +1313,8 @@
       },
       {
        "q": "2024-Q3",
-       "payment_gbp": 79461049.46000001,
-       "generation_mwh": 549614.7890000001
+       "payment_gbp": 79461049.45999996,
+       "generation_mwh": 549614.7889999996
       },
       {
        "q": "2024-Q4",
@@ -1312,8 +1328,8 @@
       },
       {
        "q": "2025-Q2",
-       "payment_gbp": 78464878.38999999,
-       "generation_mwh": 528012.2250000002
+       "payment_gbp": 78464878.39,
+       "generation_mwh": 528012.225
       },
       {
        "q": "2025-Q3",
@@ -1627,7 +1643,7 @@
       {
        "q": "2018-Q3",
        "payment_gbp": 89678646.48000002,
-       "generation_mwh": 1333313.2099999997
+       "generation_mwh": 1333313.21
       },
       {
        "q": "2018-Q4",
@@ -1641,7 +1657,7 @@
       },
       {
        "q": "2019-Q2",
-       "payment_gbp": 78250031.84000002,
+       "payment_gbp": 78250031.84000005,
        "generation_mwh": 1307217.3680000002
       },
       {
@@ -1691,7 +1707,7 @@
       },
       {
        "q": "2021-Q4",
-       "payment_gbp": 9201231.58,
+       "payment_gbp": 9201231.580000002,
        "generation_mwh": 571860.274
       },
       {
@@ -1741,8 +1757,8 @@
       },
       {
        "q": "2024-Q2",
-       "payment_gbp": 73388676.72000001,
-       "generation_mwh": 1273224.7819999997
+       "payment_gbp": 73388676.71999997,
+       "generation_mwh": 1273224.782
       },
       {
        "q": "2024-Q3",
@@ -1756,7 +1772,7 @@
       },
       {
        "q": "2025-Q1",
-       "payment_gbp": 56859386.490000024,
+       "payment_gbp": 56859386.49000001,
        "generation_mwh": 1090513.7480000001
       },
       {
@@ -3032,8 +3048,8 @@
       },
       {
        "q": "2019-Q1",
-       "payment_gbp": 50754510.92999999,
-       "generation_mwh": 435685.67899999995
+       "payment_gbp": 50754510.92999996,
+       "generation_mwh": 435685.67900000006
       },
       {
        "q": "2019-Q2",
@@ -3047,7 +3063,7 @@
       },
       {
        "q": "2019-Q4",
-       "payment_gbp": 66573126.839999974,
+       "payment_gbp": 66573126.84000001,
        "generation_mwh": 507971.54499999987
       },
       {
@@ -3062,8 +3078,8 @@
       },
       {
        "q": "2020-Q3",
-       "payment_gbp": 45565732.69999998,
-       "generation_mwh": 326316.635
+       "payment_gbp": 45565732.69999999,
+       "generation_mwh": 326316.6349999999
       },
       {
        "q": "2020-Q4",
@@ -3123,7 +3139,7 @@
       {
        "q": "2023-Q3",
        "payment_gbp": 37256795.150000006,
-       "generation_mwh": 282488.5800000001
+       "generation_mwh": 282488.58
       },
       {
        "q": "2023-Q4",
@@ -3137,7 +3153,7 @@
       },
       {
        "q": "2024-Q2",
-       "payment_gbp": 53121453.16000002,
+       "payment_gbp": 53121453.16000003,
        "generation_mwh": 348765.7120000002
       },
       {
@@ -3152,8 +3168,8 @@
       },
       {
        "q": "2025-Q1",
-       "payment_gbp": 46066024.32999998,
-       "generation_mwh": 410052.27899999975
+       "payment_gbp": 46066024.33,
+       "generation_mwh": 410052.2789999998
       },
       {
        "q": "2025-Q2",
@@ -3571,8 +3587,8 @@
       },
       {
        "q": "2020-Q2",
-       "payment_gbp": 59847733.210000016,
-       "generation_mwh": 427840.65100000025
+       "payment_gbp": 59847733.21000001,
+       "generation_mwh": 427840.65099999995
       },
       {
        "q": "2020-Q3",
@@ -3596,8 +3612,8 @@
       },
       {
        "q": "2021-Q3",
-       "payment_gbp": 10862708.839999996,
-       "generation_mwh": 303116.9529999998
+       "payment_gbp": 10862708.839999994,
+       "generation_mwh": 303116.953
       },
       {
        "q": "2021-Q4",
@@ -3622,7 +3638,7 @@
       {
        "q": "2022-Q4",
        "payment_gbp": 14628164.049999995,
-       "generation_mwh": 667841.015
+       "generation_mwh": 667841.0150000001
       },
       {
        "q": "2023-Q1",
@@ -3646,7 +3662,7 @@
       },
       {
        "q": "2024-Q1",
-       "payment_gbp": 82227364.0300001,
+       "payment_gbp": 82227364.03000005,
        "generation_mwh": 659018.2399999998
       },
       {
@@ -3671,7 +3687,7 @@
       },
       {
        "q": "2025-Q2",
-       "payment_gbp": 36508487.480000004,
+       "payment_gbp": 36508487.48,
        "generation_mwh": 275053.46400000015
       },
       {
@@ -4185,7 +4201,7 @@
       {
        "q": "2021-Q2",
        "payment_gbp": 37608002.95999999,
-       "generation_mwh": 510847.3510000001
+       "generation_mwh": 510847.351
       },
       {
        "q": "2021-Q3",
@@ -4195,7 +4211,7 @@
       {
        "q": "2021-Q4",
        "payment_gbp": -39969490.01,
-       "generation_mwh": 883097.0829999999
+       "generation_mwh": 883097.083
       },
       {
        "q": "2022-Q1",
@@ -4204,8 +4220,8 @@
       },
       {
        "q": "2022-Q2",
-       "payment_gbp": -649717.4000000034,
-       "generation_mwh": 464041.9719999997
+       "payment_gbp": -649717.3999999966,
+       "generation_mwh": 464041.97199999995
       },
       {
        "q": "2022-Q3",
@@ -4249,8 +4265,8 @@
       },
       {
        "q": "2024-Q3",
-       "payment_gbp": 42085410.259999976,
-       "generation_mwh": 416229.4550000002
+       "payment_gbp": 42085410.26000002,
+       "generation_mwh": 416229.4550000001
       },
       {
        "q": "2024-Q4",
@@ -4269,8 +4285,8 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 65678017.45999998,
-       "generation_mwh": 609826.3460000001
+       "payment_gbp": 65678017.46000001,
+       "generation_mwh": 609826.3459999999
       },
       {
        "q": "2025-Q4",
@@ -4510,7 +4526,7 @@
       },
       {
        "q": "2019-Q4",
-       "payment_gbp": 42565187.86,
+       "payment_gbp": 42565187.86000001,
        "generation_mwh": 672329.624
       },
       {
@@ -4525,7 +4541,7 @@
       },
       {
        "q": "2020-Q3",
-       "payment_gbp": 58182751.38,
+       "payment_gbp": 58182751.38000001,
        "generation_mwh": 702520.525
       },
       {
@@ -4536,7 +4552,7 @@
       {
        "q": "2021-Q1",
        "payment_gbp": 47309890.91999997,
-       "generation_mwh": 611871.3219999999
+       "generation_mwh": 611871.322
       },
       {
        "q": "2021-Q2",
@@ -4606,7 +4622,7 @@
       {
        "q": "2024-Q3",
        "payment_gbp": 27271737.480000004,
-       "generation_mwh": 422817.627
+       "generation_mwh": 422817.62699999986
       },
       {
        "q": "2024-Q4",
@@ -4620,8 +4636,8 @@
       },
       {
        "q": "2025-Q2",
-       "payment_gbp": 29902105.98999999,
-       "generation_mwh": 454646.55400000006
+       "payment_gbp": 29902105.990000002,
+       "generation_mwh": 454646.554
       },
       {
        "q": "2025-Q3",
@@ -9834,8 +9850,8 @@
       },
       {
        "q": "2018-Q4",
-       "payment_gbp": 30451580.86999999,
-       "generation_mwh": 289124.0089999999
+       "payment_gbp": 30451580.87,
+       "generation_mwh": 289124.009
       },
       {
        "q": "2019-Q1",
@@ -9849,8 +9865,8 @@
       },
       {
        "q": "2019-Q3",
-       "payment_gbp": 28625444.839999996,
-       "generation_mwh": 213374.72900000005
+       "payment_gbp": 28625444.840000007,
+       "generation_mwh": 213374.72900000002
       },
       {
        "q": "2019-Q4",
@@ -9864,8 +9880,8 @@
       },
       {
        "q": "2020-Q2",
-       "payment_gbp": 27123118.839999992,
-       "generation_mwh": 176378.13800000004
+       "payment_gbp": 27123118.839999996,
+       "generation_mwh": 176378.13799999998
       },
       {
        "q": "2020-Q3",
@@ -9929,8 +9945,8 @@
       },
       {
        "q": "2023-Q3",
-       "payment_gbp": 27080879.770000003,
-       "generation_mwh": 210032.88700000002
+       "payment_gbp": 27080879.77,
+       "generation_mwh": 210032.887
       },
       {
        "q": "2023-Q4",
@@ -9945,7 +9961,7 @@
       {
        "q": "2024-Q2",
        "payment_gbp": 29361357.740000002,
-       "generation_mwh": 190668.24100000004
+       "generation_mwh": 190668.24099999995
       },
       {
        "q": "2024-Q3",
@@ -9959,8 +9975,8 @@
       },
       {
        "q": "2025-Q1",
-       "payment_gbp": 25236576.53,
-       "generation_mwh": 222320.714
+       "payment_gbp": 25236576.529999997,
+       "generation_mwh": 222320.71399999998
       },
       {
        "q": "2025-Q2",
@@ -11122,8 +11138,8 @@
       },
       {
        "q": "2022-Q3",
-       "payment_gbp": -38353721.49999998,
-       "generation_mwh": 217281.01100000003
+       "payment_gbp": -38353721.49999999,
+       "generation_mwh": 217281.011
       },
       {
        "q": "2022-Q4",
@@ -11132,8 +11148,8 @@
       },
       {
        "q": "2023-Q1",
-       "payment_gbp": -11810129.539999997,
-       "generation_mwh": 498379.42899999977
+       "payment_gbp": -11810129.54,
+       "generation_mwh": 498379.4289999999
       },
       {
        "q": "2023-Q2",
@@ -11142,8 +11158,8 @@
       },
       {
        "q": "2023-Q3",
-       "payment_gbp": 12739315.440000009,
-       "generation_mwh": 498088.4050000002
+       "payment_gbp": 12739315.440000001,
+       "generation_mwh": 498088.40500000014
       },
       {
        "q": "2023-Q4",
@@ -11172,8 +11188,8 @@
       },
       {
        "q": "2025-Q1",
-       "payment_gbp": 3509677.5300000026,
-       "generation_mwh": 637167.9970000004
+       "payment_gbp": 3509677.530000002,
+       "generation_mwh": 637167.997
       },
       {
        "q": "2025-Q2",
@@ -11182,12 +11198,12 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 22852401.45,
-       "generation_mwh": 532074.518
+       "payment_gbp": 22852401.450000007,
+       "generation_mwh": 532074.5179999996
       },
       {
        "q": "2025-Q4",
-       "payment_gbp": 37840843.70999998,
+       "payment_gbp": 37840843.70999999,
        "generation_mwh": 1051019.9050000007
       },
       {
@@ -11345,8 +11361,8 @@
       },
       {
        "q": "2020-Q2",
-       "payment_gbp": 7152525.990000001,
-       "generation_mwh": 97098.395
+       "payment_gbp": 7152525.989999999,
+       "generation_mwh": 97098.39499999995
       },
       {
        "q": "2020-Q3",
@@ -11355,8 +11371,8 @@
       },
       {
        "q": "2020-Q4",
-       "payment_gbp": 4743051.7700000005,
-       "generation_mwh": 94281.448
+       "payment_gbp": 4743051.770000001,
+       "generation_mwh": 94281.44799999999
       },
       {
        "q": "2021-Q1",
@@ -11420,7 +11436,7 @@
       },
       {
        "q": "2024-Q1",
-       "payment_gbp": 4317313.499999999,
+       "payment_gbp": 4317313.5,
        "generation_mwh": 89836.05500000002
       },
       {
@@ -11435,7 +11451,7 @@
       },
       {
        "q": "2024-Q4",
-       "payment_gbp": 1376151.5,
+       "payment_gbp": 1376151.4999999995,
        "generation_mwh": 50397.27799999999
       },
       {
@@ -11557,7 +11573,7 @@
       },
       {
        "q": "2021-Q1",
-       "payment_gbp": 2424567.5799999996,
+       "payment_gbp": 2424567.5800000005,
        "generation_mwh": 59119.35300000001
       },
       {
@@ -11633,7 +11649,7 @@
       {
        "q": "2024-Q4",
        "payment_gbp": 2241935.51,
-       "generation_mwh": 62497.039
+       "generation_mwh": 62497.03899999998
       },
       {
        "q": "2025-Q1",
@@ -11648,7 +11664,7 @@
       {
        "q": "2025-Q3",
        "payment_gbp": 2633762.92,
-       "generation_mwh": 43829.613999999994
+       "generation_mwh": 43829.614
       },
       {
        "q": "2025-Q4",
@@ -11737,7 +11753,7 @@
       {
        "q": "2021-Q3",
        "payment_gbp": -761779.2199999999,
-       "generation_mwh": 27796.160999999996
+       "generation_mwh": 27796.161000000004
       },
       {
        "q": "2021-Q4",
@@ -11746,8 +11762,8 @@
       },
       {
        "q": "2022-Q1",
-       "payment_gbp": -6304369.999999999,
-       "generation_mwh": 73338.21400000002
+       "payment_gbp": -6304370.0,
+       "generation_mwh": 73338.214
       },
       {
        "q": "2022-Q2",
@@ -11772,7 +11788,7 @@
       {
        "q": "2023-Q2",
        "payment_gbp": 686377.73,
-       "generation_mwh": 32150.340000000007
+       "generation_mwh": 32150.340000000004
       },
       {
        "q": "2023-Q3",
@@ -11791,8 +11807,8 @@
       },
       {
        "q": "2024-Q2",
-       "payment_gbp": 2508233.349999999,
-       "generation_mwh": 41192.15400000001
+       "payment_gbp": 2508233.3499999996,
+       "generation_mwh": 41192.154
       },
       {
        "q": "2024-Q3",
@@ -11806,7 +11822,7 @@
       },
       {
        "q": "2025-Q1",
-       "payment_gbp": 1169105.66,
+       "payment_gbp": 1169105.6600000001,
        "generation_mwh": 59986.365999999995
       },
       {
@@ -11816,7 +11832,7 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 2320354.2100000004,
+       "payment_gbp": 2320354.21,
        "generation_mwh": 38111.07399999999
       },
       {
@@ -11891,8 +11907,8 @@
       },
       {
        "q": "2020-Q2",
-       "payment_gbp": 1736865.2899999996,
-       "generation_mwh": 22862.764000000003
+       "payment_gbp": 1736865.29,
+       "generation_mwh": 22862.764
       },
       {
        "q": "2020-Q3",
@@ -11901,8 +11917,8 @@
       },
       {
        "q": "2020-Q4",
-       "payment_gbp": 1427266.62,
-       "generation_mwh": 27390.190000000002
+       "payment_gbp": 1427266.6200000006,
+       "generation_mwh": 27390.18999999999
       },
       {
        "q": "2021-Q1",
@@ -11941,7 +11957,7 @@
       },
       {
        "q": "2022-Q4",
-       "payment_gbp": -800324.7499999998,
+       "payment_gbp": -800324.7499999999,
        "generation_mwh": 28644.340999999997
       },
       {
@@ -11967,7 +11983,7 @@
       {
        "q": "2024-Q1",
        "payment_gbp": 1508692.61,
-       "generation_mwh": 30779.472999999998
+       "generation_mwh": 30779.473
       },
       {
        "q": "2024-Q2",
@@ -11981,8 +11997,8 @@
       },
       {
        "q": "2024-Q4",
-       "payment_gbp": 1185182.32,
-       "generation_mwh": 31032.778000000006
+       "payment_gbp": 1185182.3200000005,
+       "generation_mwh": 31032.778000000017
       },
       {
        "q": "2025-Q1",
@@ -11991,8 +12007,8 @@
       },
       {
        "q": "2025-Q2",
-       "payment_gbp": 1356087.5500000003,
-       "generation_mwh": 22740.849999999995
+       "payment_gbp": 1356087.5499999998,
+       "generation_mwh": 22740.84999999999
       },
       {
        "q": "2025-Q3",
@@ -12076,7 +12092,7 @@
       {
        "q": "2020-Q2",
        "payment_gbp": 1428159.3,
-       "generation_mwh": 20179.529000000002
+       "generation_mwh": 20179.529
       },
       {
        "q": "2020-Q3",
@@ -12090,7 +12106,7 @@
       },
       {
        "q": "2021-Q1",
-       "payment_gbp": 1121572.95,
+       "payment_gbp": 1121572.9499999997,
        "generation_mwh": 32891.607
       },
       {
@@ -12155,8 +12171,8 @@
       },
       {
        "q": "2024-Q2",
-       "payment_gbp": 1067027.5699999996,
-       "generation_mwh": 19469.391000000003
+       "payment_gbp": 1067027.5699999994,
+       "generation_mwh": 19469.391000000007
       },
       {
        "q": "2024-Q3",
@@ -12165,7 +12181,7 @@
       },
       {
        "q": "2024-Q4",
-       "payment_gbp": 1079597.3000000003,
+       "payment_gbp": 1079597.3,
        "generation_mwh": 30662.967000000004
       },
       {
@@ -12180,7 +12196,7 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 1026613.7600000001,
+       "payment_gbp": 1026613.7600000002,
        "generation_mwh": 18509.479999999992
       },
       {
@@ -12270,8 +12286,8 @@
       },
       {
        "q": "2021-Q1",
-       "payment_gbp": 849481.1500000001,
-       "generation_mwh": 22064.180000000008
+       "payment_gbp": 849481.15,
+       "generation_mwh": 22064.18
       },
       {
        "q": "2021-Q2",
@@ -12345,7 +12361,7 @@
       },
       {
        "q": "2024-Q4",
-       "payment_gbp": 595902.8200000001,
+       "payment_gbp": 595902.8199999998,
        "generation_mwh": 16437.198
       },
       {
@@ -12361,7 +12377,7 @@
       {
        "q": "2025-Q3",
        "payment_gbp": 984094.7999999999,
-       "generation_mwh": 16915.497
+       "generation_mwh": 16915.496999999996
       },
       {
        "q": "2025-Q4",
@@ -12458,7 +12474,7 @@
       },
       {
        "q": "2020-Q2",
-       "payment_gbp": 1520108.8099999994,
+       "payment_gbp": 1520108.8099999998,
        "generation_mwh": 21524.725
       },
       {
@@ -12473,8 +12489,8 @@
       },
       {
        "q": "2021-Q1",
-       "payment_gbp": 1113215.71,
-       "generation_mwh": 34487.19500000001
+       "payment_gbp": 1113215.7100000002,
+       "generation_mwh": 34487.19499999999
       },
       {
        "q": "2021-Q2",
@@ -12483,8 +12499,8 @@
       },
       {
        "q": "2021-Q3",
-       "payment_gbp": -225942.85,
-       "generation_mwh": 13197.972999999996
+       "payment_gbp": -225942.85000000003,
+       "generation_mwh": 13197.972999999998
       },
       {
        "q": "2021-Q4",
@@ -12548,8 +12564,8 @@
       },
       {
        "q": "2024-Q4",
-       "payment_gbp": 909094.0500000003,
-       "generation_mwh": 26784.769999999997
+       "payment_gbp": 909094.0500000002,
+       "generation_mwh": 26784.77
       },
       {
        "q": "2025-Q1",
@@ -12638,8 +12654,8 @@
       },
       {
        "q": "2020-Q3",
-       "payment_gbp": 772240.6400000002,
-       "generation_mwh": 13333.248000000009
+       "payment_gbp": 772240.6400000001,
+       "generation_mwh": 13333.248000000003
       },
       {
        "q": "2020-Q4",
@@ -12653,8 +12669,8 @@
       },
       {
        "q": "2021-Q2",
-       "payment_gbp": 293962.42000000004,
-       "generation_mwh": 10345.603
+       "payment_gbp": 293962.4200000001,
+       "generation_mwh": 10345.603000000001
       },
       {
        "q": "2021-Q3",
@@ -12663,7 +12679,7 @@
       },
       {
        "q": "2021-Q4",
-       "payment_gbp": -1912088.9500000004,
+       "payment_gbp": -1912088.95,
        "generation_mwh": 20147.905
       },
       {
@@ -12688,7 +12704,7 @@
       },
       {
        "q": "2023-Q1",
-       "payment_gbp": -490353.0000000001,
+       "payment_gbp": -490353.00000000006,
        "generation_mwh": 18275.134
       },
       {
@@ -12713,7 +12729,7 @@
       },
       {
        "q": "2024-Q2",
-       "payment_gbp": 970926.5699999995,
+       "payment_gbp": 970926.5699999998,
        "generation_mwh": 16113.963
       },
       {
@@ -12723,7 +12739,7 @@
       },
       {
        "q": "2024-Q4",
-       "payment_gbp": 756630.97,
+       "payment_gbp": 756630.9700000002,
        "generation_mwh": 20866.778
       },
       {
@@ -12738,8 +12754,8 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 846724.2300000003,
-       "generation_mwh": 14540.364000000003
+       "payment_gbp": 846724.2300000002,
+       "generation_mwh": 14540.364000000005
       },
       {
        "q": "2025-Q4",
@@ -12892,8 +12908,8 @@
       },
       {
        "q": "2019-Q3",
-       "payment_gbp": 430519.94000000006,
-       "generation_mwh": 7620.098000000002
+       "payment_gbp": 430519.94,
+       "generation_mwh": 7620.098
       },
       {
        "q": "2019-Q4",
@@ -12908,7 +12924,7 @@
       {
        "q": "2020-Q2",
        "payment_gbp": 563207.1699999999,
-       "generation_mwh": 7624.191999999999
+       "generation_mwh": 7624.192000000002
       },
       {
        "q": "2020-Q3",
@@ -12922,8 +12938,8 @@
       },
       {
        "q": "2021-Q1",
-       "payment_gbp": 426625.61,
-       "generation_mwh": 10684.177000000003
+       "payment_gbp": 426625.61000000004,
+       "generation_mwh": 10684.177
       },
       {
        "q": "2021-Q2",
@@ -12977,8 +12993,8 @@
       },
       {
        "q": "2023-Q4",
-       "payment_gbp": 366177.57,
-       "generation_mwh": 8297.931999999999
+       "payment_gbp": 366177.57000000007,
+       "generation_mwh": 8297.932
       },
       {
        "q": "2024-Q1",
@@ -12992,8 +13008,8 @@
       },
       {
        "q": "2024-Q3",
-       "payment_gbp": 377534.80000000005,
-       "generation_mwh": 6597.689
+       "payment_gbp": 377534.79999999993,
+       "generation_mwh": 6597.688999999999
       },
       {
        "q": "2024-Q4",
@@ -13007,7 +13023,7 @@
       },
       {
        "q": "2025-Q2",
-       "payment_gbp": 441729.58999999985,
+       "payment_gbp": 441729.58999999997,
        "generation_mwh": 7393.9299999999985
       },
       {
@@ -13082,8 +13098,8 @@
       },
       {
        "q": "2020-Q4",
-       "payment_gbp": 1740927.5799999998,
-       "generation_mwh": 36216.50499999999
+       "payment_gbp": 1740927.5800000005,
+       "generation_mwh": 36216.505
       },
       {
        "q": "2021-Q1",
@@ -13107,8 +13123,8 @@
       },
       {
        "q": "2022-Q1",
-       "payment_gbp": -4684985.44,
-       "generation_mwh": 47314.647999999994
+       "payment_gbp": -4684985.4399999995,
+       "generation_mwh": 47314.648
       },
       {
        "q": "2022-Q2",
@@ -13133,7 +13149,7 @@
       {
        "q": "2023-Q2",
        "payment_gbp": 337102.8099999999,
-       "generation_mwh": 17014.586999999996
+       "generation_mwh": 17014.586999999992
       },
       {
        "q": "2023-Q3",
@@ -13152,7 +13168,7 @@
       },
       {
        "q": "2024-Q2",
-       "payment_gbp": 966844.4900000002,
+       "payment_gbp": 966844.49,
        "generation_mwh": 19805.481999999996
       },
       {
@@ -13177,8 +13193,8 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 1119202.45,
-       "generation_mwh": 24056.442999999996
+       "payment_gbp": 1119202.4500000002,
+       "generation_mwh": 24056.443
       },
       {
        "q": "2025-Q4",
@@ -13237,18 +13253,18 @@
       },
       {
        "q": "2024-Q3",
-       "payment_gbp": 15422716.940000001,
-       "generation_mwh": 916496.9819999995
+       "payment_gbp": 15422716.939999998,
+       "generation_mwh": 916496.982
       },
       {
        "q": "2024-Q4",
-       "payment_gbp": -5222460.160000004,
-       "generation_mwh": 1584495.5690000001
+       "payment_gbp": -5222460.160000002,
+       "generation_mwh": 1584495.5690000004
       },
       {
        "q": "2025-Q1",
-       "payment_gbp": -27025268.289999984,
-       "generation_mwh": 1402870.3620000011
+       "payment_gbp": -27025268.290000007,
+       "generation_mwh": 1402870.3620000007
       },
       {
        "q": "2025-Q2",
@@ -13262,18 +13278,18 @@
       },
       {
        "q": "2025-Q4",
-       "payment_gbp": 18163845.79,
-       "generation_mwh": 1866283.5460000008
+       "payment_gbp": 18163845.790000003,
+       "generation_mwh": 1866283.5460000006
       },
       {
        "q": "2026-Q1",
-       "payment_gbp": -3047383.1000000006,
-       "generation_mwh": 1753148.7249999996
+       "payment_gbp": -3047383.0999999978,
+       "generation_mwh": 1753148.7250000015
       },
       {
        "q": "2026-Q2",
        "payment_gbp": -9244548.479999999,
-       "generation_mwh": 1106020.0339999998
+       "generation_mwh": 1106020.0339999993
       },
       {
        "q": "2026-Q3",
@@ -13560,8 +13576,8 @@
       },
       {
        "q": "2021-Q4",
-       "payment_gbp": -2041590.5300000003,
-       "generation_mwh": 23906.31599999999
+       "payment_gbp": -2041590.53,
+       "generation_mwh": 23906.316000000006
       },
       {
        "q": "2022-Q1",
@@ -13570,8 +13586,8 @@
       },
       {
        "q": "2022-Q2",
-       "payment_gbp": -886355.5999999999,
-       "generation_mwh": 24319.942
+       "payment_gbp": -886355.5999999996,
+       "generation_mwh": 24319.942000000003
       },
       {
        "q": "2022-Q3",
@@ -13580,7 +13596,7 @@
       },
       {
        "q": "2022-Q4",
-       "payment_gbp": -825474.6400000001,
+       "payment_gbp": -825474.64,
        "generation_mwh": 24086.903
       },
       {
@@ -13621,7 +13637,7 @@
       {
        "q": "2024-Q4",
        "payment_gbp": 870057.8599999999,
-       "generation_mwh": 22530.557999999997
+       "generation_mwh": 22530.558
       },
       {
        "q": "2025-Q1",
@@ -13630,8 +13646,8 @@
       },
       {
        "q": "2025-Q2",
-       "payment_gbp": 1174654.54,
-       "generation_mwh": 21413.416999999994
+       "payment_gbp": 1174654.5399999998,
+       "generation_mwh": 21413.417000000005
       },
       {
        "q": "2025-Q3",
@@ -13640,8 +13656,8 @@
       },
       {
        "q": "2025-Q4",
-       "payment_gbp": 1385994.0900000005,
-       "generation_mwh": 27965.322000000004
+       "payment_gbp": 1385994.09,
+       "generation_mwh": 27965.321999999996
       },
       {
        "q": "2026-Q1",
@@ -13710,8 +13726,8 @@
       },
       {
        "q": "2020-Q3",
-       "payment_gbp": 293082.8799999999,
-       "generation_mwh": 5014.858000000001
+       "payment_gbp": 293082.88,
+       "generation_mwh": 5014.857999999999
       },
       {
        "q": "2020-Q4",
@@ -13720,8 +13736,8 @@
       },
       {
        "q": "2021-Q1",
-       "payment_gbp": 345277.73,
-       "generation_mwh": 9191.042999999998
+       "payment_gbp": 345277.7299999999,
+       "generation_mwh": 9191.043
       },
       {
        "q": "2021-Q2",
@@ -13735,8 +13751,8 @@
       },
       {
        "q": "2021-Q4",
-       "payment_gbp": -783923.0599999998,
-       "generation_mwh": 8445.337999999998
+       "payment_gbp": -783923.06,
+       "generation_mwh": 8445.338
       },
       {
        "q": "2022-Q1",
@@ -13786,7 +13802,7 @@
       {
        "q": "2024-Q2",
        "payment_gbp": 427152.6900000001,
-       "generation_mwh": 7505.888999999999
+       "generation_mwh": 7505.889
       },
       {
        "q": "2024-Q3",
@@ -13795,8 +13811,8 @@
       },
       {
        "q": "2024-Q4",
-       "payment_gbp": 278171.37000000005,
-       "generation_mwh": 7919.603000000001
+       "payment_gbp": 278171.3700000001,
+       "generation_mwh": 7919.603000000002
       },
       {
        "q": "2025-Q1",
@@ -13868,6 +13884,18 @@
    "cumulative": 2636792517.599819,
    "runrate_per_year": 348340727.1733394,
    "data_to": "2026-10-12",
+   "carry_forward": {
+    "published_cumulative": 2636792517.599819,
+    "data_to": "2026-10-12",
+    "from": "2026-10-13T00:00:00+00:00",
+    "rate_per_year": 348340727.1733394,
+    "rate_per_sec": 11.03825155187148,
+    "rate_per_year_real": 335467265.5169334,
+    "rate_per_sec_real": 10.630316168432753,
+    "estimated_since": 2336817.0718998215,
+    "estimated_since_real": 2250456.440981785,
+    "at": "2026-10-15T10:48:21.741070+00:00"
+   },
    "by_recipient": [
     {
      "lead_party": "Moray Offshore Windfarn East L",
@@ -14012,6 +14040,18 @@
    "cumulative": 2048422912.513091,
    "runrate_per_year": 507985463.5825136,
    "data_to": "2026-08-01",
+   "carry_forward": {
+    "published_cumulative": 2048422912.513091,
+    "data_to": "2026-08-01",
+    "from": "2026-08-02T00:00:00+00:00",
+    "rate_per_year": 507985463.5825136,
+    "rate_per_sec": 16.097087978252894,
+    "rate_per_year_real": 489212087.75446415,
+    "rate_per_sec_real": 15.502195596447896,
+    "estimated_since": 103544546.44626872,
+    "estimated_since_real": 99717900.16455878,
+    "at": "2026-10-15T10:48:21.741070+00:00"
+   },
    "source": "LCCC data portal, capacity market payments",
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "raw_annual": [
@@ -14150,10 +14190,12 @@
     }
    },
    "share_provenance": {
-    "engine": "gas-counterfactual (\"net zero vs Reliable Britain\" model; not yet public)",
-    "commit": "e0bfd735d4f0e1ba43b0bfbafb52dd11043bba64",
-    "commit_date": "2026-10-13",
-    "file": "out/v4/2026-10-13.json"
+    "engine": "gas-counterfactual",
+    "engine_version": "v4-s35",
+    "commit": "353dc68242187b20b33a24f12cfff3f77bd644f4",
+    "commit_date": "2026-10-14",
+    "file": "out/v4/2026-10-14-s35.json",
+    "file_sha256": "f902a6140d22672dd94e5130ff5b91cf2026e46ea87392af55384b604b7d7b49"
    },
    "carry_forward_from": 2025
   },
@@ -14172,6 +14214,18 @@
    "cumulative": 74590000000.0,
    "runrate_per_year": 7700000000.0,
    "data_to": "2025-03-31",
+   "carry_forward": {
+    "published_cumulative": 74590000000.0,
+    "data_to": "2025-03-31",
+    "from": "2025-04-01T00:00:00+00:00",
+    "rate_per_year": 7700000000.0,
+    "rate_per_sec": 243.99827616802293,
+    "rate_per_year_real": 7415434782.608696,
+    "rate_per_sec_real": 234.98094857050904,
+    "estimated_since": 11857267453.996471,
+    "estimated_since_real": 11419064091.566168,
+    "at": "2026-10-15T10:48:21.741070+00:00"
+   },
    "source": "Ofgem Renewables Obligation Annual Reports. 2024 (SY23): Annual Report 2024-25 headline scheme value (PDF, RO_24-25_SY23_Annual_Report, Mar 2026). 2010-2023 (SY9-SY22): scheme value = total ROCs presented x notional worth of a ROC, Figure A4.1 of the SY22 Annual Report (2023-24, PDF, Mar 2025), cross-checked against headline values stated in the SY22/SY23 report text (SY1 GBP 0.25bn, SY18 GBP 6.31bn, SY19 GBP 5.73bn, SY22 GBP 6.75bn, SY23 GBP 7.70bn). 2002-2009 (SY1-SY8): ROCs presented x worth of a ROC from the compliance tables of Ofgem's second annual report (2003-04, Feb 2005), the RO Annual Report 2004-2005 (Feb 2006), the RO Annual Report 2008-09 (Feb 2010) and the RO Annual Report 2010-11 (Mar 2012).",
    "source_url": "https://www.ofgem.gov.uk/transparency-document/renewables-obligation-ro-annual-report-scheme-year-22-april-2023-march-2024",
    "verified": true,
@@ -14319,23 +14373,47 @@
    "cumulative": 18233000000.0,
    "runrate_per_year": 1844000000.0,
    "data_to": "2025-03-31",
+   "carry_forward": {
+    "published_cumulative": 18233000000.0,
+    "data_to": "2025-03-31",
+    "from": "2025-04-01T00:00:00+00:00",
+    "rate_per_year": 1844000000.0,
+    "rate_per_sec": 58.43283392906938,
+    "rate_per_year_real": 1775852173.9130435,
+    "rate_per_sec_real": 56.27335963169073,
+    "estimated_since": 2839584569.5025315,
+    "estimated_since_real": 2734643400.629612,
+    "at": "2026-10-15T10:48:21.741070+00:00"
+   },
    "source": "Ofgem Feed-in Tariffs Annual Report Scheme Year 15 (April 2024 to March 2025), Figure 3.3 \"FIT scheme value, SY1-15\" (PDF, feed_in_tariff_annual_report_sy15, Dec 2025). The report states the series grew every year from SY1 to SY11 (GBP 1,764m), fell for the first time in SY12 (GBP 1,575m), peaked at GBP 1,858m in SY14, and was GBP 1,844m in SY15, which fixes the year order of the charted values.",
    "source_url": "https://www.ofgem.gov.uk/transparency-document/feed-tariffs-annual-report-scheme-year-15-april-2024-march-2025",
    "verified": true
   },
   {
    "id": "ccl",
-   "label": "Climate Change Levy (electricity share) + Carbon Price Support",
+   "label": "Climate Change Levy on electricity (to July 2015) + Carbon Price Support",
    "perspectives": [],
    "cadence": "annual",
    "layer": "indirect",
    "attribution_pct": 1.0,
-   "attribution_note": "Electricity's share of CCL main-rate liabilities (HMRC's published commodity split of declarations) plus Carbon Price Support receipts, which fall wholly on electricity generation. Gas/solid-fuel main-rate CCL is excluded.",
+   "attribution_note": "Two parts. (1) The Climate Change Levy on electricity, counted only up to 31 July 2015, while renewable electricity was exempt (it carried Levy Exemption Certificates) and the levy therefore fell on fossil and nuclear power alone; from 1 August 2015 renewable electricity paid it too (Finance (No. 2) Act 2015 s.49), so later receipts are not counted. 2015 counts 7/12 of the year: HMRC publishes no monthly electricity receipts, and its monthly declarations are booked by quarter. (2) Carbon Price Support, counted in full: a tax only fossil-fuelled generators pay. Gas/solid-fuel main-rate CCL is excluded throughout.",
    "attribution_confidence": "medium",
-   "cumulative": 22848100000.0,
-   "runrate_per_year": 1253000000.0,
+   "cumulative": 15812100000.0,
+   "runrate_per_year": 446200000.0,
    "data_to": "2024-12-31",
-   "source": "HMRC Environmental Taxes Bulletin (formerly Climate Change Levy and Carbon Price Floor Bulletin), March 2026 edition, tables ODS (2026_March_env_tabs_test.ods), Table 1b \"CCL and CPF receipts and clearances data by calendar year\". Value = electricity main-rate declared liabilities (the only commodity split HMRC publishes) plus estimated CPF receipts (CPS applies solely to fossil fuels used for electricity generation, so it is wholly electricity-attributable). Sums rounded down to the nearest GBP 0.1m.",
+   "carry_forward": {
+    "published_cumulative": 15812100000.0,
+    "data_to": "2024-12-31",
+    "from": "2025-01-01T00:00:00+00:00",
+    "rate_per_year": 446200000.0,
+    "rate_per_sec": 14.139224782619717,
+    "rate_per_year_real": 429710000.0,
+    "rate_per_sec_real": 13.616688214566379,
+    "estimated_since": 797052162.2957841,
+    "estimated_since_real": 767595886.732679,
+    "at": "2026-10-15T10:48:21.741070+00:00"
+   },
+   "source": "HMRC Environmental Taxes Bulletin (formerly Climate Change Levy and Carbon Price Floor Bulletin), March 2026 edition, tables ODS (2026_March_env_tabs_test.ods), Table 1b \"CCL and CPF receipts and clearances data by calendar year\": electricity main-rate declared liabilities (the only commodity split HMRC publishes) and estimated CPF receipts (Carbon Price Support, which applies solely to fossil fuels used for electricity generation). The two parts are stored separately below (components) and summed into annual; each part rounded down to the nearest GBP 0.1m. Exemption end: Finance (No. 2) Act 2015 s.49, https://www.legislation.gov.uk/ukpga/2015/33/section/49/enacted , which inserted \"(za) it is generated before 1 August 2015\" into the renewable exemption, FA 2000 Sch 6 para 19(3).",
    "source_url": "https://www.gov.uk/government/statistics/environmental-taxes-bulletin",
    "verified": true
   },
@@ -14351,77 +14429,199 @@
    "cumulative": 10516019346.0,
    "runrate_per_year": 882834732.0,
    "data_to": "2024-12-31",
+   "carry_forward": {
+    "published_cumulative": 10516019346.0,
+    "data_to": "2024-12-31",
+    "from": "2025-01-01T00:00:00+00:00",
+    "rate_per_year": 882834732.0,
+    "rate_per_sec": 27.975344512890715,
+    "rate_per_year_real": 850208231.0347826,
+    "rate_per_sec_real": 26.941473085240407,
+    "estimated_since": 1577017776.9843547,
+    "estimated_since_real": 1518736685.2262373,
+    "at": "2026-10-15T10:48:21.741070+00:00"
+   },
    "source": "Auction revenue: 2012-2018 calendar-year sums of UK EUA auction results from the European Commission's UK Phase III Auction Platform Reports nos. 57 and 58 (ICE Futures Europe auctions on behalf of BEIS/DECC), converted from EUR at Bank of England annual average rates; 2019-2020 \"EU ETS auction income\" from the BEIS Annual Report and Accounts 2020-21 Trust Statement (FY2019-20 GBP 201.4m, FY2020-21 GBP 2,213.1m); 2021-2023 \"UK ETS auction income\" from the BEIS/DESNZ Annual Report and Accounts Trust Statements (FY2021-22 GBP 5,753,639k, FY2022-23 GBP 6,048,951k, FY2023-24 GBP 3,407,068k), attributed to the calendar year in which the financial year starts. 2024 uses the PUBLISHED CALENDAR-YEAR total instead - see calendar_year_revenue below. Power-sector share: from published UK ETS verified emissions (electricity generation / total covered); 2009-2020 a flat 0.5 estimate. See emissions_vintage below for the figures and their editions.",
    "source_url": "https://www.gov.uk/government/publications/desnz-annual-report-and-accounts-2023-to-2024/trust-statement",
    "verified": false
   },
   {
    "id": "tnuos",
-   "label": "Transmission Network Use of System (attributed uplift)",
+   "label": "Extra grid costs of net zero (TNUoS)",
    "perspectives": [],
    "cadence": "annual",
    "layer": "indirect",
-   "attribution_pct": 0.4805543950088046,
-   "attribution_note": "Raw totals stored; attribution happens in the money model. Only the increase above the CPIH-indexed 2002-05 baseline (GBP 0.9bn/yr) is attributed to renewables, floored at zero.",
+   "attribution_pct": 0.3029616192368118,
+   "attribution_note": "Raw totals stored; attribution happens in the money model. Each year counts the cost above what the grid would have cost without net zero; a year below it counts negative, and only the 2002-to-date total is floored at zero (netted over the whole period, 14 Oct 2026). These are costs of net zero, not payments to generators. That cost, year by year, comes from the gas-counterfactual model (release v4-s35; GBP 2.44bn in 2025): the 2002-05 grid cost carried forward by the index the regulator used (RPI to 2020/21, then CPIH), plus the whole of the regulator's allowance for renewing the ageing grid above its 2002-05 level, as the regulator pays it (a return on, and depreciation of, the asset value). Years after 2025, the model's last year, carry the 2025 figure forward with CPIH.",
    "attribution_confidence": "low",
-   "cumulative": 24143725581.395355,
-   "runrate_per_year": 2643151162.790698,
-   "data_to": "2025-03-31",
-   "source": "2013-2024: NESO TNUoS charging statements (total revenue), as compiled in David Turver's \"TNUoS and BSUoS summary\" workbook from NESO's Final TNUoS Tariffs publications. Calendar mapping is fiscal-year-ended-March minus one (the period starting April of the calendar year); validated because the 2022-24 calendar values reproduce our three independent NESO anchors exactly - \"Final TNUoS Tariffs for 2023/24\" (GBP 4,416.4m, our 2023) and \"Final TNUoS Tariffs for 2024/25\" (MAR Total Revenue GBP 4,188.5m, our 2024). 2002-2004: GBP 0.9bn/yr per the verified 2002-05 baseline (reference/baselines.yaml). Earliest intermediate years 2005-2012: REF April 2025 study Table 2 total-charge column (in parentheses), itself compiled from NESO/Ofgem charging statements - pending primary confirmation (not reached by the Turver/NESO series).",
+   "cumulative": 15251593743.689999,
+   "runrate_per_year": 1886113232.0900002,
+   "data_to": "2024-12-31",
+   "carry_forward": {
+    "published_cumulative": 15251593743.689999,
+    "data_to": "2024-12-31",
+    "from": "2025-01-01T00:00:00+00:00",
+    "rate_per_year": 1886113232.0900002,
+    "rate_per_sec": 59.76732172566989,
+    "rate_per_year_real": 1816409047.4258044,
+    "rate_per_sec_real": 57.55852940102557,
+    "estimated_since": 3369185634.182036,
+    "estimated_since_real": 3244672252.0492215,
+    "at": "2026-10-15T10:48:21.741070+00:00"
+   },
+   "source": "Every year from a primary document (v4-s35, T9, 14 Oct 2026: the REF April 2025 Table 2 figures formerly used for 2002-2012 were a secondary compilation and are removed). FY2001/02-2005/06: GB transmission owners' allowed revenues, NGC (Ofgem Sep 2000 final proposals Table A6.2) + SP Transmission and SHETL (Ofgem BETTA proposals Jul 2004 Tables 1-2; FY2005/06 from the Dec 2004 final proposals Table 2.3), restated to money of the year by RPI (no GB TNUoS existed before BETTA, April 2005). FY2006/07: Ofgem TPCR4 final proposals Dec 2006 Table 2.1. FY2007/08-2009/10: Ofgem Transmission Annual Reports, \"Total Actual Revenue\" (NGET, including income collected for the Scottish TOs). FY2010/11-2012/13: National Grid TNUoS statement 2012/13 \"Total TNUoS revenue\". FY2013/14 onwards: National Grid / NESO TNUoS charging statements and Final TNUoS Tariffs (2021/22 \u00a33,318m; 2023/24 \u00a34,416.4m; 2024/25 MAR total \u00a34,188.5m). FY2013/14-2020/21 were taken until 14 Oct 2026 from David Turver's workbook compiling the same statements (a secondary source); they are now read from the statements themselves, which differ for 2013/14 (\u00a32,153.0m, not \u00a32,196.6m), 2014/15 (\u00a32,477.3m, not \u00a32,524.3m), 2018/19 (\u00a32,670.0m, not \u00a32,670.3m) and 2022/23 (\u00a33,594.25m, not \u00a33,594.0m). These are the gas-counterfactual engine's own series (gascf.grid.tnuos_fy; source ids in its data/raw/SOURCE_IDS.md). National Grid published the charging statements until NESO took over the role in Oct 2024; only the latest years are NESO documents.",
    "source_url": "https://www.neso.energy/industry-information/charging/tnuos-charges",
-   "verified": false,
+   "verified": true,
    "raw_annual": [
     {
      "year": 2002,
-     "cost": 900000000.0
+     "cost": 961134247.75
     },
     {
      "year": 2003,
-     "cost": 900000000.0
+     "cost": 974957267.25
     },
     {
      "year": 2004,
-     "cost": 900000000.0
+     "cost": 990413095.5
     },
     {
      "year": 2005,
-     "cost": 900000000.0
+     "cost": 1017766642.25
     },
     {
      "year": 2006,
-     "cost": 1000000000.0
+     "cost": 1227578157.5
     },
     {
      "year": 2007,
-     "cost": 1000000000.0
+     "cost": 1297765036.5
     },
     {
      "year": 2008,
-     "cost": 1400000000.0
+     "cost": 1390902500.0
     },
     {
      "year": 2009,
-     "cost": 1600000000.0
+     "cost": 1454232500.0
     },
     {
      "year": 2010,
-     "cost": 1600000000.0
+     "cost": 1537775000.0
     },
     {
      "year": 2011,
-     "cost": 1600000000.0
+     "cost": 1682750000.0
     },
     {
      "year": 2012,
-     "cost": 1600000000.0
+     "cost": 1891750000.0
     },
     {
      "year": 2013,
-     "cost": 2196600000.0
+     "cost": 2101750000.0
     },
     {
      "year": 2014,
-     "cost": 2524300000.0
+     "cost": 2396225000.0
+    },
+    {
+     "year": 2015,
+     "cost": 2596850000.0
+    },
+    {
+     "year": 2016,
+     "cost": 2690700000.0
+    },
+    {
+     "year": 2017,
+     "cost": 2650800000.0
+    },
+    {
+     "year": 2018,
+     "cost": 2660375000.0
+    },
+    {
+     "year": 2019,
+     "cost": 2795550000.0
+    },
+    {
+     "year": 2020,
+     "cost": 2841600000.0
+    },
+    {
+     "year": 2021,
+     "cost": 3199250000.0
+    },
+    {
+     "year": 2022,
+     "cost": 3525189465.75
+    },
+    {
+     "year": 2023,
+     "cost": 4210876320.75
+    },
+    {
+     "year": 2024,
+     "cost": 4245479388.5
+    }
+   ],
+   "raw_annual_fy": [
+    {
+     "year": 2001,
+     "cost": 955711411.0
+    },
+    {
+     "year": 2002,
+     "cost": 962941860.0
+    },
+    {
+     "year": 2003,
+     "cost": 978962403.0
+    },
+    {
+     "year": 2004,
+     "cost": 994229993.0
+    },
+    {
+     "year": 2005,
+     "cost": 1025612192.0
+    },
+    {
+     "year": 2006,
+     "cost": 1294900146.0
+    },
+    {
+     "year": 2007,
+     "cost": 1298720000.0
+    },
+    {
+     "year": 2008,
+     "cost": 1421630000.0
+    },
+    {
+     "year": 2009,
+     "cost": 1465100000.0
+    },
+    {
+     "year": 2010,
+     "cost": 1562000000.0
+    },
+    {
+     "year": 2011,
+     "cost": 1723000000.0
+    },
+    {
+     "year": 2012,
+     "cost": 1948000000.0
+    },
+    {
+     "year": 2013,
+     "cost": 2153000000.0
+    },
+    {
+     "year": 2014,
+     "cost": 2477300000.0
     },
     {
      "year": 2015,
@@ -14437,7 +14637,7 @@
     },
     {
      "year": 2018,
-     "cost": 2670300000.0
+     "cost": 2670000000.0
     },
     {
      "year": 2019,
@@ -14449,21 +14649,198 @@
     },
     {
      "year": 2021,
-     "cost": 3594000000.0
+     "cost": 3318000000.0
     },
     {
      "year": 2022,
-     "cost": 3594000000.0
+     "cost": 3594252621.0
     },
     {
      "year": 2023,
-     "cost": 4416400000.0
+     "cost": 4416417554.0
     },
     {
      "year": 2024,
      "cost": 4188500000.0
     }
-   ]
+   ],
+   "raw_year_basis": "calendar: 0.25 x FY(y-1) + 0.75 x FY(y) of the stored financial-year charges (CY2002 uses FY2001/02)",
+   "netting": {
+    "rule": "Netted over the whole period: each year's figure is the measured cost minus the no-net-zero cost and may be negative; only the line's 2002-to-date total is floored at zero (until 14 October 2026 each year was floored at zero).",
+    "negative_years": {
+     "2004": -9268455.789999962,
+     "2005": -11200166.580000043
+    },
+    "total_floor_binds": false
+   },
+   "counterfactual_annual": [
+    {
+     "year": 2002,
+     "cost": 945763208.56,
+     "cost_low_netzero": 945763208.56,
+     "cost_high_netzero": 945763208.56,
+     "basis": "modelled"
+    },
+    {
+     "year": 2003,
+     "cost": 971166077.67,
+     "cost_low_netzero": 971166077.67,
+     "cost_high_netzero": 971166077.67,
+     "basis": "modelled"
+    },
+    {
+     "year": 2004,
+     "cost": 999681551.29,
+     "cost_low_netzero": 999681551.29,
+     "cost_high_netzero": 999681551.29,
+     "basis": "modelled"
+    },
+    {
+     "year": 2005,
+     "cost": 1028966808.83,
+     "cost_low_netzero": 1028966808.83,
+     "cost_high_netzero": 1028966808.83,
+     "basis": "modelled"
+    },
+    {
+     "year": 2006,
+     "cost": 1063238927.36,
+     "cost_low_netzero": 1063238927.36,
+     "cost_high_netzero": 1063238927.36,
+     "basis": "modelled"
+    },
+    {
+     "year": 2007,
+     "cost": 1116455669.33,
+     "cost_low_netzero": 1116455669.33,
+     "cost_high_netzero": 1106045606.67,
+     "basis": "modelled"
+    },
+    {
+     "year": 2008,
+     "cost": 1167330223.43,
+     "cost_low_netzero": 1167330223.43,
+     "cost_high_netzero": 1140920164.78,
+     "basis": "modelled"
+    },
+    {
+     "year": 2009,
+     "cost": 1199310508.53,
+     "cost_low_netzero": 1199310508.53,
+     "cost_high_netzero": 1155412183.66,
+     "basis": "modelled"
+    },
+    {
+     "year": 2010,
+     "cost": 1263988150.68,
+     "cost_low_netzero": 1263988150.68,
+     "cost_high_netzero": 1199089053.47,
+     "basis": "modelled"
+    },
+    {
+     "year": 2011,
+     "cost": 1345718406.69,
+     "cost_low_netzero": 1345718406.69,
+     "cost_high_netzero": 1255383685.67,
+     "basis": "modelled"
+    },
+    {
+     "year": 2012,
+     "cost": 1416535717.18,
+     "cost_low_netzero": 1416535717.18,
+     "cost_high_netzero": 1299562588.47,
+     "basis": "modelled"
+    },
+    {
+     "year": 2013,
+     "cost": 1482773954.76,
+     "cost_low_netzero": 1482773954.76,
+     "cost_high_netzero": 1337784033.17,
+     "basis": "modelled"
+    },
+    {
+     "year": 2014,
+     "cost": 1547109850.42,
+     "cost_low_netzero": 1547109850.42,
+     "cost_high_netzero": 1367470917.09,
+     "basis": "modelled"
+    },
+    {
+     "year": 2015,
+     "cost": 1601997778.93,
+     "cost_low_netzero": 1601997778.93,
+     "cost_high_netzero": 1386380826.25,
+     "basis": "modelled"
+    },
+    {
+     "year": 2016,
+     "cost": 1667312297.17,
+     "cost_low_netzero": 1667312297.17,
+     "cost_high_netzero": 1413724889.57,
+     "basis": "modelled"
+    },
+    {
+     "year": 2017,
+     "cost": 1754874388.43,
+     "cost_low_netzero": 1754874388.43,
+     "cost_high_netzero": 1458941327.21,
+     "basis": "modelled"
+    },
+    {
+     "year": 2018,
+     "cost": 1846202800.13,
+     "cost_low_netzero": 1846202800.13,
+     "cost_high_netzero": 1506065490.19,
+     "basis": "modelled"
+    },
+    {
+     "year": 2019,
+     "cost": 1927110910.06,
+     "cost_low_netzero": 1927110910.06,
+     "cost_high_netzero": 1543617557.57,
+     "basis": "modelled"
+    },
+    {
+     "year": 2020,
+     "cost": 2004082016.55,
+     "cost_low_netzero": 2004082016.55,
+     "cost_high_netzero": 1577186829.92,
+     "basis": "modelled"
+    },
+    {
+     "year": 2021,
+     "cost": 2003556143.63,
+     "cost_low_netzero": 2003556143.63,
+     "cost_high_netzero": 1631608396.87,
+     "basis": "modelled"
+    },
+    {
+     "year": 2022,
+     "cost": 2118086764.09,
+     "cost_low_netzero": 2118086764.09,
+     "cost_high_netzero": 1741395149.66,
+     "basis": "modelled"
+    },
+    {
+     "year": 2023,
+     "cost": 2259447567.93,
+     "cost_low_netzero": 2259447567.93,
+     "cost_high_netzero": 1850458431.26,
+     "basis": "modelled"
+    },
+    {
+     "year": 2024,
+     "cost": 2359366156.41,
+     "cost_low_netzero": 2359366156.41,
+     "cost_high_netzero": 1925156831.43,
+     "basis": "modelled"
+    }
+   ],
+   "counterfactual_source": "gas-counterfactual engine v4-s35 (GO5: no-net-zero grid cost; generators' share included)",
+   "counterfactual_method": "GO5 (spec \u00a77.1, \u00a77.3): G0 carried by the transmission price controls' own index (RPI to FY2020/21, then CPIH; RIIO-ET2 PCFH para 2.17; gascf.grid.control_index_fy), plus the grid renewal allowance R: the non-load-related allowance above the 2002-05 level, rolled into an indexed RAV, depreciated straight line over 45 years, earning the current control's real allowed return (RIIO-ET2 PCFH para 4.1). Central = the whole allowance (v4-s35, Richard); low/high are by NET-ZERO cost: low = central (R whole), high = R not counted. Generators' share included.",
+   "counterfactual_range_labels": "low/high = the ends of NET ZERO's cost range: low_gbp holds the LARGER no-net-zero cost (smaller net-zero cost), high_gbp the smaller",
+   "counterfactual_range_crossing_years": [],
+   "counterfactual_carry_forward": "For a calendar year after carry_forward.from (the engine's last modelled year), the no-net-zero cost is that year's figure carried by CPIH: value(y) = value(from) x CPIH(y) / CPIH(from). The Clock applies it with its own CPIH series (and the latest index for a year without one, including the run-rate), the same series it deflates every line with."
   },
   {
    "id": "constraint_turnup",
@@ -14477,31 +14854,43 @@
    "cumulative": 5431290444.449644,
    "runrate_per_year": 1597872750.4035532,
    "data_to": "2026-10-05",
+   "carry_forward": {
+    "published_cumulative": 5431290444.449644,
+    "data_to": "2026-10-05",
+    "from": "2026-10-06T00:00:00+00:00",
+    "rate_per_year": 1597872750.4035532,
+    "rate_per_sec": 50.63353203043176,
+    "rate_per_year_real": 1538820931.3669002,
+    "rate_per_sec_real": 48.76229280322015,
+    "estimated_since": 41342367.05937114,
+    "estimated_since_real": 39814496.972394384,
+    "at": "2026-10-15T10:48:21.741070+00:00"
+   },
    "by_fuel_while_wind_constrained": [
     {
      "fuel": "CCGT",
-     "cost": 2388701673.8941255,
-     "volume_mwh": 18251938.157984328
+     "cost": 2388701673.8941245,
+     "volume_mwh": 18251938.15798434
     },
     {
      "fuel": "NESO_TRADE",
-     "cost": 1102172211.3780708,
+     "cost": 1102172211.3780706,
      "volume_mwh": 8293647.427999999
     },
     {
      "fuel": "BIOMASS",
-     "cost": 91895383.2393849,
-     "volume_mwh": 586885.2903400843
+     "cost": 91895383.23938492,
+     "volume_mwh": 586885.2903400845
     },
     {
      "fuel": "COAL",
-     "cost": 34860329.30137333,
-     "volume_mwh": 299840.79856666666
+     "cost": 34860329.301373325,
+     "volume_mwh": 299840.79856666655
     },
     {
      "fuel": "UNCLASSIFIED",
      "cost": 10743162.469684077,
-     "volume_mwh": 86330.07959110512
+     "volume_mwh": 86330.07959110511
     },
     {
      "fuel": "PS",
@@ -14510,23 +14899,23 @@
     },
     {
      "fuel": "NO_ID",
-     "cost": 7215580.303509001,
+     "cost": 7215580.303509,
      "volume_mwh": 57450.6457
     },
     {
      "fuel": "OCGT",
-     "cost": 4076197.708866667,
+     "cost": 4076197.708866666,
      "volume_mwh": 6483.9969
     },
     {
      "fuel": "NPSHYD",
-     "cost": 1787609.3862087324,
-     "volume_mwh": 14222.124977634758
+     "cost": 1787609.386208732,
+     "volume_mwh": 14222.12497763476
     },
     {
      "fuel": "OTHER",
      "cost": 1359857.640879617,
-     "volume_mwh": 9364.425064956367
+     "volume_mwh": 9364.42506495637
     }
    ],
    "cross_check_cumulative": {
@@ -14589,76 +14978,88 @@
   },
   {
    "id": "bsuos",
-   "label": "Balancing costs (BSUoS uplift)",
+   "label": "Extra balancing costs of net zero (BSUoS)",
    "perspectives": [],
    "cadence": "daily",
    "layer": "indirect",
-   "attribution_pct": 0.4589757585828874,
-   "attribution_note": "Raw totals stored; attribution happens in the money model. Only the increase above the CPIH-indexed 2002-05 baseline (GBP 0.4bn/yr) is attributed, NET of wind constraint payments already counted in the direct layer, floored at zero. The estimated cost of replacing switched-off wind (constraint turn-up) is then shown as its own line and taken out of this one.",
+   "attribution_pct": 0.17503796854556197,
+   "attribution_note": "Raw totals stored; attribution happens in the money model. Each year counts the cost above what balancing would have cost without net zero, NET of wind constraint payments already counted in the direct layer; a year below it counts negative, and only the 2002-to-date total of the balancing line (this line plus constraint turn-up) is floored at zero (netted over the whole period, 14 Oct 2026). For the current, part year the no-net-zero cost is pro-rated to the days the data covers. These are costs of net zero, not payments to generators. That cost, year by year, comes from the gas-counterfactual model (release v4-s35; GBP 1.45bn in 2025): the 2002-05 balancing cost split into an energy part that follows the gas price and a services part that follows CPIH (energy share from NESO's 2018-19 outturn, a share of external cost, so applied to the external part of the 2002-05 cost only). Years after 2025, the model's last year, carry the 2025 figure forward with CPIH. The estimated cost of replacing switched-off wind (constraint turn-up) is then shown as its own line and taken out of this one.",
    "attribution_confidence": "low",
-   "cumulative": 17903275297.721855,
-   "runrate_per_year": 2021875492.0254648,
+   "cumulative": 6866525038.233387,
+   "runrate_per_year": 1288497057.829108,
    "data_to": "2026-10-05",
+   "carry_forward": {
+    "published_cumulative": 6866525038.233387,
+    "data_to": "2026-10-05",
+    "from": "2026-10-06T00:00:00+00:00",
+    "rate_per_year": 1288497057.829108,
+    "rate_per_sec": 40.83000791660671,
+    "rate_per_year_real": 1240878688.300641,
+    "rate_per_sec_real": 39.321072841427764,
+    "estimated_since": 33337772.551811263,
+    "estimated_since_real": 32105724.435766064,
+    "at": "2026-10-15T10:48:21.741070+00:00"
+   },
    "raw_annual": [
     {
      "year": 2002,
-     "cost": 400000000.0
+     "cost": 498979037.75
     },
     {
      "year": 2003,
-     "cost": 400000000.0
+     "cost": 476032511.0
     },
     {
      "year": 2004,
-     "cost": 400000000.0
+     "cost": 499377530.0
     },
     {
      "year": 2005,
-     "cost": 642000000.0
+     "cost": 609050810.75
     },
     {
      "year": 2006,
-     "cost": 700000000.0
+     "cost": 605315938.5
     },
     {
      "year": 2007,
-     "cost": 700000000.0
+     "cost": 660349479.5
     },
     {
      "year": 2008,
-     "cost": 1000000000.0
+     "cost": 925942500.0
     },
     {
      "year": 2009,
-     "cost": 800000000.0
+     "cost": 844775000.0
     },
     {
      "year": 2010,
-     "cost": 700000000.0
+     "cost": 836234948.0
     },
     {
      "year": 2011,
-     "cost": 861500000.0
+     "cost": 908103316.0
     },
     {
      "year": 2012,
-     "cost": 861500000.0
+     "cost": 912375000.0
     },
     {
      "year": 2013,
-     "cost": 1002000000.0
+     "cost": 978375000.0
     },
     {
      "year": 2014,
-     "cost": 1000000000.0
+     "cost": 992850000.0
     },
     {
      "year": 2015,
-     "cost": 1100000000.0
+     "cost": 1009750000.0
     },
     {
      "year": 2016,
-     "cost": 1200000000.0
+     "cost": 1231246489.5
     },
     {
      "year": 2017,
@@ -14701,9 +15102,214 @@
      "cost": 3643856012.94
     }
    ],
-   "source": "2005, 2011-2013: NAO \"Electricity Balancing Services\" (May 2014, HC 41, from Ofgem/National Grid data): total balancing costs recovered through BSUoS GBP 642m in 2005-06 rising to GBP 1,002m in 2013-14; 2011-12 plus 2012-13 expenditure totalled GBP 1,723m (split evenly here, the lower of NAO and REF figures). 2002-2004: GBP 0.4bn/yr per the verified 2002-05 baseline (reference/baselines.yaml). 2006-2010 and 2014-2016: REF April 2025 study Table 2 total-charge column, pending confirmation against National Grid Monthly Balancing Services Summary archives.",
+   "source": "Every year from a primary document (v4-s35, T9, 14 Oct 2026: the REF April 2025 Table 2 figures formerly used for 2002-04, 2006-10 and 2014-16 were a secondary compilation and are removed). FY2001/02-2004/05: NGET, SO incentive scheme note, Dec 2005 (incentivised balancing cost, E&W), grossed up to GB by demand and by the SO internal-cost ratio (Ofgem Transmission Annual Report 2008-09 Table 22). FY2005/06: NAO, Electricity Balancing Services (May 2014, HC 41) para 2.2, \u00a3642m. FY2006/07: National Grid 2010 Table 1 IBC x the same internal ratio (estimated). FY2007/08-2009/10: Ofgem Transmission Annual Reports, SO external + internal costs. FY2010/11: interpolated in real terms between its neighbours (estimated). FY2011/12-2015/16: National Grid Monthly Balancing Services Summary, March issues section 10.3 (external + internal). FY2016/17: NESO BSUoS half-hourly charge data. These are the gas-counterfactual engine's own series (gascf.balancing.bsuos_fy and baseline_fy; source ids in its data/raw/SOURCE_IDS.md). The NAO 2011-13 even split (\u00a3861.5m a year) is replaced by the MBSS figures.",
    "source_url": "https://www.nao.org.uk/wp-content/uploads/2014/05/Electricity-Balancing-Services.pdf",
-   "verified": false
+   "verified": true,
+   "netting": {
+    "rule": "Netted over the whole period: each year's figure is the measured cost minus the no-net-zero cost and may be negative; only the line's 2002-to-date total is floored at zero (until 14 October 2026 each year was floored at zero).",
+    "negative_years": {
+     "2003": -14889761.329999983,
+     "2004": -19330729.449999988,
+     "2006": -88823934.74000001,
+     "2007": -23632319.50999999,
+     "2011": -41267296.26999998,
+     "2012": -74792182.52999997,
+     "2013": -132327350.24000001
+    },
+    "total_floor_binds": false
+   },
+   "counterfactual_part_year": {
+    "year": 2026,
+    "data_to": "2026-10-05",
+    "fraction": 0.761644
+   },
+   "counterfactual_annual": [
+    {
+     "year": 2002,
+     "cost": 471864174.65,
+     "cost_low_netzero": 551519633.11,
+     "cost_high_netzero": 480547009.46,
+     "basis": "modelled"
+    },
+    {
+     "year": 2003,
+     "cost": 490922272.33,
+     "cost_low_netzero": 578455087.82,
+     "cost_high_netzero": 496708497.54,
+     "basis": "modelled"
+    },
+    {
+     "year": 2004,
+     "cost": 518708259.45,
+     "cost_low_netzero": 618536756.99,
+     "cost_high_netzero": 519706358.89,
+     "basis": "modelled"
+    },
+    {
+     "year": 2005,
+     "cost": 600664940.52,
+     "cost_low_netzero": 740485287.12,
+     "cost_high_netzero": 584944548.77,
+     "basis": "modelled"
+    },
+    {
+     "year": 2006,
+     "cost": 694139873.24,
+     "cost_low_netzero": 879175868.02,
+     "cost_high_netzero": 659627779.85,
+     "basis": "modelled"
+    },
+    {
+     "year": 2007,
+     "cost": 683981799.01,
+     "cost_low_netzero": 859308303.63,
+     "cost_high_netzero": 654853671.92,
+     "basis": "modelled"
+    },
+    {
+     "year": 2008,
+     "cost": 824553072.14,
+     "cost_low_netzero": 1068120537.74,
+     "cost_high_netzero": 766995295.54,
+     "basis": "modelled"
+    },
+    {
+     "year": 2009,
+     "cost": 738257241.83,
+     "cost_low_netzero": 932049064.07,
+     "cost_high_netzero": 703645258.12,
+     "basis": "modelled"
+    },
+    {
+     "year": 2010,
+     "cost": 777334114.13,
+     "cost_low_netzero": 986938900.97,
+     "cost_high_netzero": 737019003.56,
+     "basis": "modelled"
+    },
+    {
+     "year": 2011,
+     "cost": 936543856.27,
+     "cost_low_netzero": 1222949651.47,
+     "cost_high_netzero": 864369690.05,
+     "basis": "modelled"
+    },
+    {
+     "year": 2012,
+     "cost": 981242951.53,
+     "cost_low_netzero": 1286000753.64,
+     "cost_high_netzero": 902361198.64,
+     "basis": "modelled"
+    },
+    {
+     "year": 2013,
+     "cost": 1077994999.24,
+     "cost_low_netzero": 1429259467.15,
+     "cost_high_netzero": 979867726.89,
+     "basis": "modelled"
+    },
+    {
+     "year": 2014,
+     "cost": 892387741.8,
+     "cost_low_netzero": 1141704300.43,
+     "cost_high_netzero": 840051540.12,
+     "basis": "modelled"
+    },
+    {
+     "year": 2015,
+     "cost": 815611139.77,
+     "cost_low_netzero": 1023162548.88,
+     "cost_high_netzero": 781933759.48,
+     "basis": "modelled"
+    },
+    {
+     "year": 2016,
+     "cost": 734752726.03,
+     "cost_low_netzero": 897007704.23,
+     "cost_high_netzero": 721639585.89,
+     "basis": "modelled"
+    },
+    {
+     "year": 2017,
+     "cost": 854189923.97,
+     "cost_low_netzero": 1074118191.67,
+     "cost_high_netzero": 817136015.53,
+     "basis": "modelled"
+    },
+    {
+     "year": 2018,
+     "cost": 1024658418.18,
+     "cost_low_netzero": 1329870927.04,
+     "cost_high_netzero": 951365698.15,
+     "basis": "modelled"
+    },
+    {
+     "year": 2019,
+     "cost": 760151979.92,
+     "cost_low_netzero": 920521831.35,
+     "cost_high_netzero": 751807543.07,
+     "basis": "modelled"
+    },
+    {
+     "year": 2020,
+     "cost": 659498311.93,
+     "cost_low_netzero": 763810548.36,
+     "cost_high_netzero": 676523962.46,
+     "basis": "modelled"
+    },
+    {
+     "year": 2021,
+     "cost": 1632057389.27,
+     "cost_low_netzero": 2247832683.62,
+     "cost_high_netzero": 1424983219.29,
+     "basis": "modelled"
+    },
+    {
+     "year": 2022,
+     "cost": 2674893320.44,
+     "cost_low_netzero": 3825488619.28,
+     "cost_high_netzero": 2237003578.49,
+     "basis": "modelled"
+    },
+    {
+     "year": 2023,
+     "cost": 1517853403.7,
+     "cost_low_netzero": 2034345977.44,
+     "cost_high_netzero": 1364426255.21,
+     "basis": "modelled"
+    },
+    {
+     "year": 2024,
+     "cost": 1383587081.76,
+     "cost_low_netzero": 1818885910.63,
+     "cost_high_netzero": 1268473042.13,
+     "basis": "modelled"
+    },
+    {
+     "year": 2025,
+     "cost": 1446556728.77,
+     "cost_low_netzero": 1903815264.33,
+     "cost_high_netzero": 1324706553.03,
+     "basis": "modelled"
+    },
+    {
+     "year": 2026,
+     "cost": 1446556728.77,
+     "cost_low_netzero": 1903815264.33,
+     "cost_high_netzero": 1324706553.03,
+     "basis": "carried forward from 2025 by CPIH"
+    }
+   ],
+   "counterfactual_source": "gas-counterfactual engine v4-s35 (GO4: no-net-zero balancing cost, BSUoS basis; generators' share included)",
+   "counterfactual_method": "GO4 (spec \u00a77.2): B0 (option 'ibc', CY2002-05 mean) split into an energy part carried by the gas price gas(y)/gas(2002-05) and a services part carried by CPIH; energy share = NESO 2025 Annual Balancing Costs workbook, FY2018/19 (central), a share of external cost, so applied to B0's external part B0/(1 + SO internal ratio) only (v4-s35); SO internal costs ride on CPIH. Generators' share included. Range, by NET-ZERO cost: low = the stacked option 'nao_2005|max' (the largest no-net-zero cost), high = 'ibc|min', each as one rule for every year (chosen on the 2002-2025 total), so an end can cross the central: the high end lies above the central no-net-zero cost in 2002, 2003, 2004, 2020.",
+   "counterfactual_range_labels": "low/high = the ends of NET ZERO's cost range: low_gbp holds the LARGER no-net-zero cost (smaller net-zero cost), high_gbp the smaller",
+   "counterfactual_range_crossing_years": [
+    2002,
+    2003,
+    2004,
+    2020
+   ],
+   "counterfactual_carry_forward": "For a calendar year after carry_forward.from (the engine's last modelled year), the no-net-zero cost is that year's figure carried by CPIH: value(y) = value(from) x CPIH(y) / CPIH(from). The Clock applies it with its own CPIH series (and the latest index for a year without one, including the run-rate), the same series it deflates every line with."
   }
  ]
 }

@@ -74,10 +74,14 @@
       return '<i style="height:' + h + '%" title="' + a.year + ': ' + SC.fmtCompact(a.cost) + '"></i>';
     }).join('');
 
-    var anchor = Date.parse(data.totals.generated_at);
+    // published to the line's latest data, plus the estimate since its data
+    // end at its latest rate (the front page's per-line carry-forward)
+    var cf = s.carry_forward;
+    var anchor = cf ? Date.parse(cf.from) : Date.parse(data.totals.generated_at);
+    var cfRate = cf ? cf.rate_per_sec : rate;
     SC.startTicker(function (t) {
       document.getElementById('x-total').textContent =
-        SC.fmtFull(s.cumulative + rate * (t - anchor) / 1000);
+        SC.fmtFull(s.cumulative + cfRate * Math.max(0, t - anchor) / 1000);
     });
 
     SC.track('explainer-view/' + document.body.getAttribute('data-scheme-slug'));

@@ -694,7 +694,7 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         block["runrate_gbp_per_year_2024"] = block["runrate_gbp_per_year"] * factor
         block["rate_gbp_per_sec_2024"] = block["rate_gbp_per_sec"] * factor
     out = {"schemes": schemes, "perspectives": out_perspectives,
-           "indirect": out_indirect}
+           "indirect": out_indirect, "real_factor": factor}
     if model_pin is not None:
         out["model_pin"] = {"engine_version": model_pin["engine_version"],
                             "sha256": model_pin["sha256"]}

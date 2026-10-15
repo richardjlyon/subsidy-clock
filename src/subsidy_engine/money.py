@@ -4,7 +4,7 @@ cumulative totals, run-rates and per-second rates the dashboard presents."""
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 import polars as pl
 
@@ -59,6 +59,32 @@ def trailing_runrate(daily: pl.DataFrame, *, col: str = "cost_gbp",
 
 def rate_per_second(runrate_gbp_per_year: float) -> float:
     return runrate_gbp_per_year / SECONDS_PER_YEAR
+
+
+def carry_from(data_to: date) -> datetime:
+    """The instant a line's estimate starts: midnight UTC at the end of the last
+    day its published data cover (data_to is inclusive)."""
+    d = data_to + timedelta(days=1)
+    return datetime(d.year, d.month, d.day, tzinfo=timezone.utc)
+
+
+def estimated_since(runrate_gbp_per_year: float, data_to: date | None,
+                    at: datetime) -> float:
+    """Cost incurred since a line's published data end, carried forward at the
+    line's latest annual rate: rate x (at - end of data) / 365.25 days.
+
+    Technical Paper No. 1 §8.1 rule (lag = latest rate x (build date - data
+    end) / 365.25). The estimate starts at the end of data_to (data_to is the
+    last day counted) and runs continuously, so at the END of the build day
+    (00:00 UTC the day after) it has run (build date - data_to) whole days and
+    equals the paper's figure to the penny; at the build instant itself it
+    falls short only by the rest of that day. Never negative: a line
+    whose data reach past `at` carries nothing. When the next build moves
+    data_to forward, published data replace the estimate for those days."""
+    if data_to is None:
+        return 0.0
+    secs = (at - carry_from(data_to)).total_seconds()
+    return runrate_gbp_per_year * max(0.0, secs) / SECONDS_PER_YEAR
 
 
 def gross_net(df: pl.DataFrame, col: str) -> tuple[float, float]:

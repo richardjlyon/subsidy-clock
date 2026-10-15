@@ -36,16 +36,16 @@
 </style>
 </head>
 <body>
-  <div class="fig" id="fig">£232,979,241,267</div>
+  <div class="fig" id="fig">£220,210,717,986</div>
   <div class="meta">
-    <div class="what"><span id="what">paid to UK renewable generators plus estimated indirect system costs since 2002</span> · as of <span id="asof">13 October 2026</span></div>
+    <div class="what"><span id="what">paid to UK renewable generators plus estimated indirect system costs since 2002</span> · as of <span id="asof">15 October 2026</span></div>
     <div class="attr"><a href="https://subsidyclock.co.uk" target="_blank" rel="noopener">The Subsidy Clock — subsidyclock.co.uk</a></div>
   </div>
 <script>
 (function () {
   'use strict';
   // stamped at build time; the fetch below refreshes them if this file is cached
-  var stamped = { "cum": 232979241267.36255, "rate": 651.954193600595, "generated": "2026-10-13T13:31:40.969203+00:00" };
+  var stamped = { "cum": 220210717986.70258, "rate": 581.8500273025163, "generated": "2026-10-15T10:48:21.741070+00:00" };
 
   var q = new URLSearchParams(location.search);
   var size = q.get('size');
@@ -58,24 +58,35 @@
     ? 'paid to UK renewable generators plus estimated indirect system costs since 2002'
     : 'paid to UK renewable generators since 2002';
 
+  // published to each line's latest data + the estimate since each line's
+  // data end at its latest rate (per-line carry-forward, as the front page)
   function pick(t) {
     var p = t.perspectives.renewables;
-    var d = basis === 'real' ? p.real : p;
-    var cum = d.cumulative, rate = d.rate_per_sec;
-    if (scope === 'combined' && t.indirect) {
-      var iv = basis === 'real' ? t.indirect.real : t.indirect;
-      cum += iv.cumulative;
-      rate += iv.rate_per_sec;
-    }
-    return { cum: cum, rate: rate };
+    var blocks = [basis === 'real' ? p.real : p];
+    if (scope === 'combined' && t.indirect)
+      blocks.push(basis === 'real' ? t.indirect.real : t.indirect);
+    var cum = 0, lines = [], rate = 0;
+    blocks.forEach(function (b) {
+      cum += b.cumulative; rate += b.rate_per_sec;
+      (b.carry_forward || []).forEach(function (l) {
+        lines.push({ from: Date.parse(l.from), rate: l.rate_per_sec });
+      });
+    });
+    return { cum: cum, lines: lines, rate: rate };
+  }
+  function liveValue(v, t, generated) {
+    if (!v.lines.length) return v.cum + v.rate * (t - generated) / 1000;
+    var x = v.cum;
+    v.lines.forEach(function (l) { if (t > l.from) x += l.rate * (t - l.from) / 1000; });
+    return x;
   }
 
   function fmtFull(v) { return '£' + Math.floor(v).toLocaleString('en-GB'); }
-  function start(cum, rate, generatedIso) {
+  function start(v, generatedIso) {
     var generated = Date.parse(generatedIso);
     var el = document.getElementById('fig');
     function tick() {
-      el.textContent = fmtFull(cum + rate * (Date.now() - generated) / 1000);
+      el.textContent = fmtFull(liveValue(v, Date.now(), generated));
       setTimeout(tick, 1000);
     }
     tick();
@@ -86,9 +97,10 @@
     var d = new Date(t.generated_at);
     document.getElementById('asof').textContent = d.getUTCDate() + ' ' +
       d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
-    start(v.cum, v.rate, t.generated_at);
+    start(v, t.generated_at);
   }).catch(function () {
-    start(stamped.cum, stamped.rate, stamped.generated);
+    // stamped.cum is the running total at the build: tick on at the total rate
+    start({ cum: stamped.cum, lines: [], rate: stamped.rate }, stamped.generated);
   });
 
   // log embed loads as Matomo events (image tracker: no script, no cookies)

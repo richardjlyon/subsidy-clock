@@ -214,6 +214,13 @@ html[data-skin="ft"] .ft-lead {
   color: var(--ink); max-width: 30em;
 }
 html[data-skin="ft"] .ft-lead strong { font-weight: 700; }
+html[data-skin="ft"] .hero-est {
+  margin: 10px 0 0;
+  font-family: var(--sans);
+  font-size: 0.86rem; line-height: 1.45;
+  color: var(--muted); max-width: 34em;
+}
+html[data-skin="ft"] .hero-est a { color: inherit; }
 
 /* right box: claret live figure + per-day descriptor */
 html[data-skin="ft"] .since-opened {

@@ -149,6 +149,12 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
         return real_cum[scheme_id] if scheme_id in real_cum else nominal
 
     ir = (totals.get("indirect") or {}).get("real")
+
+    # Running totals at the build: published to each line's latest data plus
+    # the estimate since each line's data end (sitedata._with_carry). Older
+    # data without the field fall back to the published cumulative.
+    def _run(block: dict) -> float:
+        return block.get("running_total", block["cumulative"])
     yr = r["since_year"]
     HEAD = "Headline figures"
     facts = []
@@ -157,7 +163,7 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
     # Direct (measured) card and a full-cost (direct + estimated indirect) card,
     # so the /share page can lay them out in two columns.
     facts += [
-        {"slug": "total", "figure": fmt_full(rr["cumulative"]),
+        {"slug": "total", "figure": fmt_full(_run(rr)),
          "label": "paid in direct, measured subsidy to renewable electricity "
                   f"generators since {yr}, in today’s money",
          "anchor": None, "stub": True, "group": HEAD, "scope": "direct"},
@@ -177,7 +183,7 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
     if ir:
         facts += [
             {"slug": "headline",
-             "figure": fmt_full(rr["cumulative"] + ir["cumulative"]),
+             "figure": fmt_full(_run(rr) + _run(ir)),
              "label": "the full cost of subsidising UK renewables since "
                       f"{yr}, including estimated indirect costs, in today’s money",
              "anchor": None, "stub": True, "group": HEAD, "scope": "full"},
@@ -197,12 +203,14 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
              "label": "on every MWh of electricity delivered — the full cost "
                       "including estimated indirect costs, in today’s money",
              "anchor": None, "stub": True, "group": HEAD, "scope": "full"},
-            # the cumulative graph: the ninth headline card, terminating at the
-            # full-cost total
+            # the cumulative graph: the ninth headline card. The chart is the
+            # published annual series (no estimate), so its figure is the
+            # published total, counted to each source's latest data
             {"slug": "the-bill",
              "figure": fmt_full(rr["cumulative"] + ir["cumulative"]),
              "label": "the cumulative cost of direct and estimated indirect "
-                      f"subsidy to renewables since {yr}, in today’s money",
+                      f"subsidy to renewables since {yr}, to each source’s latest "
+                      "data, in today’s money",
              "anchor": "cost-per-year", "stub": True, "chart": True,
              "group": HEAD, "scope": "graph"},
         ]

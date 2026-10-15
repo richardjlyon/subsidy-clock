@@ -114,6 +114,10 @@ def test_factoids_exact_floor_steps_down(tmp_path):
     m = big_model()
     m["perspectives"]["renewables"]["cumulative_gbp_2024"] = 130.0e9
     m["indirect"]["cumulative_gbp_2024"] = 100.0e9   # combined exactly 230e9
+    # data to the build day: no carry-forward, so the running total is the
+    # published 230e9 exactly and the boundary rule is what is under test
+    for s in m["schemes"]:
+        s.data_to = date(2026, 6, 12)
     by_slug, _ = _factoids_by_slug(tmp_path, m,
         [r for r in EQUIV if r["slug"] == "homes"])
     assert by_slug["homes"]["frame"] == "the current £220bn+ full cost would have built"
@@ -557,12 +561,16 @@ def test_repo_changelog_loads_and_keeps_its_corrections():
     # the real log must pass validation, and its corrections are unchanged
     entries = sitedata.load_changelog("changelog.jsonl")
     corr = [e for e in entries if e["kind"] == "correction"]
-    assert sorted((e["date"], e["figure"]) for e in corr) == [
+    published = [e for e in corr if e.get("status") is None]
+    assert sorted((e["date"], e["figure"]) for e in published) == [
         ("2026-06-24", "factoid-police"), ("2026-09-01", "emissions-trading"),
         ("2026-09-30", "bsuos"), ("2026-09-30", "headline-caption"),
         ("2026-10-01", "factoid-homes"), ("2026-10-01", "factoid-hospitals"),
         ("2026-10-10", "constraints")]
-    assert all(e.get("status") is None for e in corr)
+    # held for the 31 Oct 2026 release (Report No. 1): drafts until Richard
+    # flips them; the writer leaves drafts out of every published output
+    drafts = [e for e in corr if e.get("status") == "draft"]
+    assert [(e["date"], e["figure"]) for e in drafts] == [("2026-10-31", "headline")]
 
 
 def test_full_pool_resolves(tmp_path):

@@ -197,6 +197,9 @@ a:hover { color: var(--amber-dark); }
 .nowrap { white-space: nowrap; }
 
 .hero-sub { margin: 16px auto 0; max-width: 34em; font-size: 1.04rem; color: var(--on-navy-2); }
+.hero-est { margin: 10px auto 0; max-width: 38em; font-size: 0.9rem; color: var(--on-navy-2); }
+.hero-est a { color: inherit; text-underline-offset: 3px; }
+.krow-est .nm { font-style: italic; }
 
 .since-opened {
   margin: 28px auto 0; display: inline-block;

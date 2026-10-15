@@ -21,6 +21,31 @@
 
   var generatedAt = Date.parse(totals.generated_at);
   var openedAt = Date.now();
+  // Per-line carry-forward (Richard, 15 Oct 2026): each block's `cumulative` is
+  // the PUBLISHED total, every line counted to its own latest official data.
+  // `carry_forward` lists each line's estimate start (`from`, the end of its
+  // data) and rate; the running total adds rate x time since `from`, line by
+  // line, so each estimate is replaced as that line's data arrive. Parse the
+  // start instants once, not per frame.
+  function prepCarry(b) {
+    if (b && b.carry_forward) b.carry_forward.forEach(function (l) { l.fromMs = Date.parse(l.from); });
+  }
+  Object.keys(totals.perspectives).forEach(function (k) {
+    prepCarry(totals.perspectives[k]); prepCarry(totals.perspectives[k].real);
+  });
+  if (totals.indirect) { prepCarry(totals.indirect); prepCarry(totals.indirect.real); }
+  // the running total of one block at time t (ms): published + the estimate
+  // since each line's data end. Data without carry-forward fields fall back to
+  // ticking the published total from the build time.
+  function blockLive(b, t) {
+    if (!b.carry_forward) return b.cumulative + b.rate_per_sec * (t - generatedAt) / 1000;
+    var v = b.cumulative;
+    for (var n = 0; n < b.carry_forward.length; n++) {
+      var l = b.carry_forward[n], dt = t - l.fromMs;
+      if (dt > 0) v += l.rate_per_sec * dt / 1000;
+    }
+    return v;
+  }
   var schemesById = {};
   breakdown.schemes.forEach(function (s) { schemesById[s.id] = s; });
   var indirectTotals = totals.indirect || null;
@@ -103,6 +128,7 @@
   function active() {
     var d = pv(), i = state.combined ? iv() : null;
     if (!i) return {
+      blocks: [d],
       cumulative: d.cumulative,
       rate_per_sec: d.rate_per_sec,
       runrate_per_year: d.runrate_per_year,
@@ -110,6 +136,7 @@
       per_mwh_delivered: d.per_mwh_delivered
     };
     return {
+      blocks: [d, i],
       cumulative: d.cumulative + i.cumulative,
       rate_per_sec: d.rate_per_sec + i.rate_per_sec,
       runrate_per_year: d.runrate_per_year + i.runrate_per_year,
@@ -117,9 +144,9 @@
       per_mwh_delivered: d.per_mwh_delivered + i.per_mwh_delivered
     };
   }
+  // the hero figure: published to each line's latest data + estimated since
   function liveCumulative(t) {
-    var a = active();
-    return a.cumulative + a.rate_per_sec * (t - generatedAt) / 1000;
+    return active().blocks.reduce(function (sum, b) { return sum + blockLive(b, t); }, 0);
   }
   // floor to the nearest £10bn STRICTLY below - the "over £Nbn" claim always
   // understates by construction, in every basis/scope state.
@@ -127,7 +154,7 @@
     var f = Math.floor(v / 1e10) * 1e10;
     return f === v ? f - 1e10 : f;
   }
-  function flooredActiveGbp() { return floorStepBelow(active().cumulative); }
+  function flooredActiveGbp() { return floorStepBelow(liveCumulative(Date.now())); }
   function schemeCumulative(s) {
     return state.real && realCumById[s.id] != null ? realCumById[s.id] : s.cumulative;
   }
@@ -146,8 +173,9 @@
   // same rule to the factoid sentences (_floor_step_below); they must never
   // disagree.
   function combinedRealFlooredGbp() {
-    var combined = totals.perspectives.renewables.real.cumulative +
-                   indirectTotals.real.cumulative;
+    var now = Date.now();
+    var combined = blockLive(totals.perspectives.renewables.real, now) +
+                   blockLive(indirectTotals.real, now);
     var floored = Math.floor(combined / 1e10) * 1e10;
     return floored === combined ? floored - 1e10 : floored; // exact boundary: step down
   }
@@ -156,8 +184,17 @@
               totals.perspectives.renewables.real);
   }
 
-  var FN = '<sup class="hero-fn" title="Estimated between official updates: the counter ' +
-    'advances at each scheme’s most recent published run-rate.">†</sup>';
+  var FN = '<sup class="hero-fn" title="Published figures to each source’s latest data, ' +
+    'plus an estimate since then at each source’s latest annual rate.">†</sup>';
+  // the plain-words split under the counter: what is published, what is estimated
+  function heroEstLine() {
+    var a = active();
+    var est = liveCumulative(Date.now()) - a.cumulative;
+    var estWords = est >= 1e9 ? '£' + Math.round(est / 1e9) + 'bn' : fmtCompact(est);
+    return fmtCompact(a.cumulative) + ' published to each source’s latest data, plus about ' +
+      estWords + ' estimated since then. ' +
+      '<a href="/methodology#freshness">How the estimate works</a>.';
+  }
   function renderHeroStatic() {
     var sinceYear = persp().since_year;
     document.getElementById('hero-value').textContent = fmtFull(liveCumulative(Date.now()));
@@ -172,13 +209,22 @@
           ', including estimated indirect costs:'
         : 'Direct UK renewable subsidy has cost Great Britain over ' +
           '<a href="/methodology#ref-reconciliation"><strong class="money num">£' +
-          bn + '&nbsp;billion</strong></a> ' + basisClause + ', measured to the penny:';
+          bn + '&nbsp;billion</strong></a> ' + basisClause + ':';
       leadin.hidden = false;
     }
     document.getElementById('hero-sub').innerHTML = (state.combined
       ? 'paid to renewable generators, plus estimated indirect system costs, '
       : 'paid directly to renewable generators ') +
       '<span class="nowrap">since ' + sinceYear + FN + '</span>';
+    // one line, visible in every skin (the FT skin hides .hero-sub)
+    var est = document.getElementById('hero-est');
+    if (!est) {
+      est = document.createElement('p');
+      est.id = 'hero-est'; est.className = 'hero-est';
+      var anchor = document.getElementById('ft-lead') || document.getElementById('hero-sub');
+      anchor.parentNode.insertBefore(est, anchor.nextSibling);
+    }
+    est.innerHTML = heroEstLine();
     // FT skin: left-box descriptive paragraph (inert markup in other skins).
     // The FT skin hides .hero-leadin and .hero-sub, so this paragraph is the
     // ONLY prose describing the counter. It must therefore say what the counter
@@ -187,7 +233,8 @@
     var ftLead = document.getElementById('ft-lead');
     if (ftLead) {
       var ftInd = iv();
-      var combinedBn = ftInd ? floorStepBelow(pv().cumulative + ftInd.cumulative) / 1e9 : null;
+      var combinedBn = ftInd
+        ? floorStepBelow(blockLive(pv(), Date.now()) + blockLive(ftInd, Date.now())) / 1e9 : null;
       var directNames =
         'the Renewables Obligation, Contracts for Difference, Feed-in Tariffs ' +
         'and constraint payments';
@@ -386,7 +433,20 @@
     }).sort(bySize);
 
     var ind = iv();
-    var grand = pv().cumulative + (ind ? ind.cumulative : 0);
+    var nowMs = Date.now();
+    // card totals are running totals (published + estimated since each line's
+    // data end); the estimate is its own row so the rows still add up
+    var dirLive = blockLive(pv(), nowMs);
+    var indLive = ind ? blockLive(ind, nowMs) : 0;
+    var grand = dirLive + indLive;
+    function estRowHtml(v) {
+      var pct = grand > 0 ? Math.round(100 * v / grand) : 0;
+      return '<a class="krow krow-est" href="/methodology#freshness">' +
+        '<span class="dot" style="background:transparent;border:1px dashed var(--faint)"></span>' +
+        '<span class="nm">Estimated since each source’s latest data</span>' +
+        '<span class="amt money num">' + fmtCompact(v) + '</span>' +
+        '<span class="pct num">' + pct + '%</span></a>';
+    }
     function rowHtml(s) {
       var m = SCHEME_META[s.id];
       var v = schemeCumulative(s);
@@ -406,16 +466,18 @@
     // £26.3bn on this card and £22.8bn on /explainers/bsuos.
     var basisWords = state.real ? 'in today\u2019s money' : 'in cash as paid';
 
-    document.getElementById('direct-card-total').textContent = fmtCompact(pv().cumulative);
+    document.getElementById('direct-card-total').textContent = fmtCompact(dirLive);
     document.getElementById('direct-card-sub').textContent =
       'paid through electricity bills and taxes since ' + persp().since_year +
       ', ' + basisWords + ' · adding ' + fmtPence(pv().rate_per_sec) + ' a second';
-    document.getElementById('direct-card-rows').innerHTML = direct.map(rowHtml).join('');
+    document.getElementById('direct-card-rows').innerHTML = direct.map(rowHtml).join('') +
+      estRowHtml(dirLive - pv().cumulative);
 
-    document.getElementById('indirect-card-total').textContent = ind ? fmtCompact(ind.cumulative) : '—';
+    document.getElementById('indirect-card-total').textContent = ind ? fmtCompact(indLive) : '—';
     document.getElementById('indirect-card-sub').textContent = ind ?
       basisWords + ' · adding ' + fmtPence(ind.rate_per_sec) + ' a second at the current run-rate' : '';
-    document.getElementById('indirect-card-rows').innerHTML = indirect.map(rowHtml).join('');
+    document.getElementById('indirect-card-rows').innerHTML = indirect.map(rowHtml).join('') +
+      (ind ? estRowHtml(indLive - ind.cumulative) : '');
 
     var lc = totals.perspectives.low_carbon;
     if (lc) {
@@ -890,7 +952,7 @@
     // anchored to the default real-direct headline (not the live switches) so
     // the shared text always matches the OG card
     var rDef = totals.perspectives.renewables.real;
-    var bn = Math.floor((rDef.cumulative + rDef.rate_per_sec * (Date.now() - generatedAt) / 1000) / 1e8) / 10;
+    var bn = Math.floor(blockLive(rDef, Date.now()) / 1e8) / 10;
     var full = hasCombinedReal()
       ? ' (over £' + (combinedRealFlooredGbp() / 1e9) +
         ' billion in today\u2019s money with estimated indirect costs)'

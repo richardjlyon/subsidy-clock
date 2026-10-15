@@ -14,9 +14,9 @@
   },
   {
    "component": "ccl",
-   "ours": 1465000000.0,
+   "ours": 678600000.0,
    "ref": 1900000000.0,
-   "divergence_pct": -22.8947,
+   "divergence_pct": -64.2842,
    "note": "REF counts total CCL receipts (OBR series, all fuels); we count electricity's share of main-rate receipts plus Carbon Price Support. Our figure is expected to be lower.",
    "explained": true
   },
@@ -30,20 +30,20 @@
   },
   {
    "component": "bsuos",
-   "ours": 2283580533.81,
+   "ours": 1430326613.31,
    "ref": 2200000000.0,
-   "divergence_pct": 3.7991,
+   "divergence_pct": -34.9852,
    "note": "We net off direct constraint payments and REF does not, which pulls our figure down; but our gross BSUoS base is larger than REF's stated total charge (calendar 2023 GBP 3.26bn against REF's fiscal 2023/24 GBP 2.9bn), which pushes it up by more. The two effects leave us slightly above REF rather than below. Before the 30 Sep 2026 basis correction our base was understated and we landed below REF, so this note previously read \"our figure is expected to be lower\" - that expectation no longer holds and the agreement within 4% is now the like-for-like result.",
    "explained": true
   },
   {
    "component": "tnuos",
-   "ours": 2921051162.79,
+   "ours": 1951428752.82,
    "ref": 2900000000.0,
-   "divergence_pct": 0.7259,
+   "divergence_pct": -32.7094,
    "note": "",
-   "explained": true
+   "explained": false
   }
  ],
- "unexplained_count": 0
+ "unexplained_count": 1
 }
