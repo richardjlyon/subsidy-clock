@@ -24,6 +24,17 @@ def test_ro_series_spans_scheme_life():
     assert years[0] == 2002  # F-3: cumulative totals are real, from scheme start
 
 
+def test_fit_scheme_years_in_ofgem_order():
+    # Correction released 16 Oct 2026: SY10 (2019-20) and SY13 (2022-23) had been stored the
+    # wrong way round. Ofgem FiT Annual Report SY13, Figure 3.3, SY9..SY13: 1,529 1,606 1,764
+    # 1,575 1,732 (GBP m); Year 10 report Table 2.1 amount levelised GBP 1,605,719,282.
+    schemes = reference.load_annual_costs(REF_DIR / "annual_scheme_costs.yaml")
+    fit = dict(zip(schemes["fit"].annual["year"].to_list(),
+                   schemes["fit"].annual["cost_gbp"].to_list()))
+    assert [fit[y] for y in range(2018, 2023)] == [
+        1_529_000_000, 1_606_000_000, 1_764_000_000, 1_575_000_000, 1_732_000_000]
+
+
 def test_load_context():
     ctx = reference.load_context(REF_DIR / "context.yaml")
     assert 20_000_000 < ctx["households"]["value"] < 40_000_000

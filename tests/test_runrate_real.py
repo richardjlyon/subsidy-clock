@@ -40,7 +40,7 @@ FIGURES = {
     "combined_rate_per_sec_real": 596.7920295177568,
     "direct_rate_per_sec_real": 391.3245772554806,
     "households": 29_000_000,
-    # the superseded single-conversion figures (the live Clock until 31 Oct)
+    # the superseded single-conversion figures (the live Clock until the 16 Oct 2026 release)
     "runrate_total_real_clock_rule": 18361790421.601887,
     "full_per_household_real_clock_rule": 633.16,
 }

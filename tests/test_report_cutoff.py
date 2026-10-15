@@ -26,16 +26,17 @@ DATA = ROOT / "site" / "data"
 BN = 1e9
 
 # Report No. 1 figures.json (reports-programme/no1-price-of-support, build
-# 2026-10-14T23:53:17Z), vendored 15 Oct 2026
+# 2026-10-14T23:53:17Z with the FiT SY10/SY13 correction of 16 Oct 2026),
+# re-vendored 15 Oct 2026 by script
 FIGURES = {
-    "combined_real": 188381838031.17795,      # £188.38bn, the report's headline
+    "combined_real": 188365466343.944,      # £188.37bn, the report's headline (£188.38bn before the FiT correction)
     "combined_nominal": 152985160233.91,      # £152.99bn cash
-    "direct_real": 125190191488.30844,        # £125.19bn
+    "direct_real": 125173819801.07451,        # £125.17bn (£125.19bn before the FiT correction)
     "direct_nominal": 101968752835.92,
     "indirect_real": 63191646542.86949,
     "indirect_nominal": 51016407397.99,
     "published_since_real": 11879329317.283892,   # £11.88bn, 2025 to each data end
-    "combined_real_allyears": 200261167348.45795,
+    "combined_real_allyears": 200244795661.224,
 }
 
 

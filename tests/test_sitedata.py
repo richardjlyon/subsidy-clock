@@ -562,16 +562,30 @@ def test_repo_changelog_loads_and_keeps_its_corrections():
     entries = sitedata.load_changelog("changelog.jsonl")
     corr = [e for e in entries if e["kind"] == "correction"]
     published = [e for e in corr if e.get("status") is None]
-    assert sorted((e["date"], e["figure"]) for e in published) == [
+    assert sorted((e["date"], e["figure"]) for e in published if e["date"] < "2026-10-16") == [
         ("2026-06-24", "factoid-police"), ("2026-09-01", "emissions-trading"),
         ("2026-09-30", "bsuos"), ("2026-09-30", "headline-caption"),
         ("2026-10-01", "factoid-homes"), ("2026-10-01", "factoid-hospitals"),
         ("2026-10-10", "constraints")]
-    # held for the 31 Oct 2026 release (Report No. 1): drafts until Richard
-    # flips them; the writer leaves drafts out of every published output
-    drafts = [e for e in corr if e.get("status") == "draft"]
-    assert [(e["date"], e["figure"]) for e in drafts] == [
-        ("2026-10-31", "headline"), ("2026-10-31", "per_household")]
+    # the release of 16 Oct 2026 (Report No. 1): every correction its own
+    # entry with its own effect, never one netted figure; nothing left as draft
+    assert not [e for e in entries if e.get("status") == "draft"]
+    rel = [e for e in entries if e["date"] == "2026-10-16"]
+    assert sorted(e["figure"] for e in rel if e["kind"] == "correction") == sorted([
+        "tnuos-baseline-2002-05", "bsuos-baseline-2002-05", "bsuos-baseline-source",
+        "tnuos-return-shet", "tnuos-2021", "grid-calendar-years", "climate-change-levy",
+        "tnuos-betta-2005", "tnuos-renewal-allowance", "bsuos-energy-share",
+        "bsuos-2026-part-year", "feed-in-tariffs", "headline", "per_household"])
+    assert sorted(e["figure"] for e in rel if e["kind"] == "change") == sorted([
+        "grid-balancing-counterfactual", "tnuos-renewal-allowance-whole",
+        "grid-balancing-sources", "grid-balancing-signed", "grid-balancing-labels",
+        "grid-balancing-ranges"])
+    # the chained steps run from the live £233.0bn to the release build's £200.24bn
+    steps = [e for e in rel if e["was"].endswith("before this item; " + e["was"].split("before this item; ")[-1])
+             and e["was"].startswith("£")]
+    assert steps[0]["was"].startswith("£232.98bn") and steps[-1]["now"].startswith("£200.24bn")
+    for a, b in zip(steps, steps[1:]):
+        assert a["now"].split("bn")[0] == b["was"].split("bn")[0], (a["figure"], b["figure"])
 
 
 def test_full_pool_resolves(tmp_path):

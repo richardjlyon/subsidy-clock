@@ -87,10 +87,14 @@ schemes:
       2016: 1375000000
       2017: 1491000000
       2018: 1529000000
-      2019: 1732000000
+      # SY10 and SY13 corrected 14 Oct 2026 (released 16 Oct 2026): they had been stored the
+      # wrong way round (2019 = 1,732m, 2022 = 1,606m). Ofgem FiT Annual Report SY13, Figure 3.3
+      # (SY1 to SY13) charts SY10 = 1,606 and SY13 = 1,732; the Year 10 report, Table 2.1, gives
+      # the SY10 amount levelised as GBP 1,605.7m. The SY15 report's text fits either order.
+      2019: 1606000000
       2020: 1764000000
       2021: 1575000000
-      2022: 1606000000
+      2022: 1732000000
       2023: 1858000000
       2024: 1844000000
   constraints_history:

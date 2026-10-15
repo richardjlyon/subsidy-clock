@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 902242189.3,
+ "hero_gbp": 902846315.36,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -39,8 +39,8 @@
   },
   {
    "q": "2018-Q4",
-   "payment_gbp": 30451580.87,
-   "generation_mwh": 289124.009
+   "payment_gbp": 30451580.869999994,
+   "generation_mwh": 289124.00899999996
   },
   {
    "q": "2019-Q1",
@@ -70,7 +70,7 @@
   {
    "q": "2020-Q2",
    "payment_gbp": 27123118.839999996,
-   "generation_mwh": 176378.13799999998
+   "generation_mwh": 176378.138
   },
   {
    "q": "2020-Q3",
@@ -104,8 +104,8 @@
   },
   {
    "q": "2022-Q1",
-   "payment_gbp": -2281148.119999999,
-   "generation_mwh": 265434.20200000005
+   "payment_gbp": -2281148.12,
+   "generation_mwh": 265434.202
   },
   {
    "q": "2022-Q2",
@@ -134,8 +134,8 @@
   },
   {
    "q": "2023-Q3",
-   "payment_gbp": 27080879.77,
-   "generation_mwh": 210032.887
+   "payment_gbp": 27080879.770000003,
+   "generation_mwh": 210032.88699999996
   },
   {
    "q": "2023-Q4",
@@ -149,7 +149,7 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 29361357.740000002,
+   "payment_gbp": 29361357.720000006,
    "generation_mwh": 190668.24099999995
   },
   {
@@ -164,8 +164,8 @@
   },
   {
    "q": "2025-Q1",
-   "payment_gbp": 25236576.529999997,
-   "generation_mwh": 222320.71399999998
+   "payment_gbp": 25236576.53,
+   "generation_mwh": 222320.71399999995
   },
   {
    "q": "2025-Q2",
@@ -174,8 +174,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 26615253.89000001,
-   "generation_mwh": 171429.415
+   "payment_gbp": 26615311.61000001,
+   "generation_mwh": 171429.832
   },
   {
    "q": "2025-Q4",
@@ -184,23 +184,23 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 36498016.419999994,
-   "generation_mwh": 276376.831
+   "payment_gbp": 36498204.63,
+   "generation_mwh": 276378.83800000005
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 25684490.860000007,
-   "generation_mwh": 188000.71399999995
+   "payment_gbp": 25685006.830000006,
+   "generation_mwh": 188003.9999999999
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 19642145.59,
-   "generation_mwh": 176577.07499999998
+   "payment_gbp": 19589103.32,
+   "generation_mwh": 176000.571
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": 69210.41,
-   "generation_mwh": 1183.167
+   "payment_gbp": 725616.8599999999,
+   "generation_mwh": 9986.989
   }
  ],
  "contracts": [
@@ -209,7 +209,7 @@
    "unit_name": "Burbo Bank Extension Offshore Wind Farm",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 902242189.3,
+   "cumulative_gbp": 902846315.36,
    "first_settlement": "2017-04-11",
    "latest_strike_gbp_mwh": 220.95
   }
@@ -220,7 +220,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-01"
+  "data_to": "2026-10-05"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -318,8 +318,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 8253710.332000001,
-  "rate_gbp_per_mwh": 109.31352725112814,
+  "generation_mwh": 8261943.359999999,
+  "rate_gbp_per_mwh": 109.27771784676095,
   "rate_label": "payment per subsidised MWh"
  }
 }

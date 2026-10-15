@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-15T16:15:19.552390+00:00",
+ "generated_at": "2026-10-15T17:35:19.698503+00:00",
  "entries": [
   {
    "date": "2026-06-12",
@@ -250,6 +250,269 @@
     "The model runs to 2025. Until it is run for 2026, 2026 uses the 2025 share; that is \u00a3339m of the \u00a31,225m paid to August.",
     "The figure is a floor. The system without net zero is charged the capacity price that actually cleared. Since 2021 an emissions limit has kept about 11 GW of coal out of the four-year-ahead auctions, and prices rose after it; without net zero that coal would have bid and held prices down. No published source measures how much of the rise net zero caused, so none is counted. Counting the coal kept open as also needing a capacity agreement would give \u00a31.00bn; counting the whole levy, as before, gives \u00a39.98bn.",
     "Totals since 2016 fall by \u00a37.8bn in today's money. The full cost falls from \u00a3240.8bn to \u00a3233.0bn, and the rounded figure under the counter from 'over \u00a3240 billion' to 'over \u00a3230 billion'. The direct payments, \u00a3132.3bn, do not move. The equivalence comparisons that divide the full cost move with it, for example from 58 to 55 aircraft carriers."
+   ],
+   "credit": "Richard Lyon"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "correction",
+   "figure": "tnuos-baseline-2002-05",
+   "figure_label": "Extra grid costs of net zero: the grid cost without net zero in 2002-05",
+   "was": "\u00a3232.98bn full cost (2024 prices, every line to its latest data) before this item; \u00a30.9bn a year, a rounded figure for England and Wales only, subtracted from a Great Britain charge",
+   "now": "\u00a3230.39bn after it; \u00a30.98bn a year (\u00a3982.3m, the 2002-05 mean of the allowed revenues of all three GB transmission owners, from the gas-counterfactual model)",
+   "cause": [
+    "The grid cost that a Britain without net zero would have paid starts from what was paid in 2002-05. The Clock used \u00a30.9bn a year, which covers England and Wales only, and subtracted it from a charge for all of Great Britain, so it set the cost without net zero too low and the extra cost of net zero too high.",
+    "Found 14 October 2026. Effect on the full cost: \u2212\u00a32.590bn in 2024 prices, measured on the build before it; the items of this release are applied one after another in the order listed, from \u00a3233.0bn on the live site (13 October 2026) to \u00a3200.24bn (corrections list row 1)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "correction",
+   "figure": "bsuos-baseline-2002-05",
+   "figure_label": "Extra balancing costs of net zero: the balancing cost without net zero in 2002-05",
+   "was": "\u00a3230.39bn full cost (2024 prices, every line to its latest data) before this item; \u00a30.4bn a year, a rounded secondary figure",
+   "now": "\u00a3226.99bn after it; \u00a30.49bn a year (\u00a3489.4m, National Grid's incentivised balancing cost for 2002-05, from the gas-counterfactual model)",
+   "cause": [
+    "The balancing cost without net zero starts from what was paid in 2002-05. The Clock used a rounded \u00a30.4bn a year, below both its own data for those years and the model's figure from National Grid's documents.",
+    "Found 14 October 2026. Effect on the full cost: \u2212\u00a33.400bn in 2024 prices, measured on the build before it; the items of this release are applied one after another in the order listed, from \u00a3233.0bn on the live site (13 October 2026) to \u00a3200.24bn (corrections list row 2)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "change",
+   "figure": "grid-balancing-counterfactual",
+   "figure_label": "Extra grid and balancing costs of net zero: the cost without net zero, year by year",
+   "was": "\u00a3226.99bn full cost (2024 prices, every line to its latest data) before this item; the 2002-05 cost carried forward by consumer prices (CPIH) alone",
+   "now": "\u00a3212.41bn after it; the cost without net zero taken from the gas-counterfactual model for each year: the grid cost carried by the regulator's own index (RPI, then CPIH from 2021) plus the allowance for renewing old assets; the balancing cost split into an energy part that follows the gas price and a services part carried by CPIH",
+   "cause": [
+    "A change of method, decided on 14 October 2026 so that the Clock and Report No. 2 count the grid and balancing costs the same way. Grid \u2212\u00a34.75bn, balancing \u2212\u00a39.84bn (rounded separately).",
+    "Found 14 October 2026. Effect on the full cost: \u2212\u00a314.580bn in 2024 prices, measured on the build before it; the items of this release are applied one after another in the order listed, from \u00a3233.0bn on the live site (13 October 2026) to \u00a3200.24bn (corrections list row 8)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "correction",
+   "figure": "bsuos-baseline-source",
+   "figure_label": "Extra balancing costs of net zero: the 2002-05 base taken from one document",
+   "was": "\u00a3212.41bn full cost (2024 prices, every line to its latest data) before this item; a 2002-05 base mixing two definitions: three years from National Grid's December 2005 note and 2004-05 from a 2010 document",
+   "now": "\u00a3210.95bn after it; all four years from the December 2005 note (base \u00a3520.6m a year)",
+   "cause": [
+    "The balancing base mixed two definitions of the same cost. All four years now come from one document. Balancing \u2212\u00a31.424bn, replacing switched-off wind \u2212\u00a30.038bn.",
+    "Found 14 October 2026. Effect on the full cost: \u2212\u00a31.462bn in 2024 prices, measured on the build before it; the items of this release are applied one after another in the order listed, from \u00a3233.0bn on the live site (13 October 2026) to \u00a3200.24bn (corrections list row 11)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "correction",
+   "figure": "tnuos-return-shet",
+   "figure_label": "Extra grid costs of net zero: the allowed return for the north of Scotland transmission owner",
+   "was": "\u00a3210.95bn full cost (2024 prices, every line to its latest data) before this item; a return of 2.81% for Scottish Hydro Electric Transmission",
+   "now": "\u00a3210.95bn after it; 2.69%, as printed in the regulator's final determination for that owner",
+   "cause": [
+    "The model used another owner's return. The effect is +\u00a30.3m: a lower return lowers the cost without net zero, so the extra cost of net zero rises slightly.",
+    "Found 14 October 2026. Effect on the full cost: +\u00a30.000bn in 2024 prices, measured on the build before it; the items of this release are applied one after another in the order listed, from \u00a3233.0bn on the live site (13 October 2026) to \u00a3200.24bn (corrections list row 12)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "correction",
+   "figure": "tnuos-2021",
+   "figure_label": "Extra grid costs of net zero: the 2021 grid charge",
+   "was": "\u00a3210.95bn full cost (2024 prices, every line to its latest data) before this item; \u00a33,594m, the 2022 figure copied into 2021",
+   "now": "\u00a3210.62bn after it; \u00a33,318m, from NESO's final tariffs for 2021-22",
+   "cause": [
+    "The 2021 charge repeated the following year's figure.",
+    "Found 14 October 2026. Effect on the full cost: \u2212\u00a30.329bn in 2024 prices, measured on the build before it; the items of this release are applied one after another in the order listed, from \u00a3233.0bn on the live site (13 October 2026) to \u00a3200.24bn (corrections list row 9)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "correction",
+   "figure": "grid-calendar-years",
+   "figure_label": "Extra grid and balancing costs of net zero: years put on the same basis",
+   "was": "\u00a3210.62bn full cost (2024 prices, every line to its latest data) before this item; a financial-year charge (April to March) set against a calendar-year cost without net zero",
+   "now": "\u00a3209.45bn after it; the grid charge and the balancing charges before 2017 put on calendar years (a quarter of the year before and three-quarters of the year itself) before the cost without net zero is subtracted",
+   "cause": [
+    "Grid \u2212\u00a31.016bn, balancing before 2017 \u2212\u00a30.152bn. Balancing data from 2017 were already by calendar day.",
+    "Found 14 October 2026. Effect on the full cost: \u2212\u00a31.168bn in 2024 prices, measured on the build before it; the items of this release are applied one after another in the order listed, from \u00a3233.0bn on the live site (13 October 2026) to \u00a3200.24bn (corrections list row 10)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "correction",
+   "figure": "climate-change-levy",
+   "figure_label": "Climate Change Levy and Carbon Price Support",
+   "was": "\u00a3209.45bn full cost (2024 prices, every line to its latest data) before this item; the levy on all electricity counted every year",
+   "now": "\u00a3201.16bn after it; the levy on electricity counted only to 31 July 2015, while electricity from renewables was exempt; Carbon Price Support counted in full",
+   "cause": [
+    "The Finance (No. 2) Act 2015, s. 49, ended the exemption for renewable electricity generated from 1 August 2015. From then renewable electricity paid the levy too, so it no longer favoured renewables and is not a cost of supporting them. \u2212\u00a38.289bn in 2024 prices (\u00a37.04bn in cash).",
+    "Found 14 October 2026. Effect on the full cost: \u2212\u00a38.289bn in 2024 prices, measured on the build before it; the items of this release are applied one after another in the order listed, from \u00a3233.0bn on the live site (13 October 2026) to \u00a3200.24bn (corrections list row 13)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "correction",
+   "figure": "tnuos-betta-2005",
+   "figure_label": "Extra grid costs of net zero: Scottish transmission revenues for 2005-06",
+   "was": "\u00a3201.16bn full cost (2024 prices, every line to its latest data) before this item; the draft BETTA figures for the two Scottish owners (\u00a3114.5m and \u00a347.3m)",
+   "now": "\u00a3201.05bn after it; the final figures, December 2004, Table 2.3 (\u00a3127.5m and \u00a352.56m)",
+   "cause": [
+    "The model used the draft proposals, not the final ones.",
+    "Found 14 October 2026. Effect on the full cost: \u2212\u00a30.114bn in 2024 prices, measured on the build before it; the items of this release are applied one after another in the order listed, from \u00a3233.0bn on the live site (13 October 2026) to \u00a3200.24bn (corrections list row 14)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "correction",
+   "figure": "tnuos-renewal-allowance",
+   "figure_label": "Extra grid costs of net zero: the allowance for renewing old assets",
+   "was": "\u00a3201.05bn full cost (2024 prices, every line to its latest data) before this item; the renewal allowance added as a flat yearly amount",
+   "now": "\u00a3200.56bn after it; the allowance carried as an indexed asset value, rolled forward with 45-year straight-line depreciation and the current price control's real return",
+   "cause": [
+    "The regulator's own method for the asset value (RIIO-ET2 price control financial handbook, paras 2.17 and 4.1).",
+    "Found 14 October 2026. Effect on the full cost: \u2212\u00a30.483bn in 2024 prices, measured on the build before it; the items of this release are applied one after another in the order listed, from \u00a3233.0bn on the live site (13 October 2026) to \u00a3200.24bn (corrections list row 15)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "change",
+   "figure": "tnuos-renewal-allowance-whole",
+   "figure_label": "Extra grid costs of net zero: how much of the renewal allowance a Britain without net zero would pay",
+   "was": "\u00a3200.56bn full cost (2024 prices, every line to its latest data) before this item; half of the renewal allowance above 2002-05 counted in the cost without net zero",
+   "now": "\u00a3198.03bn after it; the whole allowance counted; the low end of the net-zero cost equals the central, the high end counts none of it",
+   "cause": [
+    "Richard Lyon's choice: old assets would have needed renewing with or without net zero.",
+    "Found 14 October 2026. Effect on the full cost: \u2212\u00a32.532bn in 2024 prices, measured on the build before it; the items of this release are applied one after another in the order listed, from \u00a3233.0bn on the live site (13 October 2026) to \u00a3200.24bn (corrections list row 16)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "correction",
+   "figure": "bsuos-energy-share",
+   "figure_label": "Extra balancing costs of net zero: the part of the base that follows the gas price",
+   "was": "\u00a3198.03bn full cost (2024 prices, every line to its latest data) before this item; the energy share (0.548) applied to the whole balancing base",
+   "now": "\u00a3199.44bn after it; the energy share applied to the external part of the base only (0.457 of it)",
+   "cause": [
+    "The share describes external balancing costs; the internal costs of the system operator do not follow the gas price.",
+    "Found 14 October 2026. Effect on the full cost: +\u00a31.409bn in 2024 prices, measured on the build before it; the items of this release are applied one after another in the order listed, from \u00a3233.0bn on the live site (13 October 2026) to \u00a3200.24bn (corrections list row 17)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "change",
+   "figure": "grid-balancing-sources",
+   "figure_label": "Extra grid and balancing costs of net zero: sources of the charges actually paid",
+   "was": "\u00a3199.44bn full cost (2024 prices, every line to its latest data) before this item; the grid charge in all years and balancing charges for 2001-16 taken partly from secondary tabulations (the Renewable Energy Foundation and Turver)",
+   "now": "\u00a3200.55bn after it; all years from primary documents (NESO, National Grid, Ofgem and the NAO), as the gas-counterfactual model uses",
+   "cause": [
+    "A change of source: every year now comes from a primary document.",
+    "Found 14 October 2026. Effect on the full cost: +\u00a31.106bn in 2024 prices, measured on the build before it; the items of this release are applied one after another in the order listed, from \u00a3233.0bn on the live site (13 October 2026) to \u00a3200.24bn (corrections list row 18)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "correction",
+   "figure": "bsuos-2026-part-year",
+   "figure_label": "Extra balancing costs of net zero: 2026",
+   "was": "\u00a3200.55bn full cost (2024 prices, every line to its latest data) before this item; a full year's cost without net zero set against part of 2026's charges",
+   "now": "\u00a3200.88bn after it; the 2026 cost without net zero pro-rated to the data date (0.7616 of the year, to 5 October)",
+   "cause": [
+    "A part-year charge was set against a full-year cost without net zero.",
+    "Found 14 October 2026. Effect on the full cost: +\u00a30.332bn in 2024 prices, measured on the build before it; the items of this release are applied one after another in the order listed, from \u00a3233.0bn on the live site (13 October 2026) to \u00a3200.24bn (corrections list row 19)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "change",
+   "figure": "grid-balancing-signed",
+   "figure_label": "Extra grid and balancing costs of net zero: years when the charge was below the cost without net zero",
+   "was": "\u00a3200.88bn full cost (2024 prices, every line to its latest data) before this item; each year floored at zero",
+   "now": "\u00a3200.26bn after it; each year signed, so a year below the cost without net zero offsets the others; only each line's total is floored at zero",
+   "cause": [
+    "Richard Lyon's choice. Negative years now: grid 2004 and 2005; balancing 2003-04, 2006-07 and 2011-13.",
+    "Found 14 October 2026. Effect on the full cost: \u2212\u00a30.617bn in 2024 prices, measured on the build before it; the items of this release are applied one after another in the order listed, from \u00a3233.0bn on the live site (13 October 2026) to \u00a3200.24bn (corrections list row 20)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "correction",
+   "figure": "feed-in-tariffs",
+   "figure_label": "Feed-in Tariffs: scheme years 2019-20 and 2022-23",
+   "was": "\u00a3200.26bn full cost (2024 prices, every line to its latest data) before this item; \u00a31,732m in 2019-20 and \u00a31,606m in 2022-23",
+   "now": "\u00a3200.24bn after it; \u00a31,606m in 2019-20 and \u00a31,732m in 2022-23, as Ofgem's annual reports give them (scheme year 10 report, Table 2.1; scheme year 13 report, Figure 3.3)",
+   "cause": [
+    "The two scheme years were transposed. Cash totals do not change. In 2024 prices the total falls by \u00a316.37m, because the larger value moves to a year with a smaller price adjustment. The total to the end of 2024 in Report No. 1 moves from \u00a3188.38bn to \u00a3188.37bn (\u00a3188.4bn either way).",
+    "Found 14 October 2026. Effect on the full cost: \u2212\u00a30.016bn in 2024 prices, measured on the build before it; the items of this release are applied one after another in the order listed, from \u00a3233.0bn on the live site (13 October 2026) to \u00a3200.24bn (corrections list row 3)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "change",
+   "figure": "grid-balancing-labels",
+   "figure_label": "Grid and balancing lines: what they are called",
+   "was": "the lines labelled as support",
+   "now": "the lines labelled 'Extra grid costs of net zero' and 'Extra balancing costs of net zero': they are costs of net zero, not support paid to generators; generators' share of the charges is kept",
+   "cause": [
+    "Richard Lyon's choice. No figure moves.",
+    "Found 14 October 2026 (corrections list row 21)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "change",
+   "figure": "grid-balancing-ranges",
+   "figure_label": "Grid and balancing lines: what the low and high ends mean",
+   "was": "range ends labelled by the model's inputs",
+   "now": "range ends labelled by the net-zero cost (low is the smaller cost, high the larger); the balancing range crosses the central figure in 2002-04 and 2020, as stated on the methodology page",
+   "cause": [
+    "No central figure moves.",
+    "Found 14 October 2026 (corrections list row 22)."
+   ],
+   "credit": "Richard Lyon (review for Technical Paper No. 1)"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "correction",
+   "figure": "headline",
+   "figure_label": "The full cost including estimated indirect costs (the large number on the front page)",
+   "was": "\u00a3233.0bn in today's money (2024 prices), shown as over \u00a3230 billion, from 13 October 2026 until this release (\u00a3240.8bn before the Capacity Market change of 13 October). The counter added an estimate only from the time the Clock was last built, not from the end of each source's latest data.",
+   "now": "\u00a3188.4bn to 31 December 2024, the total counted in Report No. 1, in today's money (2024 prices). The Clock runs on from there: the data published since add \u00a311.9bn and an estimate of costs incurred but not yet published adds about \u00a319.9bn, so the Clock read \u00a3220.2bn on 14 October 2026, and rising.",
+   "cause": [
+    "The live Clock showed \u00a3233.0bn (2024 prices) from 13 October 2026, and \u00a3240.8bn before the Capacity Market change of that day. Corrections and changes of method, each listed separately in this log with its own effect and itemised in Technical Paper No. 1 (Annex F), bring the total over all published data, each line counted to its own latest official data, to \u00a3200.2bn in five steps. First, the grid and balancing costs of 2002 to 2005 that a Britain without net zero would have paid were taken from the model, not from rounded figures: \u00a3233.0bn to \u00a3227.0bn. Second, that cost was taken from the model year by year for every year: \u00a3227.0bn to \u00a3212.4bn. Third, the balancing costs were put on one basis, a 2021 grid charge was corrected, charges were put on calendar years, and the Climate Change Levy was counted only while renewable electricity was exempt from it (to 31 July 2015): \u00a3212.4bn to \u00a3201.2bn. Fourth, a review of the grid and balancing method, including the final 2005-06 Scottish grid figures: \u00a3201.2bn to \u00a3200.3bn. Fifth, two Feed-in Tariff scheme years that had been transposed were put back in Ofgem's order: \u00a3200.3bn to \u00a3200.2bn.",
+    "The lines' latest data end on different dates: the daily and monthly lines run to within weeks of the release, the yearly ones only to December 2024 or March 2025. Report No. 1 therefore counts every line to 31 December 2024, the last date to which every line is published, with the Renewables Obligation and Feed-in Tariff scheme years (April to March) put on calendar years: \u00a3188.4bn (\u00a3188.37bn; \u00a3188.38bn before the Feed-in Tariff correction).",
+    "The Clock runs on from that total. The data published since 31 December 2024 add \u00a311.9bn (\u00a311.88bn). The Clock now also counts the costs already incurred since each line's latest data but not yet published, carried forward at that line's latest annual rate: about \u00a319.9bn (\u00a319.93bn; \u00a320.7bn in cash) at 14 October 2026. Together they take the Clock to \u00a3220.2bn on that date. The line under the counter shows the three parts. When a source publishes new figures they replace the estimate for that period, so nothing is counted twice. The year-by-year chart and tables still show published figures only.",
+    "The method is the one in Technical Paper No. 1, section 8, which gives the same total, \u00a3220.17bn, for 14 October 2026."
+   ],
+   "credit": "Richard Lyon"
+  },
+  {
+   "date": "2026-10-16",
+   "kind": "correction",
+   "figure": "per_household",
+   "figure_label": "The cost per household a year, the cost a year and the cost a second, in today's money (the strip under the front-page counter)",
+   "was": "\u00a3633 per household a year (\u00a3633.16); \u00a318.4bn a year (\u00a318.36bn); \u00a3581.85 a second, in today's money (2024 prices), at 14 October 2026, after the headline correction above. Before this release the live Clock showed \u00a3708.33 per household and \u00a320.5bn a year, on the old headline method.",
+   "now": "\u00a3649 per household a year (\u00a3649.42); \u00a318.8bn a year (\u00a318.83bn); \u00a3596.79 a second, in today's money (2024 prices), at 14 October 2026.",
+   "cause": [
+    "The cost a year is the sum of each cost line's latest yearly rate. Those rates belong to different years: the Renewables Obligation and Feed-in Tariffs to April 2024 to March 2025, the Climate Change Levy, emissions trading and the grid charge to calendar 2024, and the daily and monthly lines to the twelve months to October 2026.",
+    "To put the total in today's money (2024 prices), the Clock converted the whole sum with one year's price index, the 2025 one. That counted inflation twice on the lines already in 2024 money, about \u00a312.8bn of the \u00a319.1bn a year in cash, and so understated the cost a year by about \u00a30.5bn.",
+    "Each line is now converted from its own year's prices, and the lines are then added up. Lines already in 2024 money are left as they are. The cost a year moves from \u00a318.36bn to \u00a318.83bn, and the cost per household from \u00a3633 to \u00a3649 a year. The cost per second and per MWh move in step. The cumulative total is not affected: it was always converted year by year."
    ],
    "credit": "Richard Lyon"
   }
