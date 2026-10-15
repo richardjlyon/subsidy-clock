@@ -164,8 +164,9 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
     # so the /share page can lay them out in two columns.
     facts += [
         {"slug": "total", "figure": fmt_full(_run(rr)),
-         "label": "paid in direct, measured subsidy to renewable electricity "
-                  f"generators since {yr}, in today’s money",
+         "label": "paid in direct subsidy to renewable electricity "
+                  f"generators since {yr}, in today’s money, including an "
+                  "estimate of costs not yet published",
          "anchor": None, "stub": True, "group": HEAD, "scope": "direct"},
         {"slug": "run-rate", "figure": fmt_full(rr["runrate_per_year"]),
          "label": "a year — the current run-rate of direct subsidy to "
@@ -185,7 +186,8 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
             {"slug": "headline",
              "figure": fmt_full(_run(rr) + _run(ir)),
              "label": "the full cost of subsidising UK renewables since "
-                      f"{yr}, including estimated indirect costs, in today’s money",
+                      f"{yr}, including estimated indirect costs and costs not "
+                      "yet published, in today’s money",
              "anchor": None, "stub": True, "group": HEAD, "scope": "full"},
             {"slug": "run-rate-full",
              "figure": fmt_full(rr["runrate_per_year"] + ir["runrate_per_year"]),
