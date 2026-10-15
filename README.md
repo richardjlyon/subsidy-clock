@@ -2,7 +2,7 @@
 
 **Live at [subsidyclock.co.uk](https://subsidyclock.co.uk)** — a public dashboard measuring, in pounds sterling, the subsidies paid to UK renewable and low-carbon electricity generators since 2002.
 
-Figures are reconstructed bottom-up from official sources — LCCC (Contracts for Difference and Capacity Market), Elexon (constraint payments), NESO (balancing costs and transmission charges), Ofgem (Renewables Obligation and Feed-in Tariffs), HMRC, DESNZ, the NAO and REF (cross-checks and constraint history) — with full provenance: every retrieved data point links to its source URL, retrieval timestamp and content hash.
+Figures are reconstructed bottom-up from official sources — LCCC (Contracts for Difference and Capacity Market), Elexon (constraint payments), NESO (balancing costs and transmission charges), Ofgem (Renewables Obligation and Feed-in Tariffs), HMRC, DESNZ, the NAO and REF (constraint history before the bottom-up window, and 2009–11 emissions-trading receipts) — with full provenance: every retrieved data point links to its source URL, retrieval timestamp and content hash.
 
 This repository is the complete system: the data engine, the raw data store, the reference inputs and the static site. It exists to be audited. If you find an error in a published figure, please say so — confirmed errors are corrected and logged in public on the [corrections page](https://subsidyclock.co.uk/corrections), or you can [open an issue](../../issues/new?template=correction.yml).
 
@@ -57,7 +57,7 @@ src/subsidy_engine/   retrieval (ckan.py, elexon.py, schemes/), money model (mon
                       station/recipient mapping (stations.py), site data (sitedata.py),
                       share cards (sharecards.py), immutable store (store.py)
 reference/            reference inputs: CPIH deflators, buy-out prices, bill denominator,
-                      indirect-cost annuals and REF cross-checks (*.yaml); CfD→station and
+                      indirect-cost annuals (*.yaml); CfD→station and
                       named-RO mappings, station coordinates (*.csv); the map basemap config
 data/raw/             the Parquet store (see below)
 scripts/              deploy-time helper(s), e.g. Mapbox token injection
@@ -76,7 +76,7 @@ data/raw/{scheme}/{table}/{partition}/{retrieved-at}/manifest.json
 
 - **Nothing is ever deleted.** When a source revises history, the new version is stored alongside the old and the change is logged in `restatements.jsonl` — published at [/data](https://subsidyclock.co.uk/data) as `restatements.csv`.
 - **Our own mistakes are logged the same way.** Confirmed errors in published figures go to `changelog.jsonl` as kind `correction`, published at [/corrections](https://subsidyclock.co.uk/corrections); deliberate changes of method, scope or source go in the same file as kind `change`. A published figure is never silently edited.
-- **Reconciliation guards run at build time.** Bottom-up totals are checked against official aggregates and REF's published series; the build fails loudly if they drift out of tolerance.
+- **Reconciliation guards run at build time.** Bottom-up totals are checked against official aggregates; the build fails loudly if they drift out of tolerance.
 
 ## Schemes
 

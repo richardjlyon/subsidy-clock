@@ -46,6 +46,12 @@ def main(argv: list[str] | None = None) -> int:
     p_cards = sub.add_parser("build-cards", help="render OG share-card PNGs and share stubs")
     p_cards.set_defaults(fn=cli.cmd_build_cards)
 
+    p_rr = sub.add_parser("ref-reconciliation",
+                          help="internal: write the REF component comparison Report No. 1 "
+                               "reads (never published; refuses a path under site/)")
+    p_rr.add_argument("--out", required=True)
+    p_rr.set_defaults(fn=cli.cmd_ref_reconciliation)
+
     args = parser.parse_args(argv)
     return args.fn(args)
 

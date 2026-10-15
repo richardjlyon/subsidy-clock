@@ -63,34 +63,6 @@ def test_unmatched_months_are_surfaced():
     assert report["official_only_months"] == ["2025-03"]
 
 
-def test_indirect_crosscheck_divergence_and_notes():
-    ours = {"capacity_market": 1.0e9, "ccl": 1.5e9, "ets": 2.0e9,
-            "bsuos": 1.0e9, "tnuos": 1.0e9}
-    ref = {"year": "2023/2024", "source": "REF Table 2", "source_url": "https://ref",
-           "components": {"capacity_market": 1.0e9, "ccl": 2.0e9, "ets": 2.6e9,
-                          "bsuos": 2.5e9, "tnuos": 2.7e9},
-           "notes": {"bsuos": "we net off direct constraints", "tnuos": "",
-                     "ccl": "electricity share only", "ets": "auctioned share only"}}
-    out = reconcile.indirect_crosscheck(ours, ref, bound_pct=25.0)
-    by = {c["component"]: c for c in out["components"]}
-    assert by["capacity_market"]["divergence_pct"] == 0.0
-    assert by["bsuos"]["divergence_pct"] == -60.0
-    # beyond the bound AND a note exists -> explained, not flagged
-    assert by["bsuos"]["explained"] is True
-    # beyond the bound with NO note -> flagged for the methodology page
-    assert by["tnuos"]["explained"] is False
-    assert out["unexplained_count"] == 1
-
-
-def test_indirect_crosscheck_zero_ref_value_needs_note():
-    ref = {"year": "2023/2024", "source": "s", "source_url": "https://s",
-           "components": {"ccl": 0.0}, "notes": {}}
-    out = reconcile.indirect_crosscheck({"ccl": 1.0e9}, ref)
-    assert out["components"][0]["divergence_pct"] is None
-    assert out["components"][0]["explained"] is False
-    assert out["unexplained_count"] == 1
-
-
 def test_ref_reconciliation_components_and_gap():
     ref = {
         "source": "REF study", "source_url": "https://ref",

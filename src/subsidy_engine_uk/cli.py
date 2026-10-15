@@ -71,6 +71,53 @@ def cmd_backfill_turnup(args: argparse.Namespace) -> int:
     return 0
 
 
+def _build_model(root: Path, store: SnapshotStore) -> dict:
+    """The money model from the store and reference/, as build-site uses it."""
+    refs = reference.load_annual_costs(root / "reference" / "annual_scheme_costs.yaml")
+    refs.update(reference.load_annual_costs(root / "reference" / "indirect_annual.yaml"))
+    deflators = reference.load_deflators(root / "reference" / "deflators.yaml")
+    pinned = reference.load_model_pin(root / "reference")
+    return uk_build.build(
+        store, refs, deflators=deflators, counterfactual=pinned["counterfactual"],
+        station_map=stations.load_station_map(root / "reference" / "cfd_stations.csv"),
+        ro_stations=stations.load_ro_stations(root / "reference" / "ro_stations.csv"),
+        bmu_map=stations.load_station_bmus(root / "reference" / "station_bmu_map.csv"),
+        cm_share=pinned["cm_share"], model_pin=pinned["pin"])
+
+
+def cmd_ref_reconciliation(args: argparse.Namespace) -> int:
+    """Internal only, never published: the period-matched component comparison
+    with REF's April 2025 study that Report No. 1's figure scripts read. The
+    public site makes no comparison with REF (Richard, 15 Oct 2026), so this
+    writes outside site/ and build-site does not call it."""
+    import polars as pl
+
+    model = _build_model(args.root, make_store(args.root))
+    ref_t = reference.load_ref_totals(args.root / "reference" / "ref_totals.yaml")
+    thru = int(ref_t["ours_through_year"])
+    comp: dict[str, float] = {}
+    real_total = 0.0
+    for s in model["schemes"]:
+        cut = s.annual.filter(pl.col("year") <= thru)
+        nom = float(cut["cost_gbp"].sum()) if cut.height else 0.0
+        if "cost_gbp_2024" in cut.columns and cut.height:
+            real_total += float(cut["cost_gbp_2024"].sum())
+        key = REF_KEY.get(s.scheme_id, s.scheme_id)
+        comp[key] = comp.get(key, 0.0) + nom
+    unmapped = set(comp) - set(ref_t["components"])
+    if unmapped:
+        raise SystemExit(f"[ref-reconciliation] schemes not in REF table: {sorted(unmapped)}")
+    recon = reconcile.ref_reconciliation(comp, real_total, ref_t)
+    out = Path(args.out)
+    if (args.root / "site").resolve() in out.resolve().parents:
+        raise SystemExit("[ref-reconciliation] internal file: do not write it under site/")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(recon, indent=1, allow_nan=False))
+    print(f"[ref-reconciliation] ours £{recon['ours_total']/1e9:.1f}bn vs "
+          f"REF £{recon['ref_total']/1e9:.1f}bn to {thru}; written to {out}")
+    return 0
+
+
 def cmd_build_site(args: argparse.Namespace) -> int:
     import polars as pl
 
@@ -158,53 +205,14 @@ def cmd_build_site(args: argparse.Namespace) -> int:
               f"{report['matched_days']} matched days "
               f"({report['excluded_recent_days']} recent days excluded)")
 
-    crosscheck_path = args.root / "reference" / "ref_crosscheck.yaml"
-    if crosscheck_path.is_file():
-        ref_cc = reference.load_ref_crosscheck(crosscheck_path)
-        cc_year = int(ref_cc["year"][:4])
-        ours = {}
-        for s in model["schemes"]:
-            if s.layer == "indirect":
-                row = s.annual.filter(pl.col("year") == cc_year)
-                key = REF_KEY.get(s.scheme_id, s.scheme_id)
-                ours[key] = ours.get(key, 0.0) + (float(row["cost_gbp"][0]) if row.height else 0.0)
-        cc = reconcile.indirect_crosscheck(ours, ref_cc)
-        (out_dir / "indirect_crosscheck.json").write_text(
-            json.dumps(cc, indent=1, allow_nan=False))
-        print(f"[crosscheck] {len(cc['components'])} components vs REF {cc['comparison_year']}; "
-              f"{cc['unexplained_count']} unexplained beyond ±{cc['bound_pct']}%")
-
-    ref_totals_path = args.root / "reference" / "ref_totals.yaml"
-    if ref_totals_path.is_file():
-        ref_t = reference.load_ref_totals(ref_totals_path)
-        thru = int(ref_t["ours_through_year"])
-        comp: dict[str, float] = {}
-        real_total = 0.0
-        for s in model["schemes"]:
-            cut = s.annual.filter(pl.col("year") <= thru)
-            nom = float(cut["cost_gbp"].sum()) if cut.height else 0.0
-            if "cost_gbp_2024" in cut.columns and cut.height:
-                real_total += float(cut["cost_gbp_2024"].sum())
-            key = REF_KEY.get(s.scheme_id, s.scheme_id)
-            comp[key] = comp.get(key, 0.0) + nom
-        unmapped = set(comp) - set(ref_t["components"])
-        if unmapped:
-            raise SystemExit(f"[ref-reconciliation] schemes not in REF table: {sorted(unmapped)}")
-        recon = reconcile.ref_reconciliation(comp, real_total, ref_t)
-        (out_dir / "ref_reconciliation.json").write_text(
-            json.dumps(recon, indent=1, allow_nan=False))
-        print(f"[ref-reconciliation] ours £{recon['ours_total']/1e9:.1f}bn vs "
-              f"REF £{recon['ref_total']/1e9:.1f}bn to {thru}; "
-              f"stricter choices remove £{recon['stricter_gap']/1e9:.1f}bn "
-              f"against the £{recon['gap']/1e9:.1f}bn gap")
-
     print(f"[ok] site data written to {out_dir}")
     return 0
 
 
-# How our schemes map onto REF's components for the like-for-like checks.
-# REF's BSUoS is the whole balancing charge, so constraint turn-up, which we
-# carve out of the BSUoS uplift, folds back into it for comparison.
+# How our schemes map onto REF's components for the internal like-for-like
+# comparison (cmd_ref_reconciliation). REF's BSUoS is the whole balancing
+# charge, so constraint turn-up, which we carve out of the BSUoS uplift, folds
+# back into it for comparison.
 REF_KEY = {"cfd_renewable": "cfd", "cfd_low_carbon": "cfd",
            "constraint_turnup": "bsuos"}
 

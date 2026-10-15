@@ -52,10 +52,6 @@ def load_annual_costs(path: Path) -> dict[str, ReferenceScheme]:
     return out
 
 
-def load_ref_crosscheck(path: Path) -> dict:
-    return yaml.safe_load(Path(path).read_text())
-
-
 def load_ref_totals(path: Path) -> dict:
     return yaml.safe_load(Path(path).read_text())
 

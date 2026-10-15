@@ -85,41 +85,6 @@ def cfd_monthly(
     }
 
 
-def indirect_crosscheck(ours: dict[str, float], ref: dict,
-                        *, bound_pct: float = 25.0) -> dict:
-    """Compare our indirect components against REF's published Table 2 figures.
-    Divergence is expected (methods differ by design); beyond the bound it must
-    carry an explanation note, which the methodology page displays."""
-    components = []
-    unexplained = 0
-    for name, ref_value in ref["components"].items():
-        our_value = float(ours.get(name, 0.0))
-        pct = (round((our_value - ref_value) / ref_value * 100, 4)
-               if ref_value else None)
-        note = (ref.get("notes") or {}).get(name, "")
-        beyond = (pct is not None and abs(pct) > bound_pct) or (
-            pct is None and our_value != 0.0)
-        explained = bool(note) if beyond else True
-        if not explained:
-            unexplained += 1
-        components.append({
-            "component": name,
-            "ours": round(our_value, 2),
-            "ref": float(ref_value),
-            "divergence_pct": pct,
-            "note": note,
-            "explained": explained,
-        })
-    return {
-        "comparison_year": ref["year"],
-        "ref_source": ref["source"],
-        "ref_source_url": ref["source_url"],
-        "bound_pct": bound_pct,
-        "components": components,
-        "unexplained_count": unexplained,
-    }
-
-
 def ref_reconciliation(ours: dict[str, float], ours_real_total: float, ref: dict) -> dict:
     """Period-matched cumulative comparison against REF's published study
     (impact I1). `ours` holds our per-component nominal sums over calendar
