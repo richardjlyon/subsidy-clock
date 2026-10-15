@@ -6,7 +6,7 @@ from __future__ import annotations
 import json
 import math
 import re
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 
 import polars as pl
@@ -99,6 +99,59 @@ def _with_carry(block: dict, cf: dict | None) -> dict:
         r["estimated_since"] = cf["estimated_since_real"]
         r["running_total"] = r["cumulative"] + cf["estimated_since_real"]
         r["carry_forward"] = cf["lines_real"]
+    return block
+
+
+# Report No. 1's cut-off (Richard, 15 Oct 2026): every line counted on calendar
+# years from 1 January 2002 to 31 December 2024, the last date to which every
+# line is published. The hero splits the counter into this total, the data
+# published since, and the estimate since each line's data end.
+REPORT_CUTOFF = date(2024, 12, 31)
+# Lines stored by scheme year (April to March, keyed by the year it starts).
+# They are put on calendar years by the rule the build already uses for the
+# grid and balancing charges (uk build.fy_start_to_calendar) and the report's
+# cutoff.py uses: CY(y) = 0.25 x SY(y-1) + 0.75 x SY(y). Each part keeps its
+# scheme year's conversion to 2024 prices. Both schemes began on 1 April, so
+# the year before the first is zero. Summed to the cut-off year C this is
+# every scheme year before C plus three quarters of scheme year C.
+SCHEME_YEAR_LINES = ("ro", "fit")
+SY_WEIGHT_PRIOR = 0.25
+
+
+def to_cutoff(scheme, col: str = "cost_gbp", cutoff: date = REPORT_CUTOFF) -> float:
+    """One line's cumulative from its first year to the end of the cut-off
+    year, on calendar years (scheme-year lines split as above). `col` is
+    cost_gbp (cash) or cost_gbp_2024 (2024 prices)."""
+    c = cutoff.year
+    a = dict(zip(scheme.annual["year"].to_list(), scheme.annual[col].to_list()))
+    if scheme.scheme_id in SCHEME_YEAR_LINES:
+        return (sum(v for y, v in a.items() if y < c)
+                + (1 - SY_WEIGHT_PRIOR) * a.get(c, 0.0))
+    return sum(v for y, v in a.items() if y <= c)
+
+
+def _cutoff_all(model: dict) -> dict:
+    """Cash and real to the cut-off for each headline block (direct
+    perspectives and the indirect layer)."""
+    out = {}
+    for k, members in _members(model).items():
+        cash = sum(to_cutoff(s) for s in members)
+        real = (sum(to_cutoff(s, "cost_gbp_2024") for s in members)
+                if members and all("cost_gbp_2024" in s.annual.columns for s in members)
+                else None)
+        out[k] = {"cash": cash, "real": real}
+    return out
+
+
+def _with_cutoff(block: dict, cut: dict | None) -> dict:
+    """Add `to_cutoff` (cumulative to REPORT_CUTOFF) to a _money_block and its
+    real sub-block in place. `cumulative - to_cutoff` is what has been
+    published since."""
+    if cut is None:
+        return block
+    block["to_cutoff"] = cut["cash"]
+    if "real" in block and cut["real"] is not None:
+        block["real"]["to_cutoff"] = cut["real"]
     return block
 
 
@@ -428,18 +481,21 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
     demand_mwh = ctx["annual_demand_twh"]["value"] * 1_000_000
 
     carry = _carry_all(model, generated_at) if model.get("schemes") else {}
+    cut = _cutoff_all(model) if model.get("schemes") else {}
     totals: dict = {
         "generated_at": generated_at,
+        **({"report_cutoff": REPORT_CUTOFF.isoformat()} if cut else {}),
         "perspectives": {
-            name: _with_carry(_money_block(p, households, population, demand_mwh),
-                              carry.get(name))
+            name: _with_cutoff(_with_carry(
+                _money_block(p, households, population, demand_mwh),
+                carry.get(name)), cut.get(name))
             for name, p in model["perspectives"].items()
         },
     }
     if "indirect" in model:
-        totals["indirect"] = _with_carry(_money_block(
+        totals["indirect"] = _with_cutoff(_with_carry(_money_block(
             model["indirect"], households, population, demand_mwh),
-            carry.get("indirect"))
+            carry.get("indirect")), cut.get("indirect"))
     (out / "totals.json").write_text(json.dumps(totals, indent=1, allow_nan=False))
 
     ts: dict = {
@@ -483,6 +539,10 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
                 **({"runrate_per_year_real": s.runrate_gbp_per_year_2024}
                    if s.runrate_gbp_per_year_2024 is not None else {}),
                 "data_to": s.data_to.isoformat() if s.data_to else None,
+                # cumulative to Report No. 1's cut-off, calendar years
+                "to_cutoff": to_cutoff(s),
+                **({"to_cutoff_real": to_cutoff(s, "cost_gbp_2024")}
+                   if "cost_gbp_2024" in s.annual.columns else {}),
                 **_scheme_carry(s, generated_at, _real_factor(model)),
                 **{k: v for k, v in s.extras.items()},
             }
@@ -495,7 +555,12 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
     # running total adds the estimate since each line's data end
     headline = ({"combined_real": combined_real,
                  "combined_real_running": _combined_running_real(model, generated_at),
-                 "running_at": generated_at}
+                 "running_at": generated_at,
+                 **({"report_cutoff": REPORT_CUTOFF.isoformat(),
+                     "combined_real_to_cutoff": cut["renewables"]["real"]
+                     + cut["indirect"]["real"]}
+                    if cut.get("renewables", {}).get("real") is not None
+                    and cut.get("indirect", {}).get("real") is not None else {})}
                 if combined_real is not None else None)
     (out / "meta.json").write_text(json.dumps({
         "generated_at": generated_at,

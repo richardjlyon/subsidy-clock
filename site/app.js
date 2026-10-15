@@ -190,14 +190,41 @@
 
   var FN = '<sup class="hero-fn" title="Published figures to each source’s latest data, ' +
     'plus an estimate since then at each source’s latest annual rate.">†</sup>';
-  // the plain-words split under the counter: what is published, what is estimated
-  function heroEstLine() {
+  // the plain-words split under the counter, in three parts that add to it:
+  // the total to the end of 2024 (Report No. 1's cut-off, from the build's
+  // to_cutoff), the data published since, and the estimate since each line's
+  // latest data
+  function heroParts(t) {
     var a = active();
-    var est = liveCumulative(Date.now()) - a.cumulative;
-    var estWords = est >= 1e9 ? '£' + Math.round(est / 1e9) + 'bn' : fmtCompact(est);
-    return fmtCompact(a.cumulative) + ' published to each source’s latest data, plus about ' +
-      estWords + ' estimated since then. ' +
-      '<a href="/methodology#freshness">How the estimate works</a>.';
+    var live = liveCumulative(t);
+    var cut = a.blocks.every(function (b) { return b.to_cutoff != null; })
+      ? a.blocks.reduce(function (s, b) { return s + b.to_cutoff; }, 0) : null;
+    return { live: live, toCutoff: cut,
+             publishedSince: cut == null ? null : a.cumulative - cut,
+             estimated: live - a.cumulative };
+  }
+  // the parts in £0.1bn so that the line adds up to the counter rounded to
+  // £0.1bn. The two published parts keep their own rounding (the first is the
+  // report's figure and must read as the report prints it); the estimate,
+  // worded "about", takes the remainder, which is never more than £0.1bn off
+  // its own rounding
+  function tenthsAddingTo(parts, total) {
+    var a = Math.round(parts[0] / 1e8), b = Math.round(parts[1] / 1e8);
+    var c = Math.round(total / 1e8) - a - b;
+    return [a, b, c].map(function (v) { return '£' + (v / 10).toFixed(1) + 'bn'; });
+  }
+  function heroEstLine() {
+    var p = heroParts(Date.now());
+    var how = '<a href="/methodology#freshness">How the estimate works</a>.';
+    if (p.toCutoff == null) {
+      return fmtCompact(p.live - p.estimated) + ' published, plus about ' +
+        fmtCompact(p.estimated) + ' estimated. ' + how;
+    }
+    var w = tenthsAddingTo([p.toCutoff, p.publishedSince, p.estimated], p.live);
+    return '<span class="num">' + w[0] + '</span> to the end of 2024 ' +
+      '(Report No. 1), plus <span class="num">' + w[1] +
+      '</span> published since, plus about <span class="num">' + w[2] +
+      '</span> estimated. ' + how;
   }
   function renderHeroStatic() {
     var sinceYear = persp().since_year;
