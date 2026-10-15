@@ -570,7 +570,8 @@ def test_repo_changelog_loads_and_keeps_its_corrections():
     # held for the 31 Oct 2026 release (Report No. 1): drafts until Richard
     # flips them; the writer leaves drafts out of every published output
     drafts = [e for e in corr if e.get("status") == "draft"]
-    assert [(e["date"], e["figure"]) for e in drafts] == [("2026-10-31", "headline")]
+    assert [(e["date"], e["figure"]) for e in drafts] == [
+        ("2026-10-31", "headline"), ("2026-10-31", "per_household")]
 
 
 def test_full_pool_resolves(tmp_path):

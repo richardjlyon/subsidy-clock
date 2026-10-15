@@ -51,7 +51,9 @@
   var indirectTotals = totals.indirect || null;
 
   // Real-terms (2024 £) support: per-scheme real cumulative is the sum of the
-  // deflated annual series; run-rates scale by the uniform current-year factor.
+  // deflated annual series; each line's real run-rate is converted from its
+  // own year's prices by the build (runrate_per_year_real; Richard, 15 Oct
+  // 2026). REAL_RUNRATE_FACTOR is only the fallback for older data.
   var realCumById = {};
   Object.keys((timeseries && timeseries.schemes) || {}).forEach(function (id) {
     var sum = 0;
@@ -159,7 +161,9 @@
     return state.real && realCumById[s.id] != null ? realCumById[s.id] : s.cumulative;
   }
   function schemeRunrate(s) {
-    return state.real ? s.runrate_per_year * REAL_RUNRATE_FACTOR : s.runrate_per_year;
+    if (!state.real) return s.runrate_per_year;
+    return s.runrate_per_year_real != null ? s.runrate_per_year_real
+      : s.runrate_per_year * REAL_RUNRATE_FACTOR;
   }
   function annualCost(a) {
     return state.real ? a.cost_real : a.cost;

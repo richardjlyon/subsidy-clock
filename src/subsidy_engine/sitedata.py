@@ -120,8 +120,12 @@ def _members(model: dict) -> dict:
 
 
 def _real_factor(model: dict) -> float:
-    """Factor converting current money to 2024 prices (money.latest_real_factor),
-    as the build stamped it; else read back from a block that has both bases."""
+    """Factor converting money after each line's data end (the carry-forward
+    estimate) to 2024 prices: the latest index (money.latest_real_factor), as
+    the build stamped it. Not the run-rate's factor: since 15 Oct 2026 each
+    line's run-rate is converted from its own year, so a block's real/cash
+    run-rate ratio is no longer this factor; the fallback reads it only from
+    models built before that."""
     if "real_factor" in model:
         return model["real_factor"]
     for p in [*model["perspectives"].values(), model.get("indirect") or {}]:
@@ -475,6 +479,9 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
                 "attribution_confidence": s.attribution_confidence,
                 "cumulative": s.cumulative_gbp,
                 "runrate_per_year": s.runrate_gbp_per_year,
+                # 2024 prices, from the line's own year (money.runrate_real_factor)
+                **({"runrate_per_year_real": s.runrate_gbp_per_year_2024}
+                   if s.runrate_gbp_per_year_2024 is not None else {}),
                 "data_to": s.data_to.isoformat() if s.data_to else None,
                 **_scheme_carry(s, generated_at, _real_factor(model)),
                 **{k: v for k, v in s.extras.items()},

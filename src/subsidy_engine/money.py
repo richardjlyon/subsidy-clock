@@ -29,6 +29,9 @@ class SchemeResult:
     attribution_note: str = ""
     attribution_confidence: str = ""
     extras: dict = field(default_factory=dict)
+    # run-rate in 2024 prices, converted from the line's own year
+    # (runrate_real_factor); None until the build sets it
+    runrate_gbp_per_year_2024: float | None = None
 
 
 def cumulative(daily: pl.DataFrame, col: str = "cost_gbp") -> float:
@@ -134,6 +137,37 @@ def latest_real_factor(deflators: pl.DataFrame) -> float:
     return _base_index(deflators) / _latest_index(deflators)
 
 
+def runrate_year(data_to: date) -> int:
+    """The price year of a line's run-rate: the calendar year of the mid-point
+    of the twelve months ending at its data_to. RO/FiT (Apr 2024-Mar 2025) and
+    the calendar-2024 lines -> 2024; a trailing 365 days to Oct 2026 -> 2026."""
+    return (data_to - timedelta(days=182)).year
+
+
+def runrate_real_factor(data_to: date | None, deflators: pl.DataFrame) -> float:
+    """Factor converting ONE line's run-rate from its own year's prices to
+    REAL_BASE_YEAR prices: CPIH(2024) / CPIH(runrate_year), the latest index for
+    years past the series (add_real's rule).
+
+    Richard, 15 Oct 2026 (Technical Paper No. 1 §4.3): the real run-rate, the
+    per-household, per-second and per-MWh figures are the sum of the lines each
+    converted from its own year. The rule it replaced converted the whole cash
+    run-rate with the latest index in one step, which counted inflation twice
+    on the lines already in 2024 money (£18.36bn / £633 a household at the
+    14 Oct 2026 build, against £18.83bn / £649 by this rule). A line with no
+    data end takes the latest index.
+
+    Not used for the carry-forward estimate: that money falls after the data
+    end, so it is converted at the latest index (paper §8.1;
+    sitedata._carry_forward)."""
+    base = _base_index(deflators)
+    if data_to is None:
+        return base / _latest_index(deflators)
+    hit = deflators.filter(pl.col("year") == runrate_year(data_to))
+    idx = float(hit["index"][0]) if hit.height else _latest_index(deflators)
+    return base / idx
+
+
 YEAR_ENDS = {           # year_basis -> (years after the keyed year, month, day)
     "calendar": (0, 12, 31),        # calendar series end 31 Dec
     "obligation_apr": (1, 3, 31),   # UK obligation years end 31 Mar
@@ -194,6 +228,11 @@ def _aggregate(members: list[SchemeResult]) -> dict:
     }
     if has_real:
         out["cumulative_gbp_2024"] = float(annual["cost_gbp_2024"].sum())
+    if members and all(s.runrate_gbp_per_year_2024 is not None for s in members):
+        # line by line, each from its own year (runrate_real_factor)
+        real_run = sum(s.runrate_gbp_per_year_2024 or 0.0 for s in members)
+        out["runrate_gbp_per_year_2024"] = real_run
+        out["rate_gbp_per_sec_2024"] = rate_per_second(real_run)
     return out
 
 

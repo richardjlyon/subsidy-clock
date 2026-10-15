@@ -188,6 +188,19 @@ def test_build_indirect_layer(tmp_path):
     for s in model["schemes"]:
         assert "cost_gbp_2024" in s.annual.columns, s.scheme_id
 
+    # real run-rate: each line from its own year, blocks sum the lines
+    # (Richard, 15 Oct 2026); not the cash total x the latest index
+    import pytest
+    from subsidy_engine.money import runrate_real_factor, latest_real_factor
+    for s in model["schemes"]:
+        assert s.runrate_gbp_per_year_2024 == pytest.approx(
+            s.runrate_gbp_per_year * runrate_real_factor(s.data_to, deflators())), s.scheme_id
+    ind = model["indirect"]
+    assert ind["runrate_gbp_per_year_2024"] == pytest.approx(
+        sum(s.runrate_gbp_per_year_2024 for s in model["schemes"] if s.layer == "indirect"))
+    assert ind["runrate_gbp_per_year_2024"] != pytest.approx(
+        ind["runrate_gbp_per_year"] * latest_real_factor(deflators()))
+    assert model["real_factor"] == latest_real_factor(deflators())   # carry-forward's factor
     # indirect total = sum of the five components
     expected_indirect = (50.0 * 0.4 + 80.0 + 90.0 + expected_tnuos
                          + bs_annual[2023] + bs_annual[2026])

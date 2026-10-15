@@ -25,6 +25,7 @@ from subsidy_engine.money import (
     layer_total,
     merge_annual,
     perspective_totals,
+    runrate_real_factor,
     trailing_runrate,
     # Deliberate private cross-package import, deferred: renaming _latest_index to a
     # public name is behaviour-neutral but a drive-by on money.py. Revisit in Phase 2
@@ -683,16 +684,23 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
                                  deflators, "GO4: no-net-zero balancing cost, BSUoS basis")},
         ))
 
-    # --- Real-terms columns on every scheme, then totals
+    # --- Real-terms columns on every scheme, then totals. Each line's run-rate
+    # is converted from its own year's prices (money.runrate_real_factor;
+    # Richard, 15 Oct 2026, paper §4.3), and the blocks sum the lines.
     for s in schemes:
         s.annual = add_real(s.annual, deflators)
+        s.runrate_gbp_per_year_2024 = (
+            s.runrate_gbp_per_year * runrate_real_factor(s.data_to, deflators))
 
     out_perspectives = perspective_totals(schemes)
     out_indirect = layer_total(schemes, "indirect")
+    # the latest index still converts money after each line's data end (the
+    # carry-forward estimate, paper §8.1): sitedata reads it as real_factor
     factor = latest_real_factor(deflators)
     for block in [*out_perspectives.values(), out_indirect]:
-        block["runrate_gbp_per_year_2024"] = block["runrate_gbp_per_year"] * factor
-        block["rate_gbp_per_sec_2024"] = block["rate_gbp_per_sec"] * factor
+        # an empty block has no lines to sum: zero either way
+        block.setdefault("runrate_gbp_per_year_2024", block["runrate_gbp_per_year"] * factor)
+        block.setdefault("rate_gbp_per_sec_2024", block["rate_gbp_per_sec"] * factor)
     out = {"schemes": schemes, "perspectives": out_perspectives,
            "indirect": out_indirect, "real_factor": factor}
     if model_pin is not None:
