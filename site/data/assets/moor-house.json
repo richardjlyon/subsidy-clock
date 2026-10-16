@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 6447950.29,
+ "hero_gbp": 6447916.78,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -94,7 +94,7 @@
   },
   {
    "q": "2022-Q3",
-   "payment_gbp": -1015557.7100000001,
+   "payment_gbp": -1015557.7100000002,
    "generation_mwh": 5959.671000000001
   },
   {
@@ -154,8 +154,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 402809.38999999984,
-   "generation_mwh": 6645.881000000002
+   "payment_gbp": 402808.5099999999,
+   "generation_mwh": 6645.865000000002
   },
   {
    "q": "2025-Q4",
@@ -164,23 +164,23 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 428459.81999999995,
-   "generation_mwh": 11020.640000000003
+   "payment_gbp": 428460.7299999999,
+   "generation_mwh": 11020.655000000002
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 329380.8399999999,
-   "generation_mwh": 7873.124
+   "payment_gbp": 329379.4399999999,
+   "generation_mwh": 7873.1089999999995
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 112178.26,
-   "generation_mwh": 6732.812
+   "payment_gbp": 112259.19999999997,
+   "generation_mwh": 6736.588
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": -12776.34,
-   "generation_mwh": 528.529
+   "payment_gbp": -12889.42,
+   "generation_mwh": 534.285
   }
  ],
  "contracts": [
@@ -189,7 +189,7 @@
    "unit_name": "Moor House Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 6447950.29,
+   "cumulative_gbp": 6447916.78,
    "first_settlement": "2018-04-03",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -200,11 +200,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-05"
+  "data_to": "2026-10-06"
  },
  "tiles": {
-  "generation_mwh": 287510.212,
-  "rate_gbp_per_mwh": 22.42685658066295,
+  "generation_mwh": 287519.728,
+  "rate_gbp_per_mwh": 22.425997773620598,
   "rate_label": "payment per subsidised MWh"
  }
 }
