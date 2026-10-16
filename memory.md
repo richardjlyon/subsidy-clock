@@ -313,7 +313,7 @@ deleted. `subsidy-clock.vercel.app` now 404s.
   £489.4m — that alone is the £0.37bn difference.
 - **Open (Richard):** the engine itself carries G0 by RPI + renewal allowance (GO5) and splits
   B0 into a gas-indexed energy part (GO4); the Clock uses CPIH. See
-  reports-programme `no1-price-of-support/clock-corrections-pending.md` row 8.
+  reports-programme `price-of-support/clock-corrections-pending.md` row 8.
 - **Golden gate:** committed master still stale (131 files); not re-captured. Against a fresh
   origin/master capture on the same data the diff was exactly TNUoS/BSUoS series, indirect
   totals, headline, headline-derived factoids/cards/csv/crosschecks, and the new model_pin key.
