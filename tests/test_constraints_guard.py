@@ -194,6 +194,14 @@ def test_a_raised_pin_fails_when_2024_has_a_missing_day(tmp_path):
         _build_with(tmp_path, 2025, missing={date(2024, 6, 15)})
 
 
+def test_pin_2024_with_a_missing_day_says_to_fetch_it_not_to_raise_the_pin(tmp_path):
+    # the old message only said a day was lacking, which invited raising the pin
+    import pytest
+    with pytest.raises(ValueError, match=r"bottom_up_from 2024 .*first 2024-06-15.*fetch the "
+                                         r"missing days .*do not raise the pin") as err:
+        _build_with(tmp_path, 2024, missing={date(2024, 6, 15)})
+    assert "partial year" in str(err.value)
+
 
 def test_the_first_full_elexon_year_moves_with_the_live_pin():
     # FIRST_FULL_ELEXON_YEAR is the floor of the refusal checks; a release that moves the

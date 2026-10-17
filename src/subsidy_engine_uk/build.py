@@ -250,7 +250,9 @@ def _check_bottom_up_from(value, stored_days: list[str], last_history_year: int)
     if lacking:
         raise ValueError(f"constraints bottom_up_from {value} is not usable: not every day "
                          f"from 1 Jan {value} to {end} is stored ({len(lacking)} lacking, "
-                         f"first {lacking[0]}); Elexon would replace REF with a partial year")
+                         f"first {lacking[0]}). Elexon would replace REF with a partial "
+                         f"year: fetch the missing days (backfill-constraints --start --end) "
+                         f"and do not raise the pin")
 
 
 def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
