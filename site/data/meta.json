@@ -1,33 +1,33 @@
 {
- "generated_at": "2026-10-16T10:10:53.860909+00:00",
+ "generated_at": "2026-10-17T09:42:31.008418+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-10-16T10:03:11.276163+00:00",
+   "retrieved_at": "2026-10-17T09:36:19.691944+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
-   "row_count": 118441
+   "row_count": 118528
   },
   "constraints": {
-   "retrieved_at": "2026-10-16T10:10:47.404449+00:00",
-   "source_date": "2023-09-07",
+   "retrieved_at": "2026-10-17T09:42:23.756626+00:00",
+   "source_date": "2023-08-31",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 7
+   "row_count": 0
   },
   "capacity_market": {
-   "retrieved_at": "2026-10-16T10:03:59.157111+00:00",
+   "retrieved_at": "2026-10-17T09:36:49.866223+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 805
   },
   "bsuos": {
-   "retrieved_at": "2026-10-16T10:04:46.925276+00:00",
+   "retrieved_at": "2026-10-17T09:37:33.731423+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/current-balancing-services-use-of-system-bsuos-data",
-   "row_count": 189
+   "row_count": 191
   },
   "constraint_turnup": {
-   "retrieved_at": "2026-10-16T10:03:58.130949+00:00",
-   "source_date": "2026-10-15",
+   "retrieved_at": "2026-10-17T09:36:48.918392+00:00",
+   "source_date": "2026-10-16",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/offer",
    "row_count": 12
   }
@@ -76,7 +76,7 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 233011640374.40112
+  "combined_real": 233033920967.82568
  },
  "factoids": [
   {
