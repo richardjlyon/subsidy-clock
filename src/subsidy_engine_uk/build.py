@@ -333,6 +333,7 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         last_history_year = int(history.annual["year"].max())
         _check_bottom_up_from(history.bottom_up_from,
                               store.partitions("constraints", "daily"), last_history_year)
+        elexon_first_year = history.bottom_up_from
         usable = bottom_up_annual.filter(
             (pl.col("year") >= history.bottom_up_from)
             | (pl.col("year") > last_history_year)
@@ -354,6 +355,7 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         by_recipient, curtailed_mwh = [], 0.0
         bottom_up_from = None
         bottom_up_to = None
+        elexon_first_year = None   # no Elexon data used: publish no Elexon year
     constraints_annual = annual.select("year", "cost_gbp")
     schemes.append(SchemeResult(
         scheme_id="constraints", label="Constraint payments (paid to switch off)",
@@ -591,5 +593,5 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
     return {"schemes": schemes, "perspectives": out_perspectives,
             # the first year Elexon replaces REF for constraints (fix 5 guard); published
             # in breakdown.json so the pages state the same year as the figures
-            "elexon_first_year": history.bottom_up_from,
+            "elexon_first_year": elexon_first_year,
             "indirect": out_indirect}

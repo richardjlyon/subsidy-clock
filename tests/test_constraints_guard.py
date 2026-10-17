@@ -164,3 +164,15 @@ def test_a_switch_year_of_zero_or_below_fails_naming_the_setting(tmp_path):
     for pin in (-1, 0):
         with pytest.raises(ValueError, match=rf"bottom_up_from {pin} "):
             _build_with(tmp_path / str(pin), pin)
+
+
+def test_with_no_elexon_data_the_elexon_year_is_not_published(tmp_path):
+    # nothing from Elexon is used then, so publishing 2024 would be false; the pages fall back
+    import json
+    from subsidy_engine import sitedata
+    model = uk_build.build(SnapshotStore(tmp_path / "store"), _refs(), deflators=_deflators())
+    ctx = {k: {"value": v, "source": "s", "source_url": "u", "as_of": 2024} for k, v in
+           (("households", 28_400_000), ("population", 68_300_000), ("annual_demand_twh", 266))}
+    sitedata.build(model, ctx, {}, tmp_path / "site", generated_at="2026-10-17T00:00:00+00:00")
+    bd = json.loads((tmp_path / "site" / "breakdown.json").read_text())
+    assert "elexon_first_year" not in bd
