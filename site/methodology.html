@@ -405,13 +405,17 @@
   (function () {
     var con = null;
     bd.schemes.forEach(function (s) { if (s.id === 'constraints') con = s; });
-    // the REF / Elexon year split. Prefer the pinned first Elexon year that
-    // the build writes as breakdown.json's top-level integer bottom_up_from;
-    // only when that is absent, work it out as build.py:284-286 does: the
-    // first calendar year the Elexon series covers in full replaces REF
+    // the REF / Elexon year split. Prefer the pinned first Elexon year, the
+    // top-level integer elexon_first_year in breakdown.json (never the
+    // per-scheme bottom_up_from, which is the earliest stored day). Accept it
+    // only as an integer from 2010 to next year; otherwise work it out as
+    // build.py:284-286 does: the first calendar year the Elexon series covers
+    // in full replaces REF
     var firstFull = NaN;
-    if (typeof bd.bottom_up_from === 'number' && bd.bottom_up_from % 1 === 0) {
-      firstFull = bd.bottom_up_from;
+    var pin = bd.elexon_first_year;
+    if (typeof pin === 'number' && pin % 1 === 0 &&
+        pin >= 2010 && pin <= new Date().getFullYear() + 1) {
+      firstFull = pin;
     } else if (con && con.bottom_up_from) {
       var y0 = parseInt(String(con.bottom_up_from).slice(0, 4), 10);
       if (!isNaN(y0)) firstFull = String(con.bottom_up_from).slice(5, 10) === '01-01' ? y0 : y0 + 1;

@@ -59,13 +59,16 @@
             { day: 'numeric', month: 'long', year: 'numeric' })
         : ''
     };
-    // REF / Elexon year split. Prefer the pinned first Elexon year that the
-    // build writes as breakdown.json's top-level integer bottom_up_from; only
-    // when that is absent, work it out as build.py:284-286 does: the first
-    // calendar year the Elexon series covers in full replaces REF from then on
+    // REF / Elexon year split. Prefer the pinned first Elexon year, the
+    // top-level integer elexon_first_year in breakdown.json (never the
+    // per-scheme bottom_up_from, which is the earliest stored day). Accept it
+    // only as an integer from 2010 to next year; otherwise work it out as
+    // build.py:284-286 does: the first calendar year the Elexon series covers
+    // in full replaces REF from then on
     var firstFull = NaN;
-    var pinned = data.breakdown.bottom_up_from;
-    if (typeof pinned === 'number' && pinned % 1 === 0) {
+    var pinned = data.breakdown.elexon_first_year;
+    if (typeof pinned === 'number' && pinned % 1 === 0 &&
+        pinned >= 2010 && pinned <= new Date().getFullYear() + 1) {
       firstFull = pinned;
     } else {
       var bu = s.bottom_up_from ? String(s.bottom_up_from) : '';
