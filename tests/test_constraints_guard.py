@@ -131,3 +131,15 @@ def test_the_pin_2024_still_builds_once_2023_is_fully_held_too(tmp_path):
     model = _build_with(tmp_path, 2024, earliest=date(2022, 12, 30))
     con = next(s for s in model["schemes"] if s.scheme_id == "constraints")
     assert con.annual.filter(pl.col("year") == 2023)["cost_gbp"].item() == REF[2023]
+
+
+def test_the_pinned_year_is_published_in_breakdown_json(tmp_path):
+    # the pages say from which year Elexon replaces REF; they read it from here
+    import json
+    from subsidy_engine import sitedata
+    model = _build_with(tmp_path / "store", 2024)
+    ctx = {k: {"value": v, "source": "s", "source_url": "u", "as_of": 2024} for k, v in
+           (("households", 28_400_000), ("population", 68_300_000), ("annual_demand_twh", 266))}
+    sitedata.build(model, ctx, {}, tmp_path / "site", generated_at="2026-10-17T00:00:00+00:00")
+    bd = json.loads((tmp_path / "site" / "breakdown.json").read_text())
+    assert bd["bottom_up_from"] == 2024

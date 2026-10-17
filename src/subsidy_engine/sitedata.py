@@ -356,6 +356,8 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
 
     (out / "breakdown.json").write_text(json.dumps({
         "generated_at": generated_at,
+        # first year Elexon replaces REF for constraints (fix 5 guard)
+        **({"bottom_up_from": model["bottom_up_from"]} if "bottom_up_from" in model else {}),
         "schemes": [
             {
                 "id": s.scheme_id,
