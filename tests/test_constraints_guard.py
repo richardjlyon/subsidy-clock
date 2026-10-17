@@ -1,10 +1,11 @@
-"""Fix 5 guard (robustness spec, 17 Oct 2026): the live Clock's figures must not move
-before the single release Richard approves.
+"""Fix 5 guard (robustness spec, 17 Oct 2026): the split between the constraints and
+balancing lines must not move before the single release Richard approves.
 
 Today the build trusts Elexon bottom-up constraints for every year from the first one the
 backfill covers from 1 January. The daily backfill steps back a week at a time and passes
-1 Jan 2023 around 20 Nov 2026; 2023 would then switch from REF (GBP 310.5m) to Elexon with
-no changelog entry. The guard states the first Elexon year (2024, today's split) in the
+1 Jan 2023 on 20 Nov 2026 at the latest; 2023 would then switch from REF (GBP 310.5m) to
+Elexon with no changelog entry. Balancing is counted net of constraints, so the headline
+would not move; the split between the two lines would. The guard states the first Elexon year (2024, today's split) in the
 reference file, so the backfill reaching further back changes nothing."""
 from datetime import date, timedelta
 
@@ -45,12 +46,14 @@ def _store(path, earliest):
 
 def _figures(store, refs):
     model = uk_build.build(store, refs, deflators=_deflators())
-    # live (master) end-2024 figure: every line, 2002 to 31 Dec 2024, in 2024 prices
+    # every line, 2002 to 31 Dec 2024, in 2024 prices. This fixture has no BSUoS line, so
+    # it measures the constraints line alone; on the real build the balancing line is net
+    # of constraints and the live (master) end-2024 figure does not move either way
     end_2024 = sum(float(add_real(s.annual, _deflators())
                          .filter(pl.col("year") <= 2024)["cost_gbp_2024"].sum())
                    for s in model["schemes"])
     p = model["perspectives"]["renewables"]
-    # live (master) running figure: the base the counter starts from and its rate
+    # the renewables perspective's running base and rate (constraints is in it)
     running = (p.get("cumulative_gbp_2024"), p.get("runrate_gbp_per_year_2024"),
                p["cumulative_gbp"], p["runrate_gbp_per_year"])
     return end_2024, running
@@ -68,7 +71,7 @@ def _refs():
             "fit": _annual("fit", {2024: 1.0})}
 
 
-def test_live_end_2024_figure_and_running_base_do_not_move_when_the_backfill_passes_1_jan_2023(
+def test_constraints_line_to_end_2024_and_its_running_base_do_not_move_when_the_backfill_passes_1_jan_2023(
         tmp_path):
     today = _figures(_store(tmp_path / "today", date(2023, 8, 25)), _refs())
     after = _figures(_store(tmp_path / "after", date(2022, 12, 30)), _refs())
