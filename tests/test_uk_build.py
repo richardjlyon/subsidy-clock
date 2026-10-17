@@ -53,7 +53,7 @@ def test_build_integration(tmp_path):
         "constraints_history": ReferenceScheme(
             "constraints_history", "Wind constraints history",
             ["renewables", "low_carbon"], "annual", "s", "https://s",
-            True, hist, bottom_up_from=2024),
+            True, hist, bottom_up_from=2026),
         "ro": ReferenceScheme("ro", "Renewables Obligation",
                               ["renewables", "low_carbon"], "annual",
                               "s", "https://s", True,
@@ -118,7 +118,7 @@ def test_build_indirect_layer(tmp_path):
     refs = {
         "constraints_history": replace(
             _ref("constraints_history", "CH", {2024: 200.0},
-                 perspectives=("renewables", "low_carbon")), bottom_up_from=2024),
+                 perspectives=("renewables", "low_carbon")), bottom_up_from=2026),
         "ro": _ref("ro", "RO", {2024: 1000.0},
                    perspectives=("renewables", "low_carbon")),
         "fit": _ref("fit", "FIT", {2024: 500.0},
@@ -200,7 +200,7 @@ def test_station_detail_quarters_contracts_and_negative_quarter(tmp_path):
         "constraints_history": ReferenceScheme(
             "constraints_history", "Wind constraints history",
             ["renewables", "low_carbon"], "annual", "s", "https://s", True, hist,
-            bottom_up_from=2024),
+            bottom_up_from=2026),
         "ro": ReferenceScheme("ro", "Renewables Obligation",
                               ["renewables", "low_carbon"], "annual",
                               "s", "https://s", True, annual),

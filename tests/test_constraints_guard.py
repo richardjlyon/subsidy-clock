@@ -111,3 +111,9 @@ def test_a_switch_year_as_a_fraction_or_a_date_fails_naming_the_value(tmp_path):
     for i, pin in enumerate((2024.5, "2024-01-01", date(2024, 1, 1))):
         with pytest.raises(ValueError, match=r"bottom_up_from .*2024.* whole-number year"):
             _build_with(tmp_path / str(i), pin)
+
+
+def test_a_switch_year_with_no_stored_days_fails(tmp_path):
+    import pytest
+    with pytest.raises(ValueError, match=r"bottom_up_from 2030 .*not every day from 1 Jan 2030"):
+        _build_with(tmp_path, 2030)

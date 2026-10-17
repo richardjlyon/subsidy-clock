@@ -7,7 +7,7 @@ pieces (the CPIH 2002-05 uplift baseline, the scheme wiring) live here.
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, timedelta
 
 import polars as pl
 
@@ -201,12 +201,30 @@ def _attach_outages(station_detail: list, bmu_map: dict,
         }
 
 
-def _check_bottom_up_from(value) -> None:
-    """The constraints switch must be a whole-number year (fix 5 guard)."""
+def _check_bottom_up_from(value, stored_days: list[str], last_history_year: int) -> None:
+    """The constraints switch must be a whole-number year with stored days, and every
+    year from it that replaces a REF figure must be fully held: every day from 1 January
+    of the pinned year to the last stored day, or to 31 December of REF's last year if
+    that is sooner (fix 5 guard). Years after REF's last year have no REF figure to mix
+    with and are kept part-year, as before. An earlier year being fully held as well is
+    fine: the pin is a decision, not the earliest full year."""
     if isinstance(value, bool) or not isinstance(value, int):
         raise ValueError(f"constraints bottom_up_from {value!r} is not a whole-number year: "
                          "write it as a plain year, e.g. 2024, in "
                          "reference/annual_scheme_costs.yaml")
+    stored = {d for d in stored_days if len(d) == 10}
+    first = date(value, 1, 1)
+    last = date.fromisoformat(max(stored)) if stored else None
+    if last is None or last < first:
+        raise ValueError(f"constraints bottom_up_from {value} is not usable: not every day "
+                         f"from 1 Jan {value} is stored (no stored day on or after it)")
+    end = min(last, date(last_history_year, 12, 31))
+    lacking = [d for d in (first + timedelta(days=n) for n in range((end - first).days + 1))
+               if d.isoformat() not in stored]
+    if lacking:
+        raise ValueError(f"constraints bottom_up_from {value} is not usable: not every day "
+                         f"from 1 Jan {value} to {end} is stored ({len(lacking)} lacking, "
+                         f"first {lacking[0]}); Elexon would replace REF with a partial year")
 
 
 def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
@@ -296,8 +314,9 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
             raise ValueError("constraints history states no bottom_up_from: the first year "
                              "Elexon replaces REF must be stated in "
                              "reference/annual_scheme_costs.yaml")
-        _check_bottom_up_from(history.bottom_up_from)
         last_history_year = int(history.annual["year"].max())
+        _check_bottom_up_from(history.bottom_up_from,
+                              store.partitions("constraints", "daily"), last_history_year)
         usable = bottom_up_annual.filter(
             (pl.col("year") >= history.bottom_up_from)
             | (pl.col("year") > last_history_year)

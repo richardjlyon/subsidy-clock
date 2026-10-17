@@ -274,7 +274,7 @@ def _model(tmp_path, turnup_gbp_per_day=None):
                         source_url="u", partition=d.isoformat())
     refs = {"constraints_history": replace(
                 _annual_ref("constraints_history", {2024: 200.0}, ("renewables", "low_carbon")),
-                bottom_up_from=2024),
+                bottom_up_from=2026),
             "ro": _annual_ref("ro", {2024: 1000.0}, ("renewables", "low_carbon")),
             "fit": _annual_ref("fit", {2024: 500.0}, ("renewables", "low_carbon")),
             "bsuos_history": _annual_ref("bsuos_history", {2023: 500.0})}
