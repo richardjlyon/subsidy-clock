@@ -2,11 +2,14 @@
 balancing lines must not move before the single release Richard approves.
 
 Today the build trusts Elexon bottom-up constraints for every year from the first one the
-backfill covers from 1 January. The daily backfill steps back a week at a time and passes
-1 Jan 2023 on 20 Nov 2026 at the latest; 2023 would then switch from REF (GBP 310.5m) to
-Elexon with no changelog entry. Balancing is counted net of constraints, so the headline
-would not move; the split between the two lines would. The guard states the first Elexon year (2024, today's split) in the
-reference file, so the backfill reaching further back changes nothing."""
+backfill covers from 1 January. The daily backfill steps back a week at a run and reaches
+1 Jan 2023 no earlier than 05:30 GMT on 20 Nov 2026 at one run a day (runs land hours late
+and skipped runs push it later; any extra run brings it forward); 2023 would then switch
+from REF to Elexon with no changelog entry. Balancing is counted net of constraints, so the
+end-2024 figure would not move; the split between the two lines would. The guard states the
+first Elexon year (2024, today's split) in the reference file, so the backfill reaching
+further back moves no annual total and not the split. Curtailed MWh, recipients and
+scotland.json still move as days are added."""
 from datetime import date, timedelta
 
 import polars as pl

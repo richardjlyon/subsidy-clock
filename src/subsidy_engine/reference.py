@@ -24,7 +24,9 @@ class ReferenceScheme:
     attribution_confidence: str = ""
     year_basis: str = "obligation_apr"  # "calendar" for calendar-year-keyed schemes (CCL, ETS)
     # constraints history only: the first year Elexon bottom-up replaces this history
-    # (fix 5 guard: stated, so the backfill reaching further back changes nothing)
+    # (fix 5 guard: stated, so the backfill reaching further back moves no annual total and
+    # not the constraints and balancing split; curtailed MWh, recipients and scotland.json
+    # still move as days are added)
     bottom_up_from: int | None = None
 
 
