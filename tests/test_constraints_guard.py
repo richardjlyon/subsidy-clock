@@ -117,3 +117,17 @@ def test_a_switch_year_with_no_stored_days_fails(tmp_path):
     import pytest
     with pytest.raises(ValueError, match=r"bottom_up_from 2030 .*not every day from 1 Jan 2030"):
         _build_with(tmp_path, 2030)
+
+
+def test_a_switch_year_only_partly_held_fails_rather_than_swapping_in_a_part_year(tmp_path):
+    # today's data start on 25 Aug 2023: 2023 would replace REF's full year with
+    # four months of Elexon (GBP 167.3m on the real data)
+    import pytest
+    with pytest.raises(ValueError, match=r"bottom_up_from 2023 .*not every day from 1 Jan 2023"):
+        _build_with(tmp_path, 2023)
+
+
+def test_the_pin_2024_still_builds_once_2023_is_fully_held_too(tmp_path):
+    model = _build_with(tmp_path, 2024, earliest=date(2022, 12, 30))
+    con = next(s for s in model["schemes"] if s.scheme_id == "constraints")
+    assert con.annual.filter(pl.col("year") == 2023)["cost_gbp"].item() == REF[2023]
