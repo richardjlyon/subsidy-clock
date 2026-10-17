@@ -102,3 +102,12 @@ def test_a_switch_year_written_as_text_fails_naming_the_value(tmp_path):
     import pytest
     with pytest.raises(ValueError, match=r"bottom_up_from '2024' .*whole-number year"):
         _build_with(tmp_path, "2024")
+
+
+def test_a_switch_year_as_a_fraction_or_a_date_fails_naming_the_value(tmp_path):
+    # the fact-checker found 2024.5 and the YAML date 2024-01-01 built silently and put
+    # 2024 back on REF
+    import pytest
+    for i, pin in enumerate((2024.5, "2024-01-01", date(2024, 1, 1))):
+        with pytest.raises(ValueError, match=r"bottom_up_from .*2024.* whole-number year"):
+            _build_with(tmp_path / str(i), pin)
