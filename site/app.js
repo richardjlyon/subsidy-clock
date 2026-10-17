@@ -167,11 +167,11 @@
     if (leadin) {
       leadin.innerHTML = (state.combined && hasCombinedReal())
         ? 'Subsidising renewables has cost Great Britain over ' +
-          '<a href="/methodology#ref-reconciliation"><strong class="money num">£' +
+          '<a href="/methodology#headline-figure"><strong class="money num">£' +
           bn + '&nbsp;billion</strong></a> ' + basisClause +
           ', including estimated indirect costs:'
         : 'Direct UK renewable subsidy has cost Great Britain over ' +
-          '<a href="/methodology#ref-reconciliation"><strong class="money num">£' +
+          '<a href="/methodology#headline-figure"><strong class="money num">£' +
           bn + '&nbsp;billion</strong></a> ' + basisClause + ', measured to the penny:';
       leadin.hidden = false;
     }
