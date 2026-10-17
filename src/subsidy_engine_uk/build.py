@@ -201,6 +201,12 @@ def _attach_outages(station_detail: list, bmu_map: dict,
         }
 
 
+# The first year live (master) publishes from Elexon (fix 5 guard, 17 Oct 2026). A pin
+# above a year from here on that Elexon fully holds would put that year back on REF.
+# Moving the pin is a release decision for Richard, not a data update.
+FIRST_FULL_ELEXON_YEAR = 2024
+
+
 def _check_bottom_up_from(value, stored_days: list[str], last_history_year: int) -> None:
     """The constraints switch must be a whole-number year with stored days, and every
     year from it that replaces a REF figure must be fully held: every day from 1 January
@@ -213,6 +219,12 @@ def _check_bottom_up_from(value, stored_days: list[str], last_history_year: int)
                          "write it as a plain year, e.g. 2024, in "
                          "reference/annual_scheme_costs.yaml")
     stored = {d for d in stored_days if len(d) == 10}
+    for y in range(FIRST_FULL_ELEXON_YEAR, min(value, last_history_year + 1)):
+        days = (date(y + 1, 1, 1) - date(y, 1, 1)).days
+        if all((date(y, 1, 1) + timedelta(days=n)).isoformat() in stored for n in range(days)):
+            raise ValueError(f"constraints bottom_up_from {value} is later than {y}, a year "
+                             f"Elexon fully holds and live (master) publishes from Elexon: it "
+                             f"would put {y} back on REF")
     first = date(value, 1, 1)
     last = date.fromisoformat(max(stored)) if stored else None
     if last is None or last < first:

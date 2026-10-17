@@ -32,10 +32,10 @@ def _annual(sid, values, bottom_up_from=None):
                            True, df, **extra)
 
 
-def _store(path, earliest):
+def _store(path, earliest, latest=date(2025, 1, 3)):
     store = SnapshotStore(path)
     d = earliest
-    while d <= date(2025, 1, 3):
+    while d <= latest:
         store.write("constraints", "daily",
                     pl.DataFrame({"date": [d], "bmu": ["T_W-1"], "lead_party": ["W"],
                                   "volume_mwh": [-1.0], "cost_gbp": [1.0e6]}),
@@ -94,11 +94,11 @@ def test_the_live_reference_states_2024_todays_split():
     assert h.bottom_up_from == 2024
 
 
-def _build_with(tmp_path, pin, earliest=date(2023, 8, 25)):
+def _build_with(tmp_path, pin, earliest=date(2023, 8, 25), latest=date(2025, 1, 3)):
     from dataclasses import replace
     refs = _refs()
     refs["constraints_history"] = replace(refs["constraints_history"], bottom_up_from=pin)
-    return uk_build.build(_store(tmp_path, earliest), refs, deflators=_deflators())
+    return uk_build.build(_store(tmp_path, earliest, latest), refs, deflators=_deflators())
 
 
 def test_a_switch_year_written_as_text_fails_naming_the_value(tmp_path):
@@ -117,9 +117,10 @@ def test_a_switch_year_as_a_fraction_or_a_date_fails_naming_the_value(tmp_path):
 
 
 def test_a_switch_year_with_no_stored_days_fails(tmp_path):
+    # (2030 was this test's first value; it now fails earlier, on the first-full-year limit)
     import pytest
-    with pytest.raises(ValueError, match=r"bottom_up_from 2030 .*not every day from 1 Jan 2030"):
-        _build_with(tmp_path, 2030)
+    with pytest.raises(ValueError, match=r"bottom_up_from 2024 .*not every day from 1 Jan 2024"):
+        _build_with(tmp_path, 2024, latest=date(2023, 12, 31))
 
 
 def test_a_switch_year_only_partly_held_fails_rather_than_swapping_in_a_part_year(tmp_path):
@@ -146,3 +147,11 @@ def test_the_pinned_year_is_published_in_breakdown_json(tmp_path):
     sitedata.build(model, ctx, {}, tmp_path / "site", generated_at="2026-10-17T00:00:00+00:00")
     bd = json.loads((tmp_path / "site" / "breakdown.json").read_text())
     assert bd["bottom_up_from"] == 2024
+
+
+def test_a_switch_year_after_the_first_full_elexon_year_fails_naming_the_setting(tmp_path):
+    # the fact-checker found 2025 and 2026 built silently and put 2024 back on REF
+    import pytest
+    for pin in (2025, 2026, 2030):
+        with pytest.raises(ValueError, match=rf"bottom_up_from {pin} .*later than 2024"):
+            _build_with(tmp_path / str(pin), pin)
