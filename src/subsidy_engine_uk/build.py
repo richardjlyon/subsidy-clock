@@ -323,9 +323,10 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         bottom_up_annual = annualise_daily(daily)
         # Bottom-up replaces the history from the year the reference file states (fix 5
         # guard, 17 Oct 2026). It used to start at the first year the backfill covered from
-        # 1 January, so the daily backfill stepping back past 1 Jan 2023 (about 20 Nov
-        # 2026) would have switched 2023 from REF to Elexon unannounced. Partial years
-        # after the history's last year are kept, as there is nothing to replace.
+        # 1 January, so the daily backfill stepping back past 1 Jan 2023 (no earlier than
+        # 05:30 GMT on 20 Nov 2026 at one run a day) would have switched 2023 from REF to
+        # Elexon unannounced. Partial years after the history's last year are kept, as there
+        # is nothing to replace.
         if history.bottom_up_from is None:
             raise ValueError("constraints history states no bottom_up_from: the first year "
                              "Elexon replaces REF must be stated in "

@@ -106,9 +106,10 @@ schemes:
     expected_next_update: 2027-02-01   # REF database is rolling; refresh once the prior calendar year is complete
     # First year Elexon bottom-up replaces this history (fix 5 guard, 17 Oct 2026). 2024 is
     # today's live split (2023 from REF, 2024 on from Elexon), held still until the
-    # release Richard approves. Changing it moves the split between the constraints and
-    # balancing lines (balancing is net of constraints), not the end-2024 figure: changelog
-    # entry. The build refuses a year later than 2024 while Elexon fully holds 2024.
+    # release Richard approves. Changing it is a release decision with a changelog entry:
+    # it moves the split between the constraints and balancing lines (balancing is net of
+    # constraints), not the end-2024 figure. The build refuses 0 or below, and a year later
+    # than 2024 while Elexon fully holds 2024.
     bottom_up_from: 2024
     note: >-
       Calendar-year wind curtailment cost for years before the bottom-up
