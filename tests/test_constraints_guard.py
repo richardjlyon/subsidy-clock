@@ -146,7 +146,9 @@ def test_the_pinned_year_is_published_in_breakdown_json(tmp_path):
            (("households", 28_400_000), ("population", 68_300_000), ("annual_demand_twh", 266))}
     sitedata.build(model, ctx, {}, tmp_path / "site", generated_at="2026-10-17T00:00:00+00:00")
     bd = json.loads((tmp_path / "site" / "breakdown.json").read_text())
-    assert bd["bottom_up_from"] == 2024
+    # named so it cannot be confused with each scheme's bottom_up_from (earliest stored day)
+    assert bd["elexon_first_year"] == 2024
+    assert "bottom_up_from" not in bd
 
 
 def test_a_switch_year_after_the_first_full_elexon_year_fails_naming_the_setting(tmp_path):

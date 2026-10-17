@@ -591,5 +591,5 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
     return {"schemes": schemes, "perspectives": out_perspectives,
             # the first year Elexon replaces REF for constraints (fix 5 guard); published
             # in breakdown.json so the pages state the same year as the figures
-            "bottom_up_from": history.bottom_up_from,
+            "elexon_first_year": history.bottom_up_from,
             "indirect": out_indirect}
