@@ -155,3 +155,10 @@ def test_a_switch_year_after_the_first_full_elexon_year_fails_naming_the_setting
     for pin in (2025, 2026, 2030):
         with pytest.raises(ValueError, match=rf"bottom_up_from {pin} .*later than 2024"):
             _build_with(tmp_path / str(pin), pin)
+
+
+def test_a_switch_year_of_zero_or_below_fails_naming_the_setting(tmp_path):
+    import pytest
+    for pin in (-1, 0):
+        with pytest.raises(ValueError, match=rf"bottom_up_from {pin} "):
+            _build_with(tmp_path / str(pin), pin)

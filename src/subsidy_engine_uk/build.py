@@ -218,6 +218,10 @@ def _check_bottom_up_from(value, stored_days: list[str], last_history_year: int)
         raise ValueError(f"constraints bottom_up_from {value!r} is not a whole-number year: "
                          "write it as a plain year, e.g. 2024, in "
                          "reference/annual_scheme_costs.yaml")
+    if value < 1:
+        raise ValueError(f"constraints bottom_up_from {value} is not a calendar year: write "
+                         "the first year Elexon replaces REF, e.g. 2024, in "
+                         "reference/annual_scheme_costs.yaml")
     stored = {d for d in stored_days if len(d) == 10}
     for y in range(FIRST_FULL_ELEXON_YEAR, min(value, last_history_year + 1)):
         days = (date(y + 1, 1, 1) - date(y, 1, 1)).days
