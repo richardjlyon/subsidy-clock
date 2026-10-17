@@ -75,7 +75,7 @@
   <h2>Constraint payments (paid to switch off)</h2>
   <p class="scheme-meta">Source: <a href="https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid">Elexon BMRS, balancing settlement bid stacks</a> · cadence: daily · history: <a id="ref-history-link" href="https://www.ref.org.uk/constraints/index.php?tab=yr">REF published annual totals</a></p>
   <p><strong>Formula in words:</strong> for each settlement period, the accepted balancing-mechanism bids of wind units are summed: the cost is the bid volume multiplied by the bid price, and the curtailed volume is the energy the unit was instructed not to generate.</p>
-  <blockquote>All accepted bids from wind BM units are counted, regardless of soFlag, consistent with REF’s published curtailment methodology. The soFlag governs imbalance-price tagging, not whether the unit is paid.</blockquote>
+  <blockquote>All accepted bids from wind BM units are counted, regardless of soFlag. The soFlag governs imbalance-price tagging, not whether the unit is paid. Constraint costs for 2010 to 2023 use the Renewable Energy Foundation’s published annual totals.</blockquote>
   <p>History before the bottom-up settlement window<span id="splice-date"></span> comes from the Renewable Energy Foundation’s <a href="https://www.ref.org.uk/constraints/index.php?tab=yr">published annual constraint totals</a>. Bilateral trades agreed outside the balancing mechanism are <em>excluded</em>, so the constraint figures are a <strong>lower bound</strong> on what is actually paid for curtailment.</p>
 
   <h2>Renewables Obligation (RO)</h2>
