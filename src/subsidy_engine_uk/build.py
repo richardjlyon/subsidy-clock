@@ -203,7 +203,8 @@ def _attach_outages(station_detail: list, bmu_map: dict,
 
 # The first year live (master) publishes from Elexon (fix 5 guard, 17 Oct 2026). A pin
 # above a year from here on that Elexon fully holds would put that year back on REF.
-# Moving the pin is a release decision for Richard, not a data update.
+# Moving the pin is a release decision for Richard, not a data update. This constant must
+# move with the pin in reference/annual_scheme_costs.yaml (a test ties the two together).
 FIRST_FULL_ELEXON_YEAR = 2024
 
 

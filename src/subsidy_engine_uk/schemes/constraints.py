@@ -125,8 +125,11 @@ def backfill(
                 d += timedelta(days=1)
                 continue
             raw, answered = _fetch_periods(d, wind, client)
-            # fix 5 guard: a day with no bids in any period is unknown, not a nil day; the
-            # coverage check counts stored days, so leave it unstored for the next run
+            # fix 5 guard: a day with no bids in any period is unknown, not a nil day, so it
+            # is not stored. It is not fetched again: the backfill only steps back from the
+            # earliest stored day and the daily update re-fetches only the last 3 days. The
+            # missing day shows up, loudly (the build fails), only when the pin or REF's
+            # last year reaches it
             if answered:
                 write_day(store, partition, daily_summary(raw))
             d += timedelta(days=1)
