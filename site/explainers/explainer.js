@@ -59,12 +59,20 @@
             { day: 'numeric', month: 'long', year: 'numeric' })
         : ''
     };
-    // REF / Elexon year split, as build.py works it out: the first calendar
-    // year the Elexon series covers in full replaces REF from then on
-    var bu = s.bottom_up_from ? String(s.bottom_up_from) : '';
-    var buYear = parseInt(bu.slice(0, 4), 10);
-    if (!isNaN(buYear)) {
-      var firstFull = bu.slice(5, 10) === '01-01' ? buYear : buYear + 1;
+    // REF / Elexon year split. Prefer the pinned first Elexon year that the
+    // build writes as breakdown.json's top-level integer bottom_up_from; only
+    // when that is absent, work it out as build.py:284-286 does: the first
+    // calendar year the Elexon series covers in full replaces REF from then on
+    var firstFull = NaN;
+    var pinned = data.breakdown.bottom_up_from;
+    if (typeof pinned === 'number' && pinned % 1 === 0) {
+      firstFull = pinned;
+    } else {
+      var bu = s.bottom_up_from ? String(s.bottom_up_from) : '';
+      var buYear = parseInt(bu.slice(0, 4), 10);
+      if (!isNaN(buYear)) firstFull = bu.slice(5, 10) === '01-01' ? buYear : buYear + 1;
+    }
+    if (!isNaN(firstFull)) {
       liveVals['elexon-first-year'] = String(firstFull);
       liveVals['ref-last-year'] = String(firstFull - 1);
     }

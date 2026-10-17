@@ -405,21 +405,28 @@
   (function () {
     var con = null;
     bd.schemes.forEach(function (s) { if (s.id === 'constraints') con = s; });
-    if (!con || !con.bottom_up_from) return;
-    var d = new Date(con.bottom_up_from).toLocaleDateString('en-GB',
-      { day: 'numeric', month: 'long', year: 'numeric' });
-    document.getElementById('splice-date').textContent =
-      ' (Elexon data is held from ' + d + ', but only complete calendar years replace REF’s annual totals)';
-    // the REF / Elexon year split, as build.py works it out: the first
-    // calendar year the Elexon series covers in full replaces REF from then on
-    var y0 = parseInt(con.bottom_up_from.slice(0, 4), 10);
-    if (!isNaN(y0)) {
-      var firstFull = con.bottom_up_from.slice(5, 10) === '01-01' ? y0 : y0 + 1;
+    // the REF / Elexon year split. Prefer the pinned first Elexon year that
+    // the build writes as breakdown.json's top-level integer bottom_up_from;
+    // only when that is absent, work it out as build.py:284-286 does: the
+    // first calendar year the Elexon series covers in full replaces REF
+    var firstFull = NaN;
+    if (typeof bd.bottom_up_from === 'number' && bd.bottom_up_from % 1 === 0) {
+      firstFull = bd.bottom_up_from;
+    } else if (con && con.bottom_up_from) {
+      var y0 = parseInt(String(con.bottom_up_from).slice(0, 4), 10);
+      if (!isNaN(y0)) firstFull = String(con.bottom_up_from).slice(5, 10) === '01-01' ? y0 : y0 + 1;
+    }
+    if (!isNaN(firstFull)) {
       Array.prototype.forEach.call(document.querySelectorAll('.ref-last-year'),
         function (el) { el.textContent = String(firstFull - 1); });
       Array.prototype.forEach.call(document.querySelectorAll('.elexon-first-year'),
         function (el) { el.textContent = String(firstFull); });
     }
+    if (!con || !con.bottom_up_from) return;
+    var d = new Date(con.bottom_up_from).toLocaleDateString('en-GB',
+      { day: 'numeric', month: 'long', year: 'numeric' });
+    document.getElementById('splice-date').textContent =
+      ' (Elexon data is held from ' + d + ')';
   })();
 
   // perspectives: live renewables vs all-low-carbon totals
