@@ -192,3 +192,14 @@ def test_a_raised_pin_fails_when_2024_has_a_missing_day(tmp_path):
     import pytest
     with pytest.raises(ValueError, match=r"bottom_up_from 2025 .*later than 2024"):
         _build_with(tmp_path, 2025, missing={date(2024, 6, 15)})
+
+
+
+def test_the_first_full_elexon_year_moves_with_the_live_pin():
+    # FIRST_FULL_ELEXON_YEAR is the floor of the refusal checks; a release that moves the
+    # pin must move it too, or a pin raised back later would not be refused
+    from pathlib import Path
+    from subsidy_engine.reference import load_annual_costs
+    h = load_annual_costs(Path(__file__).parent.parent / "reference"
+                          / "annual_scheme_costs.yaml")["constraints_history"]
+    assert uk_build.FIRST_FULL_ELEXON_YEAR == h.bottom_up_from
