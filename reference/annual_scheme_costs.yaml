@@ -104,6 +104,10 @@ schemes:
     source_url: https://www.ref.org.uk/constraints/index.php?tab=yr
     verified: true
     expected_next_update: 2027-02-01   # REF database is rolling; refresh once the prior calendar year is complete
+    # First year Elexon bottom-up replaces this history (fix 5 guard, 17 Oct 2026). 2024 is
+    # today's live split (2023 from REF, 2024 on from Elexon), held still until the
+    # release Richard approves. Changing it moves the end-2024 figure: changelog entry.
+    bottom_up_from: 2024
     note: >-
       Calendar-year wind curtailment cost for years before the bottom-up
       Elexon backfill window. The money model uses these only for years not

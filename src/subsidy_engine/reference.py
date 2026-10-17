@@ -23,6 +23,9 @@ class ReferenceScheme:
     attribution_rule: str = ""
     attribution_confidence: str = ""
     year_basis: str = "obligation_apr"  # "calendar" for calendar-year-keyed schemes (CCL, ETS)
+    # constraints history only: the first year Elexon bottom-up replaces this history
+    # (fix 5 guard: stated, so the backfill reaching further back changes nothing)
+    bottom_up_from: int | None = None
 
 
 def load_annual_costs(path: Path) -> dict[str, ReferenceScheme]:
@@ -48,6 +51,7 @@ def load_annual_costs(path: Path) -> dict[str, ReferenceScheme]:
             attribution_rule=attribution.get("rule", ""),
             attribution_confidence=attribution.get("confidence", ""),
             year_basis=s.get("year_basis", "obligation_apr"),
+            bottom_up_from=s.get("bottom_up_from"),
         )
     return out
 

@@ -279,14 +279,18 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
     if con_daily is not None and con_daily.height:
         daily = (con_daily.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date"))
         bottom_up_annual = annualise_daily(daily)
-        # Only trust bottom-up for years fully covered by the backfill window,
-        # but also keep partial years that are after the history's last year.
-        first_full_year = int(daily["date"].min().year) + (
-            0 if daily["date"].min().month == 1 and daily["date"].min().day == 1 else 1
-        )
+        # Bottom-up replaces the history from the year the reference file states (fix 5
+        # guard, 17 Oct 2026). It used to start at the first year the backfill covered from
+        # 1 January, so the daily backfill stepping back past 1 Jan 2023 (about 20 Nov
+        # 2026) would have switched 2023 from REF to Elexon unannounced. Partial years
+        # after the history's last year are kept, as there is nothing to replace.
+        if history.bottom_up_from is None:
+            raise ValueError("constraints history states no bottom_up_from: the first year "
+                             "Elexon replaces REF must be stated in "
+                             "reference/annual_scheme_costs.yaml")
         last_history_year = int(history.annual["year"].max())
         usable = bottom_up_annual.filter(
-            (pl.col("year") >= first_full_year)
+            (pl.col("year") >= history.bottom_up_from)
             | (pl.col("year") > last_history_year)
         )
         annual = merge_annual(history.annual, usable)
