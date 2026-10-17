@@ -201,6 +201,14 @@ def _attach_outages(station_detail: list, bmu_map: dict,
         }
 
 
+def _check_bottom_up_from(value) -> None:
+    """The constraints switch must be a whole-number year (fix 5 guard)."""
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError(f"constraints bottom_up_from {value!r} is not a whole-number year: "
+                         "write it as a plain year, e.g. 2024, in "
+                         "reference/annual_scheme_costs.yaml")
+
+
 def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
           *, deflators: pl.DataFrame, baselines: dict | None = None,
           station_map: dict | None = None,
@@ -288,6 +296,7 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
             raise ValueError("constraints history states no bottom_up_from: the first year "
                              "Elexon replaces REF must be stated in "
                              "reference/annual_scheme_costs.yaml")
+        _check_bottom_up_from(history.bottom_up_from)
         last_history_year = int(history.annual["year"].max())
         usable = bottom_up_annual.filter(
             (pl.col("year") >= history.bottom_up_from)

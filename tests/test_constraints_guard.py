@@ -89,3 +89,16 @@ def test_the_live_reference_states_2024_todays_split():
     h = load_annual_costs(Path(__file__).parent.parent / "reference"
                           / "annual_scheme_costs.yaml")["constraints_history"]
     assert h.bottom_up_from == 2024
+
+
+def _build_with(tmp_path, pin, earliest=date(2023, 8, 25)):
+    from dataclasses import replace
+    refs = _refs()
+    refs["constraints_history"] = replace(refs["constraints_history"], bottom_up_from=pin)
+    return uk_build.build(_store(tmp_path, earliest), refs, deflators=_deflators())
+
+
+def test_a_switch_year_written_as_text_fails_naming_the_value(tmp_path):
+    import pytest
+    with pytest.raises(ValueError, match=r"bottom_up_from '2024' .*whole-number year"):
+        _build_with(tmp_path, "2024")
