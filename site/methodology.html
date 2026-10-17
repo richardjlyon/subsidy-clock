@@ -75,8 +75,8 @@
   <h2>Constraint payments (paid to switch off)</h2>
   <p class="scheme-meta">Source: <a href="https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid">Elexon BMRS, balancing settlement bid stacks</a> · cadence: daily · history: <a id="ref-history-link" href="https://www.ref.org.uk/constraints/index.php?tab=yr">REF published annual totals</a></p>
   <p><strong>Formula in words:</strong> for each settlement period, the accepted balancing-mechanism bids of wind units are summed: the cost is the bid volume multiplied by the bid price, and the curtailed volume is the energy the unit was instructed not to generate.</p>
-  <blockquote>All accepted bids from wind BM units are counted, regardless of soFlag. The soFlag governs imbalance-price tagging, not whether the unit is paid. Constraint costs for 2010 to 2023 use the Renewable Energy Foundation’s published annual totals.</blockquote>
-  <p>Constraint costs for 2010 to 2023 come from the Renewable Energy Foundation’s <a href="https://www.ref.org.uk/constraints/index.php?tab=yr">published annual constraint totals</a>; from 1 January 2024 they are measured bottom-up from Elexon settlement data<span id="splice-date"></span>. Bilateral trades agreed outside the balancing mechanism are <em>excluded</em>, so the constraint figures are a <strong>lower bound</strong> on what is actually paid for curtailment.</p>
+  <blockquote>All accepted bids from wind BM units are counted, regardless of soFlag. The soFlag governs imbalance-price tagging, not whether the unit is paid. Constraint costs for 2010 to <span class="ref-last-year">2023</span> use the Renewable Energy Foundation’s published annual totals.</blockquote>
+  <p>Constraint costs for 2010 to <span class="ref-last-year">2023</span> come from the Renewable Energy Foundation’s <a href="https://www.ref.org.uk/constraints/index.php?tab=yr">published annual constraint totals</a>; from 1 January <span class="elexon-first-year">2024</span> they are measured bottom-up from Elexon settlement data<span id="splice-date"></span>. Bilateral trades agreed outside the balancing mechanism are <em>excluded</em>, so the constraint figures are a <strong>lower bound</strong> on what is actually paid for curtailment.</p>
 
   <h2>Renewables Obligation (RO)</h2>
   <p class="scheme-meta" id="ro-meta"></p>
@@ -226,10 +226,10 @@
   <p>Most figures come straight from official statistics (LCCC, Ofgem, Elexon, NESO, DESNZ, ONS).
   These do not:</p>
   <ul>
-    <li><strong>Constraint payments for 2010 to 2023</strong> are the Renewable
+    <li><strong>Constraint payments for 2010 to <span class="ref-last-year">2023</span></strong> are the Renewable
     Energy Foundation&rsquo;s <a href="https://www.ref.org.uk/constraints/index.php?tab=yr">published
     annual totals</a>. REF builds them from Elexon data, but they are REF&rsquo;s figures. From
-    1 January 2024 the Clock measures them bottom-up from Elexon settlement data.</li>
+    1 January <span class="elexon-first-year">2024</span> the Clock measures them bottom-up from Elexon settlement data.</li>
     <li><strong>Some earlier indirect costs</strong> (TNUoS before 2013, BSUoS for 2006&ndash;2010
     and 2014&ndash;2016, and carbon pricing before 2019) rest on REF&rsquo;s published tabulation
     until they are checked against primary sources.</li>
@@ -410,6 +410,16 @@
       { day: 'numeric', month: 'long', year: 'numeric' });
     document.getElementById('splice-date').textContent =
       ' (Elexon data is held from ' + d + ', but only complete calendar years replace REF’s annual totals)';
+    // the REF / Elexon year split, as build.py works it out: the first
+    // calendar year the Elexon series covers in full replaces REF from then on
+    var y0 = parseInt(con.bottom_up_from.slice(0, 4), 10);
+    if (!isNaN(y0)) {
+      var firstFull = con.bottom_up_from.slice(5, 10) === '01-01' ? y0 : y0 + 1;
+      Array.prototype.forEach.call(document.querySelectorAll('.ref-last-year'),
+        function (el) { el.textContent = String(firstFull - 1); });
+      Array.prototype.forEach.call(document.querySelectorAll('.elexon-first-year'),
+        function (el) { el.textContent = String(firstFull); });
+    }
   })();
 
   // perspectives: live renewables vs all-low-carbon totals

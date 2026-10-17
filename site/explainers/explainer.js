@@ -59,8 +59,18 @@
             { day: 'numeric', month: 'long', year: 'numeric' })
         : ''
     };
+    // REF / Elexon year split, as build.py works it out: the first calendar
+    // year the Elexon series covers in full replaces REF from then on
+    var bu = s.bottom_up_from ? String(s.bottom_up_from) : '';
+    var buYear = parseInt(bu.slice(0, 4), 10);
+    if (!isNaN(buYear)) {
+      var firstFull = bu.slice(5, 10) === '01-01' ? buYear : buYear + 1;
+      liveVals['elexon-first-year'] = String(firstFull);
+      liveVals['ref-last-year'] = String(firstFull - 1);
+    }
     Array.prototype.forEach.call(document.querySelectorAll('[data-live]'), function (el) {
-      el.textContent = liveVals[el.getAttribute('data-live')] || '';
+      el.textContent = liveVals[el.getAttribute('data-live')] ||
+        el.getAttribute('data-fallback') || '';
     });
 
     // sparkline from the annual series
