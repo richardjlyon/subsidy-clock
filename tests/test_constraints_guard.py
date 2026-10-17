@@ -73,3 +73,19 @@ def test_live_end_2024_figure_and_running_base_do_not_move_when_the_backfill_pas
     today = _figures(_store(tmp_path / "today", date(2023, 8, 25)), _refs())
     after = _figures(_store(tmp_path / "after", date(2022, 12, 30)), _refs())
     assert after == today
+
+
+def test_a_constraints_history_with_no_stated_first_elexon_year_fails_the_build(tmp_path):
+    import pytest
+    refs = {"constraints_history": _annual("constraints_history", REF),
+            "ro": _annual("ro", {2024: 1.0}), "fit": _annual("fit", {2024: 1.0})}
+    with pytest.raises(ValueError, match="bottom_up_from"):
+        uk_build.build(_store(tmp_path, date(2024, 12, 30)), refs, deflators=_deflators())
+
+
+def test_the_live_reference_states_2024_todays_split():
+    from pathlib import Path
+    from subsidy_engine.reference import load_annual_costs
+    h = load_annual_costs(Path(__file__).parent.parent / "reference"
+                          / "annual_scheme_costs.yaml")["constraints_history"]
+    assert h.bottom_up_from == 2024
