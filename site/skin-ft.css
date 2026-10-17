@@ -206,6 +206,12 @@ html[data-skin="ft"] .hero-value {
   letter-spacing: -0.02em;
 }
 html[data-skin="ft"] .hero-fn { color: var(--faint); }
+html[data-skin="ft"] .hero-basis {
+  margin: 10px 0 0;
+  font-family: var(--sans); font-weight: 600;
+  font-size: 0.98rem; line-height: 1.4;
+  color: var(--ink);
+}
 
 html[data-skin="ft"] .ft-lead {
   margin: 18px 0 0;

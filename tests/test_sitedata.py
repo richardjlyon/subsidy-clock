@@ -561,7 +561,8 @@ def test_repo_changelog_loads_and_keeps_its_corrections():
         ("2026-06-24", "factoid-police"), ("2026-09-01", "emissions-trading"),
         ("2026-09-30", "bsuos"), ("2026-09-30", "headline-caption"),
         ("2026-10-01", "factoid-homes"), ("2026-10-01", "factoid-hospitals"),
-        ("2026-10-10", "constraints")]
+        ("2026-10-10", "constraints"), ("2026-10-17", "headline-basis"),
+        ("2026-10-17", "share-of-bill"), ("2026-10-17", "sources-statement")]
     assert all(e.get("status") is None for e in corr)
 
 

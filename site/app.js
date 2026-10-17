@@ -161,7 +161,7 @@
   function renderHeroStatic() {
     var sinceYear = persp().since_year;
     document.getElementById('hero-value').textContent = fmtFull(liveCumulative(Date.now()));
-    var basisClause = state.real ? 'in today’s money' : 'as actually paid (cash terms)';
+    var basisClause = state.real ? 'in 2024 prices' : 'as actually paid (cash terms)';
     var bn = flooredActiveGbp() / 1e9;
     var leadin = document.getElementById('hero-leadin');
     if (leadin) {
@@ -179,6 +179,13 @@
       ? 'paid to renewable generators, plus estimated indirect system costs, '
       : 'paid directly to renewable generators ') +
       '<span class="nowrap">since ' + sinceYear + FN + '</span>';
+    // Price basis, shown under the figure in every skin and at every width.
+    var heroBasis = document.getElementById('hero-basis');
+    if (heroBasis) {
+      heroBasis.textContent = state.real
+        ? 'In 2024 prices (adjusted for inflation with ONS CPIH, 2024 = 100).'
+        : 'In cash, as actually paid (not adjusted for inflation).';
+    }
     // FT skin: left-box descriptive paragraph (inert markup in other skins).
     // The FT skin hides .hero-leadin and .hero-sub, so this paragraph is the
     // ONLY prose describing the counter. It must therefore say what the counter
@@ -404,7 +411,7 @@
     // cash as paid, so the two disagree by the CPIH uplift unless each says
     // which basis it is on. Say it here rather than leave a reader to find
     // £26.3bn on this card and £22.8bn on /explainers/bsuos.
-    var basisWords = state.real ? 'in today\u2019s money' : 'in cash as paid';
+    var basisWords = state.real ? 'in 2024 prices' : 'in cash as paid';
 
     document.getElementById('direct-card-total').textContent = fmtCompact(pv().cumulative);
     document.getElementById('direct-card-sub').textContent =
@@ -432,6 +439,31 @@
     }
   }
 
+  // ---------- complete years for the share of the bill ----------
+  // A year counts only when the bill figure (DUKES 1.3) exists AND every
+  // annual-reporting scheme in the share (RO, FiT, CCL, ETS, TNUoS) has filed
+  // it. Those schemes report a year or more in arrears; without this rule the
+  // latest year's share would compare a part-year of subsidy with a full
+  // year's bill. Same rule as renderChart's lastCompleteYear.
+  function shareMemberIds() {
+    return breakdown.schemes.filter(function (s) {
+      return timeseries.schemes[s.id] &&
+        (s.layer === 'indirect' || s.perspectives.indexOf(state.perspective) !== -1);
+    }).map(function (s) { return s.id; });
+  }
+  function lastCompleteShareYear() {
+    var last = Infinity;
+    shareMemberIds().forEach(function (id) {
+      if (schemesById[id].cadence !== 'annual') return;
+      var maxYr = 0;
+      timeseries.schemes[id].annual.forEach(function (a) {
+        if (a.year > maxYr) maxYr = a.year;
+      });
+      if (maxYr < last) last = maxYr;
+    });
+    return last;
+  }
+
   // ---------- strip extras: household & share-of-bill chips ----------
   // Single value per the active basis + scope (no brackets); the switches
   // carry the basis/scope meaning.
@@ -455,7 +487,10 @@
         timeseries.indirect.annual.forEach(function (a) { indirectBy[a.year] = annualCost(a); });
       }
       // same complete-year rule as renderShareChart
-      var complete = bill.annual.filter(function (a) { return a.total_bill > 0; });
+      var lastComplete = lastCompleteShareYear();
+      var complete = bill.annual.filter(function (a) {
+        return a.total_bill > 0 && a.year <= lastComplete;
+      });
       var last = complete[complete.length - 1];
       if (last) {
         year = last.year;
@@ -618,7 +653,7 @@
     function isPartialYear(yr) { return yr > lastCompleteYear; }
 
     var cumulative = state.trendView === 'cumulative';
-    var basisShort = state.real ? 'in today’s money' : 'as paid (cash terms)';
+    var basisShort = state.real ? 'in 2024 prices' : 'as paid (cash terms)';
     var basisLong = state.real
       ? 'All years in 2024 prices — the as-paid figures are on the <a href="/data">data page</a>.'
       : 'All years as actually paid (cash terms) — the inflation-adjusted figures are the default view.';
@@ -756,9 +791,10 @@
     });
     timeseries.indirect.annual.forEach(function (a) { indirectByYear[a.year] = annualCost(a); });
 
-    // complete years: present in the bill series (the denominator gates coverage)
+    // complete years only: in the bill series AND filed by every annual scheme
+    var lastComplete = lastCompleteShareYear();
     var years = bill.annual.map(function (a) { return a.year; })
-      .filter(function (y) { return billByYear[y] > 0; })
+      .filter(function (y) { return billByYear[y] > 0 && y <= lastComplete; })
       .sort(function (a, b) { return a - b; });
     var firstYear = years[0], lastYear = years[years.length - 1];
 
@@ -833,7 +869,8 @@
 
     document.getElementById('share-note').textContent =
       subsidyLabel + ' subsidy as a share of total UK electricity consumer expenditure (DUKES 1.3), ' +
-      firstYear + '–' + lastYear + '. The subsidy is a conservative lower bound, so the share is too. ' +
+      firstYear + '–' + lastYear + ', complete years only: later years are left out until every scheme has reported them. ' +
+      'The subsidy is a conservative lower bound, so the share is too. ' +
       (state.real ? 'Figures in 2024 prices. ' : '') +
       'High-price years (the 2022–23 energy spike) raise the denominator and lower the share even as subsidy rises.';
 
@@ -886,14 +923,14 @@
     // floored to £0.1bn: "more than" stays strictly true, and the text can
     // never visibly disagree with the daily card's full-precision snapshot.
     // The bracketed full-cost figure is the same I1 real-2024 floor the hero
-    // lead-in quotes - 'in today's money' travels with it (integrity rule).
+    // lead-in quotes - 'in 2024 prices' travels with it (integrity rule).
     // anchored to the default real-direct headline (not the live switches) so
     // the shared text always matches the OG card
     var rDef = totals.perspectives.renewables.real;
     var bn = Math.floor((rDef.cumulative + rDef.rate_per_sec * (Date.now() - generatedAt) / 1000) / 1e8) / 10;
     var full = hasCombinedReal()
       ? ' (over £' + (combinedRealFlooredGbp() / 1e9) +
-        ' billion in today\u2019s money with estimated indirect costs)'
+        ' billion in 2024 prices with estimated indirect costs)'
       : '';
     return 'More than £' + bn.toFixed(1) + ' billion' + full +
       ' — paid to renewable electricity generators by Great Britain’s bill-payers since ' +
@@ -992,7 +1029,7 @@
     { id: 'by-scheme',     label: 'By scheme',                     valueEl: null },
     { id: 'by-technology', label: 'By technology (CfD)',           valueEl: null },
     { id: 'recipients',    label: 'Largest recipients',            valueEl: null },
-    { id: 'cost-per-year', label: 'The bill since 2002, in today’s money', valueEl: null },
+    { id: 'cost-per-year', label: 'The bill since 2002, in 2024 prices', valueEl: null },
     { id: 'share-of-bill', label: 'Share of the electricity bill', valueEl: 'strip-share' }
   ];
   function initReports() {
@@ -1043,7 +1080,7 @@
       onToggle(on);
     });
   }
-  wireSwitch('basis-field', function (on) {     // ON = real (today's money)
+  wireSwitch('basis-field', function (on) {     // ON = real (2024 prices)
     if (state.real === on) return;
     state.real = on; rerender();
   });

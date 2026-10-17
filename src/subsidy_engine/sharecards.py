@@ -337,7 +337,7 @@ def write_stubs(facts: list[dict], out_dir: Path | str, asof: str,
             target = f"{SITE_URL}/"
         html = STUB_TEMPLATE.format(
             title=_html.escape(f"{fact['figure']} {fact['label']}"),
-            description=_html.escape(f"As of {asof}. Every figure traces to an official source."),
+            description=_html.escape(f"As of {asof}. Every figure links to its source."),
             stub_url=f"{SITE_URL}/s/{fact['slug']}",
             image_url=f"{SITE_URL}/share/{fact['slug']}.png?v={versions.get(fact['slug'], '')}",
             target=target,

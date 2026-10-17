@@ -52,13 +52,14 @@
 
 <main class="container prose">
   <h1>Methodology &amp; sources</h1>
-  <p class="lede">Every figure on the counter traces to an official source. This page sets out, scheme by scheme, where the data comes from, how the numbers are computed, how often they update, and what the known limitations are.</p>
+  <p class="lede">Every figure on the counter links to its source. Most are official statistics; the exceptions are listed under <a href="#sources">Sources that are not official statistics</a>. This page sets out, scheme by scheme, where the data comes from, how the numbers are computed, how often they update, and what the known limitations are.</p>
 
   <p class="page-index">On this page:
     <a href="#perspectives">Perspectives</a> ·
     <a href="#indirect">Indirect subsidies</a> ·
     <a href="#ref-reconciliation">Comparison with REF</a> ·
     <a href="#prices">Nominal &amp; 2024 prices</a> ·
+    <a href="#sources">Sources that are not official statistics</a> ·
     <a href="#equivalences">Equivalences</a> ·
     <a href="#map">Map &amp; asset panels</a> ·
     <a href="#freshness">Data freshness</a> ·
@@ -212,8 +213,15 @@
     conservative lower bound, so the share is a lower bound too &mdash; lower
     than REF's reported 35&ndash;40%. The 2022&ndash;23 energy-price spike
     raised total electricity expenditure and so <em>lowers</em> the subsidy
-    share in those years even though the subsidy itself kept rising. The chart
-    shows complete years only (2002&ndash;2024).
+    share in those years even though the subsidy itself kept rising.
+  </p>
+  <p>
+    The chart, and the share-of-bill figure under the counter, use complete
+    years only. A year is left out until every scheme in it has reported: the
+    Renewables Obligation, Feed-in Tariffs, Climate Change Levy, carbon pricing
+    and TNUoS publish a year or more in arrears, so a newer year would set a
+    part-year of subsidy against a full year&rsquo;s bill. The year shown is
+    named beside each figure; at present it is 2024.
   </p>
 
   <h3 id="real-terms">Real terms (2024 £)</h3>
@@ -236,6 +244,30 @@
     <li>Heat schemes: the Renewable Heat Incentive (RHI) and Boiler Upgrade Scheme (BUS)</li>
     <li>Transport: the Renewable Transport Fuel Obligation (RTFO)</li>
     <li>Energy-efficiency obligations (ECO)</li>
+  </ul>
+
+  <h2 id="sources">Sources that are not official statistics</h2>
+  <p>Most figures come straight from official statistics (LCCC, Ofgem, Elexon, NESO, DESNZ, ONS).
+  These do not:</p>
+  <ul>
+    <li><strong>Constraint payments before the Clock&rsquo;s own Elexon record begins</strong> (late
+    August 2023 at present; the start moves earlier as older data is added) are the Renewable
+    Energy Foundation&rsquo;s <a href="https://www.ref.org.uk/constraints/index.php?tab=yr">published
+    annual totals</a>. REF builds them from Elexon data, but they are REF&rsquo;s figures.</li>
+    <li><strong>Some earlier indirect costs</strong> (TNUoS before 2013, BSUoS for 2006&ndash;2010
+    and 2014&ndash;2016, and carbon pricing before 2019) rest on REF&rsquo;s published tabulation
+    until they are checked against primary sources.</li>
+    <li><strong>Renewables Obligation payments to named stations</strong> (the largest-recipients
+    table and the map) come from David Turver&rsquo;s reconstruction of certificates (ROCs) issued
+    to each station, valued at the buy-out price. The RO total is Ofgem&rsquo;s own figure.</li>
+    <li><strong>The share of the Capacity Market counted as a cost of net zero</strong> comes from
+    Richard Lyon&rsquo;s model of the power system without net-zero policy, which is not yet
+    published (see <a href="#indirect">Indirect subsidies</a>).</li>
+    <li><strong>The stadium comparison</strong> uses the cost of the Tottenham Hotspur Stadium as
+    given on <a href="https://en.wikipedia.org/wiki/Tottenham_Hotspur_Stadium">Wikipedia</a>.</li>
+    <li><strong>Other comparison figures</strong> use the published source named beside each one,
+    for example Cebr&rsquo;s costing for Shelter (social homes) and EDF&rsquo;s estimate as reported
+    by New Civil Engineer (Hinkley Point C).</li>
   </ul>
 
   <h2 id="map">The recipients map and asset panels</h2>
@@ -278,8 +310,8 @@
   <h2>Run-rate semantics</h2>
   <p>The per-second rates that drive the live counter are derived from each scheme’s recent run-rate: the trailing 365 days for daily schemes (CfD and constraints), the last 12 months for the Capacity Market, and the latest completed scheme year for RO and FIT. Values shown between official data updates are therefore <strong>estimates</strong>, and are replaced by official figures as they are published.</p>
 
-  <h2 id="prices">Today's money, and cash</h2>
-  <p>The headline counts <strong>today's money</strong>: each year's cost converted to 2024 prices with the ONS CPIH index, so that a pound paid in 2002 and a pound paid in 2026 are worth the same. The same annual series is shown here in cash, money summed as it was actually paid. The cash total is <em>smaller</em>, because early-years subsidy was worth more in today's money.</p>
+  <h2 id="prices">2024 prices, and cash</h2>
+  <p>The headline is in <strong>2024 prices</strong>: each year's cost converted to 2024 prices with the ONS CPIH index (2024&nbsp;=&nbsp;100), so that a pound paid in 2002 and a pound paid in 2026 are worth the same. The same annual series is shown here in cash, money summed as it was actually paid. The cash total is <em>smaller</em>, because early-years subsidy was worth more in 2024 prices.</p>
   <div class="table-scroll"><table class="data-table" id="prices-table">
     <thead><tr><th>Year</th><th class="num-col">Nominal</th><th class="num-col">2024 prices</th></tr></thead>
     <tbody></tbody>
@@ -361,7 +393,7 @@
 <footer class="footer">
   <div class="container">
     <p class="footer-links">Made by <a href="https://richardlyon.net/">Richard Lyon</a> · <a href="/data">Data</a> · <a href="/methodology">Methodology &amp; sources</a> · <a href="/corrections">Corrections</a> · <a href="/changelog">Change log</a> · <a href="/about">About this site</a></p>
-    <p class="footer-small">Every figure traces to an official source.</p>
+    <p class="footer-small">Every figure links to its source. Most are official statistics; the exceptions are listed on the <a href="/methodology#sources">methodology page</a>.</p>
   </div>
 </footer>
 
