@@ -68,6 +68,10 @@
       liveVals['elexon-first-year'] = String(firstFull);
       liveVals['ref-last-year'] = String(firstFull - 1);
     }
+    // the whole bracketed note is one live value, so it stays empty (no
+    // stray brackets) when the data is missing
+    liveVals['bottom-up-note'] = liveVals['bottom-up-from']
+      ? ' (data held from ' + liveVals['bottom-up-from'] + ')' : '';
     Array.prototype.forEach.call(document.querySelectorAll('[data-live]'), function (el) {
       el.textContent = liveVals[el.getAttribute('data-live')] ||
         el.getAttribute('data-fallback') || '';
