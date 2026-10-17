@@ -229,6 +229,16 @@ def _check_bottom_up_from(value, stored_days: list[str], last_history_year: int)
             raise ValueError(f"constraints bottom_up_from {value} is later than {y}, a year "
                              f"Elexon fully holds and live (master) publishes from Elexon: it "
                              f"would put {y} back on REF")
+    if value > FIRST_FULL_ELEXON_YEAR:
+        # any stored day from 1 Jan FIRST_FULL_ELEXON_YEAR up to the pin year: a raised pin
+        # would put those days back on REF, even with a day missing (fact-checker, 9410d658)
+        held = sorted(d for d in stored if FIRST_FULL_ELEXON_YEAR <= int(d[:4]) < value)
+        if held:
+            raise ValueError(f"constraints bottom_up_from {value} is later than "
+                             f"{FIRST_FULL_ELEXON_YEAR} while Elexon holds days from 1 Jan "
+                             f"{FIRST_FULL_ELEXON_YEAR} ({len(held)} stored, first {held[0]}): it "
+                             f"would put them back on REF. Keep the pin at "
+                             f"{FIRST_FULL_ELEXON_YEAR} and fetch any missing days")
     first = date(value, 1, 1)
     last = date.fromisoformat(max(stored)) if stored else None
     if last is None or last < first:

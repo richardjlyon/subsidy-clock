@@ -35,10 +35,13 @@ def _annual(sid, values, bottom_up_from=None):
                            True, df, **extra)
 
 
-def _store(path, earliest, latest=date(2025, 1, 3)):
+def _store(path, earliest, latest=date(2025, 1, 3), missing=()):
     store = SnapshotStore(path)
     d = earliest
     while d <= latest:
+        if d in missing:
+            d += timedelta(days=1)
+            continue
         store.write("constraints", "daily",
                     pl.DataFrame({"date": [d], "bmu": ["T_W-1"], "lead_party": ["W"],
                                   "volume_mwh": [-1.0], "cost_gbp": [1.0e6]}),
@@ -97,11 +100,12 @@ def test_the_live_reference_states_2024_todays_split():
     assert h.bottom_up_from == 2024
 
 
-def _build_with(tmp_path, pin, earliest=date(2023, 8, 25), latest=date(2025, 1, 3)):
+def _build_with(tmp_path, pin, earliest=date(2023, 8, 25), latest=date(2025, 1, 3), missing=()):
     from dataclasses import replace
     refs = _refs()
     refs["constraints_history"] = replace(refs["constraints_history"], bottom_up_from=pin)
-    return uk_build.build(_store(tmp_path, earliest, latest), refs, deflators=_deflators())
+    return uk_build.build(_store(tmp_path, earliest, latest, missing), refs,
+                          deflators=_deflators())
 
 
 def test_a_switch_year_written_as_text_fails_naming_the_value(tmp_path):
@@ -179,3 +183,12 @@ def test_with_no_elexon_data_the_elexon_year_is_not_published(tmp_path):
     sitedata.build(model, ctx, {}, tmp_path / "site", generated_at="2026-10-17T00:00:00+00:00")
     bd = json.loads((tmp_path / "site" / "breakdown.json").read_text())
     assert "elexon_first_year" not in bd
+
+
+def test_a_raised_pin_fails_when_2024_has_a_missing_day(tmp_path):
+    # the fact-checker removed 15 Jun 2024 and pinned 2025: the build exited 0 and put
+    # calendar 2024 back on REF (GBP 394,302,243 instead of Elexon's GBP 395,679,939,
+    # calendar 2024, cash). Any stored day from 1 Jan 2024 up to the pin year refuses it
+    import pytest
+    with pytest.raises(ValueError, match=r"bottom_up_from 2025 .*later than 2024"):
+        _build_with(tmp_path, 2025, missing={date(2024, 6, 15)})
