@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-17T09:42:31.008418+00:00",
+ "generated_at": "2026-10-18T09:55:39.512439+00:00",
  "entries": [
   {
    "date": "2026-06-12",
@@ -252,6 +252,45 @@
     "Totals since 2016 fall by \u00a37.8bn in today's money. The full cost falls from \u00a3240.8bn to \u00a3233.0bn, and the rounded figure under the counter from 'over \u00a3240 billion' to 'over \u00a3230 billion'. The direct payments, \u00a3132.3bn, do not move. The equivalence comparisons that divide the full cost move with it, for example from 58 to 55 aircraft carriers."
    ],
    "credit": "Richard Lyon"
+  },
+  {
+   "date": "2026-10-17",
+   "kind": "correction",
+   "figure": "share-of-bill",
+   "figure_label": "Share of the electricity bill",
+   "was": "9% of 2025 spend",
+   "now": "29% of 2024 spend",
+   "cause": [
+    "The share-of-bill figure under the counter, and the last bar of its chart, used 2025. The 2025 bill total was in, but the 2025 subsidy was not: the Renewables Obligation, Feed-in Tariffs, Climate Change Levy, carbon pricing and TNUoS report a year or more in arrears and have not yet reported 2025. So 2025 set part of a year's subsidy (\u00a35.8bn, against \u00a319.4bn for 2024) against a full year's bill (\u00a362.7bn), which gave 9%. The methodology page already said the chart showed complete years only; the page did not do what it said.",
+    "The figure and the chart now leave a year out until every scheme has reported it, and name the year shown. The latest complete year is 2024: \u00a312.30bn of direct subsidy plus \u00a37.08bn of estimated indirect costs, against a bill of \u00a366.19bn, is 29%. With the indirect costs switched off it is 19%."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-10-17",
+   "kind": "correction",
+   "figure": "headline-basis",
+   "figure_label": "Headline total: price basis",
+   "was": "No price basis shown under the headline total; elsewhere 'in today's money'",
+   "now": "'In 2024 prices (adjusted for inflation with ONS CPIH, 2024 = 100)' shown under the headline total; 'today's money' replaced with '2024 prices'",
+   "cause": [
+    "The headline total is in 2024 prices, but the line saying so was hidden by the page's style on both desktop and mobile, so a visitor saw the total with no price basis. It is now shown under the total at every screen width, and says 'In cash, as actually paid' when inflation adjustment is switched off.",
+    "Where the home page and the methodology page said 'today's money' they now say '2024 prices', which is what the figures are. No figure changed."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-10-17",
+   "kind": "correction",
+   "figure": "sources-statement",
+   "figure_label": "Statement about sources",
+   "was": "Every figure traces to an official source.",
+   "now": "Every figure links to its source. Most are official statistics; the exceptions are listed on the methodology page.",
+   "cause": [
+    "The footer of every page said that every figure traces to an official source. That was not true. Constraint payments before the Clock's own Elexon record begins are the Renewable Energy Foundation's figures; some earlier indirect costs rest on REF's tabulation; Renewables Obligation payments to named stations come from David Turver's reconstruction; the Capacity Market share counted as a cost of net zero comes from Richard Lyon's model, which is not yet published; and the stadium comparison uses a cost taken from Wikipedia.",
+    "The footer now says what is true, and the methodology page has a new list, 'Sources that are not official statistics', naming each exception. No figure changed."
+   ],
+   "credit": ""
   }
  ]
 }
