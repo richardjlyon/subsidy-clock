@@ -444,6 +444,28 @@ CHANGELOG_KINDS = ("correction", "change")
 CHANGELOG_STATUSES = ("draft",)
 
 
+CHANGELOG_DATE_PLACEHOLDER = "DEPLOY-DATE"
+
+
+def _check_changelog_date(value, name: str, line: int) -> None:
+    """Every entry needs a real ISO date (YYYY-MM-DD). The DEPLOY-DATE
+    placeholder, held in an entry until a release is approved, fails the build
+    by name so it can never be merged or deployed by accident."""
+    if value == CHANGELOG_DATE_PLACEHOLDER:
+        raise ValueError(
+            f"{name} line {line}: changelog entry has placeholder date "
+            f"{CHANGELOG_DATE_PLACEHOLDER}; put the real date in before merging")
+    ok = isinstance(value, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", value)
+    if ok:
+        try:
+            datetime.strptime(value, "%Y-%m-%d")
+        except ValueError:
+            ok = False
+    if not ok:
+        raise ValueError(f"{name} line {line}: date must be a real ISO date "
+                         f"(YYYY-MM-DD), got {value!r}")
+
+
 def load_changelog(path: Path | str) -> list[dict]:
     """The one public change log: every confirmed error in our own published
     figures (kind "correction", corrections C4 — the restatement-log honesty
@@ -479,6 +501,7 @@ def load_changelog(path: Path | str) -> list[dict]:
         missing = [k for k in CHANGELOG_FIELDS if not rec.get(k)]
         if missing:
             raise ValueError(f"{p.name} line {i}: missing {missing}")
+        _check_changelog_date(rec["date"], p.name, i)
         if rec["kind"] not in CHANGELOG_KINDS:
             raise ValueError(f"{p.name} line {i}: kind must be one of "
                              f"{list(CHANGELOG_KINDS)}, got {rec['kind']!r}")

@@ -617,7 +617,7 @@ tr.out-of-tolerance td { color: var(--amber-dark); font-weight: 500; }
   #corrections-table th:nth-child(2), #corrections-table td:nth-child(2), #changelog-table th:nth-child(2), #changelog-table td:nth-child(2) { min-width: 0; }
   .corr-note { grid-template-columns: 1.9em 1fr; }
 
-  /* Audit tables (the REF cross-check and reconciliation) print figures to the
+  /* Audit tables (the reconciliation table) print figures to the
      penny on purpose — a reader checking our arithmetic needs the whole number,
      so they must not be truncated or hidden. Two penny columns alone are 222px,
      so below the prose measure the table cannot fit and must scroll.

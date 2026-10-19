@@ -165,9 +165,9 @@ def cmd_build_site(args: argparse.Namespace) -> int:
                 row = s.annual.filter(pl.col("year") == cc_year)
                 key = REF_KEY.get(s.scheme_id, s.scheme_id)
                 ours[key] = ours.get(key, 0.0) + (float(row["cost_gbp"][0]) if row.height else 0.0)
+        # Internal check only: the result is printed, not written to site/data
+        # (REF comparisons were taken off the site, 17 Oct 2026).
         cc = reconcile.indirect_crosscheck(ours, ref_cc)
-        (out_dir / "indirect_crosscheck.json").write_text(
-            json.dumps(cc, indent=1, allow_nan=False))
         print(f"[crosscheck] {len(cc['components'])} components vs REF {cc['comparison_year']}; "
               f"{cc['unexplained_count']} unexplained beyond ±{cc['bound_pct']}%")
 
@@ -187,9 +187,9 @@ def cmd_build_site(args: argparse.Namespace) -> int:
         unmapped = set(comp) - set(ref_t["components"])
         if unmapped:
             raise SystemExit(f"[ref-reconciliation] schemes not in REF table: {sorted(unmapped)}")
+        # Internal check only: the result is printed, not written to site/data
+        # (REF comparisons were taken off the site, 17 Oct 2026).
         recon = reconcile.ref_reconciliation(comp, real_total, ref_t)
-        (out_dir / "ref_reconciliation.json").write_text(
-            json.dumps(recon, indent=1, allow_nan=False))
         print(f"[ref-reconciliation] ours £{recon['ours_total']/1e9:.1f}bn vs "
               f"REF £{recon['ref_total']/1e9:.1f}bn to {thru}; "
               f"stricter choices remove £{recon['stricter_gap']/1e9:.1f}bn "

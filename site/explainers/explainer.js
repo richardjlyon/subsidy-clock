@@ -59,8 +59,33 @@
             { day: 'numeric', month: 'long', year: 'numeric' })
         : ''
     };
+    // REF / Elexon year split. Prefer the pinned first Elexon year, the
+    // top-level integer elexon_first_year in breakdown.json (never the
+    // per-scheme bottom_up_from, which is the earliest stored day). Accept it
+    // only as an integer from 2010 to next year; otherwise work it out as
+    // build.py:284-286 does: the first calendar year the Elexon series covers
+    // in full replaces REF from then on
+    var firstFull = NaN;
+    var pinned = data.breakdown.elexon_first_year;
+    if (typeof pinned === 'number' && pinned % 1 === 0 &&
+        pinned >= 2010 && pinned <= new Date().getFullYear() + 1) {
+      firstFull = pinned;
+    } else {
+      var bu = s.bottom_up_from ? String(s.bottom_up_from) : '';
+      var buYear = parseInt(bu.slice(0, 4), 10);
+      if (!isNaN(buYear)) firstFull = bu.slice(5, 10) === '01-01' ? buYear : buYear + 1;
+    }
+    if (!isNaN(firstFull)) {
+      liveVals['elexon-first-year'] = String(firstFull);
+      liveVals['ref-last-year'] = String(firstFull - 1);
+    }
+    // the whole bracketed note is one live value, so it stays empty (no
+    // stray brackets) when the data is missing
+    liveVals['bottom-up-note'] = liveVals['bottom-up-from']
+      ? ' (data held from ' + liveVals['bottom-up-from'] + ')' : '';
     Array.prototype.forEach.call(document.querySelectorAll('[data-live]'), function (el) {
-      el.textContent = liveVals[el.getAttribute('data-live')] || '';
+      el.textContent = liveVals[el.getAttribute('data-live')] ||
+        el.getAttribute('data-fallback') || '';
     });
 
     // sparkline from the annual series
