@@ -144,6 +144,15 @@ class SnapshotStore:
             return None
         return pl.concat(frames)
 
+    def partitions(self, scheme: str, table: str) -> list[str]:
+        """Names of the partitions holding at least one version, sorted. A partition
+        written with an empty frame counts: it was fetched."""
+        tdir = self.root / "raw" / scheme / table
+        if not tdir.is_dir():
+            return []
+        return sorted(p.name for p in tdir.iterdir()
+                      if p.is_dir() and self._versions(scheme, table, p.name))
+
     def freshness(self, scheme: str, table: str) -> dict | None:
         tdir = self.root / "raw" / scheme / table
         if not tdir.is_dir():

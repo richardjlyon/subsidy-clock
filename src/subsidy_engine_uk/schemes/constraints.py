@@ -75,18 +75,25 @@ def daily_summary(df: pl.DataFrame) -> pl.DataFrame:
     )
 
 
-def fetch_day(d: date, wind: dict[str, str], client: httpx.Client) -> pl.DataFrame:
+def _fetch_periods(d: date, wind: dict[str, str], client: httpx.Client) -> tuple[pl.DataFrame, bool]:
+    """The day's wind turn-down, and whether Elexon answered any settlement period with bids."""
     frames = []
+    answered = False
     for period in range(1, 51):  # 46-50 periods on clock-change days
         payload = elexon.get_json(
             f"/balancing/settlement/stack/all/bid/{d.isoformat()}/{period}", client
         )
         rows = payload.get("data", []) if isinstance(payload, dict) else []
         if rows:
+            answered = True
             frames.append(parse_stack(rows, wind))
     if not frames:
-        return pl.DataFrame(schema=SCHEMA)
-    return pl.concat(frames)
+        return pl.DataFrame(schema=SCHEMA), answered
+    return pl.concat(frames), answered
+
+
+def fetch_day(d: date, wind: dict[str, str], client: httpx.Client) -> pl.DataFrame:
+    return _fetch_periods(d, wind, client)[0]
 
 
 def write_day(store: SnapshotStore, partition: str, day_df: pl.DataFrame) -> None:
@@ -117,8 +124,14 @@ def backfill(
             if skip_existing and store.latest("constraints", "daily", partition) is not None:
                 d += timedelta(days=1)
                 continue
-            day_df = daily_summary(fetch_day(d, wind, client))
-            write_day(store, partition, day_df)
+            raw, answered = _fetch_periods(d, wind, client)
+            # fix 5 guard: a day with no bids in any period is unknown, not a nil day, so it
+            # is not stored. It is not fetched again: the backfill only steps back from the
+            # earliest stored day and the daily update re-fetches only the last 3 days. The
+            # missing day shows up, loudly (the build fails), only when the pin or REF's
+            # last year reaches it
+            if answered:
+                write_day(store, partition, daily_summary(raw))
             d += timedelta(days=1)
     finally:
         if own:

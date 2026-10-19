@@ -117,3 +117,31 @@ def test_write_day_labels_only_the_first_reread_as_ours(tmp_path):
     c.BASIS_CHANGE_VERSION = old
     log = [json.loads(l) for l in open(tmp_path / "raw/constraints/daily/restatements.jsonl")]
     assert [e["origin"] for e in log] == ["ours", "publisher"]
+
+
+def _elexon(stack_rows):
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.path.endswith("/reference/bmunits/all"):
+            return httpx.Response(200, json=[{"elexonBmUnit": "T_ABRBO-1", "fuelType": "WIND",
+                                              "leadPartyName": "Aberdeen Offshore Wind Farm"}])
+        return httpx.Response(200, json={"data": stack_rows})
+    return httpx.Client(transport=httpx.MockTransport(handler))
+
+
+def test_a_day_elexon_answers_with_nothing_is_not_stored_so_it_never_counts_as_held(tmp_path):
+    # fix 5 guard: the coverage check counts stored days; a day Elexon left empty in every
+    # settlement period is unknown, not a nil day, so it is left for the next run to fetch
+    from subsidy_engine.store import SnapshotStore
+    store = SnapshotStore(tmp_path)
+    constraints.backfill(store, date(2024, 6, 1), date(2024, 6, 1), client=_elexon([]))
+    assert store.partitions("constraints", "daily") == []
+
+
+def test_a_day_with_bids_but_no_wind_turn_down_is_stored_as_a_nil_day(tmp_path):
+    # the 126 zero-row days in master's store are of this kind (refetched 17 Oct 2026)
+    from subsidy_engine.store import SnapshotStore
+    store = SnapshotStore(tmp_path)
+    battery_only = [dict(STACK_ROWS[1], settlementDate="2024-06-01")]
+    constraints.backfill(store, date(2024, 6, 1), date(2024, 6, 1), client=_elexon(battery_only))
+    assert store.partitions("constraints", "daily") == ["2024-06-01"]
+    assert store.latest("constraints", "daily", "2024-06-01").height == 0
