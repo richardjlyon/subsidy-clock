@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 1098115356.09,
+ "hero_gbp": 1098745665.45,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -80,7 +80,7 @@
   {
    "q": "2023-Q2",
    "payment_gbp": 43406022.829999976,
-   "generation_mwh": 592235.8360000001
+   "generation_mwh": 592235.836
   },
   {
    "q": "2023-Q3",
@@ -99,8 +99,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 43997644.56,
-   "generation_mwh": 413685.00800000026
+   "payment_gbp": 43997644.540000014,
+   "generation_mwh": 413685.0070000002
   },
   {
    "q": "2024-Q3",
@@ -115,7 +115,7 @@
   {
    "q": "2025-Q1",
    "payment_gbp": 45953990.20999999,
-   "generation_mwh": 651254.8969999999
+   "generation_mwh": 651254.8969999998
   },
   {
    "q": "2025-Q2",
@@ -124,8 +124,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 65678697.22999997,
-   "generation_mwh": 609834.2690000001
+   "payment_gbp": 65679019.35999997,
+   "generation_mwh": 609837.4500000002
   },
   {
    "q": "2025-Q4",
@@ -134,23 +134,23 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 75895091.07999994,
-   "generation_mwh": 839395.4119999992
+   "payment_gbp": 75895103.88999994,
+   "generation_mwh": 839395.5289999992
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 54879842.529999994,
-   "generation_mwh": 609719.7980000002
+   "payment_gbp": 54880221.669999994,
+   "generation_mwh": 609716.9830000002
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 32195027.479999997,
-   "generation_mwh": 518810.5010000001
+   "payment_gbp": 32184421.49,
+   "generation_mwh": 518304.6530000002
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": 442266.71,
-   "generation_mwh": 21165.083
+   "payment_gbp": 1082468.0,
+   "generation_mwh": 34564.547999999995
   }
  ],
  "contracts": [
@@ -159,7 +159,7 @@
    "unit_name": "EA 1, Phase 2",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 433789150.09,
+   "cumulative_gbp": 434046400.01,
    "first_settlement": "2020-03-31",
    "latest_strike_gbp_mwh": 176.12
   },
@@ -168,7 +168,7 @@
    "unit_name": "EA 1, Phase 3",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 364617072.16,
+   "cumulative_gbp": 364842251.92,
    "first_settlement": "2020-05-30",
    "latest_strike_gbp_mwh": 176.12
   },
@@ -177,7 +177,7 @@
    "unit_name": "EA 1, Phase 1",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 299709133.84,
+   "cumulative_gbp": 299857013.52,
    "first_settlement": "2019-10-30",
    "latest_strike_gbp_mwh": 176.12
   }
@@ -188,7 +188,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-07"
+  "data_to": "2026-10-08"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -334,8 +334,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 17862371.955000002,
-  "rate_gbp_per_mwh": 61.47645782186377,
+  "generation_mwh": 17875266.054,
+  "rate_gbp_per_mwh": 61.46737408723102,
   "rate_label": "payment per subsidised MWh"
  }
 }
