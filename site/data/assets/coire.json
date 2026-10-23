@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 7775408.69,
+ "hero_gbp": 7791968.74,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -84,8 +84,8 @@
   },
   {
    "q": "2023-Q1",
-   "payment_gbp": -490353.0000000001,
-   "generation_mwh": 18275.134000000002
+   "payment_gbp": -490353.00000000006,
+   "generation_mwh": 18275.134
   },
   {
    "q": "2023-Q2",
@@ -119,7 +119,7 @@
   },
   {
    "q": "2024-Q4",
-   "payment_gbp": 756630.9700000002,
+   "payment_gbp": 756630.9700000001,
    "generation_mwh": 20866.778
   },
   {
@@ -134,8 +134,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 846754.0200000003,
-   "generation_mwh": 14540.841000000002
+   "payment_gbp": 846760.0800000003,
+   "generation_mwh": 14540.858000000006
   },
   {
    "q": "2025-Q4",
@@ -144,23 +144,23 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 794437.2000000003,
-   "generation_mwh": 23409.716000000004
+   "payment_gbp": 794436.0100000002,
+   "generation_mwh": 23409.693000000003
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 410067.00000000006,
-   "generation_mwh": 11651.546999999997
+   "payment_gbp": 415676.10000000003,
+   "generation_mwh": 11978.383999999996
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 3329.739999999996,
-   "generation_mwh": 6353.825000000001
+   "payment_gbp": 12127.120000000003,
+   "generation_mwh": 6855.702000000001
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": -11382.53,
-   "generation_mwh": 2460.584
+   "payment_gbp": -9233.830000000002,
+   "generation_mwh": 2536.6499999999996
   }
  ],
  "contracts": [
@@ -169,7 +169,7 @@
    "unit_name": "Coire Na Cloiche Windfarm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 7775408.69,
+   "cumulative_gbp": 7791968.74,
    "first_settlement": "2019-06-25",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -180,15 +180,15 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-12"
+  "data_to": "2026-10-13"
  },
  "outages": {
   "coverage_from": "2016-01-01",
   "windows": []
  },
  "tiles": {
-  "generation_mwh": 479700.696,
-  "rate_gbp_per_mwh": 16.208875148265367,
+  "generation_mwh": 480605.47,
+  "rate_gbp_per_mwh": 16.212817427983083,
   "rate_label": "payment per subsidised MWh"
  }
 }
