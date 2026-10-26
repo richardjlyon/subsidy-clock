@@ -1,5 +1,5 @@
 # The Subsidy Clock — subsidyclock.co.uk
-# Licence: CC BY 4.0 (credit "The Subsidy Clock — subsidyclock.co.uk") · contains public sector information licensed under OGL v3.0 — generated 2026-10-25 10:09 UTC
+# Licence: CC BY 4.0 (credit "The Subsidy Clock — subsidyclock.co.uk") · contains public sector information licensed under OGL v3.0 — generated 2026-10-26 11:33 UTC
 # Data revisions log: origin=publisher is a source restating its own history; origin=ours is a basis change we made, with the cause named — see subsidyclock.co.uk/corrections
 scheme,table,detected_at,partition,previous_version,new_version,origin,cause
 bsuos,daily,2026-06-10T06:31:04.650394+00:00,2026-2027,20260610T063012.224599,20260610T063104.650394,publisher,source revision
@@ -172,6 +172,7 @@ constraint_turnup,daily,2026-10-20T10:20:06.203683+00:00,2026-10-18,20261019T110
 constraint_turnup,daily,2026-10-22T10:30:37.959687+00:00,2026-10-20,20261021T102943.869936,20261022T103037.959687,publisher,source revision
 constraint_turnup,daily,2026-10-23T10:25:38.373374+00:00,2026-10-21,20261022T103041.214572,20261023T102538.373374,publisher,source revision
 constraint_turnup,daily,2026-10-24T09:44:40.765706+00:00,2026-10-22,20261023T102539.932164,20261024T094440.765706,publisher,source revision
+constraint_turnup,daily,2026-10-26T11:26:17.149460+00:00,2026-10-24,20261025T100354.707721,20261026T112617.149460,publisher,source revision
 constraints,daily,2026-06-23T06:49:57.929540+00:00,2026-06-21,20260622T072037.280366,20260623T064957.929540,"",""
 constraints,daily,2026-06-26T06:50:24.388371+00:00,2026-06-24,20260625T064917.236714,20260626T065024.388371,"",""
 constraints,daily,2026-07-02T06:47:58.149959+00:00,2026-06-29,20260701T065758.310743,20260702T064758.149959,"",""
@@ -1248,3 +1249,4 @@ remit,outages,2026-10-22T10:38:06.664502+00:00,full,20261021T103553.447254,20261
 remit,outages,2026-10-23T10:30:19.379263+00:00,full,20261022T103806.664502,20261023T103019.379263,publisher,source revision
 remit,outages,2026-10-24T09:49:38.080287+00:00,full,20261023T103019.379263,20261024T094938.080287,publisher,source revision
 remit,outages,2026-10-25T10:08:54.993029+00:00,full,20261024T094938.080287,20261025T100854.993029,publisher,source revision
+remit,outages,2026-10-26T11:31:56.242535+00:00,full,20261025T100854.993029,20261026T113156.242535,publisher,source revision
