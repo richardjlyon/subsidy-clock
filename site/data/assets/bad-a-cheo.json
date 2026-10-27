@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 13842674.58,
+ "hero_gbp": 13832389.09,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -114,7 +114,7 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 1131997.1800000004,
+   "payment_gbp": 1131997.1700000004,
    "generation_mwh": 20333.510000000002
   },
   {
@@ -139,8 +139,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 984147.6000000001,
-   "generation_mwh": 16916.482
+   "payment_gbp": 984151.3600000001,
+   "generation_mwh": 16916.535
   },
   {
    "q": "2025-Q4",
@@ -149,8 +149,8 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 837345.8500000001,
-   "generation_mwh": 26801.398000000005
+   "payment_gbp": 837345.9000000001,
+   "generation_mwh": 26801.402000000002
   },
   {
    "q": "2026-Q2",
@@ -159,13 +159,13 @@
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 194900.87000000002,
-   "generation_mwh": 15265.73699999999
+   "payment_gbp": 194660.36000000004,
+   "generation_mwh": 15247.198999999991
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": -8381.089999999997,
-   "generation_mwh": 2162.9549999999995
+   "payment_gbp": -18429.869999999995,
+   "generation_mwh": 2477.9159999999993
   }
  ],
  "contracts": [
@@ -174,7 +174,7 @@
    "unit_name": "Bad A Cheo Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 13842674.58,
+   "cumulative_gbp": 13832389.09,
    "first_settlement": "2019-03-31",
    "latest_strike_gbp_mwh": 120.46
   }
@@ -185,7 +185,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-14"
+  "data_to": "2026-10-15"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -211,8 +211,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 493811.35900000005,
-  "rate_gbp_per_mwh": 28.03231300315228,
+  "generation_mwh": 494107.839,
+  "rate_gbp_per_mwh": 27.99467646171062,
   "rate_label": "payment per subsidised MWh"
  }
 }
