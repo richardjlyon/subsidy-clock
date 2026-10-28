@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 7794843.82,
+ "hero_gbp": 7873970.79,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -120,7 +120,7 @@
   {
    "q": "2024-Q4",
    "payment_gbp": 756630.9700000002,
-   "generation_mwh": 20866.778
+   "generation_mwh": 20866.778000000002
   },
   {
    "q": "2025-Q1",
@@ -134,8 +134,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 846769.3500000003,
-   "generation_mwh": 14541.080000000004
+   "payment_gbp": 846768.5800000003,
+   "generation_mwh": 14541.065000000004
   },
   {
    "q": "2025-Q4",
@@ -144,8 +144,8 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 794435.8100000003,
-   "generation_mwh": 23409.683
+   "payment_gbp": 794440.3900000001,
+   "generation_mwh": 23409.223
   },
   {
    "q": "2026-Q2",
@@ -154,13 +154,13 @@
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 14505.159999999998,
-   "generation_mwh": 7238.086000000001
+   "payment_gbp": 93108.3,
+   "generation_mwh": 8637.256000000001
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": -9233.830000000002,
-   "generation_mwh": 2536.6499999999996
+   "payment_gbp": -8713.809999999998,
+   "generation_mwh": 2521.3379999999997
   }
  ],
  "contracts": [
@@ -169,7 +169,7 @@
    "unit_name": "Coire Na Cloiche Windfarm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 7794843.82,
+   "cumulative_gbp": 7873970.79,
    "first_settlement": "2019-06-25",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -180,15 +180,15 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-15"
+  "data_to": "2026-10-18"
  },
  "outages": {
   "coverage_from": "2016-01-01",
   "windows": []
  },
  "tiles": {
-  "generation_mwh": 481022.04400000005,
-  "rate_gbp_per_mwh": 16.20475385115614,
+  "generation_mwh": 482405.427,
+  "rate_gbp_per_mwh": 16.322309719786794,
   "rate_label": "payment per subsidised MWh"
  }
 }
