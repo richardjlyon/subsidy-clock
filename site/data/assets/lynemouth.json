@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Biomass Conversion",
- "hero_gbp": 999886419.61,
+ "hero_gbp": 1000081941.78,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -54,7 +54,7 @@
   },
   {
    "q": "2020-Q3",
-   "payment_gbp": 58182751.38000001,
+   "payment_gbp": 58182751.379999995,
    "generation_mwh": 702520.525
   },
   {
@@ -95,7 +95,7 @@
   {
    "q": "2022-Q3",
    "payment_gbp": -8246381.959999999,
-   "generation_mwh": 230539.06000000003
+   "generation_mwh": 230539.06
   },
   {
    "q": "2022-Q4",
@@ -135,7 +135,7 @@
   {
    "q": "2024-Q3",
    "payment_gbp": 27271737.480000004,
-   "generation_mwh": 422817.627
+   "generation_mwh": 422817.6269999999
   },
   {
    "q": "2024-Q4",
@@ -154,8 +154,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 44891143.41,
-   "generation_mwh": 682547.408
+   "payment_gbp": 44891372.449999996,
+   "generation_mwh": 682550.897
   },
   {
    "q": "2025-Q4",
@@ -164,8 +164,8 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 45379396.62999999,
-   "generation_mwh": 703338.455
+   "payment_gbp": 45379625.959999986,
+   "generation_mwh": 703342.013
   },
   {
    "q": "2026-Q2",
@@ -174,13 +174,13 @@
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 57129287.40000003,
-   "generation_mwh": 728504.0430000001
+   "payment_gbp": 57122319.47000003,
+   "generation_mwh": 728415.1930000001
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": 4637467.4399999995,
-   "generation_mwh": 118242.41099999998
+   "payment_gbp": 4839499.169999999,
+   "generation_mwh": 123393.64899999998
   }
  ],
  "contracts": [
@@ -189,7 +189,7 @@
    "unit_name": "Lynemouth Power Station",
    "technology": "Biomass Conversion",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 999886419.61,
+   "cumulative_gbp": 1000081941.78,
    "first_settlement": "2018-06-23",
    "latest_strike_gbp_mwh": 153.72
   }
@@ -200,7 +200,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-18"
+  "data_to": "2026-10-19"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -5364,12 +5364,18 @@
     "end": "2026-10-28",
     "type": "Unplanned",
     "mw_lost": 133.0
+   },
+   {
+    "start": "2026-10-28",
+    "end": "2026-10-29",
+    "type": "Unplanned",
+    "mw_lost": 38.0
    }
   ]
  },
  "tiles": {
-  "generation_mwh": 17166069.093,
-  "rate_gbp_per_mwh": 58.247838465111094,
+  "generation_mwh": 17171138.528,
+  "rate_gbp_per_mwh": 58.24202863131196,
   "rate_label": "payment per subsidised MWh"
  }
 }
