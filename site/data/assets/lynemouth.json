@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Biomass Conversion",
- "hero_gbp": 1000179945.76,
+ "hero_gbp": 1000373341.58,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -129,7 +129,7 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 30203098.38,
+   "payment_gbp": 30203098.4,
    "generation_mwh": 468265.07599999994
   },
   {
@@ -154,8 +154,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 44891599.54999999,
-   "generation_mwh": 682554.352
+   "payment_gbp": 44891567.01999999,
+   "generation_mwh": 682553.858
   },
   {
    "q": "2025-Q4",
@@ -164,8 +164,8 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 45379623.389999986,
-   "generation_mwh": 703341.971
+   "payment_gbp": 45379685.139999986,
+   "generation_mwh": 703342.9249999999
   },
   {
    "q": "2026-Q2",
@@ -174,13 +174,13 @@
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 57118568.020000026,
-   "generation_mwh": 728367.3500000002
+   "payment_gbp": 57115333.53000002,
+   "generation_mwh": 728326.1040000002
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": 4941030.069999999,
-   "generation_mwh": 125982.40399999998
+   "payment_gbp": 5137631.14,
+   "generation_mwh": 130995.17899999997
   }
  ],
  "contracts": [
@@ -189,7 +189,7 @@
    "unit_name": "Lynemouth Power Station",
    "technology": "Biomass Conversion",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 1000179945.76,
+   "cumulative_gbp": 1000373341.58,
    "first_settlement": "2018-06-23",
    "latest_strike_gbp_mwh": 153.72
   }
@@ -200,7 +200,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-20"
+  "data_to": "2026-10-21"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -5374,8 +5374,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 17173682.853,
-  "rate_gbp_per_mwh": 58.239106563289226,
+  "generation_mwh": 17178654.842,
+  "rate_gbp_per_mwh": 58.233508431300024,
   "rate_label": "payment per subsidised MWh"
  }
 }

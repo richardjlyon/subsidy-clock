@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Biomass Conversion",
- "hero_gbp": 2035851259.3,
+ "hero_gbp": 2036324736.12,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -159,8 +159,8 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 73388676.7,
-   "generation_mwh": 1273224.7789999999
+   "payment_gbp": 73388676.68,
+   "generation_mwh": 1273224.781
   },
   {
    "q": "2024-Q3",
@@ -184,8 +184,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 68383643.18999998,
-   "generation_mwh": 1164175.058
+   "payment_gbp": 68383565.88999999,
+   "generation_mwh": 1164173.7419999999
   },
   {
    "q": "2025-Q4",
@@ -194,8 +194,8 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 69654357.78000003,
-   "generation_mwh": 1211590.8799999997
+   "payment_gbp": 69654501.50000003,
+   "generation_mwh": 1211593.3819999995
   },
   {
    "q": "2026-Q2",
@@ -204,13 +204,13 @@
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 49974505.71999999,
-   "generation_mwh": 701790.5459999999
+   "payment_gbp": 49966607.49999999,
+   "generation_mwh": 701679.6309999998
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": 8510098.819999998,
-   "generation_mwh": 265857.50500000006
+   "payment_gbp": 8991407.459999999,
+   "generation_mwh": 280893.70000000007
   }
  ],
  "contracts": [
@@ -219,7 +219,7 @@
    "unit_name": "Drax 3rd conversion unit (unit 1)",
    "technology": "Biomass Conversion",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 2035851259.3,
+   "cumulative_gbp": 2036324736.12,
    "first_settlement": "2016-12-21",
    "latest_strike_gbp_mwh": 146.51
   }
@@ -230,7 +230,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-20"
+  "data_to": "2026-10-21"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -1414,8 +1414,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 37612816.140999995,
-  "rate_gbp_per_mwh": 54.126531011880616,
+  "generation_mwh": 37627742.609,
+  "rate_gbp_per_mwh": 54.11764285941887,
   "rate_label": "payment per subsidised MWh"
  }
 }

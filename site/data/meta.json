@@ -1,33 +1,33 @@
 {
- "generated_at": "2026-10-30T11:39:20.132590+00:00",
+ "generated_at": "2026-10-31T11:11:42.362258+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-10-30T11:32:00.930700+00:00",
+   "retrieved_at": "2026-10-31T11:05:41.823108+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
-   "row_count": 119688
+   "row_count": 119780
   },
   "constraints": {
-   "retrieved_at": "2026-10-30T11:39:12.680382+00:00",
-   "source_date": "2023-06-01",
+   "retrieved_at": "2026-10-31T11:11:36.762304+00:00",
+   "source_date": "2023-05-25",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
    "row_count": 0
   },
   "capacity_market": {
-   "retrieved_at": "2026-10-30T11:32:52.922115+00:00",
+   "retrieved_at": "2026-10-31T11:06:12.074783+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 805
   },
   "bsuos": {
-   "retrieved_at": "2026-10-30T11:33:19.309492+00:00",
+   "retrieved_at": "2026-10-31T11:06:32.882667+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/current-balancing-services-use-of-system-bsuos-data",
-   "row_count": 204
+   "row_count": 205
   },
   "constraint_turnup": {
-   "retrieved_at": "2026-10-30T11:32:52.272560+00:00",
-   "source_date": "2026-10-29",
+   "retrieved_at": "2026-10-31T11:06:11.047771+00:00",
+   "source_date": "2026-10-30",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/offer",
    "row_count": 12
   }
@@ -76,16 +76,16 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 233401587371.33292
+  "combined_real": 233423517442.3939
  },
  "factoids": [
   {
    "slug": "nurses",
-   "figure": "306,000",
+   "figure": "305,000",
    "basis": "runrate",
    "figure_label": "NHS nurses",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of direct UK renewable subsidy pays the salaries of 306,000 NHS nurses, in today's money.",
+   "sentence": "A year of direct UK renewable subsidy pays the salaries of 305,000 NHS nurses, in today's money.",
    "label": "NHS nurses' annual salaries paid by one year of direct renewable subsidy, in today's money",
    "source_name": "NHS Employers, Agenda for Change pay scales 2026/27",
    "source_url": "https://www.nhsemployers.org/articles/pay-scales-202627"
@@ -169,11 +169,11 @@
   },
   {
    "slug": "teachers",
-   "figure": "234,000",
+   "figure": "233,000",
    "basis": "runrate",
    "figure_label": "schoolteachers",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of UK renewable subsidy pays the salaries of 234,000 experienced schoolteachers, in today's money.",
+   "sentence": "A year of UK renewable subsidy pays the salaries of 233,000 experienced schoolteachers, in today's money.",
    "label": "experienced schoolteachers' annual salaries paid by one year of UK renewable subsidy, in today's money",
    "source_name": "STPCD 2025, Upper Pay Range UPS3, England excluding London (2025-26)",
    "source_url": "https://www.gov.uk/government/publications/school-teachers-pay-and-conditions"
