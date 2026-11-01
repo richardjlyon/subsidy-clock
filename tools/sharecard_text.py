@@ -57,9 +57,7 @@ def main() -> None:
 
     timeseries = json.loads((site / "data" / "timeseries.json").read_text())
     breakdown = json.loads((site / "data" / "breakdown.json").read_text())
-    # mirrors cmd_build_cards (and app.js renderChart memberIds) exactly
-    member_ids = [s["id"] for s in breakdown["schemes"]
-                  if s["layer"] == "indirect" or "renewables" in s["perspectives"]]
+    member_ids = sharecards.chart_members(breakdown)
     svg = sharecards.cumulative_svg(timeseries, member_ids)
     out["chart/svg"] = svg
 

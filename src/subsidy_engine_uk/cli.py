@@ -232,12 +232,7 @@ def cmd_build_cards(args: argparse.Namespace) -> int:
     sharecards.render([f for f in facts if not f.get("chart")], asof, site / "share")
     timeseries = json.loads((site / "data" / "timeseries.json").read_text())
     breakdown = json.loads((site / "data" / "breakdown.json").read_text())
-    # mirrors app.js renderChart memberIds — renewables perspective:
-    # indirect-layer schemes always join; direct schemes only when they
-    # carry the renewables perspective (so the card excludes what the
-    # /s/the-bill figure excludes, e.g. cfd_low_carbon).
-    member_ids = [s["id"] for s in breakdown["schemes"]
-                  if s["layer"] == "indirect" or "renewables" in s["perspectives"]]
+    member_ids = sharecards.chart_members(breakdown)
     for fact in facts:
         if fact.get("chart"):
             sharecards.render_chart_card(timeseries, member_ids, fact, asof, site / "share")
