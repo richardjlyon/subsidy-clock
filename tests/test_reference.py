@@ -42,7 +42,8 @@ def test_load_deflators():
 
 def test_load_indirect_annual():
     schemes = reference.load_annual_costs(REF_DIR / "indirect_annual.yaml")
-    assert set(schemes) >= {"ccl", "ets", "tnuos", "bsuos_history"}
+    assert set(schemes) >= {"ccl", "tnuos", "bsuos_history"}
+    assert "ets" not in schemes   # carbon comes from the engine (aios-harness#44)
     ccl = schemes["ccl"]
     assert ccl.attribution_rule != ""
     assert ccl.attribution_confidence in ("high", "medium", "low")
@@ -94,4 +95,4 @@ def test_year_basis_defaults_and_calendar_override():
     assert direct["ro"].year_basis == "obligation_apr"   # default
     indirect = reference.load_annual_costs(REF_DIR / "indirect_annual.yaml")
     assert indirect["ccl"].year_basis == "calendar"
-    assert indirect["ets"].year_basis == "calendar"
+    assert indirect["tnuos"].year_basis == "calendar"

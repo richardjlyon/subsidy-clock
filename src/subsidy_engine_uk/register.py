@@ -46,8 +46,8 @@ def load_pinned(root: Path) -> dict:
 REF_LINES = {
     "ro": ("RO",),
     "fit": ("FIT",),
-    "ccl": ("CCL_ELEC", "CPS"),
-    "ets": ("ETS_POWER",),
+    # the levy alone: CPS and emissions trading are inside the carbon line (aios-harness#44)
+    "ccl": ("CCL_ELEC",),
     "tnuos": ("TNUOS",),
     "bsuos_history": ("BSUOS",),
     "constraints_history": ("CONSTRAINTS",),
@@ -168,6 +168,31 @@ def road_from_engine(root: Path) -> dict:
                     "engine_version": mp["engine_version"], "what": what,
                     "method": ex[block].get("method", "")}
     return out
+
+
+def carbon_from_engine(root: Path) -> dict:
+    """The carbon line (aios-harness#44): per calendar year 2002-24, GB, GBP nominal, the carbon in the wholesale
+    price (NZ1c) and the part of it collected as tax on power (CPS plus UK ETS auction receipts on power, GB
+    share), from the pinned engine release's run file, refusing any other bytes. 2025 (provisional in the
+    engine) is left out: the Clock's closed years end in 2024 and the counter carries the line on."""
+    _, mp = engine_export(root)
+    p = root / mp["run_file"]
+    if hashlib.sha256(p.read_bytes()).hexdigest() != mp["run_sha256"]:
+        raise ValueError(f"{p}: sha256 is not the model pin's run_sha256 {mp['run_sha256']}")
+    run = json.loads(p.read_text())
+    if run["meta"]["engine_version"] != mp["engine_version"]:
+        raise ValueError(f"{p}: engine_version {run['meta']['engine_version']} is not the pin's")
+    cc = run["carbon_crosscheck"]
+    years = {}
+    for y in range(2002, 2025):
+        row, bill = cc[str(y)], run["bills"][str(y)]["nz1c"]
+        if bill.get("geo") != "GB" or abs(bill["national_gbp_m_nominal"] - row["in_wholesale_gbp_m"]) > 1e-6:
+            raise ValueError(f"carbon {y}: run file's NZ1c and carbon_crosscheck disagree, or not GB")
+        total, tax = row["in_wholesale_gbp_m"] * 1e6, row["collected_gbp_m"] * 1e6
+        years[y] = {"total": total, "tax_collected": tax, "basis": bill["basis"]}
+    return {"years": years, "engine_version": mp["engine_version"],
+            "provenance": f"{mp['run_file']} (sha256 {mp['run_sha256'][:12]}...), carbon_crosscheck",
+            "collected_note": cc["2024"].get("collected_note", "")}
 
 
 def cm_share_from_engine(root: Path, pinned: dict) -> dict:

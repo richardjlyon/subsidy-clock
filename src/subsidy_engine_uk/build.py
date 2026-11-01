@@ -19,7 +19,7 @@ from subsidy_engine.money import (
 )
 from subsidy_engine.reference import ReferenceScheme
 from subsidy_engine.store import SnapshotStore
-from subsidy_engine_uk.schemes import bsuos, capacity_market, cfd, constraints
+from subsidy_engine_uk.schemes import bsuos, capacity_market, carbon as carbon_mod, cfd, constraints
 from subsidy_engine_uk.uplift import road_extras, road_uplift
 
 
@@ -29,7 +29,8 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
           ro_stations: list | None = None,
           bmu_map: dict | None = None,
           cm_share: dict | None = None,
-          to_register=None) -> dict:
+          to_register=None,
+          carbon: dict | None = None) -> dict:
     """Assemble every scheme result plus perspective totals and the indirect layer total.
 
     ``station_map`` (cfd_id -> physical-station short name) collapses phased CfD
@@ -54,13 +55,16 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
                  if scheme_id == "ro" and ro_stations else None)
         schemes.append(annual_to_result(scheme_id, refs[scheme_id], extra_extras=extra))
 
-    # --- Indirect layer (phase 2): CCL, ETS as stored; TNUoS, BSUoS above the road
+    # --- Indirect layer (phase 2): CCL as stored; carbon from the engine (#44, in place of
+    # the old ETS line and the CPS inside CCL); TNUoS, BSUoS above the road
     # (``road``: subsidy_engine_uk.register.road_from_engine, the engine's GO5 and GO4)
     road = road or {}
-    for scheme_id in ("ccl", "ets"):
-        if scheme_id in refs:
-            schemes.append(annual_to_result(scheme_id, refs[scheme_id],
-                                            layer="indirect"))
+    if "ccl" in refs:
+        schemes.append(annual_to_result("ccl", refs["ccl"], layer="indirect"))
+    if "ets" in refs:
+        raise ValueError("an 'ets' reference line is loaded: carbon is counted once, in the carbon line "
+                         "(aios-harness#44), never next to the old emissions-trading line")
+    schemes += carbon_mod.result(carbon)
 
     if "tnuos" in refs and "tnuos" in road:
         ref = refs["tnuos"]

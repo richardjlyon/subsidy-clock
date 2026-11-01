@@ -1,7 +1,7 @@
 # The engine release the Clock takes its one counterfactual figure from (decision 0168 point 4: each product
 # depends on the register and the one current engine release; aios-harness#42).
 #
-# The Clock reads two things from the engine: the Capacity Market's net-zero part (netzero_gbp, low and high,
+# The Clock reads three things from the engine (the third, carbon, below): the Capacity Market's net-zero part (netzero_gbp, low and high,
 # per year, divided by the CM paid in the shared cost register), and the no-net-zero road TNUoS and BSUoS are
 # counted above (grid = GO5, balancing = GO4, central, per calendar year, generators' share included; years
 # after carry_forward.from carried by CPIH; ruling C, aios-harness#43). This replaces
@@ -16,3 +16,8 @@ clock_export_file: reference/engine/v4-s43.json
 sha256: e1cf23af9fd6129cc7e4b1dc7b1a5b058c9f20d0e1a64077d6817decea3828cf
 engine_commit: 8a5b0e1a070b561a4a964e55c5d29fbc6d03274b
 release_date: "2026-10-24"
+# Carbon (aios-harness#44; Richard, 1 Nov 2026, 0022 for the Clock): the full carbon effect on the electricity
+# price, per calendar year 2002-24, GB, from the release's run file (carbon_crosscheck: in_wholesale_gbp_m =
+# NZ1c, collected_gbp_m = the tax collected on power). Same release and sha256 as releases.yaml's run_sha256.
+run_file: reference/engine/v4-s43-run.json
+run_sha256: dccd97d56efa9b4b26bc68604b8ae7f0204e40a9c1126a653886e268d28b49e4

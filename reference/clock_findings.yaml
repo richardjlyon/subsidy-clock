@@ -7,17 +7,6 @@
 
 findings:
 
-  cps_from_april_2013:
-    status: applied
-    kind: data_error
-    reason: >-
-      Carbon Price Support was charged from 1 April 2013. The live Clock counted it from 2014 because HMRC's
-      calendar-year CCL/CPF split starts in 2014. The register's CPS series carries April-December 2013 (the
-      engine's estimate); the Clock now takes it.
-    approved: "Richard, 1 Nov 2026 (decisions.md, technical fixes: CPS from 1 Apr 2013)"
-    definitions: D-10 (i)
-    drop: [clock.CPS.not_counted_2013]
-
   fit_scheme_years_2019_2022:
     status: applied
     kind: data_error

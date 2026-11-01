@@ -178,7 +178,7 @@ def cmd_build_site(args: argparse.Namespace) -> int:
 # REF's BSUoS is the whole balancing charge, so constraint turn-up, which we
 # carve out of the BSUoS uplift, folds back into it for comparison.
 REF_KEY = {"cfd_renewable": "cfd", "cfd_low_carbon": "cfd",
-           "constraint_turnup": "bsuos"}
+           "constraint_turnup": "bsuos", "carbon": "ets"}
 
 
 def cmd_build_cards(args: argparse.Namespace) -> int:

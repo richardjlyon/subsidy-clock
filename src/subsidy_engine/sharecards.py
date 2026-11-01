@@ -24,7 +24,7 @@ SITE_URL = "https://subsidyclock.co.uk"
 # The scheme cards' order (cards.json, share page); constraints has its own
 # switch-off card. Names, slugs and colours come from the scheme registry.
 SCHEME_CARDS = ("ro", "fit", "cfd_renewable", "cfd_low_carbon", "capacity_market", "ccl",
-                "bsuos", "constraint_turnup", "ets", "tnuos")
+                "bsuos", "constraint_turnup", "carbon", "tnuos")
 
 
 def chart_members(breakdown: dict) -> list[str]:

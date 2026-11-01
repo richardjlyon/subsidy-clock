@@ -91,17 +91,16 @@ def test_the_build_records_the_findings_it_applied(model):
 
 
 # ---- step 2: Carbon Price Support counted from 1 April 2013 ----
+# Since aios-harness#44 CPS is inside the carbon line's tax collected (the engine's own series, which charges
+# CPS from 1 April 2013), not read from the register's CPS line.
 
 def test_cps_is_counted_from_1_april_2013(model):
-    """CPS was charged from 1 April 2013. The Clock's CCL+CPS line for 2013 is the register's CCL_ELEC line
-    for the Clock plus the register's CPS series for 2013 (the engine's April-December estimate), not zero."""
     reg = _reg()
-    ccl = reg.line("CCL_ELEC", "clock_live")
     cps = reg.series("CPS")
-    assert cps[2013] > 0
-    got = _annual(model, "ccl")
-    for y in range(2002, 2025):
-        assert got[y] == pytest.approx((ccl[y] + cps[y]) * 1e6, abs=0.01), y
+    carbon = next(s for s in model["schemes"] if s.scheme_id == "carbon")
+    tax = {p["year"]: p["tax_collected"] for p in carbon.extras["parts"]}
+    assert cps[2013] > 0 and tax[2013] >= cps[2013] * 1e6 * 0.99   # GB tax collected holds 2013's CPS
+    assert all(tax[y] == 0 for y in range(2002, 2008))
 
 
 # ---- step 4: FiT scheme years 2019-20 and 2022-23 in their own years ----

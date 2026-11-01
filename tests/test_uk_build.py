@@ -138,7 +138,6 @@ def test_build_indirect_layer(tmp_path):
         "fit": _ref("fit", "FIT", {2024: 500.0},
                     perspectives=("renewables", "low_carbon")),
         "ccl": _ref("ccl", "CCL", {2023: 80.0}),
-        "ets": _ref("ets", "ETS", {2023: 90.0}),
         "tnuos": _ref("tnuos", "TNUoS", {2023: 1000.0}, conf="low"),
         "bsuos_history": replace(_ref("bsuos_history", "BSUoS hist", {2023: 500.0}, conf="low"),
                                  bottom_up_from=2026),
@@ -148,19 +147,29 @@ def test_build_indirect_layer(tmp_path):
     cm_share = {"years": {2025: {"cm_paid_gbp": 100.0, "share": 0.4,
                                  "share_low": 0.1, "share_high": 1.0}},
                 "carry_forward_from": 2025, "provenance": {}}
+    # carbon (aios-harness#44): one line from the engine, total 90 of which 30 tax collected
+    carbon = {"years": {2023: {"total": 90.0, "tax_collected": 30.0, "basis": "modelled"}},
+              "engine_version": "test", "provenance": "test"}
     model = uk_build.build(store, refs, deflators=deflators(), road=roads,
-                           cm_share=cm_share)
+                           cm_share=cm_share, carbon=carbon)
     by_id = {s.scheme_id: s for s in model["schemes"]}
 
     # layer assignment
     assert by_id["capacity_market"].layer == "indirect"
-    for sid in ("ccl", "ets", "tnuos", "bsuos"):
+    for sid in ("ccl", "carbon", "tnuos", "bsuos"):
         assert by_id[sid].layer == "indirect", sid
     for sid in ("constraints", "ro", "fit"):
         assert by_id[sid].layer == "direct", sid
 
-    # ccl/ets pass through as stored
+    # ccl passes through as stored; carbon is the engine's, with its two parts
     assert by_id["ccl"].cumulative_gbp == 80.0
+    assert by_id["carbon"].cumulative_gbp == 90.0
+    assert by_id["carbon"].extras["parts"][0]["rest_of_carbon_in_price"] == 60.0
+    # the old emissions-trading line can never be counted beside it
+    import pytest
+    with pytest.raises(ValueError, match="carbon is counted once"):
+        uk_build.build(store, refs | {"ets": _ref("ets", "ETS", {2023: 90.0})}, deflators=deflators(),
+                       road=roads, cm_share=cm_share, carbon=carbon)
 
     # tnuos: uplift = max(0, 1000 - 100*(128/71.5)) for 2023
     expected_tnuos = 1000.0 - 100.0 * 128.0 / 71.5

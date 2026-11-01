@@ -42,8 +42,10 @@ SCHEMES = [
                         "subsidyclock.co.uk/methodology#attr-capacity_market\n")),
     Scheme("ccl", "Climate Change Levy", "climate-change-levy", "climate-change-levy",
            "#2e7e86", anchor="attr-ccl"),
-    Scheme("ets", "Emissions trading", "emissions-trading", "emissions-trading",
-           "#5193b0", anchor="attr-ets"),
+    # aios-harness#44: one carbon line in place of emissions trading; its explainer is the
+    # emissions-trading page until #48 writes the carbon page
+    Scheme("carbon", "Carbon in the electricity price", "emissions-trading", "carbon",
+           "#5193b0", anchor="attr-carbon"),
     Scheme("tnuos", "Grid upgrades for renewables (TNUoS)", "tnuos", "tnuos", "#8fb8ce",
            anchor="attr-tnuos"),
     Scheme("bsuos", "Balancing the grid (BSUoS)", "bsuos", "bsuos", "#c5dae6",

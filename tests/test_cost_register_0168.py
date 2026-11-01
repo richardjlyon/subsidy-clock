@@ -61,8 +61,7 @@ COVERED = [
     ("RO", 2020, "ro", False),
     ("FIT", 2020, "fit", False),
     ("CCL_ELEC", 2020, "ccl", False),
-    ("CPS", 2020, "ccl", False),
-    ("ETS_POWER", 2020, "ets", False),
+    # CPS and ETS_POWER: no longer read by the Clock; carbon is the engine's (aios-harness#44, test_carbon)
     ("TNUOS", 2020, "tnuos", True),
     ("BSUOS", 2010, "bsuos", True),          # from the Clock's history
     ("BSUOS", 2020, "bsuos", True),          # from NESO's daily files
@@ -96,8 +95,8 @@ def test_every_closed_year_of_every_covered_line_is_the_registers(base_model):
     pin = R.load_pinned(ROOT)
     reg, prod, closed = pin["register"], pin["product"], pin["closed_through"]
     checks = {
-        "ro": (("RO",), False), "fit": (("FIT",), False), "ccl": (("CCL_ELEC", "CPS"), False),
-        "ets": (("ETS_POWER",), False), "tnuos": (("TNUOS",), True), "bsuos": (("BSUOS",), True),
+        "ro": (("RO",), False), "fit": (("FIT",), False), "ccl": (("CCL_ELEC",), False),
+        "tnuos": (("TNUOS",), True), "bsuos": (("BSUOS",), True),
         "constraints": (("CONSTRAINTS",), False), "constraint_turnup": (("TURNUP",), False),
         "cfd_renewable": (("CFD",), False), "capacity_market": (("CM_PAID",), True),
     }
@@ -114,7 +113,7 @@ def test_every_closed_year_of_every_covered_line_is_the_registers(base_model):
             if y <= closed and y in got:
                 assert got[y] == pytest.approx(v * 1e6, abs=0.01), (sid, y)
                 n += 1
-    assert n > 150
+    assert n > 130   # 23 fewer since ETS left for the carbon line (aios-harness#44)
 
 
 def test_register_pin_refuses_other_bytes(tmp_path):
