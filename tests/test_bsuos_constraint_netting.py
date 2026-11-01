@@ -62,7 +62,8 @@ def test_bsuos_uplift_nets_only_constraint_days_bsuos_covers(tmp_path):
     # BSUoS 2026: raw 1,000 less the baseline at the latest index (100 x 136 / 71.5) less the constraints of
     # 10 Apr only (GBP 100). The 20 Apr constraint day is after the BSUoS feed ends and must not be netted.
     bs = {r["year"]: r["cost_gbp"] for r in by_id["bsuos"].annual.to_dicts()}
-    expected = 1000.0 - 100.0 * 136.0 / 71.5 - 100.0
+    # the road for 2026 is pro-rated to the BSUoS data's 101 days (to 11 Apr; fix of 1 Nov 2026)
+    expected = 1000.0 - 100.0 * 136.0 / 71.5 * 101 / 365 - 100.0
     assert abs(bs[2026] - expected) < 1e-6, (
         f"BSUoS 2026 uplift {bs[2026]:.4f}, expected {expected:.4f}: constraint days after the BSUoS feed's last "
         f"day were netted off a BSUoS total that does not contain them")

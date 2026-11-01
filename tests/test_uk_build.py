@@ -171,7 +171,8 @@ def test_build_indirect_layer(tmp_path):
     #   baseline indexed by latest index (136): 100*136/71.5, constraints 2026 = 100
     bs_annual = {r["year"]: r["cost_gbp"] for r in by_id["bsuos"].annual.to_dicts()}
     assert abs(bs_annual[2023] - (500.0 - 100.0 * 128.0 / 71.5)) < 1e-6
-    assert abs(bs_annual[2026] - (1000.0 - 100.0 * 136.0 / 71.5 - 100.0)) < 1e-6
+    # the road for 2026 is pro-rated to the BSUoS data's 101 days (to 11 Apr; fix of 1 Nov 2026)
+    assert abs(bs_annual[2026] - (1000.0 - 100.0 * 136.0 / 71.5 * 101 / 365 - 100.0)) < 1e-6
 
     # real columns exist everywhere
     for s in model["schemes"]:

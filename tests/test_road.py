@@ -81,7 +81,8 @@ def test_years_after_the_engine_carry_its_last_year_by_cpih(model):
     d = reference.load_deflators(ROOT / "reference" / "deflators.yaml")
     idx = dict(zip(d["year"].to_list(), d["index"].to_list()))
     latest = idx[max(idx)]
-    road = {r["year"]: r["cost"] for r in _s(model, "bsuos").extras["road_annual"]}
+    from subsidy_engine_uk.uplift import road_series
+    road = dict(zip(*road_series([2026], R.road_from_engine(ROOT)["bsuos"], d).to_dict(as_series=False).values()))
     assert road[2026] == pytest.approx(ex["2025"]["central_gbp"] * idx.get(2026, latest) / idx[2025], rel=1e-12)
 
 
@@ -89,3 +90,27 @@ def test_the_flat_baselines_are_retired():
     assert not (ROOT / "reference/baselines.yaml").exists()
     src = "\n".join(p.read_text(encoding="utf-8") for p in (ROOT / "src").rglob("*.py"))
     assert "baselines.yaml" not in src
+
+
+def test_a_part_year_subtracts_the_road_pro_rated_to_the_data_date(model):
+    """Technical fix (Richard, 1 Nov 2026): BSUoS 2026 holds data to its last day only, so the road for 2026
+    is pro-rated to the same days ((data_to - 1 Jan + 1) / days in the year), not a full year."""
+    from datetime import date
+    s = _s(model, "bsuos")
+    data_to = s.data_to
+    assert data_to.year == 2026 and data_to < date(2026, 12, 31)
+    frac = ((data_to - date(2026, 1, 1)).days + 1) / 365
+    ex = _export()["balancing"]["years"]
+    d = reference.load_deflators(ROOT / "reference" / "deflators.yaml")
+    idx = dict(zip(d["year"].to_list(), d["index"].to_list()))
+    full = ex["2025"]["central_gbp"] * idx.get(2026, idx[max(idx)]) / idx[2025]
+    road = {r["year"]: r["cost"] for r in s.extras["road_annual"]}
+    assert road[2026] == pytest.approx(full * frac, rel=1e-12)
+    raw = _raw(model, "bsuos")
+    tu = _annual(model, "constraint_turnup")
+    from subsidy_engine_uk.schemes import constraints as C
+    con = {r["year"]: r["cost_gbp"] for r in C.annual_through(
+        cli.make_store(ROOT), cli.reference.load_annual_costs(
+            ROOT / "reference" / "annual_scheme_costs.yaml")["constraints_history"],
+        _s(model, "constraints"), data_to).to_dicts()}
+    assert _annual(model, "bsuos")[2026] + tu[2026] == pytest.approx(raw[2026] - full * frac - con[2026], abs=0.01)

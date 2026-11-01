@@ -239,6 +239,10 @@ def _deflators():
                         schema={"year": pl.Int64, "index": pl.Float64})
 
 
+# the fixture's BSUoS data ends 11 Apr 2026, so 2026's road is pro-rated to 101 of 365 days (1 Nov 2026 fix)
+PART_2026 = 101 / 365
+
+
 def _annual_ref(scheme_id, annual_map, perspectives=()):
     from subsidy_engine.reference import ReferenceScheme
     annual = pl.DataFrame({"year": list(annual_map), "cost_gbp": list(annual_map.values())},
@@ -290,7 +294,7 @@ def _year(scheme, year):
 def test_bsuos_residual_plus_parts_sums_to_raw_bsuos(tmp_path):
     _, by_id = _model(tmp_path, turnup_gbp_per_day=150.0)
     raw = 1000.0
-    baseline = 100.0 * LATEST_IDX / BASE_IDX
+    baseline = 100.0 * LATEST_IDX / BASE_IDX * PART_2026
     wind = _year(by_id["constraints"], 2026)
     turnup = _year(by_id["constraint_turnup"], 2026)
     residual = _year(by_id["bsuos"], 2026)
@@ -304,7 +308,7 @@ def test_bsuos_residual_plus_parts_sums_to_raw_bsuos(tmp_path):
 
 def test_turnup_is_capped_at_the_uplift_so_bsuos_never_goes_negative(tmp_path):
     _, by_id = _model(tmp_path, turnup_gbp_per_day=10_000.0)
-    uplift = 1000.0 - 100.0 * LATEST_IDX / BASE_IDX - 100.0
+    uplift = 1000.0 - 100.0 * LATEST_IDX / BASE_IDX * PART_2026 - 100.0
     assert abs(_year(by_id["constraint_turnup"], 2026) - uplift) < 1e-9
     assert _year(by_id["bsuos"], 2026) == 0.0
 

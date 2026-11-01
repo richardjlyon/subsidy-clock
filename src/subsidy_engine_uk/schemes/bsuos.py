@@ -279,7 +279,7 @@ def result(store: SnapshotStore, hist: ReferenceScheme, road: dict,
     netted = (constraints_mod.annual_through(store, constraints_history, constraints, data_to)
               if constraints_history is not None
               else constraints.annual.select("year", "cost_gbp"))
-    uplift = road_uplift(raw_annual, road, deflators, subtract=netted)
+    uplift = road_uplift(raw_annual, road, deflators, subtract=netted, data_to=data_to)
     uplift_runrate = max(0.0, raw_runrate - road_runrate(road, deflators)
                          - constraints.runrate_gbp_per_year)
     # Same window as the BSUoS data, so a lagging BSUoS feed never has
@@ -352,7 +352,7 @@ def result(store: SnapshotStore, hist: ReferenceScheme, road: dict,
         attribution_note=hist.attribution_rule,
         attribution_confidence=hist.attribution_confidence or "low",
         extras={"raw_annual": raw_annual.rename({"cost_gbp": "cost"}).to_dicts(),
-                **road_extras(raw_annual["year"].to_list(), road, deflators),
+                **road_extras(raw_annual["year"].to_list(), road, deflators, data_to),
                 "source": hist.source, "source_url": hist.source_url,
                 "verified": hist.verified,
                 "held_from": held_from, "held_to": held_to},
