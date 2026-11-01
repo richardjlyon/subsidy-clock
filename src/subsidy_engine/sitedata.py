@@ -307,6 +307,93 @@ def _map_data(model: dict, coords: dict, tiles: dict) -> dict:
     return {"tiles": tiles, "markers": markers}
 
 
+
+# --- The page contract (aios-harness#52): every field breakdown.json publishes.
+# Pages and outside users read these; a field is added, renamed or dropped only here,
+# and the build fails on any field a scheme publishes that is not listed, or a listed
+# one it lacks (unless optional).
+
+COMMON_FIELDS = ("id", "label", "perspectives", "cadence", "layer", "attribution_pct",
+                 "attribution_note", "attribution_confidence", "cumulative",
+                 "runrate_per_year", "data_to")
+
+_REF = ("source", "source_url", "verified")
+_CFD = ("gross", "net", "mwh", "by_technology", "by_recipient", "by_station")
+# scheme id -> (required fields, optional fields), beyond COMMON_FIELDS
+SCHEME_FIELDS = {
+    "cfd_renewable": (_CFD + ("station_detail",), ()),
+    "cfd_low_carbon": (_CFD, ()),
+    "constraints": (("by_recipient", "curtailed_mwh", "history_source_url",
+                     "held_from", "held_to"), ()),
+    "capacity_market": (("source", "source_url", "raw_annual", "netzero_share", "range",
+                         "share_provenance", "carry_forward_from"), ()),
+    # named recipients only when the station list is loaded
+    "ro": (_REF, ("by_station", "recipient_basis")),
+    "fit": (_REF, ()),
+    "ccl": (_REF, ()),
+    "ets": (_REF, ()),
+    # road_annual, road_source: the engine's no-net-zero road subtracted each year (aios-harness#43)
+    "tnuos": (_REF + ("raw_annual", "road_annual", "road_source"), ()),
+    "bsuos": (_REF + ("raw_annual", "held_from", "held_to", "road_annual", "road_source"), ()),
+    "constraint_turnup": (("by_fuel_while_wind_constrained", "cross_check_cumulative",
+                           "measured_from", "measured_annual", "source", "source_url"), ()),
+}
+
+# top-level keys: (always, when present)
+BREAKDOWN_KEYS = (("generated_at", "schemes"), ("elexon_first_year", "register", "findings"))
+
+
+def scheme_fields(s) -> dict:
+    """The scheme's own published fields (its extras), checked against the contract."""
+    if s.scheme_id not in SCHEME_FIELDS:
+        raise ValueError(f"scheme {s.scheme_id!r} has no entry in the page contract "
+                         "(sitedata.SCHEME_FIELDS): add its published fields there")
+    required, optional = SCHEME_FIELDS[s.scheme_id]
+    unlisted = sorted(set(s.extras) - set(required) - set(optional))
+    if unlisted:
+        raise ValueError(f"scheme {s.scheme_id!r} publishes {unlisted[0]!r}, which is not in "
+                         f"the page contract (sitedata.SCHEME_FIELDS); unlisted: {unlisted}")
+    missing = [k for k in required if k not in s.extras]
+    if missing:
+        raise ValueError(f"scheme {s.scheme_id!r} lacks {missing[0]!r}, which the page "
+                         f"contract (sitedata.SCHEME_FIELDS) lists; missing: {missing}")
+    return dict(s.extras)
+
+
+def breakdown_doc(model: dict, generated_at: str) -> dict:
+    """breakdown.json: the top-level keys and each scheme's common and own fields."""
+    doc = {
+        "generated_at": generated_at,
+        # the constraints pin: first year Elexon replaces REF (fix 5 guard; splice module)
+        **({"elexon_first_year": model["elexon_first_year"]}
+           if model.get("elexon_first_year") is not None else {}),
+        # decision 0168: the shared cost register every closed year was read from
+        **({"register": model["register"]} if model.get("register") else {}),
+        # aios-harness#42: the approved fixes this build applied (register adjustments not taken)
+        **({"findings": model["findings"]} if model.get("findings") else {}),
+        "schemes": [
+            {
+                "id": s.scheme_id,
+                "label": s.label,
+                "perspectives": s.perspectives,
+                "cadence": s.cadence,
+                "layer": s.layer,
+                "attribution_pct": s.attribution_pct,
+                "attribution_note": s.attribution_note,
+                "attribution_confidence": s.attribution_confidence,
+                "cumulative": s.cumulative_gbp,
+                "runrate_per_year": s.runrate_gbp_per_year,
+                "data_to": s.data_to.isoformat() if s.data_to else None,
+                **scheme_fields(s),
+            }
+            for s in model["schemes"]
+        ],
+    }
+    always, present = BREAKDOWN_KEYS
+    assert set(always) <= set(doc) <= set(always) | set(present), sorted(doc)
+    return doc
+
+
 def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
           *, generated_at: str, deflator_info: dict | None = None,
           bill_annual: pl.DataFrame | None = None,
@@ -354,33 +441,8 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
         ).to_dicts()}
     (out / "timeseries.json").write_text(json.dumps(ts, indent=1, allow_nan=False))
 
-    (out / "breakdown.json").write_text(json.dumps({
-        "generated_at": generated_at,
-        # the constraints pin: first year Elexon replaces REF (fix 5 guard; splice module)
-        **({"elexon_first_year": model["elexon_first_year"]}
-           if model.get("elexon_first_year") is not None else {}),
-        # decision 0168: the shared cost register every closed year was read from
-        **({"register": model["register"]} if model.get("register") else {}),
-        # aios-harness#42: the approved fixes this build applied (register adjustments not taken)
-        **({"findings": model["findings"]} if model.get("findings") else {}),
-        "schemes": [
-            {
-                "id": s.scheme_id,
-                "label": s.label,
-                "perspectives": s.perspectives,
-                "cadence": s.cadence,
-                "layer": s.layer,
-                "attribution_pct": s.attribution_pct,
-                "attribution_note": s.attribution_note,
-                "attribution_confidence": s.attribution_confidence,
-                "cumulative": s.cumulative_gbp,
-                "runrate_per_year": s.runrate_gbp_per_year,
-                "data_to": s.data_to.isoformat() if s.data_to else None,
-                **{k: v for k, v in s.extras.items()},
-            }
-            for s in model["schemes"]
-        ],
-    }, indent=1, default=str, allow_nan=False))
+    (out / "breakdown.json").write_text(json.dumps(
+        breakdown_doc(model, generated_at), indent=1, default=str, allow_nan=False))
 
     combined_real = _combined_real_gbp(model)
     headline = ({"combined_real": combined_real}
