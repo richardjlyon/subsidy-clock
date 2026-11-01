@@ -1,7 +1,7 @@
 """The starting level (Richard's ruling C, 1 Nov 2026; re-confirms A1/A2 of 14 Oct): TNUoS and BSUoS count what
 each year cost above the engine's no-net-zero road for that year, GO5 (high-voltage grid) and GO4 (balancing),
-from the pinned engine release v4-s43 (aios-harness#43). Generators' share included (as live); each year floored
-at zero and BSUoS net of the wind constraint payments counted as their own line (as live).
+from the pinned engine release v4-s43 (aios-harness#43). Generators' share included (as live); years signed (below the
+road negative, 1 Nov 2026) and BSUoS net of the wind constraint payments counted as their own line (as live).
 
 Expected values come from the engine's export file read directly, not from the Clock's code.
 """
@@ -14,7 +14,8 @@ import pytest
 import yaml
 
 from subsidy_engine import reference
-from subsidy_engine_uk import cli
+from subsidy_engine.store import SnapshotStore
+from subsidy_engine_uk import inputs
 from subsidy_engine_uk import register as R
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,7 +28,7 @@ def _export():
 
 @pytest.fixture(scope="module")
 def model():
-    return cli.assemble_model(ROOT)[0]
+    return inputs.assemble_model(ROOT)[0]
 
 
 def _s(model, sid):
@@ -110,7 +111,7 @@ def test_a_part_year_subtracts_the_road_pro_rated_to_the_data_date(model):
     tu = _annual(model, "constraint_turnup")
     from subsidy_engine_uk.schemes import constraints as C
     con = {r["year"]: r["cost_gbp"] for r in C.annual_through(
-        cli.make_store(ROOT), cli.reference.load_annual_costs(
+        SnapshotStore(ROOT / "data"), reference.load_annual_costs(
             ROOT / "reference" / "annual_scheme_costs.yaml")["constraints_history"],
         _s(model, "constraints"), data_to).to_dicts()}
     assert _annual(model, "bsuos")[2026] + tu[2026] == pytest.approx(raw[2026] - full * frac - con[2026], abs=0.01)

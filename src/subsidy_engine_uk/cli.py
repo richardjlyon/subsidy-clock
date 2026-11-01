@@ -10,13 +10,12 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-import yaml
 from datetime import date, datetime, timezone
 from pathlib import Path
 
-from subsidy_engine import money, reconcile, reference, sitedata
+from subsidy_engine import reconcile, reference, sitedata
 from subsidy_engine.store import SnapshotStore
-from subsidy_engine_uk import build as uk_build
+from subsidy_engine_uk import inputs
 from subsidy_engine_uk import stations
 from subsidy_engine_uk import scotland
 from subsidy_engine_uk.schemes import (bsuos, capacity_market, cfd, constraint_turnup,
@@ -71,49 +70,14 @@ def cmd_backfill_turnup(args: argparse.Namespace) -> int:
     return 0
 
 
-def assemble_model(root: Path) -> tuple[dict, dict]:
-    """The model the site is built from, and the register overlay report (decision 0168). Reads every covered
-    series for a closed year from the pinned shared cost register (subsidy_engine_uk.register), less the
-    register adjustments reference/clock_findings.yaml drops (subsidy_engine_uk.findings)."""
-    from subsidy_engine_uk import findings as findings_mod
-    from subsidy_engine_uk import register as reg_mod
-
-    store = make_store(root)
-    refs = reference.load_annual_costs(root / "reference" / "annual_scheme_costs.yaml")
-    refs.update(reference.load_annual_costs(root / "reference" / "indirect_annual.yaml"))
-    pinned = reg_mod.load_pinned(root)
-    pinned["selection"] = findings_mod.load(root / "reference" / "clock_findings.yaml", pinned["register"],
-                                            product=pinned["product"])
-    moved = reg_mod.overlay_refs(refs, pinned)
-    deflators = reference.load_deflators(root / "reference" / "deflators.yaml")
-    cm_share = reg_mod.cm_share_from_engine(root, pinned)
-    model = uk_build.build(store, refs, deflators=deflators, road=reg_mod.road_from_engine(root),
-                           station_map=stations.load_station_map(root / "reference" / "cfd_stations.csv"),
-                           ro_stations=stations.load_ro_stations(root / "reference" / "ro_stations.csv"),
-                           bmu_map=stations.load_station_bmus(root / "reference" / "station_bmu_map.csv"),
-                           cm_share=cm_share, to_register=reg_mod.ToRegister(pinned))
-    model["findings"] = pinned["selection"].record()
-    return model, {"refs_moved": moved, "refs": refs}
-
-
 def cmd_build_site(args: argparse.Namespace) -> int:
     import polars as pl
 
     store = make_store(args.root)
-    model, overlay = assemble_model(args.root)
-    ctx = reference.load_context(args.root / "reference" / "context.yaml")
-    equivalences = yaml.safe_load(
-        (args.root / "reference" / "equivalences.yaml").read_text())
-    deflators = reference.load_deflators(args.root / "reference" / "deflators.yaml")
-    bill_raw = reference.load_electricity_bill(args.root / "reference" / "electricity_bill.yaml")
-    bill = (money.add_real(bill_raw.rename({"total_bill_gbp": "cost_gbp"}), deflators)
-            .rename({"cost_gbp": "total_bill_gbp", "cost_gbp_2024": "total_bill_gbp_2024"}))
-    bill_yaml = yaml.safe_load((args.root / "reference" / "electricity_bill.yaml").read_text())
-    bill_info = {"source": bill_yaml["source"], "source_url": bill_yaml["source_url"],
-                 "verified": bill_yaml.get("verified", False)}
-    station_coords = stations.load_station_coords(args.root / "reference" / "station_coords.csv")
-    enforcement_notes = stations.load_enforcement_notes(args.root / "reference" / "enforcement_notes.csv")
-    map_tiles = json.loads((args.root / "reference" / "map_tiles.json").read_text())
+    inp = inputs.load(args.root)
+    model, overlay = inputs.assemble_model(args.root, inp)
+    ctx, deflators = inp.ctx, inp.deflators
+    out_site = args.out or args.root / "site"
     if overlay["refs_moved"]:
         print(f"[register] closed years moved by the register: {overlay['refs_moved']}")
     freshness = {}
@@ -124,21 +88,15 @@ def cmd_build_site(args: argparse.Namespace) -> int:
         if f:
             freshness[scheme_id] = {k: f.get(k) for k in
                                     ("retrieved_at", "source_date", "source_url", "row_count")}
-    out_dir = args.root / "site" / "data"
-    # provenance only - load_deflators already parsed the index above
-    deflator_yaml = yaml.safe_load((args.root / "reference" / "deflators.yaml").read_text())
-    deflator_info = {"source": deflator_yaml["source"],
-                     "source_url": deflator_yaml["source_url"],
-                     "base_year": deflator_yaml["base_year"],
-                     "verified": deflator_yaml.get("verified", False)}
+    out_dir = out_site / "data"
     generated_at = datetime.now(timezone.utc).isoformat()
     sitedata.build(model, ctx, freshness, out_dir,
                    generated_at=generated_at,
-                   deflator_info=deflator_info,
-                   bill_annual=bill, bill_info=bill_info, deflators=deflators,
-                   coords=station_coords, tiles=map_tiles,
-                   notes=enforcement_notes,
-                   equivalences=equivalences)
+                   deflator_info=inp.deflator_info,
+                   bill_annual=inp.bill, bill_info=inp.bill_info, deflators=deflators,
+                   coords=inp.coords, tiles=inp.tiles,
+                   notes=inp.notes,
+                   equivalences=inp.equivalences)
     sitedata.write_csvs(model, out_dir, restatements=store.all_restatements(),
                         generated=generated_at)
     changelog = sitedata.load_changelog(args.root / "changelog.jsonl")
@@ -148,7 +106,7 @@ def cmd_build_site(args: argparse.Namespace) -> int:
     if con_daily is not None and con_daily.height:
         cons = ctx["electricity_consumption_by_nation"]
         scot = scotland.build_payload(
-            con_daily, scotland.load_bmu_zones(args.root / "reference" / "bmu_zone.csv"),
+            con_daily, inp.bmu_zones,
             scot_twh=cons["scotland_gwh"] / 1000, gb_twh=cons["gb_gwh"] / 1000,
             consumption_source=cons["source"], consumption_url=cons["source_url"],
             generated_at=generated_at, turnup_daily=constraint_turnup.daily_cost(store))
@@ -158,7 +116,7 @@ def cmd_build_site(args: argparse.Namespace) -> int:
               f"{scot['window']['to']}")
 
     totals_json = json.loads((out_dir / "totals.json").read_text())
-    sitedata.write_widget(totals_json, args.root / "site" / "embed" / "widget.html")
+    sitedata.write_widget(totals_json, out_site / "embed" / "widget.html")
 
     gen = store.latest("cfd", "generation")
     trk = store.latest("cfd", "tracking")

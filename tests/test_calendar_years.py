@@ -14,7 +14,7 @@ import pytest
 
 from subsidy_engine import reference
 from subsidy_engine_uk import calendar_years as CY
-from subsidy_engine_uk import cli
+from subsidy_engine_uk import inputs
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -28,7 +28,7 @@ def test_fy_to_cy_is_the_engines_rule():
 
 @pytest.fixture(scope="module")
 def model():
-    return cli.assemble_model(ROOT)[0]
+    return inputs.assemble_model(ROOT)[0]
 
 
 @pytest.fixture(scope="module")

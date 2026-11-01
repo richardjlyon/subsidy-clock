@@ -22,7 +22,7 @@ from subsidy_engine import money, reference  # noqa: E402
 
 def run_build():
     # 0168 (card t_af5fbf06): the same model the site is built from, read from the shared cost register
-    from subsidy_engine_uk.cli import assemble_model
+    from subsidy_engine_uk.inputs import assemble_model
     deflators = reference.load_deflators(ROOT / "reference" / "deflators.yaml")
     return assemble_model(ROOT)[0], deflators
 

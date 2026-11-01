@@ -41,6 +41,8 @@ def main(argv: list[str] | None = None) -> int:
     p_tu.set_defaults(fn=cli.cmd_backfill_turnup)
 
     p_site = sub.add_parser("build-site", help="build dashboard JSON site data")
+    p_site.add_argument("--out", type=Path, default=None,
+                        help="site folder to write into (default: <root>/site)")
     p_site.set_defaults(fn=cli.cmd_build_site)
 
     p_cards = sub.add_parser("build-cards", help="render OG share-card PNGs and share stubs")

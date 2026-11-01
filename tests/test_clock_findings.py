@@ -15,7 +15,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from subsidy_engine_uk import cli
+from subsidy_engine_uk import inputs
 from subsidy_engine_uk import findings as F
 from subsidy_engine_uk import register as R
 
@@ -42,7 +42,7 @@ def _one(**over):
 
 @pytest.fixture(scope="module")
 def model():
-    return cli.assemble_model(ROOT)[0]
+    return inputs.assemble_model(ROOT)[0]
 
 
 def _annual(model, sid):

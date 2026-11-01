@@ -16,7 +16,7 @@ from pathlib import Path
 import pytest
 
 from subsidy_engine import cost_register as CR
-from subsidy_engine_uk import cli
+from subsidy_engine_uk import inputs
 from subsidy_engine_uk import register as R
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -53,7 +53,7 @@ def _annual(model, sid, year, raw=False):
 
 @pytest.fixture(scope="module")
 def base_model():
-    return cli.assemble_model(ROOT)[0]
+    return inputs.assemble_model(ROOT)[0]
 
 
 # (register line, year, Clock scheme, read the raw (gross) annual?)
@@ -85,7 +85,7 @@ def test_covered_series_is_read_from_the_register(monkeypatch, tmp_path, base_mo
         return p
 
     monkeypatch.setattr(R, "load_pinned", pinned)
-    model = cli.assemble_model(ROOT)[0]
+    model = inputs.assemble_model(ROOT)[0]
     delta = _annual(model, sid, year, raw) - _annual(base_model, sid, year, raw)
     assert delta == pytest.approx(1e6, abs=0.01), (
         f"{line} {year}: the register row moved by GBP 1m but the Clock's {sid} {year} moved by GBP {delta:,.2f}: "
