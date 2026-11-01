@@ -56,7 +56,8 @@ def test_tnuos_counts_each_year_above_the_road(model):
     ex = _export()["grid"]["years"]
     raw, got = _raw(model, "tnuos"), _annual(model, "tnuos")
     for y in range(2002, 2025):
-        assert got[y] == pytest.approx(max(0.0, raw[y] - ex[str(y)]["central_gbp"]), abs=0.01), y
+        # signed years (Richard, 1 Nov 2026, as RB): a year below the road counts as negative
+        assert got[y] == pytest.approx(raw[y] - ex[str(y)]["central_gbp"], abs=0.01), y
 
 
 def test_bsuos_counts_each_closed_year_above_the_road_net_of_wind_constraints(model):
@@ -64,9 +65,15 @@ def test_bsuos_counts_each_closed_year_above_the_road_net_of_wind_constraints(mo
     raw, con = _raw(model, "bsuos"), _annual(model, "constraints")
     bs, tu = _annual(model, "bsuos"), _annual(model, "constraint_turnup")
     for y in range(2002, 2025):
-        expected = max(0.0, raw[y] - ex[str(y)]["central_gbp"] - con.get(y, 0.0))
-        # the turn-up line is split out of the uplift, never more than it
+        expected = raw[y] - ex[str(y)]["central_gbp"] - con.get(y, 0.0)   # signed years, as RB
+        # the turn-up line is split out of the uplift, never more than it and never negative
         assert bs[y] + tu.get(y, 0.0) == pytest.approx(expected, abs=0.01), y
+        assert 0.0 <= tu.get(y, 0.0) <= max(0.0, expected) + 0.01, y
+
+
+def test_some_years_below_the_road_count_as_negative(model):
+    assert min(_annual(model, "tnuos")[y] for y in range(2002, 2025)) < 0
+    assert min(_annual(model, "bsuos")[y] for y in range(2002, 2025)) < 0
 
 
 def test_years_after_the_engine_carry_its_last_year_by_cpih(model):

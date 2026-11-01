@@ -27,14 +27,14 @@ def road(value: float = 100.0) -> dict:
     return {"tnuos": indexed_road(value, deflators()), "bsuos": indexed_road(value, deflators())}
 
 
-def test_road_uplift_floors_at_zero_and_nets_subtraction():
+def test_road_uplift_is_signed_and_nets_subtraction():
     raw = pl.DataFrame({"year": [2003, 2023, 2026], "cost_gbp": [60.0, 1000.0, 500.0]},
                        schema={"year": pl.Int64, "cost_gbp": pl.Float64})
     constraints = pl.DataFrame({"year": [2023], "cost_gbp": [100.0]},
                                schema={"year": pl.Int64, "cost_gbp": pl.Float64})
     r = {"years": {2003: 99.0, 2023: 179.0, 2025: 190.0}, "carry_forward_from": 2025}
     rows = {x["year"]: x["cost_gbp"] for x in road_uplift(raw, r, deflators(), subtract=constraints).to_dicts()}
-    assert rows[2003] == 0.0                       # 60 - 99 is negative: floored to 0
+    assert rows[2003] == 60.0 - 99.0               # below the road: negative (signed years, as RB)
     assert rows[2023] == 1000.0 - 179.0 - 100.0    # the road for the year, then the netting
     # 2026: after the engine's last year, 2025 carried by the index (no 2026 index: the latest, 136)
     assert rows[2026] == 500.0 - 190.0 * 136.0 / 136.0

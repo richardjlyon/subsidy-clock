@@ -291,7 +291,10 @@ def result(store: SnapshotStore, hist: ReferenceScheme, road: dict,
         tu_measured = annualise_daily(tu_daily).rename({"cost_gbp": "tu"})
         split = (uplift.join(tu_measured, on="year", how="left")
                  .with_columns(pl.col("tu").fill_null(0.0))
-                 .with_columns(pl.min_horizontal("tu", "cost_gbp").alias("tu")))
+                 # capped at the uplift as live; with signed years an uplift can be
+                 # negative, and a payment made is never a negative turn-up
+                 .with_columns(pl.min_horizontal("tu", pl.max_horizontal(pl.lit(0.0), "cost_gbp"))
+                               .alias("tu")))
         tu_annual = split.select("year", pl.col("tu").alias("cost_gbp"))
         attributed = split.select("year", (pl.col("cost_gbp") - pl.col("tu"))
                                   .alias("cost_gbp"))

@@ -45,8 +45,9 @@ def road_uplift(
     *,
     subtract: pl.DataFrame | None = None,
 ) -> pl.DataFrame:
-    """Each year's cost above the road, optionally net of costs already counted elsewhere, floored at zero
-    (the live attribution rule)."""
+    """Each year's cost above the road, optionally net of costs already counted elsewhere. SIGNED: a year
+    below the road counts as negative, as Reliable Britain does (Richard, 1 Nov 2026; until then each year
+    was floored at zero)."""
     df = raw_annual.join(road_series([int(y) for y in raw_annual["year"].to_list()], road, deflators),
                          on="year", how="left")
     if subtract is not None:
@@ -56,8 +57,7 @@ def road_uplift(
     else:
         df = df.with_columns(pl.lit(0.0).alias("sub"))
     return (df.with_columns(
-                pl.max_horizontal(pl.lit(0.0), pl.col("cost_gbp") - pl.col("road") - pl.col("sub"))
-                .alias("cost_gbp"))
+                (pl.col("cost_gbp") - pl.col("road") - pl.col("sub")).alias("cost_gbp"))
             .select("year", "cost_gbp"))
 
 

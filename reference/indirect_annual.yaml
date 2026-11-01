@@ -249,7 +249,8 @@ schemes:
         Raw totals stored; attribution happens in the money model. Only each
         year's cost above what the same year would have cost without net-zero
         policy (the gas-counterfactual engine's high-voltage grid road, GO5,
-        reference/model_pin.yaml) is attributed, floored at zero.
+        reference/model_pin.yaml) is attributed; a year below it counts as
+        negative (signed years, as Reliable Britain).
       confidence: low
     note: >-
       Raw annual TNUoS, calendar years 2002-2024. The build reads every closed
@@ -309,7 +310,8 @@ schemes:
         year's cost above what the same year would have cost without net-zero
         policy (the gas-counterfactual engine's balancing road, GO4,
         reference/model_pin.yaml) is attributed, NET of wind constraint
-        payments already counted in the direct layer, floored at zero. The estimated cost of replacing
+        payments already counted in the direct layer; a year below it counts as
+        negative (signed years, as Reliable Britain). The estimated cost of replacing
         switched-off wind (constraint turn-up) is then shown as its own line
         and taken out of this one.
       confidence: low
