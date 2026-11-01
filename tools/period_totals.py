@@ -1,7 +1,7 @@
 """Fixed-period totals on calendar years (D-13), for figures such as Report No. 2's 2002-24 totals.
 
 RO and FiT are calendarised from obligation years as the engine does; each calendar year is deflated at its own
-index. Built through the same model as the site (cli.assemble_model); writes nothing.
+index. Built through the same model as the site (inputs.assemble_model); writes nothing.
 
 Usage: uv run python tools/period_totals.py [first] [last]      (default 2002 2024)
 """
@@ -14,7 +14,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from subsidy_engine import reference  # noqa: E402
 from subsidy_engine_uk import calendar_years  # noqa: E402
-from subsidy_engine_uk.cli import assemble_model  # noqa: E402
+from subsidy_engine_uk.inputs import assemble_model  # noqa: E402
 
 
 def main(first: int = 2002, last: int = 2024) -> None:
