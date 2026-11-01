@@ -44,7 +44,8 @@ def load_pinned(root: Path) -> dict:
 
 # Clock reference scheme id -> register lines that make it, for this product
 REF_LINES = {
-    "ro": ("RO",),
+    # RO mutualisation counted, as received (D-08; Richard, 1 Nov 2026; aios-harness#45)
+    "ro": ("RO", "RO_MUT"),
     "fit": ("FIT",),
     # the levy alone: CPS and emissions trading are inside the carbon line (aios-harness#44)
     "ccl": ("CCL_ELEC",),

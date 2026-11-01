@@ -31,7 +31,11 @@ schemes:
       worth figures and rounded down to the nearest GBP 10m (never
       overstated). 2025 (SY24, 2025-26) is omitted: compliance completes
       autumn 2026 and no official outturn or forecast of scheme value has
-      been published yet.
+      been published yet. RO mutualisation is counted (D-08; Richard, 1 Nov
+      2026; aios-harness#45): the payments suppliers received to make good
+      the shortfalls of scheme years 2017-21 (GBP 525.5m; GB, NI was not
+      mutualised), from the shared cost register's RO_MUT line, added to
+      the scheme year each makes good.
     annual:
       2002: 250000000
       2003: 400000000
@@ -48,11 +52,11 @@ schemes:
       2014: 3110000000
       2015: 3740000000
       2016: 4490000000
-      2017: 5300000000
-      2018: 5920000000
-      2019: 6310000000
-      2020: 5730000000
-      2021: 6360000000
+      2017: 5357755439.0   # 5.30bn scheme value + 57.8m mutualisation received
+      2018: 6017282547.83   # 5.92bn scheme value + 97.3m mutualisation received
+      2019: 6342546376.96   # 6.31bn scheme value + 32.5m mutualisation received
+      2020: 5948284888.45   # 5.73bn scheme value + 218.3m mutualisation received
+      2021: 6479668289.59   # 6.36bn scheme value + 119.7m mutualisation received
       2022: 6430000000
       2023: 6750000000
       2024: 7700000000

@@ -59,6 +59,7 @@ def base_model():
 # (register line, year, Clock scheme, read the raw (gross) annual?)
 COVERED = [
     ("RO", 2020, "ro", False),
+    ("RO_MUT", 2020, "ro", False),       # RO mutualisation, counted (D-08, aios-harness#45)
     ("FIT", 2020, "fit", False),
     ("CCL_ELEC", 2020, "ccl", False),
     # CPS and ETS_POWER: no longer read by the Clock; carbon is the engine's (aios-harness#44, test_carbon)
@@ -95,7 +96,7 @@ def test_every_closed_year_of_every_covered_line_is_the_registers(base_model):
     pin = R.load_pinned(ROOT)
     reg, prod, closed = pin["register"], pin["product"], pin["closed_through"]
     checks = {
-        "ro": (("RO",), False), "fit": (("FIT",), False), "ccl": (("CCL_ELEC",), False),
+        "ro": (("RO", "RO_MUT"), False), "fit": (("FIT",), False), "ccl": (("CCL_ELEC",), False),
         "tnuos": (("TNUOS",), True), "bsuos": (("BSUOS",), True),
         # turn-up: the register carries it as measured, before the cap at the balancing line (which binds
         # in some years since the generators' share left, aios-harness#45)

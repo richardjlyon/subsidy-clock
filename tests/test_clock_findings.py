@@ -183,3 +183,14 @@ def test_take_moves_the_line_by_exactly_the_register_row(tmp_path):
     gen = reg.adjustments("TNUOS", "rb")["rb.TNUOS.generators_share_out"]
     for y, v in gen.items():
         assert got[y] == pytest.approx(base[y] + v, abs=1e-9), y
+
+
+# ---- aios-harness#45 step 4: RO mutualisation counted (D-08), on the "received" basis ----
+
+def test_ro_includes_mutualisation_received(model):
+    reg = _reg()
+    ro, mut = reg.line("RO", "clock_live"), reg.series("RO_MUT")
+    got = _annual(model, "ro")
+    for y in range(2002, 2025):
+        assert got[y] == pytest.approx((ro[y] + mut.get(y, 0.0)) * 1e6, abs=0.01), y
+    assert sum(mut[y] for y in range(2017, 2022)) == pytest.approx(525.5, abs=0.1)   # received, not billed
