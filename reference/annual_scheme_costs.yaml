@@ -61,38 +61,38 @@ schemes:
     perspectives: [renewables, low_carbon]
     cadence: annual
     source: >-
-      Ofgem Feed-in Tariffs Annual Report Scheme Year 15 (April 2024 to
-      March 2025), Figure 3.3 "FIT scheme value, SY1-15" (PDF,
-      feed_in_tariff_annual_report_sy15, Dec 2025). The report states the
-      series grew every year from SY1 to SY11 (GBP 1,764m), fell for the
-      first time in SY12 (GBP 1,575m), peaked at GBP 1,858m in SY14, and was
-      GBP 1,844m in SY15, which fixes the year order of the charted values.
+      The shared cost register (reference/register_pin.yaml), line FIT: the
+      levelisation fund cost, what licensed suppliers paid in, by scheme year
+      (April-March, keyed by start year), GB (no FiT scheme in Northern
+      Ireland), from Ofgem's FiT annual reports (SY1-5, SY14-15) and annual
+      levelisation notices (2015-16 to 2022-23); includes correction C-008.
+      Valued as the levelisation fund, as Reliable Britain does (0084;
+      Richard, 1 Nov 2026; aios-harness#45), not Ofgem's scheme value.
     source_url: https://www.ofgem.gov.uk/transparency-document/feed-tariffs-annual-report-scheme-year-15-april-2024-march-2025
     verified: true
-    expected_next_update: 2027-01-31   # Ofgem FiT Annual Report, one scheme year behind
+    expected_next_update: 2027-01-31   # Ofgem FiT annual report / levelisation notice
     note: >-
-      FIT scheme value per Ofgem: generation payments + export payments +
-      qualifying FIT costs (the SY15 value of GBP 1,844m comprises
-      GBP 1.73bn generation, GBP 94m export, plus qualifying costs). Values
-      are Ofgem's own GBP-million figures, not rounded further. 2025 (SY16,
-      2025-26) is omitted: the SY16 annual report has not yet been
-      published.
+      The build reads every closed year from the shared cost register; the
+      figures below are the register's, copied here so the file says what the
+      Clock counts. Each scheme year sits in its own year (the 2019-20 and
+      2022-23 values were swapped until aios-harness#42). 2025 (SY16) is
+      omitted until published.
     annual:
-      2010: 15000000
-      2011: 155000000
-      2012: 525000000
-      2013: 718000000
-      2014: 895000000
-      2015: 1151000000
-      2016: 1375000000
-      2017: 1491000000
-      2018: 1529000000
-      2019: 1606000000   # SY10; was 1,732 (SY13's value): swapped, aios-harness#42
-      2020: 1764000000
-      2021: 1575000000
-      2022: 1732000000   # SY13; was 1,606 (SY10's value)
-      2023: 1858000000
-      2024: 1844000000
+      2010: 14435324.77
+      2011: 150756063.58
+      2012: 506328139.0
+      2013: 690991283.0
+      2014: 865553975.0
+      2015: 1110044917.18
+      2016: 1283516404.31
+      2017: 1375082537.07
+      2018: 1414741502.41
+      2019: 1539682298.18
+      2020: 1603008385.653
+      2021: 1273114642.014
+      2022: 1452953030.365
+      2023: 1754915050.0
+      2024: 1725741218.0
   constraints_history:
     label: Wind constraint payments (pre-backfill history)
     perspectives: [renewables, low_carbon]

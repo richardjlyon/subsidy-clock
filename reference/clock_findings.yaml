@@ -54,3 +54,15 @@ findings:
     take:
       - [TNUOS, rb, rb.TNUOS.generators_share_out]
       - [BSUOS, rb, rb.BSUOS.generators_share_out]
+
+  fit_levelisation_fund:
+    status: ruled
+    kind: definition
+    reason: >-
+      Feed-in Tariffs are valued as the levelisation fund (what licensed suppliers paid in, Ofgem), as
+      Reliable Britain does (0084 stands), not Ofgem's scheme value. The register's FIT series is the
+      levelisation reading; the Clock no longer takes its scheme-value adjustment. Each scheme year stays in
+      its own year (the 2019/2022 fix above).
+    approved: "Richard, 1 Nov 2026 (decisions.md: Feed-in Tariffs, A, valued as the levelisation fund; aios-harness#45)"
+    definitions: D-01
+    drop: [alt.FIT.ofgem_scheme_value]
