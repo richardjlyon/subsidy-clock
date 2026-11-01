@@ -356,8 +356,7 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
 
     (out / "breakdown.json").write_text(json.dumps({
         "generated_at": generated_at,
-        # first year Elexon replaces REF for constraints (fix 5 guard); not the same as
-        # each scheme's bottom_up_from below (the earliest stored day)
+        # the constraints pin: first year Elexon replaces REF (fix 5 guard; splice module)
         **({"elexon_first_year": model["elexon_first_year"]}
            if model.get("elexon_first_year") is not None else {}),
         "schemes": [

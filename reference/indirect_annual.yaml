@@ -296,6 +296,11 @@ schemes:
     source_url: https://www.nao.org.uk/wp-content/uploads/2014/05/Electricity-Balancing-Services.pdf
     verified: false
     # expected_next_update: none — static: series ends 2016, where the fetched BSUoS data takes over. No refresh.
+    # Pin: first year the fetched NESO series replaces this history (aios-harness#37,
+    # 1 Nov 2026). 2017 is the year the old "first year held from 1 Jan" rule gave, so no
+    # figure moved. Changing it is a release decision and moves LIVE_PIN in
+    # src/subsidy_engine_uk/splice.py with it; the build refuses an unsafe pin.
+    bottom_up_from: 2017
     attribution:
       rule: >-
         Raw totals stored; attribution happens in the money model. Only the

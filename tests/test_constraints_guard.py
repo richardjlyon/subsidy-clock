@@ -1,20 +1,16 @@
-"""Fix 5 guard (robustness spec, 17 Oct 2026): the split between the constraints and
-balancing lines must not move before the single release Richard approves.
+"""Fix 5 guard, wired into the build (robustness spec, 17 Oct 2026; aios-harness#37).
 
-Today the build trusts Elexon bottom-up constraints for every year from the first one the
-backfill covers from 1 January. The daily backfill steps back a week at a run and reaches
-1 Jan 2023 no earlier than 05:30 GMT on 20 Nov 2026 at one run a day (runs land hours late
-and skipped runs push it later; any extra run brings it forward); 2023 would then switch
-from REF to Elexon with no changelog entry. Balancing is counted net of constraints, so the
-end-2024 figure would not move; the split between the two lines would. The guard states the
-first Elexon year (2024, today's split) in the reference file, so the backfill reaching
-further back moves no annual total and not the split. Curtailed MWh, recipients and
-scotland.json still move as days are added."""
+The guard itself (which years bottom-up replaces, and which pins are refused) is tested
+through the splice module's interface in test_splice.py. Here: that build() goes through
+it for constraints and BSUoS, and what breakdown.json publishes."""
+import json
+from dataclasses import replace
 from datetime import date, timedelta
 
 import polars as pl
+import pytest
 
-from subsidy_engine.money import add_real
+from subsidy_engine import sitedata
 from subsidy_engine.reference import ReferenceScheme
 from subsidy_engine.store import SnapshotStore
 from subsidy_engine_uk import build as uk_build
@@ -30,18 +26,14 @@ def _deflators():
 def _annual(sid, values, bottom_up_from=None):
     df = pl.DataFrame({"year": list(values), "cost_gbp": list(values.values())},
                       schema={"year": pl.Int64, "cost_gbp": pl.Float64})
-    extra = {"bottom_up_from": bottom_up_from} if bottom_up_from is not None else {}
     return ReferenceScheme(sid, sid, ["renewables", "low_carbon"], "annual", "s", "https://s",
-                           True, df, **extra)
+                           True, df, bottom_up_from=bottom_up_from)
 
 
-def _store(path, earliest, latest=date(2025, 1, 3), missing=()):
+def _store(path, earliest, latest=date(2025, 1, 3)):
     store = SnapshotStore(path)
     d = earliest
     while d <= latest:
-        if d in missing:
-            d += timedelta(days=1)
-            continue
         store.write("constraints", "daily",
                     pl.DataFrame({"date": [d], "bmu": ["T_W-1"], "lead_party": ["W"],
                                   "volume_mwh": [-1.0], "cost_gbp": [1.0e6]}),
@@ -50,164 +42,45 @@ def _store(path, earliest, latest=date(2025, 1, 3), missing=()):
     return store
 
 
-def _figures(store, refs):
-    model = uk_build.build(store, refs, deflators=_deflators())
-    # every line, 2002 to 31 Dec 2024, in 2024 prices. This fixture has no BSUoS line, so
-    # it measures the constraints line alone; on the real build the balancing line is net
-    # of constraints and the live (master) end-2024 figure does not move either way
-    end_2024 = sum(float(add_real(s.annual, _deflators())
-                         .filter(pl.col("year") <= 2024)["cost_gbp_2024"].sum())
-                   for s in model["schemes"])
-    p = model["perspectives"]["renewables"]
-    # the renewables perspective's running base and rate (constraints is in it)
-    running = (p.get("cumulative_gbp_2024"), p.get("runrate_gbp_per_year_2024"),
-               p["cumulative_gbp"], p["runrate_gbp_per_year"])
-    return end_2024, running
-
-
-def _refs():
-    from dataclasses import replace
-    from pathlib import Path
-    from subsidy_engine.reference import load_annual_costs
-    live = load_annual_costs(Path(__file__).parent.parent / "reference"
-                             / "annual_scheme_costs.yaml")["constraints_history"]
-    # the fixture's REF figures, the live file's switch
-    hist = replace(_annual("constraints_history", REF), bottom_up_from=live.bottom_up_from)
-    return {"constraints_history": hist, "ro": _annual("ro", {2024: 1.0}),
-            "fit": _annual("fit", {2024: 1.0})}
-
-
-def test_constraints_line_to_end_2024_and_its_running_base_do_not_move_when_the_backfill_passes_1_jan_2023(
-        tmp_path):
-    today = _figures(_store(tmp_path / "today", date(2023, 8, 25)), _refs())
-    after = _figures(_store(tmp_path / "after", date(2022, 12, 30)), _refs())
-    assert after == today
-
-
-def test_a_constraints_history_with_no_stated_first_elexon_year_fails_the_build(tmp_path):
-    import pytest
-    refs = {"constraints_history": _annual("constraints_history", REF),
+def _refs(pin=2024):
+    return {"constraints_history": _annual("constraints_history", REF, pin),
             "ro": _annual("ro", {2024: 1.0}), "fit": _annual("fit", {2024: 1.0})}
-    with pytest.raises(ValueError, match="bottom_up_from"):
-        uk_build.build(_store(tmp_path, date(2024, 12, 30)), refs, deflators=_deflators())
 
 
-def test_the_live_reference_states_2024_todays_split():
-    from pathlib import Path
-    from subsidy_engine.reference import load_annual_costs
-    h = load_annual_costs(Path(__file__).parent.parent / "reference"
-                          / "annual_scheme_costs.yaml")["constraints_history"]
-    assert h.bottom_up_from == 2024
-
-
-def _build_with(tmp_path, pin, earliest=date(2023, 8, 25), latest=date(2025, 1, 3), missing=()):
-    from dataclasses import replace
-    refs = _refs()
-    refs["constraints_history"] = replace(refs["constraints_history"], bottom_up_from=pin)
-    return uk_build.build(_store(tmp_path, earliest, latest, missing), refs,
-                          deflators=_deflators())
-
-
-def test_a_switch_year_written_as_text_fails_naming_the_value(tmp_path):
-    import pytest
-    with pytest.raises(ValueError, match=r"bottom_up_from '2024' .*whole-number year"):
-        _build_with(tmp_path, "2024")
-
-
-def test_a_switch_year_as_a_fraction_or_a_date_fails_naming_the_value(tmp_path):
-    # the fact-checker found 2024.5 and the YAML date 2024-01-01 built silently and put
-    # 2024 back on REF
-    import pytest
-    for i, pin in enumerate((2024.5, "2024-01-01", date(2024, 1, 1))):
-        with pytest.raises(ValueError, match=r"bottom_up_from .*2024.* whole-number year"):
-            _build_with(tmp_path / str(i), pin)
-
-
-def test_a_switch_year_with_no_stored_days_fails(tmp_path):
-    # (2030 was this test's first value; it now fails earlier, on the first-full-year limit)
-    import pytest
-    with pytest.raises(ValueError, match=r"bottom_up_from 2024 .*not every day from 1 Jan 2024"):
-        _build_with(tmp_path, 2024, latest=date(2023, 12, 31))
-
-
-def test_a_switch_year_only_partly_held_fails_rather_than_swapping_in_a_part_year(tmp_path):
-    # today's data start on 25 Aug 2023: 2023 would replace REF's full year with
-    # four months of Elexon (GBP 167.3m on the real data)
-    import pytest
-    with pytest.raises(ValueError, match=r"bottom_up_from 2023 .*not every day from 1 Jan 2023"):
-        _build_with(tmp_path, 2023)
-
-
-def test_the_pin_2024_still_builds_once_2023_is_fully_held_too(tmp_path):
-    model = _build_with(tmp_path, 2024, earliest=date(2022, 12, 30))
-    con = next(s for s in model["schemes"] if s.scheme_id == "constraints")
-    assert con.annual.filter(pl.col("year") == 2023)["cost_gbp"].item() == REF[2023]
-
-
-def test_the_pinned_year_is_published_in_breakdown_json(tmp_path):
-    # the pages say from which year Elexon replaces REF; they read it from here
-    import json
-    from subsidy_engine import sitedata
-    model = _build_with(tmp_path / "store", 2024)
+def _breakdown(model, tmp_path):
     ctx = {k: {"value": v, "source": "s", "source_url": "u", "as_of": 2024} for k, v in
            (("households", 28_400_000), ("population", 68_300_000), ("annual_demand_twh", 266))}
     sitedata.build(model, ctx, {}, tmp_path / "site", generated_at="2026-10-17T00:00:00+00:00")
-    bd = json.loads((tmp_path / "site" / "breakdown.json").read_text())
-    # named so it cannot be confused with each scheme's bottom_up_from (earliest stored day)
+    return json.loads((tmp_path / "site" / "breakdown.json").read_text())
+
+
+def test_the_build_refuses_a_partly_held_constraints_pin(tmp_path):
+    with pytest.raises(ValueError, match=r"constraints bottom_up_from 2023 .*not every day"):
+        uk_build.build(_store(tmp_path, date(2023, 8, 25)), _refs(2023), deflators=_deflators())
+
+
+def test_the_build_refuses_a_bsuos_history_with_no_pin(tmp_path):
+    store = _store(tmp_path, date(2023, 8, 25))
+    store.write("bsuos", "daily", pl.DataFrame(
+        {"date": [date(2024, 12, 30)], "cost_gbp": [1.0]},
+        schema={"date": pl.Date, "cost_gbp": pl.Float64}), source_url="u", partition="2024-2025")
+    refs = _refs() | {"bsuos_history": _annual("bsuos_history", {2016: 1.0})}
+    with pytest.raises(ValueError, match="bsuos history states no bottom_up_from"):
+        uk_build.build(store, refs, deflators=_deflators(), baselines={"bsuos": {"value": 0.1}})
+
+
+def test_the_pinned_year_and_the_held_window_are_published_in_breakdown_json(tmp_path):
+    # the pages say from which year Elexon replaces REF and from which day data is held
+    bd = _breakdown(uk_build.build(_store(tmp_path / "store", date(2023, 8, 25)), _refs(),
+                                   deflators=_deflators()), tmp_path)
     assert bd["elexon_first_year"] == 2024
-    assert "bottom_up_from" not in bd
-
-
-def test_a_switch_year_after_the_first_full_elexon_year_fails_naming_the_setting(tmp_path):
-    # the fact-checker found 2025 and 2026 built silently and put 2024 back on REF
-    import pytest
-    for pin in (2025, 2026, 2030):
-        with pytest.raises(ValueError, match=rf"bottom_up_from {pin} .*later than 2024"):
-            _build_with(tmp_path / str(pin), pin)
-
-
-def test_a_switch_year_of_zero_or_below_fails_naming_the_setting(tmp_path):
-    import pytest
-    for pin in (-1, 0):
-        with pytest.raises(ValueError, match=rf"bottom_up_from {pin} "):
-            _build_with(tmp_path / str(pin), pin)
+    con = next(s for s in bd["schemes"] if s["id"] == "constraints")
+    assert (con["held_from"], con["held_to"]) == ("2023-08-25", "2025-01-03")
+    assert "bottom_up_from" not in con and "bottom_up_from" not in bd
 
 
 def test_with_no_elexon_data_the_elexon_year_is_not_published(tmp_path):
-    # nothing from Elexon is used then, so publishing 2024 would be false; the pages fall back
-    import json
-    from subsidy_engine import sitedata
-    model = uk_build.build(SnapshotStore(tmp_path / "store"), _refs(), deflators=_deflators())
-    ctx = {k: {"value": v, "source": "s", "source_url": "u", "as_of": 2024} for k, v in
-           (("households", 28_400_000), ("population", 68_300_000), ("annual_demand_twh", 266))}
-    sitedata.build(model, ctx, {}, tmp_path / "site", generated_at="2026-10-17T00:00:00+00:00")
-    bd = json.loads((tmp_path / "site" / "breakdown.json").read_text())
+    # nothing from Elexon is used then, so publishing 2024 would be false
+    bd = _breakdown(uk_build.build(SnapshotStore(tmp_path / "store"), _refs(),
+                                   deflators=_deflators()), tmp_path)
     assert "elexon_first_year" not in bd
-
-
-def test_a_raised_pin_fails_when_2024_has_a_missing_day(tmp_path):
-    # the fact-checker removed 15 Jun 2024 and pinned 2025: the build exited 0 and put
-    # calendar 2024 back on REF (GBP 394,302,243 instead of Elexon's GBP 395,679,939,
-    # calendar 2024, cash). Any stored day from 1 Jan 2024 up to the pin year refuses it
-    import pytest
-    with pytest.raises(ValueError, match=r"bottom_up_from 2025 .*later than 2024"):
-        _build_with(tmp_path, 2025, missing={date(2024, 6, 15)})
-
-
-def test_pin_2024_with_a_missing_day_says_to_fetch_it_not_to_raise_the_pin(tmp_path):
-    # the old message only said a day was lacking, which invited raising the pin
-    import pytest
-    with pytest.raises(ValueError, match=r"bottom_up_from 2024 .*first 2024-06-15.*fetch the "
-                                         r"missing days .*do not raise the pin") as err:
-        _build_with(tmp_path, 2024, missing={date(2024, 6, 15)})
-    assert "partial year" in str(err.value)
-
-
-def test_the_first_full_elexon_year_moves_with_the_live_pin():
-    # FIRST_FULL_ELEXON_YEAR is the floor of the refusal checks; a release that moves the
-    # pin must move it too, or a pin raised back later would not be refused
-    from pathlib import Path
-    from subsidy_engine.reference import load_annual_costs
-    h = load_annual_costs(Path(__file__).parent.parent / "reference"
-                          / "annual_scheme_costs.yaml")["constraints_history"]
-    assert uk_build.FIRST_FULL_ELEXON_YEAR == h.bottom_up_from

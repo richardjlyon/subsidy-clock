@@ -405,29 +405,19 @@
   (function () {
     var con = null;
     bd.schemes.forEach(function (s) { if (s.id === 'constraints') con = s; });
-    // the REF / Elexon year split. Prefer the pinned first Elexon year, the
-    // top-level integer elexon_first_year in breakdown.json (never the
-    // per-scheme bottom_up_from, which is the earliest stored day). Accept it
-    // only as an integer from 2010 to next year; otherwise work it out as
-    // build.py:284-286 does: the first calendar year the Elexon series covers
-    // in full replaces REF
-    var firstFull = NaN;
+    // the REF / Elexon year split: the pin, elexon_first_year in breakdown.json.
+    // Accept it only as an integer from 2010 to next year; otherwise the
+    // markup's fallback text stays
     var pin = bd.elexon_first_year;
     if (typeof pin === 'number' && pin % 1 === 0 &&
         pin >= 2010 && pin <= new Date().getFullYear() + 1) {
-      firstFull = pin;
-    } else if (con && con.bottom_up_from) {
-      var y0 = parseInt(String(con.bottom_up_from).slice(0, 4), 10);
-      if (!isNaN(y0)) firstFull = String(con.bottom_up_from).slice(5, 10) === '01-01' ? y0 : y0 + 1;
-    }
-    if (!isNaN(firstFull)) {
       Array.prototype.forEach.call(document.querySelectorAll('.ref-last-year'),
-        function (el) { el.textContent = String(firstFull - 1); });
+        function (el) { el.textContent = String(pin - 1); });
       Array.prototype.forEach.call(document.querySelectorAll('.elexon-first-year'),
-        function (el) { el.textContent = String(firstFull); });
+        function (el) { el.textContent = String(pin); });
     }
-    if (!con || !con.bottom_up_from) return;
-    var d = new Date(con.bottom_up_from).toLocaleDateString('en-GB',
+    if (!con || !con.held_from) return;
+    var d = new Date(con.held_from).toLocaleDateString('en-GB',
       { day: 'numeric', month: 'long', year: 'numeric' });
     document.getElementById('splice-date').textContent =
       ' (Elexon data is held from ' + d + ')';

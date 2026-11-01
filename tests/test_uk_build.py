@@ -76,7 +76,7 @@ def test_build_integration(tmp_path):
     con_annual = by_id["constraints"].annual
     assert 600.0 in con_annual.filter(pl.col("year") == 2026)["cost_gbp"].to_list()
     assert by_id["constraints"].cumulative_gbp == 390e6 + 382e6 + 600.0
-    assert by_id["constraints"].extras["bottom_up_from"] == "2026-04-10"
+    assert by_id["constraints"].extras["held_from"] == "2026-04-10"
     # perspective nesting: renewables excludes nuclear CfD, low_carbon includes it
     p = model["perspectives"]
     assert set(p) == {"renewables", "low_carbon"}
@@ -126,7 +126,8 @@ def test_build_indirect_layer(tmp_path):
         "ccl": _ref("ccl", "CCL", {2023: 80.0}),
         "ets": _ref("ets", "ETS", {2023: 90.0}),
         "tnuos": _ref("tnuos", "TNUoS", {2023: 1000.0}, conf="low"),
-        "bsuos_history": _ref("bsuos_history", "BSUoS hist", {2023: 500.0}, conf="low"),
+        "bsuos_history": replace(_ref("bsuos_history", "BSUoS hist", {2023: 500.0}, conf="low"),
+                                 bottom_up_from=2026),
     }
     baselines = {"bsuos": {"value": 100.0}, "tnuos": {"value": 100.0}}
     # CM: the net-zero share of 2026 carries forward from 2025 (40%)

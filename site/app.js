@@ -316,11 +316,11 @@
     document.getElementById('con-runrate').textContent = fmtCompact(schemeRunrate(c));
     document.getElementById('con-curtailed').textContent = fmtInt(c.curtailed_mwh);
     document.getElementById('con-curtailed-label').textContent =
-      c.bottom_up_from
-        ? 'MWh paid for and not generated, ' + fmtDate(c.bottom_up_from) + ' – ' + fmtDate(c.bottom_up_to)
+      c.held_from
+        ? 'MWh paid for and not generated, ' + fmtDate(c.held_from) + ' – ' + fmtDate(c.held_to)
         : 'MWh paid for and not generated';
     document.getElementById('con-window').textContent =
-      c.bottom_up_from ? fmtDate(c.bottom_up_from) + ' – ' + fmtDate(c.bottom_up_to) : '';
+      c.held_from ? fmtDate(c.held_from) + ' – ' + fmtDate(c.held_to) : '';
     var rows = (c.by_recipient || []).slice(0, 8).map(function (r) {
       return '<tr><td>' + esc(r.lead_party) + '</td>' +
         '<td class="num-col money">' + fmtCompact(r.cost) + '</td>' +

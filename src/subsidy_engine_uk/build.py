@@ -7,7 +7,7 @@ pieces (the CPIH 2002-05 uplift baseline, the scheme wiring) live here.
 
 from __future__ import annotations
 
-from datetime import date, timedelta
+from datetime import date
 
 import polars as pl
 
@@ -23,7 +23,6 @@ from subsidy_engine.money import (
     gross_net,
     latest_real_factor,
     layer_total,
-    merge_annual,
     perspective_totals,
     trailing_runrate,
     # Deliberate private cross-package import, deferred: renaming _latest_index to a
@@ -35,6 +34,7 @@ from subsidy_engine.reference import ReferenceScheme
 from subsidy_engine.store import SnapshotStore
 from subsidy_engine_uk.stations import group_by_station
 from subsidy_engine_uk.schemes import cfd, constraint_turnup
+from subsidy_engine_uk.splice import splice
 
 BASELINE_YEARS = (2002, 2005)  # inclusive 4-year calendar window (2002,2003,2004,2005) for uplift baselines
 
@@ -201,61 +201,6 @@ def _attach_outages(station_detail: list, bmu_map: dict,
         }
 
 
-# The first year live (master) publishes from Elexon (fix 5 guard, 17 Oct 2026). A pin
-# above a year from here on that Elexon fully holds would put that year back on REF.
-# Moving the pin is a release decision for Richard, not a data update. This constant must
-# move with the pin in reference/annual_scheme_costs.yaml (a test ties the two together).
-FIRST_FULL_ELEXON_YEAR = 2024
-
-
-def _check_bottom_up_from(value, stored_days: list[str], last_history_year: int) -> None:
-    """The constraints switch must be a whole-number year with stored days, and every
-    year from it that replaces a REF figure must be fully held: every day from 1 January
-    of the pinned year to the last stored day, or to 31 December of REF's last year if
-    that is sooner (fix 5 guard). Years after REF's last year have no REF figure to mix
-    with and are kept part-year, as before. An earlier year being fully held as well is
-    fine: the pin is a decision, not the earliest full year."""
-    if isinstance(value, bool) or not isinstance(value, int):
-        raise ValueError(f"constraints bottom_up_from {value!r} is not a whole-number year: "
-                         "write it as a plain year, e.g. 2024, in "
-                         "reference/annual_scheme_costs.yaml")
-    if value < 1:
-        raise ValueError(f"constraints bottom_up_from {value} is not a calendar year: write "
-                         "the first year Elexon replaces REF, e.g. 2024, in "
-                         "reference/annual_scheme_costs.yaml")
-    stored = {d for d in stored_days if len(d) == 10}
-    for y in range(FIRST_FULL_ELEXON_YEAR, min(value, last_history_year + 1)):
-        days = (date(y + 1, 1, 1) - date(y, 1, 1)).days
-        if all((date(y, 1, 1) + timedelta(days=n)).isoformat() in stored for n in range(days)):
-            raise ValueError(f"constraints bottom_up_from {value} is later than {y}, a year "
-                             f"Elexon fully holds and live (master) publishes from Elexon: it "
-                             f"would put {y} back on REF")
-    if value > FIRST_FULL_ELEXON_YEAR:
-        # any stored day from 1 Jan FIRST_FULL_ELEXON_YEAR up to the pin year: a raised pin
-        # would put those days back on REF, even with a day missing (fact-checker, 9410d658)
-        held = sorted(d for d in stored if FIRST_FULL_ELEXON_YEAR <= int(d[:4]) < value)
-        if held:
-            raise ValueError(f"constraints bottom_up_from {value} is later than "
-                             f"{FIRST_FULL_ELEXON_YEAR} while Elexon holds days from 1 Jan "
-                             f"{FIRST_FULL_ELEXON_YEAR} ({len(held)} stored, first {held[0]}): it "
-                             f"would put them back on REF. Keep the pin at "
-                             f"{FIRST_FULL_ELEXON_YEAR} and fetch any missing days")
-    first = date(value, 1, 1)
-    last = date.fromisoformat(max(stored)) if stored else None
-    if last is None or last < first:
-        raise ValueError(f"constraints bottom_up_from {value} is not usable: not every day "
-                         f"from 1 Jan {value} is stored (no stored day on or after it)")
-    end = min(last, date(last_history_year, 12, 31))
-    lacking = [d for d in (first + timedelta(days=n) for n in range((end - first).days + 1))
-               if d.isoformat() not in stored]
-    if lacking:
-        raise ValueError(f"constraints bottom_up_from {value} is not usable: not every day "
-                         f"from 1 Jan {value} to {end} is stored ({len(lacking)} lacking, "
-                         f"first {lacking[0]}). Elexon would replace REF with a partial "
-                         f"year: fetch the missing days (backfill-constraints --start --end) "
-                         f"and do not raise the pin")
-
-
 def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
           *, deflators: pl.DataFrame, baselines: dict | None = None,
           station_map: dict | None = None,
@@ -333,26 +278,9 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
     history = refs["constraints_history"]
     if con_daily is not None and con_daily.height:
         daily = (con_daily.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date"))
-        bottom_up_annual = annualise_daily(daily)
-        # Bottom-up replaces the history from the year the reference file states (fix 5
-        # guard, 17 Oct 2026). It used to start at the first year the backfill covered from
-        # 1 January, so the daily backfill stepping back past 1 Jan 2023 (no earlier than
-        # 05:30 GMT on 20 Nov 2026 at one run a day) would have switched 2023 from REF to
-        # Elexon unannounced. Partial years after the history's last year are kept, as there
-        # is nothing to replace.
-        if history.bottom_up_from is None:
-            raise ValueError("constraints history states no bottom_up_from: the first year "
-                             "Elexon replaces REF must be stated in "
-                             "reference/annual_scheme_costs.yaml")
-        last_history_year = int(history.annual["year"].max())
-        _check_bottom_up_from(history.bottom_up_from,
-                              store.partitions("constraints", "daily"), last_history_year)
+        # Elexon replaces REF from the reference file's pin, guarded (splice module)
+        annual, held_from, held_to = splice("constraints", history, daily)
         elexon_first_year = history.bottom_up_from
-        usable = bottom_up_annual.filter(
-            (pl.col("year") >= history.bottom_up_from)
-            | (pl.col("year") > last_history_year)
-        )
-        annual = merge_annual(history.annual, usable)
         runrate = trailing_runrate(daily)
         data_to = daily["date"].max()
         by_recipient = (con_daily.group_by("lead_party")
@@ -360,15 +288,12 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
                              pl.col("volume_mwh").sum())
                         .sort("cost", descending=True).head(25).to_dicts())
         curtailed_mwh = float(-con_daily["volume_mwh"].sum())
-        bottom_up_from = daily["date"].min().isoformat()
-        bottom_up_to = daily["date"].max().isoformat()
     else:
         annual = history.annual
         runrate = float(annual["cost_gbp"][-1])
         data_to = date(int(annual["year"].max()), 12, 31)
         by_recipient, curtailed_mwh = [], 0.0
-        bottom_up_from = None
-        bottom_up_to = None
+        held_from = held_to = None
         elexon_first_year = None   # no Elexon data used: publish no Elexon year
     constraints_annual = annual.select("year", "cost_gbp")
     schemes.append(SchemeResult(
@@ -380,7 +305,7 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         data_to=data_to,
         extras={"by_recipient": by_recipient, "curtailed_mwh": curtailed_mwh,
                 "history_source_url": history.source_url,
-                "bottom_up_from": bottom_up_from, "bottom_up_to": bottom_up_to},
+                "held_from": held_from, "held_to": held_to},
     ))
 
     # --- Capacity Market: bottom-up monthly, net-zero share only (change of
@@ -497,18 +422,13 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         bs_daily = store.read_all_partitions("bsuos", "daily")
         if bs_daily is not None and bs_daily.height:
             daily = bs_daily.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date")
-            bottom_up = annualise_daily(daily)
-            first_full = int(daily["date"].min().year) + (
-                0 if daily["date"].min().month == 1 and daily["date"].min().day == 1
-                else 1)
-            last_hist = int(hist.annual["year"].max())
-            usable = bottom_up.filter((pl.col("year") >= first_full)
-                                      | (pl.col("year") > last_hist))
-            raw_annual = merge_annual(hist.annual, usable)
+            # NESO replaces the history from the reference file's pin, guarded
+            raw_annual, held_from, held_to = splice("bsuos", hist, daily)
             raw_runrate = trailing_runrate(daily)
             data_to = daily["date"].max()
         else:
             raw_annual = hist.annual
+            held_from = held_to = None
             raw_runrate = float(raw_annual["cost_gbp"][-1])
             data_to = date(int(raw_annual["year"].max()), 12, 31)
         # Uplift after wind constraint payments, then split constraint turn-up
@@ -591,7 +511,8 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
             attribution_confidence=hist.attribution_confidence or "low",
             extras={"raw_annual": raw_annual.rename({"cost_gbp": "cost"}).to_dicts(),
                     "source": hist.source, "source_url": hist.source_url,
-                    "verified": hist.verified},
+                    "verified": hist.verified,
+                    "held_from": held_from, "held_to": held_to},
         ))
 
     # --- Real-terms columns on every scheme, then totals

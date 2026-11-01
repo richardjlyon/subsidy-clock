@@ -277,7 +277,8 @@ def _model(tmp_path, turnup_gbp_per_day=None):
                 bottom_up_from=2026),
             "ro": _annual_ref("ro", {2024: 1000.0}, ("renewables", "low_carbon")),
             "fit": _annual_ref("fit", {2024: 500.0}, ("renewables", "low_carbon")),
-            "bsuos_history": _annual_ref("bsuos_history", {2023: 500.0})}
+            "bsuos_history": replace(_annual_ref("bsuos_history", {2023: 500.0}),
+                                     bottom_up_from=2026)}
     model = uk_build.build(store, refs, deflators=_deflators(),
                            baselines={"bsuos": {"value": 100.0}})
     return model, {s.scheme_id: s for s in model["schemes"]}
