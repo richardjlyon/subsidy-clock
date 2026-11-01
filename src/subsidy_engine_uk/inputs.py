@@ -24,6 +24,7 @@ class Inputs:
     deflator_info: dict     # provenance of the deflator series
     road: dict              # the engine's no-net-zero road, GO5 and GO4 (aios-harness#43)
     carbon: dict            # the engine's carbon in the price and tax collected (aios-harness#44)
+    domestic_share: dict    # households' share of electricity, for VAT (aios-harness#45)
     station_map: dict
     ro_stations: list
     bmu_map: dict
@@ -55,6 +56,7 @@ def load(root: Path) -> Inputs:
                        "verified": deflator_yaml.get("verified", False)},
         road=reg_mod.road_from_engine(root),
         carbon=reg_mod.carbon_from_engine(root),
+        domestic_share=reg_mod.domestic_share_from_engine(root),
         station_map=stations.load_station_map(ref / "cfd_stations.csv"),
         ro_stations=stations.load_ro_stations(ref / "ro_stations.csv"),
         bmu_map=stations.load_station_bmus(ref / "station_bmu_map.csv"),
@@ -89,6 +91,6 @@ def assemble_model(root: Path, inp: Inputs | None = None) -> tuple[dict, dict]:
                            road=inp.road, station_map=inp.station_map,
                            ro_stations=inp.ro_stations, bmu_map=inp.bmu_map,
                            cm_share=cm_share, to_register=reg_mod.ToRegister(pinned),
-                           carbon=inp.carbon)
+                           carbon=inp.carbon, domestic_share=inp.domestic_share)
     model["findings"] = pinned["selection"].record()
     return model, {"refs_moved": moved, "refs": inp.refs}

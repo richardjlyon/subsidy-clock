@@ -333,6 +333,8 @@ SCHEME_FIELDS = {
     "ccl": (_REF, ()),
     # aios-harness#44: one carbon line with its two parts (in place of "ets")
     "carbon": (_REF + ("parts", "part_labels", "geography", "data_note"), ()),
+    # aios-harness#45: VAT on households' share of the counted lines
+    "vat": (_REF + ("base_lines", "rate", "domestic_share"), ()),
     # road_annual, road_source: the engine's no-net-zero road subtracted each year (aios-harness#43)
     "tnuos": (_REF + ("raw_annual", "road_annual", "road_source"), ()),
     "bsuos": (_REF + ("raw_annual", "held_from", "held_to", "road_annual", "road_source"), ()),

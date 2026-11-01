@@ -19,7 +19,7 @@ from subsidy_engine.money import (
 )
 from subsidy_engine.reference import ReferenceScheme
 from subsidy_engine.store import SnapshotStore
-from subsidy_engine_uk.schemes import bsuos, capacity_market, carbon as carbon_mod, cfd, constraints
+from subsidy_engine_uk.schemes import bsuos, capacity_market, carbon as carbon_mod, cfd, constraints, vat
 from subsidy_engine_uk.uplift import road_extras, road_uplift
 
 
@@ -30,7 +30,8 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
           bmu_map: dict | None = None,
           cm_share: dict | None = None,
           to_register=None,
-          carbon: dict | None = None) -> dict:
+          carbon: dict | None = None,
+          domestic_share: dict | None = None) -> dict:
     """Assemble every scheme result plus perspective totals and the indirect layer total.
 
     ``station_map`` (cfd_id -> physical-station short name) collapses phased CfD
@@ -85,6 +86,9 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         schemes += bsuos.result(store, refs["bsuos_history"],
                                 road["bsuos"], deflators, con[0],
                                 to_register, refs["constraints_history"])
+
+    # --- VAT on households' share of the lines above (#45; its own indirect line)
+    schemes += vat.result(schemes, domestic_share)
 
     # --- Real-terms columns on every scheme, then totals
     for s in schemes:

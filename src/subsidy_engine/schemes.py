@@ -50,6 +50,8 @@ SCHEMES = [
            anchor="attr-tnuos"),
     Scheme("bsuos", "Balancing the grid (BSUoS)", "bsuos", "bsuos", "#c5dae6",
            anchor="attr-bsuos"),
+    # aios-harness#45: no explainer page yet (#48)
+    Scheme("vat", "VAT on household bills", "vat", "vat", "#8a8f98", anchor="attr-vat"),
     Scheme("constraint_turnup", "Paid to switch on (constraint turn-up)",
            "constraint-turnup", "constraint-turnup", "#6b8799",
            anchor="attr-constraint_turnup"),

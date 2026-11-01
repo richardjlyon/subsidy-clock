@@ -188,6 +188,20 @@ def road_from_engine(root: Path) -> dict:
     return out
 
 
+def domestic_share_from_engine(root: Path) -> dict:
+    """Households' share of electricity per calendar year (GB), the share Reliable Britain's VAT line uses
+    (aios-harness#45): run file bills[y].netzero_on_household_bill_per_household.domestic_share."""
+    _, mp = engine_export(root)
+    run = _run_file(root, mp)
+    years = {int(y): float(b["netzero_on_household_bill_per_household"]["domestic_share"])
+             for y, b in run["bills"].items()}
+    if not all(0.0 < v < 1.0 for v in years.values()):
+        raise ValueError("domestic share outside (0, 1) in the engine run file")
+    return {"years": years, "engine_version": mp["engine_version"],
+            "provenance": f"{mp['run_file']} (sha256 {mp['run_sha256'][:12]}...), "
+                          "bills[y].netzero_on_household_bill_per_household.domestic_share"}
+
+
 def carbon_from_engine(root: Path) -> dict:
     """The carbon line (aios-harness#44): per calendar year 2002-24, GB, GBP nominal, the carbon in the wholesale
     price (NZ1c) and the part of it collected as tax on power (CPS plus UK ETS auction receipts on power, GB

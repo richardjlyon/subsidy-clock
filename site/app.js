@@ -85,7 +85,8 @@
     bsuos:           { slug: 'bsuos',                    name: 'Balancing the grid (BSUoS)',           color: 'var(--c-bsuos)' },
     constraint_turnup: { slug: 'constraint-turnup',      name: 'Paid to switch on (constraint turn-up)', color: 'var(--c-tu)' },
     carbon:          { slug: 'emissions-trading',        name: 'Carbon in the electricity price',      color: 'var(--c-ets)' },
-    capacity_market: { slug: 'capacity-market',          name: 'Capacity Market',                      color: 'var(--c-cm)' }
+    capacity_market: { slug: 'capacity-market',          name: 'Capacity Market',                      color: 'var(--c-cm)' },
+    vat:             { slug: 'vat',                      name: 'VAT on household bills',             color: 'var(--c-vat)' }
   };
 
   function persp() { return totals.perspectives[state.perspective]; }
@@ -612,11 +613,12 @@
     ro: 'var(--c-ro)', fit: 'var(--c-fit)', cfd_renewable: 'var(--c-cfdr)',
     cfd_low_carbon: 'var(--c-cfdl)', constraints: 'var(--c-con)',
     capacity_market: 'var(--c-cm)', ccl: 'var(--c-ccl)', carbon: 'var(--c-ets)',
-    tnuos: 'var(--c-tnuos)', bsuos: 'var(--c-bsuos)', constraint_turnup: 'var(--c-tu)'
+    tnuos: 'var(--c-tnuos)', bsuos: 'var(--c-bsuos)', vat: 'var(--c-vat)',
+    constraint_turnup: 'var(--c-tu)'
   };
   var STACK_ORDER = [
     'ro', 'fit', 'cfd_renewable', 'cfd_low_carbon', 'constraints',
-    'capacity_market', 'ccl', 'carbon', 'tnuos', 'bsuos', 'constraint_turnup'
+    'capacity_market', 'ccl', 'carbon', 'tnuos', 'bsuos', 'vat', 'constraint_turnup'
   ];
   function isIndirectScheme(id) {
     var s = schemesById[id];

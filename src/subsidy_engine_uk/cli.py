@@ -139,6 +139,8 @@ def cmd_build_site(args: argparse.Namespace) -> int:
             if s.layer == "indirect":
                 row = s.annual.filter(pl.col("year") == cc_year)
                 key = REF_KEY.get(s.scheme_id, s.scheme_id)
+                if key is None:
+                    continue
                 ours[key] = ours.get(key, 0.0) + (float(row["cost_gbp"][0]) if row.height else 0.0)
         # Internal check only: the result is printed, not written to site/data
         # (REF comparisons were taken off the site, 17 Oct 2026).
@@ -158,6 +160,8 @@ def cmd_build_site(args: argparse.Namespace) -> int:
             if "cost_gbp_2024" in cut.columns and cut.height:
                 real_total += float(cut["cost_gbp_2024"].sum())
             key = REF_KEY.get(s.scheme_id, s.scheme_id)
+            if key is None:      # a line REF does not count at all (VAT, aios-harness#45)
+                continue
             comp[key] = comp.get(key, 0.0) + nom
         unmapped = set(comp) - set(ref_t["components"])
         if unmapped:
@@ -178,7 +182,7 @@ def cmd_build_site(args: argparse.Namespace) -> int:
 # REF's BSUoS is the whole balancing charge, so constraint turn-up, which we
 # carve out of the BSUoS uplift, folds back into it for comparison.
 REF_KEY = {"cfd_renewable": "cfd", "cfd_low_carbon": "cfd",
-           "constraint_turnup": "bsuos", "carbon": "ets"}
+           "constraint_turnup": "bsuos", "carbon": "ets", "vat": None}
 
 
 def cmd_build_cards(args: argparse.Namespace) -> int:
