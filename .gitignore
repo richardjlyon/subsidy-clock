@@ -7,7 +7,9 @@ __pycache__/
 .superpowers/
 
 # private design/planning docs - kept local, never published
-/docs/
+/docs/*
+# except the agent-skill set-up (no private content)
+!/docs/agents/
 
 # David Turver's source workbooks - large, kept local; only derived
 # primary-cited values enter reference/. Provenance points at the

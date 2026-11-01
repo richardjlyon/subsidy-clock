@@ -21,3 +21,17 @@ Steward of the Clock: its correspondence, its data freshness, its public standin
 - The book title appears nowhere outside the About page. If the site reads as a book advert, the credibility asset is dead.
 - Progress notes go on the Plane item as comments, not new items.
 - Correspondence threads: read via substrate (`ssh ai-stack 'docker exec substrate-daemon python /app/mailer/cli.py ...'`); send/triage via `xin`.
+
+## Agent skills
+
+### Issue tracker
+
+GitHub issues on `richardjlyon/aios-harness` (private), labelled `subsidy-clock`; never on the public `richardjlyon/subsidy-clock`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Matt Pocock's five defaults: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `GLOSSARY.md` and `docs/adr/` at the repo root, made as terms and decisions are settled. See `docs/agents/domain.md`.
