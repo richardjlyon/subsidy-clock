@@ -15,33 +15,25 @@ import re
 from datetime import datetime
 from pathlib import Path
 
-TEMPLATES = Path(__file__).parent / "templates"
+from subsidy_engine.schemes import SCHEMES
+from subsidy_engine.schemes import get as get_scheme
+
+TEMPLATES =Path(__file__).parent / "templates"
 SITE_URL = "https://subsidyclock.co.uk"
 
-# Hex values mirror the --c-* variables in site/style.css and the stack
-# order mirrors STACK_ORDER in site/app.js renderChart - keep all three
-# in step (CSS vars are not available inside the card template).
-CHART_STACK = [
-    ("ro", "#990f3d"), ("fit", "#e0a93e"), ("cfd_renewable", "#c56b2f"),
-    ("cfd_low_carbon", "#9a6a2e"), ("constraints", "#7a3b23"),
-    ("capacity_market", "#1b5a8a"), ("ccl", "#2e7e86"), ("ets", "#5193b0"),
-    ("tnuos", "#8fb8ce"), ("bsuos", "#c5dae6"), ("constraint_turnup", "#6b8799"),
-]
+# The scheme cards' order (cards.json, share page); constraints has its own
+# switch-off card. Names, slugs and colours come from the scheme registry.
+SCHEME_CARDS = ("ro", "fit", "cfd_renewable", "cfd_low_carbon", "capacity_market", "ccl",
+                "bsuos", "constraint_turnup", "ets", "tnuos")
 
-# explainer slug + display name per scheme id (mirrors SCHEME_META in site/app.js)
-EXPLAINERS = {
-    "ro":              ("renewables-obligation",    "Renewables Obligation"),
-    "fit":             ("feed-in-tariffs",          "Feed-in Tariffs"),
-    "cfd_renewable":   ("contracts-for-difference", "Contracts for Difference"),
-    "cfd_low_carbon":  ("cfd-nuclear",              "CfD — nuclear"),
-    "capacity_market": ("capacity-market",          "Capacity Market"),
-    "ccl":             ("climate-change-levy",      "Climate Change Levy"),
-    "bsuos":           ("bsuos",                    "Balancing the grid (BSUoS)"),
-    "constraint_turnup": ("constraint-turnup",      "Paid to switch on (constraint turn-up)"),
-    "ets":             ("emissions-trading",        "Emissions trading"),
-    "tnuos":           ("tnuos",                    "Grid upgrades for renewables (TNUoS)"),
-    # constraints explainer reuses the switch-off dashboard card
-}
+
+def chart_members(breakdown: dict) -> list[str]:
+    """The schemes the chart share card stacks: the dashboard chart's renewables view
+    (app.js renderChart memberIds). Indirect schemes always join; direct schemes only
+    when they carry the renewables perspective, so the card excludes what the
+    /s/the-bill figure excludes (e.g. cfd_low_carbon)."""
+    return [s["id"] for s in breakdown["schemes"]
+            if s["layer"] == "indirect" or "renewables" in s["perspectives"]]
 
 
 def cumulative_svg(timeseries: dict, member_ids: list[str],
@@ -55,8 +47,8 @@ def cumulative_svg(timeseries: dict, member_ids: list[str],
     accompanies excludes. Stacks the real-2024 series so the terminus
     matches the combined-real hero lead-in."""
     schemes = timeseries["schemes"]
-    member = [(sid, col) for sid, col in CHART_STACK
-              if sid in member_ids and sid in schemes]
+    member = [(s.id, s.colour) for s in SCHEMES
+              if s.id in member_ids and s.id in schemes]
     years = sorted({a["year"] for sid, _ in member for a in schemes[sid]["annual"]})
     cum: dict[str, dict[int, float]] = {}
     for sid, _ in member:
@@ -219,7 +211,8 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
                                f"could not carry their electricity, since {first or 2010}, "
                                "in today’s money",
                       "anchor": "switch-off", "stub": True, "group": DIRECT_G})
-    for scheme_id, (slug, name) in EXPLAINERS.items():
+    for scheme_id in SCHEME_CARDS:
+        slug, name = get_scheme(scheme_id).slug, get_scheme(scheme_id).name
         s = by_id.get(scheme_id)
         if not s:
             continue

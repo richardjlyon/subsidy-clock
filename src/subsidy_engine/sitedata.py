@@ -11,7 +11,7 @@ from pathlib import Path
 
 import polars as pl
 
-from subsidy_engine.sharecards import EXPLAINERS
+from subsidy_engine.schemes import get as get_scheme
 
 
 def _annual_records(annual: pl.DataFrame) -> list[dict]:
@@ -480,21 +480,6 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
         print(f"[assets] {len(assets)} asset files")
 
 
-# public CSV filename per scheme id - part of the published URL contract (/data/*.csv)
-CSV_NAMES = {
-    "cfd_renewable":   "cfd",
-    "cfd_low_carbon":  "cfd-nuclear",
-    "ro":              "renewables-obligation",
-    "fit":             "feed-in-tariffs",
-    "constraints":     "constraints",
-    "capacity_market": "capacity-market",
-    "ccl":             "climate-change-levy",
-    "ets":             "emissions-trading",
-    "tnuos":           "tnuos",
-    "bsuos":           "bsuos",
-    "constraint_turnup": "constraint-turnup",
-}
-
 RESTATEMENT_COLS = ["scheme", "table", "detected_at", "partition",
                     "previous_version", "new_version", "origin", "cause"]
 
@@ -590,11 +575,6 @@ def load_changelog(path: Path | str) -> list[dict]:
     return entries
 
 
-# indirect schemes with their own attribution-rule anchor on /methodology;
-# the rest fall back to the #indirect section. Anchors are public contracts.
-ATTR_ANCHORS = {"bsuos", "capacity_market", "ccl", "ets", "tnuos", "constraint_turnup"}
-
-
 def _attribution(generated: str) -> str:
     """First two of the three comment lines at the top of every published CSV.
     Stamped (to the minute, UTC) from the same generated_at as the JSON.
@@ -649,22 +629,14 @@ def write_changelog(entries: list[dict], out_dir: Path | str,
 def _series_note(scheme) -> str:
     """Third comment line: what kind of number this is, and where its
     derivation lives. Measured-vs-estimated must travel with the file."""
+    reg = get_scheme(scheme.scheme_id)
+    if reg.series_note:
+        return reg.series_note
     if scheme.layer == "indirect":
-        anchor = (f"attr-{scheme.scheme_id}"
-                  if scheme.scheme_id in ATTR_ANCHORS else "indirect")
-        if scheme.scheme_id == "capacity_market":
-            # not a renewables share: the part of the levy net zero caused
-            # (levy less the backup any system would buy); saying "share
-            # attributed to renewables" here contradicted the method
-            return ("# Estimated: only the part of the Capacity Market net zero "
-                    "caused (levy less the backup any system needs) — method: "
-                    f"subsidyclock.co.uk/methodology#{anchor}\n")
         return ("# Estimated share attributed to renewables — method: "
-                f"subsidyclock.co.uk/methodology#{anchor}\n")
-    slug = EXPLAINERS.get(scheme.scheme_id,
-                          (CSV_NAMES.get(scheme.scheme_id, scheme.scheme_id),))[0]
+                f"subsidyclock.co.uk/methodology#{reg.anchor or 'indirect'}\n")
     return ("# Measured payments — derivation: "
-            f"subsidyclock.co.uk/explainers/{slug}\n")
+            f"subsidyclock.co.uk/explainers/{reg.slug}\n")
 
 
 def write_csvs(model: dict, out_dir: Path | str,
@@ -684,7 +656,7 @@ def write_csvs(model: dict, out_dir: Path | str,
 
     combined = None
     for s in model["schemes"]:
-        name = CSV_NAMES.get(s.scheme_id, s.scheme_id)
+        name = get_scheme(s.scheme_id).csv
         df = s.annual.sort("year")
         write(df.rename({"cost_gbp": "cost", "cost_gbp_2024": "cost_real"},
                         strict=False), f"{name}.csv", _series_note(s))
