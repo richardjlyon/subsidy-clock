@@ -3,7 +3,7 @@ published by LCCC/EMRS. Shown as a separate band (all-levy total only)."""
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, timedelta
 
 import httpx
 import polars as pl
@@ -84,6 +84,11 @@ def cm_netzero_shares(raw_annual: pl.DataFrame, cm_share: dict) -> pl.DataFrame:
                                       "basis": pl.String})
 
 
+def _month_end(d: date) -> date:
+    nxt = date(d.year + (d.month == 12), d.month % 12 + 1, 1)
+    return nxt - timedelta(days=1)
+
+
 def result(store: SnapshotStore, cm_share: dict | None,
            deflators: pl.DataFrame, to_register=None) -> list[SchemeResult]:
     """The Capacity Market line, or none without data. ``to_register``
@@ -155,7 +160,9 @@ def result(store: SnapshotStore, cm_share: dict | None,
         annual=cm_annual,
         cumulative_gbp=cm_cum,
         runrate_gbp_per_year=float(last12["cost_gbp"].sum()),
-        data_to=monthly["date"].max(),
+        # the last day the latest published month covers (a month is stored on its 1st), so
+        # the carry-forward starts after it, not inside it (aios-harness#46)
+        data_to=_month_end(monthly["date"].max()),
         extras={"source": "LCCC data portal, capacity market payments",
                 "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
                 "raw_annual": raw_annual_cm.rename({"cost_gbp": "cost"}).to_dicts(),

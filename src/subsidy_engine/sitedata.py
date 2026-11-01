@@ -6,11 +6,12 @@ from __future__ import annotations
 import json
 import math
 import re
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 
 import polars as pl
 
+from subsidy_engine import money
 from subsidy_engine.schemes import get as get_scheme
 
 
@@ -57,6 +58,148 @@ def _floor2(v: float) -> float:
     return math.floor(v * 100) / 100
 
 
+# --- Per-line carry-forward (Richard, 15 Oct 2026, confirmed 1 Nov; aios-harness#46;
+# ported from origin/model-pin 1ab8bdd4). Each block's `cumulative` stays the
+# PUBLISHED total, every line counted to its own latest data. The counter, widget
+# and share cards add, line by line, the cost since that line's data end at its
+# latest yearly rate (the line's run-rate: the last complete year for annual lines,
+# the trailing run-rate for daily and monthly feeds), labelled estimated. A later
+# build that moves a line's data end forward replaces that much estimate with
+# published data. VAT carries with the lines it is on.
+
+def _carry_entries(s, by_id: dict, factor: float) -> list[dict]:
+    """The carry-forward entries for one line: {id, data_to, from, rate_per_sec}, cash.
+    A line with carry_with (VAT) has one entry per line it is on, at factor x its rate."""
+    if s.carry_with:
+        out = []
+        for sid, f in s.carry_with.items():
+            b = by_id.get(sid)
+            if b is None or b.data_to is None:
+                continue
+            out.append({"id": f"{s.scheme_id}:{sid}", "data_to": b.data_to.isoformat(),
+                        "from": money.carry_from(b.data_to).isoformat(),
+                        "rate_per_year": f * b.runrate_gbp_per_year})
+        return out
+    if s.data_to is None:
+        return []
+    return [{"id": s.scheme_id, "data_to": s.data_to.isoformat(),
+             "from": money.carry_from(s.data_to).isoformat(),
+             "rate_per_year": s.runrate_gbp_per_year}]
+
+
+def _carry_forward(members: list, by_id: dict, factor: float, at: datetime) -> dict:
+    """Carry-forward for one headline block. Real (2024 prices): the money falls after
+    the data end, so the cash rate is converted at the latest index (`factor`). Each
+    entry carries `from` and `rate_per_sec`, so a client computes the live value at t
+    as cumulative + sum(rate_per_sec x max(0, t - from))."""
+    lines, lines_real = [], []
+    est = 0.0
+    for s in members:
+        for e in _carry_entries(s, by_id, factor):
+            v = money.estimated_since(e["rate_per_year"], date.fromisoformat(e["data_to"]), at)
+            est += v
+            rate = money.rate_per_second(e["rate_per_year"])
+            base = {"id": e["id"], "data_to": e["data_to"], "from": e["from"]}
+            lines.append({**base, "rate_per_sec": rate, "estimated_since": v})
+            lines_real.append({**base, "rate_per_sec": rate * factor, "estimated_since": v * factor})
+    return {"estimated_since": est, "estimated_since_real": est * factor,
+            "lines": lines, "lines_real": lines_real}
+
+
+# the fields each totals.json block (and its `real` block) carries (aios-harness#46)
+TOTALS_CARRY_FIELDS = ("published_cumulative", "estimated_since", "running_total", "carry_forward")
+
+
+def _with_carry(block: dict, cf: dict | None) -> dict:
+    """Add the carry-forward fields to a _money_block: `cumulative` stays published;
+    published_cumulative (the same), estimated_since at generated_at, running_total
+    (the two summed: what every headline surface shows at the build instant), and the
+    per-line carry_forward."""
+    if cf is None:
+        return block
+    block["published_cumulative"] = block["cumulative"]
+    block["estimated_since"] = cf["estimated_since"]
+    block["running_total"] = block["cumulative"] + cf["estimated_since"]
+    block["carry_forward"] = cf["lines"]
+    if "real" in block:
+        r = block["real"]
+        r["published_cumulative"] = r["cumulative"]
+        r["estimated_since"] = cf["estimated_since_real"]
+        r["running_total"] = r["cumulative"] + cf["estimated_since_real"]
+        r["carry_forward"] = cf["lines_real"]
+    for b in (block, block.get("real") or {}):
+        if b and not all(k in b for k in TOTALS_CARRY_FIELDS):
+            raise ValueError(f"totals block lacks a carry-forward field ({TOTALS_CARRY_FIELDS})")
+    return block
+
+
+def running_total(block: dict) -> float:
+    """Published cumulative plus the estimate since each line's data end, at the
+    build instant (falls back to the published cumulative for older data)."""
+    return block.get("running_total", block["cumulative"])
+
+
+def _members(model: dict) -> dict:
+    schemes = model.get("schemes", [])
+    out = {p: [s for s in schemes if s.layer == "direct" and p in s.perspectives]
+           for p in model["perspectives"]}
+    out["indirect"] = [s for s in schemes if s.layer == "indirect"]
+    return out
+
+
+def _real_factor(model: dict) -> float:
+    if "real_factor" in model:
+        return model["real_factor"]
+    for p in [*model["perspectives"].values(), model.get("indirect") or {}]:
+        if p.get("runrate_gbp_per_year") and "runrate_gbp_per_year_2024" in p:
+            return p["runrate_gbp_per_year_2024"] / p["runrate_gbp_per_year"]
+    return 1.0
+
+
+def _carry_all(model: dict, generated_at: str) -> dict:
+    at = datetime.fromisoformat(generated_at)
+    factor = _real_factor(model)
+    by_id = {s.scheme_id: s for s in model.get("schemes", [])}
+    return {k: _carry_forward(v, by_id, factor, at) for k, v in _members(model).items()}
+
+
+def _scheme_carry(s, by_id: dict, generated_at: str, factor: float) -> dict:
+    """Per-line carry_forward in breakdown.json: published cumulative, the line's
+    entries (data end, start, rate) and the estimate since, cash and real."""
+    at = datetime.fromisoformat(generated_at)
+    entries = _carry_entries(s, by_id, factor)
+    est = sum(money.estimated_since(e["rate_per_year"], date.fromisoformat(e["data_to"]), at)
+              for e in entries)
+    one = entries[0] if len(entries) == 1 and not s.carry_with else None
+    return {"carry_forward": {
+        "published_cumulative": s.cumulative_gbp,
+        "data_to": one["data_to"] if one else (s.data_to.isoformat() if s.data_to else None),
+        "from": one["from"] if one else None,
+        "rate_per_year": one["rate_per_year"] if one else sum(e["rate_per_year"] for e in entries),
+        "rate_per_sec": money.rate_per_second(one["rate_per_year"] if one else
+                                              sum(e["rate_per_year"] for e in entries)),
+        "rate_per_year_real": (one["rate_per_year"] if one else
+                               sum(e["rate_per_year"] for e in entries)) * factor,
+        "estimated_since": est,
+        "estimated_since_real": est * factor,
+        "running_total": s.cumulative_gbp + est,
+        "label": "estimated",
+        **({"with_lines": [{"id": e["id"], "data_to": e["data_to"], "from": e["from"],
+                            "rate_per_sec": money.rate_per_second(e["rate_per_year"])}
+                           for e in entries]} if s.carry_with else {}),
+        "at": generated_at,
+    }}
+
+
+def _combined_running_real(model: dict, generated_at: str | None) -> float | None:
+    combined = _combined_real_gbp(model)
+    if combined is None or generated_at is None:
+        return combined
+    cf = _carry_all(model, generated_at)
+    return (combined + cf["renewables"]["estimated_since_real"]
+            + cf["indirect"]["estimated_since_real"])
+
+
 def _floor_step_below(v: float, step: float) -> float:
     """Floor to the nearest step STRICTLY below v (the F8/I1 rule: a floor,
     never a midpoint, so every sentence quoting it understates).
@@ -75,13 +218,13 @@ def _combined_real_gbp(model: dict) -> float | None:
     return None
 
 
-def _combined_real_floored_gbp(model: dict) -> float | None:
+def _combined_real_floored_gbp(model: dict, generated_at: str | None = None) -> float | None:
     """The combined direct+indirect cumulative in 2024 prices, floored to the
     nearest £10bn STRICTLY BELOW (the I1/F8 rule: a floor, never a midpoint, so
     every sentence quoting it understates). Used by the hero lead-in and the
     'could have built' factoids — NOT the headline card, which shows the full
     figure. app.js's combinedRealFlooredGbp() applies the same rule - keep them in step."""
-    combined = _combined_real_gbp(model)
+    combined = _combined_running_real(model, generated_at)
     return _floor_step_below(combined, 1e10) if combined is not None else None
 
 
@@ -105,7 +248,8 @@ def _subst(template: str, tokens: dict[str, str]) -> str:
 
 
 def _factoids(model: dict, equivalences: list[dict],
-              deflators: pl.DataFrame | None) -> list[dict]:
+              deflators: pl.DataFrame | None,
+              generated_at: str | None = None) -> list[dict]:
     """Generic equivalence factoids: each record divides a live numerator by a
     high-end unit cost, floors the count, and resolves {full}/{n} tokens. All
     records are emitted; the client shows a random three. Integrity: real-2024
@@ -115,7 +259,7 @@ def _factoids(model: dict, equivalences: list[dict],
         return []
     r = model["perspectives"]["renewables"]
     runrate = r.get("runrate_gbp_per_year_2024", r["runrate_gbp_per_year"])
-    full_floor = _combined_real_floored_gbp(model)
+    full_floor = _combined_real_floored_gbp(model, generated_at)
     full_str = f"£{int(full_floor / 1e9)}bn+" if full_floor is not None else None
     idx = dict(deflators.iter_rows()) if deflators is not None else None
 
@@ -315,7 +459,9 @@ def _map_data(model: dict, coords: dict, tiles: dict) -> dict:
 
 COMMON_FIELDS = ("id", "label", "perspectives", "cadence", "layer", "attribution_pct",
                  "attribution_note", "attribution_confidence", "cumulative",
-                 "runrate_per_year", "data_to")
+                 "runrate_per_year", "data_to",
+                 # aios-harness#46: published + estimated since the line's data end
+                 "carry_forward")
 
 _REF = ("source", "source_url", "verified")
 _CFD = ("gross", "net", "mwh", "by_technology", "by_recipient", "by_station")
@@ -365,6 +511,8 @@ def scheme_fields(s) -> dict:
 
 def breakdown_doc(model: dict, generated_at: str) -> dict:
     """breakdown.json: the top-level keys and each scheme's common and own fields."""
+    by_id = {s.scheme_id: s for s in model["schemes"]}
+    factor = _real_factor(model)
     doc = {
         "generated_at": generated_at,
         # the constraints pin: first year Elexon replaces REF (fix 5 guard; splice module)
@@ -387,6 +535,8 @@ def breakdown_doc(model: dict, generated_at: str) -> dict:
                 "cumulative": s.cumulative_gbp,
                 "runrate_per_year": s.runrate_gbp_per_year,
                 "data_to": s.data_to.isoformat() if s.data_to else None,
+                # aios-harness#46: the line's carry-forward (published + estimated since)
+                **_scheme_carry(s, by_id, generated_at, factor),
                 **scheme_fields(s),
             }
             for s in model["schemes"]
@@ -411,16 +561,18 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
     population = ctx["population"]["value"]
     demand_mwh = ctx["annual_demand_twh"]["value"] * 1_000_000
 
+    carry = _carry_all(model, generated_at) if model.get("schemes") else {}
     totals: dict = {
         "generated_at": generated_at,
         "perspectives": {
-            name: _money_block(p, households, population, demand_mwh)
+            name: _with_carry(_money_block(p, households, population, demand_mwh),
+                              carry.get(name))
             for name, p in model["perspectives"].items()
         },
     }
     if "indirect" in model:
-        totals["indirect"] = _money_block(
-            model["indirect"], households, population, demand_mwh)
+        totals["indirect"] = _with_carry(_money_block(
+            model["indirect"], households, population, demand_mwh), carry.get("indirect"))
     (out / "totals.json").write_text(json.dumps(totals, indent=1, allow_nan=False))
 
     ts: dict = {
@@ -448,7 +600,11 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
         breakdown_doc(model, generated_at), indent=1, default=str, allow_nan=False))
 
     combined_real = _combined_real_gbp(model)
-    headline = ({"combined_real": combined_real}
+    # combined_real stays the PUBLISHED figure; the running total adds the estimate
+    # since each line's data end (aios-harness#46)
+    headline = ({"combined_real": combined_real,
+                 "combined_real_running": _combined_running_real(model, generated_at),
+                 "running_at": generated_at}
                 if combined_real is not None else None)
     (out / "meta.json").write_text(json.dumps({
         "generated_at": generated_at,
@@ -457,7 +613,7 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
         "deflator": deflator_info,
         "bill": bill_info,
         "headline": headline,
-        "factoids": _factoids(model, equivalences or [], deflators),
+        "factoids": _factoids(model, equivalences or [], deflators, generated_at),
     }, indent=1, allow_nan=False))
 
     if coords is not None and tiles is not None:
@@ -690,7 +846,8 @@ def write_widget(totals: dict, out_path: Path | str) -> None:
     (direct + estimated indirect), matching the front page."""
     rr = totals["perspectives"]["renewables"]["real"]
     ii = totals["indirect"]["real"]
-    cum = rr["cumulative"] + ii["cumulative"]
+    # running total at the build: published + estimated since each line's data end
+    cum = running_total(rr) + running_total(ii)
     rate = rr["rate_per_sec"] + ii["rate_per_sec"]
     d = datetime.fromisoformat(totals["generated_at"])
     asof = f"{d.day} {d.strftime('%B %Y')}"

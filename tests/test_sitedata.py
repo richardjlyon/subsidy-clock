@@ -119,6 +119,10 @@ def test_factoids_exact_floor_steps_down(tmp_path):
     m = big_model()
     m["perspectives"]["renewables"]["cumulative_gbp_2024"] = 130.0e9
     m["indirect"]["cumulative_gbp_2024"] = 100.0e9   # combined exactly 230e9
+    # data to the build day: no carry-forward, so the running total is the
+    # published 230e9 exactly and the boundary rule is what is under test (aios-harness#46)
+    for s in m["schemes"]:
+        s.data_to = date(2026, 6, 12)
     by_slug, _ = _factoids_by_slug(tmp_path, m,
         [r for r in EQUIV if r["slug"] == "homes"])
     assert by_slug["homes"]["frame"] == "the current £220bn+ full cost would have built"

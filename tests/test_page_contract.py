@@ -47,7 +47,7 @@ def test_every_scheme_lists_the_common_fields_once():
     assert sitedata.COMMON_FIELDS == ("id", "label", "perspectives", "cadence", "layer",
                                       "attribution_pct", "attribution_note",
                                       "attribution_confidence", "cumulative",
-                                      "runrate_per_year", "data_to")
+                                      "runrate_per_year", "data_to", "carry_forward")
     for sid, (required, optional) in sitedata.SCHEME_FIELDS.items():
         assert not (set(required) | set(optional)) & set(sitedata.COMMON_FIELDS), sid
         assert not set(required) & set(optional), sid
@@ -60,3 +60,10 @@ def test_breakdown_json_carries_exactly_the_declared_fields(tmp_path):
     assert set(doc) <= set(sitedata.BREAKDOWN_KEYS[0]) | set(sitedata.BREAKDOWN_KEYS[1])
     assert set(doc["schemes"][0]) == set(sitedata.COMMON_FIELDS) | set(REF_EXTRAS)
     json.dumps(doc, default=str)
+
+
+def test_totals_blocks_carry_the_carry_forward_fields(tmp_path):
+    """aios-harness#46: each totals.json block (both price bases) declares published_cumulative,
+    estimated_since, running_total and the per-line carry_forward."""
+    assert sitedata.TOTALS_CARRY_FIELDS == ("published_cumulative", "estimated_since",
+                                            "running_total", "carry_forward")

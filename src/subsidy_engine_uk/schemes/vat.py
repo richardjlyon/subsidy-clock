@@ -61,4 +61,6 @@ def result(schemes: list[SchemeResult], share: dict | None) -> list[SchemeResult
                                    for y in years],
                 "source": f"gas-counterfactual engine {share['engine_version']}: {share['provenance']}",
                 "source_url": None, "verified": False},
+        # carries forward with the lines it is on, at the latest share (aios-harness#46)
+        carry_with={s.scheme_id: RATE * sh(max(years)) for s in base},
     )]
