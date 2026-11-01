@@ -4,7 +4,7 @@ from datetime import date
 import polars as pl
 
 from subsidy_engine_uk import build as uk_build
-from subsidy_engine_uk.uplift import baseline_uplift
+from subsidy_engine_uk.uplift import road_uplift
 
 
 def deflators():
@@ -13,18 +13,31 @@ def deflators():
                         schema={"year": pl.Int64, "index": pl.Float64})
 
 
-def test_baseline_uplift_floors_at_zero_and_nets_subtraction():
-    raw = pl.DataFrame({"year": [2003, 2023], "cost_gbp": [60.0, 1000.0]},
+def indexed_road(value: float, d: pl.DataFrame) -> dict:
+    """A test road equal to a flat 2002-05 level carried by the fixture's index (mean of 2002-05 = 71.5),
+    so the hand-worked figures below read as before (aios-harness#43 replaced the flat level with the
+    engine's per-year road)."""
+    idx = dict(zip(d["year"].to_list(), d["index"].to_list()))
+    base = sum(idx[y] for y in range(2002, 2006)) / 4
+    return {"years": {y: value * i / base for y, i in idx.items()}, "carry_forward_from": max(idx),
+            "engine_version": "test", "what": "test road"}
+
+
+def road(value: float = 100.0) -> dict:
+    return {"tnuos": indexed_road(value, deflators()), "bsuos": indexed_road(value, deflators())}
+
+
+def test_road_uplift_floors_at_zero_and_nets_subtraction():
+    raw = pl.DataFrame({"year": [2003, 2023, 2026], "cost_gbp": [60.0, 1000.0, 500.0]},
                        schema={"year": pl.Int64, "cost_gbp": pl.Float64})
     constraints = pl.DataFrame({"year": [2023], "cost_gbp": [100.0]},
                                schema={"year": pl.Int64, "cost_gbp": pl.Float64})
-    out = baseline_uplift(raw, 100.0, deflators(), subtract=constraints)
-    rows = {r["year"]: r["cost_gbp"] for r in out.to_dicts()}
-    # baseline index = mean(70,71,72,73) = 71.5
-    # 2003: 60 - 100*(71/71.5) = negative -> floored to 0
-    assert rows[2003] == 0.0
-    # 2023: 1000 - 100*(128/71.5) - 100 = 1000 - 179.02... - 100
-    assert abs(rows[2023] - (1000.0 - 100.0 * 128.0 / 71.5 - 100.0)) < 1e-9
+    r = {"years": {2003: 99.0, 2023: 179.0, 2025: 190.0}, "carry_forward_from": 2025}
+    rows = {x["year"]: x["cost_gbp"] for x in road_uplift(raw, r, deflators(), subtract=constraints).to_dicts()}
+    assert rows[2003] == 0.0                       # 60 - 99 is negative: floored to 0
+    assert rows[2023] == 1000.0 - 179.0 - 100.0    # the road for the year, then the netting
+    # 2026: after the engine's last year, 2025 carried by the index (no 2026 index: the latest, 136)
+    assert rows[2026] == 500.0 - 190.0 * 136.0 / 136.0
 
 
 def test_build_integration(tmp_path):
@@ -67,7 +80,7 @@ def test_build_integration(tmp_path):
                                             schema={"year": pl.Int64, "cost_gbp": pl.Float64})),
     }
     model = uk_build.build(store, refs, deflators=deflators(),
-                           baselines={"bsuos": {"value": 100.0}, "tnuos": {"value": 100.0}})
+                           road=road())
     by_id = {s.scheme_id: s for s in model["schemes"]}
     # CfD split: renewable vs low-carbon, no leakage
     assert by_id["cfd_renewable"].cumulative_gbp == 5000.0
@@ -130,12 +143,12 @@ def test_build_indirect_layer(tmp_path):
         "bsuos_history": replace(_ref("bsuos_history", "BSUoS hist", {2023: 500.0}, conf="low"),
                                  bottom_up_from=2026),
     }
-    baselines = {"bsuos": {"value": 100.0}, "tnuos": {"value": 100.0}}
+    roads = road()
     # CM: the net-zero share of 2026 carries forward from 2025 (40%)
     cm_share = {"years": {2025: {"cm_paid_gbp": 100.0, "share": 0.4,
                                  "share_low": 0.1, "share_high": 1.0}},
                 "carry_forward_from": 2025, "provenance": {}}
-    model = uk_build.build(store, refs, deflators=deflators(), baselines=baselines,
+    model = uk_build.build(store, refs, deflators=deflators(), road=roads,
                            cm_share=cm_share)
     by_id = {s.scheme_id: s for s in model["schemes"]}
 
@@ -172,7 +185,7 @@ def test_build_indirect_layer(tmp_path):
     # direct perspectives unchanged by the indirect components (leakage guard)
     refs_direct_only = {k: refs[k] for k in ("constraints_history", "ro", "fit")}
     model2 = uk_build.build(store, refs_direct_only, deflators=deflators(),
-                            baselines=baselines, cm_share=cm_share)
+                            road=roads, cm_share=cm_share)
     assert (model["perspectives"]["renewables"]["cumulative_gbp"]
             == model2["perspectives"]["renewables"]["cumulative_gbp"])
 

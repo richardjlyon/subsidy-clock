@@ -16,7 +16,7 @@ from datetime import date
 import polars as pl
 
 from subsidy_engine_uk import build as uk_build
-from tests.test_uk_build import _ref, deflators
+from tests.test_uk_build import _ref, deflators, road
 
 
 def _store(tmp_path):
@@ -54,7 +54,7 @@ def _refs():
 
 def test_bsuos_uplift_nets_only_constraint_days_bsuos_covers(tmp_path):
     model = uk_build.build(_store(tmp_path), _refs(), deflators=deflators(),
-                           baselines={"bsuos": {"value": 100.0}, "tnuos": {"value": 100.0}})
+                           road=road())
     by_id = {s.scheme_id: s for s in model["schemes"]}
     # the constraints line itself still counts both days (GBP 200 in 2026)
     con = {r["year"]: r["cost_gbp"] for r in by_id["constraints"].annual.to_dicts()}
@@ -71,7 +71,7 @@ def test_bsuos_uplift_nets_only_constraint_days_bsuos_covers(tmp_path):
 def test_closed_years_unchanged_by_the_cut(tmp_path):
     """A year the BSUoS data covers in full nets every constraint day of that year, as before."""
     model = uk_build.build(_store(tmp_path), _refs(), deflators=deflators(),
-                           baselines={"bsuos": {"value": 100.0}, "tnuos": {"value": 100.0}})
+                           road=road())
     by_id = {s.scheme_id: s for s in model["schemes"]}
     bs = {r["year"]: r["cost_gbp"] for r in by_id["bsuos"].annual.to_dicts()}
     # 2024: no BSUoS figure (history is 2023 only), so no uplift row is invented for it

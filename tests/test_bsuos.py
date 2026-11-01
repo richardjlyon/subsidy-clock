@@ -258,7 +258,7 @@ CONSTRAINTS = SchemeResult(
 
 def _model(tmp_path, turnup_gbp_per_day=None):
     """Raw BSUoS 2026 = 1,000; wind constraint payments 2026 = 100;
-    indexed baseline = 100 x 136/71.5. Turn-up, if given, on both BSUoS days.
+    road = the flat 100 carried by the index, 100 x 136/71.5. Turn-up, if given, on both BSUoS days.
     Calls the BSUoS module directly: no constraints store, RO, FIT or pin."""
     store = SnapshotStore(tmp_path)
     store.write("bsuos", "daily", pl.DataFrame(
@@ -278,7 +278,8 @@ def _model(tmp_path, turnup_gbp_per_day=None):
                         pl.DataFrame(rows, schema=constraint_turnup.SCHEMA),
                         source_url="u", partition=d.isoformat())
     hist = replace(_annual_ref("bsuos_history", {2023: 500.0}), bottom_up_from=2026)
-    results = bsuos.result(store, hist, 100.0, _deflators(), CONSTRAINTS)
+    from tests.test_uk_build import indexed_road
+    results = bsuos.result(store, hist, indexed_road(100.0, _deflators()), _deflators(), CONSTRAINTS)
     return results, {s.scheme_id: s for s in results + [CONSTRAINTS]}
 
 

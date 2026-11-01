@@ -86,9 +86,8 @@ def assemble_model(root: Path) -> tuple[dict, dict]:
                                             product=pinned["product"])
     moved = reg_mod.overlay_refs(refs, pinned)
     deflators = reference.load_deflators(root / "reference" / "deflators.yaml")
-    baselines = reference.load_baselines(root / "reference" / "baselines.yaml")
     cm_share = reg_mod.cm_share_from_engine(root, pinned)
-    model = uk_build.build(store, refs, deflators=deflators, baselines=baselines,
+    model = uk_build.build(store, refs, deflators=deflators, road=reg_mod.road_from_engine(root),
                            station_map=stations.load_station_map(root / "reference" / "cfd_stations.csv"),
                            ro_stations=stations.load_ro_stations(root / "reference" / "ro_stations.csv"),
                            bmu_map=stations.load_station_bmus(root / "reference" / "station_bmu_map.csv"),

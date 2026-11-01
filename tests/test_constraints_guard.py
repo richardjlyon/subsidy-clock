@@ -66,7 +66,8 @@ def test_the_build_refuses_a_bsuos_history_with_no_pin(tmp_path):
         schema={"date": pl.Date, "cost_gbp": pl.Float64}), source_url="u", partition="2024-2025")
     refs = _refs() | {"bsuos_history": _annual("bsuos_history", {2016: 1.0})}
     with pytest.raises(ValueError, match="bsuos history states no bottom_up_from"):
-        uk_build.build(store, refs, deflators=_deflators(), baselines={"bsuos": {"value": 0.1}})
+        uk_build.build(store, refs, deflators=_deflators(), road={"bsuos": {"years": {2025: 0.1}, "carry_forward_from": 2025,
+                                                            "engine_version": "test", "what": "test road"}})
 
 
 def test_the_pinned_year_and_the_held_window_are_published_in_breakdown_json(tmp_path):

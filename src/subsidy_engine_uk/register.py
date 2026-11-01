@@ -142,10 +142,8 @@ class ToRegister:
                 "checks": self.checks}
 
 
-def cm_share_from_engine(root: Path, pinned: dict) -> dict:
-    """The Capacity Market share table the build expects, from the pinned engine release's Clock export
-    (netzero_gbp, low, high) over the register's CM paid. Same structure and checks as the retired
-    reference/capacity_market_netzero_share.yaml."""
+def engine_export(root: Path) -> tuple[dict, dict]:
+    """(export, model pin): the pinned engine release's Clock export, refusing any other bytes."""
     mp = yaml.safe_load((root / "reference" / "model_pin.yaml").read_text())
     p = root / mp["clock_export_file"]
     if hashlib.sha256(p.read_bytes()).hexdigest() != mp["sha256"]:
@@ -153,6 +151,30 @@ def cm_share_from_engine(root: Path, pinned: dict) -> dict:
     ex = json.loads(p.read_text())
     if ex["meta"]["engine_version"] != mp["engine_version"]:
         raise ValueError(f"{p}: engine_version {ex['meta']['engine_version']} is not the pin's")
+    return ex, mp
+
+
+def road_from_engine(root: Path) -> dict:
+    """The no-net-zero road TNUoS and BSUoS are counted above (ruling C, aios-harness#43): GO5 grid and GO4
+    balancing per calendar year from the pinned engine export (central; generators' share included), with
+    the export's carry-forward year. {"tnuos": road, "bsuos": road}."""
+    ex, mp = engine_export(root)
+    if ex["grid"].get("gen_share", "included") != "included":
+        raise ValueError("engine export grid is not on the generators'-share-included basis the Clock uses")
+    out = {}
+    for key, block, what in (("tnuos", "grid", "GO5 high-voltage grid"), ("bsuos", "balancing", "GO4 balancing")):
+        out[key] = {"years": {int(y): float(r["central_gbp"]) for y, r in ex[block]["years"].items()},
+                    "carry_forward_from": int(ex["carry_forward"]["from"]),
+                    "engine_version": mp["engine_version"], "what": what,
+                    "method": ex[block].get("method", "")}
+    return out
+
+
+def cm_share_from_engine(root: Path, pinned: dict) -> dict:
+    """The Capacity Market share table the build expects, from the pinned engine release's Clock export
+    (netzero_gbp, low, high) over the register's CM paid. Same structure and checks as the retired
+    reference/capacity_market_netzero_share.yaml."""
+    ex, mp = engine_export(root)
     paid = pinned["register"].series("CM_PAID")
     years = {}
     for ys, row in ex["capacity_market"]["years"].items():

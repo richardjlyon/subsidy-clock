@@ -246,9 +246,10 @@ schemes:
     expected_next_update: 2027-02-28   # NESO TNUoS charging statements
     attribution:
       rule: >-
-        Raw totals stored; attribution happens in the money model. Only the
-        increase above the CPIH-indexed 2002-05 baseline (GBP 0.9bn/yr) is
-        attributed to renewables, floored at zero.
+        Raw totals stored; attribution happens in the money model. Only each
+        year's cost above what the same year would have cost without net-zero
+        policy (the gas-counterfactual engine's high-voltage grid road, GO5,
+        reference/model_pin.yaml) is attributed, floored at zero.
       confidence: low
     note: >-
       Raw annual TNUoS, calendar years 2002-2024. The build reads every closed
@@ -304,10 +305,11 @@ schemes:
     bottom_up_from: 2017
     attribution:
       rule: >-
-        Raw totals stored; attribution happens in the money model. Only the
-        increase above the CPIH-indexed 2002-05 baseline (GBP 0.4bn/yr) is
-        attributed, NET of wind constraint payments already counted in the
-        direct layer, floored at zero. The estimated cost of replacing
+        Raw totals stored; attribution happens in the money model. Only each
+        year's cost above what the same year would have cost without net-zero
+        policy (the gas-counterfactual engine's balancing road, GO4,
+        reference/model_pin.yaml) is attributed, NET of wind constraint
+        payments already counted in the direct layer, floored at zero. The estimated cost of replacing
         switched-off wind (constraint turn-up) is then shown as its own line
         and taken out of this one.
       confidence: low

@@ -89,14 +89,6 @@ def test_load_electricity_bill():
     assert b2023 > b2002
 
 
-def test_load_baselines():
-    b = reference.load_baselines(REF_DIR / "baselines.yaml")
-    for key in ("bsuos", "tnuos"):
-        assert b[key]["value"] > 0
-        assert b[key]["source_url"].startswith("https://")
-        assert b[key]["period"] == "2002-2005"
-
-
 def test_year_basis_defaults_and_calendar_override():
     direct = reference.load_annual_costs(REF_DIR / "annual_scheme_costs.yaml")
     assert direct["ro"].year_basis == "obligation_apr"   # default

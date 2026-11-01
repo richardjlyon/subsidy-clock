@@ -2,8 +2,9 @@
 fetched per run-type/fiscal-year resource from the NESO CKAN portal.
 
 Stored RAW (total daily gross BSUoS cost). Attribution to renewables - the
-uplift above the CPIH-indexed 2002-05 baseline, NET of wind constraint payments
-already counted in the direct layer - happens in the money model, never here.
+uplift above the engine's no-net-zero balancing road (GO4; aios-harness#43),
+NET of wind constraint payments already counted in the direct layer - happens
+in the money model, never here.
 
 SOURCE BASIS (corrected 2026-09-30, amendment `bsuos-basis-2026-09-30`).
 This scheme previously summed the six cost columns of NESO's *Daily Balancing
@@ -47,13 +48,13 @@ import httpx
 import polars as pl
 
 from subsidy_engine import ckan
-from subsidy_engine.money import SchemeResult, annualise_daily, trailing_runrate, _latest_index
+from subsidy_engine.money import SchemeResult, annualise_daily, trailing_runrate
 from subsidy_engine.reference import ReferenceScheme
 from subsidy_engine.store import SnapshotStore
 from subsidy_engine_uk.schemes import constraint_turnup
 from subsidy_engine_uk.schemes import constraints as constraints_mod
 from subsidy_engine_uk.splice import splice
-from subsidy_engine_uk.uplift import BASELINE_YEARS, baseline_uplift
+from subsidy_engine_uk.uplift import road_extras, road_runrate, road_uplift
 
 DATASET = "current-balancing-services-use-of-system-bsuos-data"
 DATASET_URL = ("https://www.neso.energy/data-portal/"
@@ -237,13 +238,14 @@ def update(store: SnapshotStore, *, client: httpx.Client | None = None) -> None:
 
 # --- Result (moved from build.py, aios-harness#38)
 
-def result(store: SnapshotStore, hist: ReferenceScheme, baseline_gbp: float,
+def result(store: SnapshotStore, hist: ReferenceScheme, road: dict,
            deflators: pl.DataFrame, constraints: SchemeResult,
            to_register=None,
            constraints_history: ReferenceScheme | None = None) -> list[SchemeResult]:
     """The BSUoS uplift line, preceded by the constraint turn-up line when turn-up is
-    measured. ``hist`` is the pre-2017 history (carrying the pin); ``baseline_gbp`` the
-    2002-05 baseline; ``constraints`` the constraints result, whose payments the uplift
+    measured. ``hist`` is the pre-2017 history (carrying the pin); ``road`` the engine's
+    GO4 balancing road (subsidy_engine_uk.uplift); ``constraints`` the constraints result,
+    whose payments the uplift
     is counted net of. ``to_register`` (subsidy_engine_uk.register.ToRegister) makes
     each closed year of the NESO and turn-up feeds the shared cost register's (0168);
     omitted in unit tests. ``constraints_history`` (the constraints REF history) lets the
@@ -269,19 +271,16 @@ def result(store: SnapshotStore, hist: ReferenceScheme, baseline_gbp: float,
     # out of it (spec: constraint-turnup). The turn-up line is capped at the
     # uplift, so BSUoS residual + turn-up == uplift exactly and the indirect
     # total cannot move; where no cap binds, residual + turn-up + wind
-    # constraints + indexed baseline == raw BSUoS.
+    # constraints + road == raw BSUoS. The road (GO4) holds no wind constraint or
+    # turn-up payments (a no-wind system), so only the actual side is netted.
     # Net only the constraint days the BSUoS data covers: in BSUoS's last year a constraint
     # day after BSUoS's last day is in no BSUoS figure (Grok row 7; 5c61b9f4, aios-harness#42).
     # Turn-up is cut to the same window below.
     netted = (constraints_mod.annual_through(store, constraints_history, constraints, data_to)
               if constraints_history is not None
               else constraints.annual.select("year", "cost_gbp"))
-    uplift = baseline_uplift(raw_annual, baseline_gbp, deflators, subtract=netted)
-    latest_baseline = (baseline_gbp
-                       * _latest_index(deflators)
-                       / float(deflators.filter(
-                           pl.col("year").is_between(*BASELINE_YEARS))["index"].mean()))
-    uplift_runrate = max(0.0, raw_runrate - latest_baseline
+    uplift = road_uplift(raw_annual, road, deflators, subtract=netted)
+    uplift_runrate = max(0.0, raw_runrate - road_runrate(road, deflators)
                          - constraints.runrate_gbp_per_year)
     # Same window as the BSUoS data, so a lagging BSUoS feed never has
     # turn-up subtracted for days it does not yet cover.
@@ -350,6 +349,7 @@ def result(store: SnapshotStore, hist: ReferenceScheme, baseline_gbp: float,
         attribution_note=hist.attribution_rule,
         attribution_confidence=hist.attribution_confidence or "low",
         extras={"raw_annual": raw_annual.rename({"cost_gbp": "cost"}).to_dicts(),
+                **road_extras(raw_annual["year"].to_list(), road, deflators),
                 "source": hist.source, "source_url": hist.source_url,
                 "verified": hist.verified,
                 "held_from": held_from, "held_to": held_to},

@@ -20,11 +20,11 @@ from subsidy_engine.money import (
 from subsidy_engine.reference import ReferenceScheme
 from subsidy_engine.store import SnapshotStore
 from subsidy_engine_uk.schemes import bsuos, capacity_market, cfd, constraints
-from subsidy_engine_uk.uplift import baseline_uplift
+from subsidy_engine_uk.uplift import road_extras, road_uplift
 
 
 def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
-          *, deflators: pl.DataFrame, baselines: dict | None = None,
+          *, deflators: pl.DataFrame, road: dict | None = None,
           station_map: dict | None = None,
           ro_stations: list | None = None,
           bmu_map: dict | None = None,
@@ -54,17 +54,17 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
                  if scheme_id == "ro" and ro_stations else None)
         schemes.append(annual_to_result(scheme_id, refs[scheme_id], extra_extras=extra))
 
-    # --- Indirect layer (phase 2): CCL, ETS as stored; TNUoS, BSUoS by uplift
-    baselines = baselines or {}
+    # --- Indirect layer (phase 2): CCL, ETS as stored; TNUoS, BSUoS above the road
+    # (``road``: subsidy_engine_uk.register.road_from_engine, the engine's GO5 and GO4)
+    road = road or {}
     for scheme_id in ("ccl", "ets"):
         if scheme_id in refs:
             schemes.append(annual_to_result(scheme_id, refs[scheme_id],
                                             layer="indirect"))
 
-    if "tnuos" in refs and "tnuos" in baselines:
+    if "tnuos" in refs and "tnuos" in road:
         ref = refs["tnuos"]
-        attributed = baseline_uplift(ref.annual, float(baselines["tnuos"]["value"]),
-                                     deflators)
+        attributed = road_uplift(ref.annual, road["tnuos"], deflators)
         raw_total = float(ref.annual["cost_gbp"].sum())
         result = annual_to_result("tnuos", ref, layer="indirect")
         result.annual = attributed
@@ -74,11 +74,12 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
             attributed.filter(pl.col("year") == latest)["cost_gbp"][0])
         result.attribution_pct = (result.cumulative_gbp / raw_total) if raw_total else 0.0
         result.extras["raw_annual"] = ref.annual.rename({"cost_gbp": "cost"}).to_dicts()
+        result.extras.update(road_extras(ref.annual["year"].to_list(), road["tnuos"], deflators))
         schemes.append(result)
 
-    if "bsuos_history" in refs and "bsuos" in baselines:
+    if "bsuos_history" in refs and "bsuos" in road:
         schemes += bsuos.result(store, refs["bsuos_history"],
-                                float(baselines["bsuos"]["value"]), deflators, con[0],
+                                road["bsuos"], deflators, con[0],
                                 to_register, refs["constraints_history"])
 
     # --- Real-terms columns on every scheme, then totals

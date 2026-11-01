@@ -80,10 +80,6 @@ def load_deflators(path: Path) -> pl.DataFrame:
     ).sort("year")
 
 
-def load_baselines(path: Path) -> dict:
-    return yaml.safe_load(Path(path).read_text())
-
-
 def load_electricity_bill(path: Path) -> pl.DataFrame:
     """Total UK electricity consumer expenditure as (year, total_bill_gbp), sorted."""
     raw = yaml.safe_load(Path(path).read_text())
