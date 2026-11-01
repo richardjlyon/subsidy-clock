@@ -73,13 +73,17 @@ def cmd_backfill_turnup(args: argparse.Namespace) -> int:
 
 def assemble_model(root: Path) -> tuple[dict, dict]:
     """The model the site is built from, and the register overlay report (decision 0168). Reads every covered
-    series for a closed year from the pinned shared cost register (subsidy_engine_uk.register)."""
+    series for a closed year from the pinned shared cost register (subsidy_engine_uk.register), less the
+    register adjustments reference/clock_findings.yaml drops (subsidy_engine_uk.findings)."""
+    from subsidy_engine_uk import findings as findings_mod
     from subsidy_engine_uk import register as reg_mod
 
     store = make_store(root)
     refs = reference.load_annual_costs(root / "reference" / "annual_scheme_costs.yaml")
     refs.update(reference.load_annual_costs(root / "reference" / "indirect_annual.yaml"))
     pinned = reg_mod.load_pinned(root)
+    pinned["selection"] = findings_mod.load(root / "reference" / "clock_findings.yaml", pinned["register"],
+                                            product=pinned["product"])
     moved = reg_mod.overlay_refs(refs, pinned)
     deflators = reference.load_deflators(root / "reference" / "deflators.yaml")
     baselines = reference.load_baselines(root / "reference" / "baselines.yaml")
@@ -89,6 +93,7 @@ def assemble_model(root: Path) -> tuple[dict, dict]:
                            ro_stations=stations.load_ro_stations(root / "reference" / "ro_stations.csv"),
                            bmu_map=stations.load_station_bmus(root / "reference" / "station_bmu_map.csv"),
                            cm_share=cm_share, to_register=reg_mod.ToRegister(pinned))
+    model["findings"] = pinned["selection"].record()
     return model, {"refs_moved": moved, "refs": refs}
 
 

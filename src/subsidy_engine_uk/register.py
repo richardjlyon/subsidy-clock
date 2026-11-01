@@ -54,11 +54,14 @@ REF_LINES = {
 }
 
 
-def line_values(reg: CR.Register, product: str, lines: tuple[str, ...]) -> dict[int, float]:
-    """GBP m by year: the product's line(s) from the register, summed."""
+def line_values(reg: CR.Register, product: str, lines: tuple[str, ...], selection=None) -> dict[int, float]:
+    """GBP m by year: the product's line(s) from the register, summed. `selection` (findings.Selection) names
+    the register adjustments the Clock does not take (reference/clock_findings.yaml)."""
+    from subsidy_engine_uk import findings as F
+
     out: dict[int, float] = {}
     for ln in lines:
-        for y, v in reg.line(ln, product).items():
+        for y, v in F.line(reg, product, ln, selection).items():
             out[y] = out.get(y, 0.0) + v
     return out
 
@@ -71,7 +74,7 @@ def overlay_refs(refs: dict, pinned: dict) -> dict:
     for sid, lines in REF_LINES.items():
         if sid not in refs:
             continue
-        vals = line_values(reg, product, lines)
+        vals = line_values(reg, product, lines, pinned.get("selection"))
         ref = refs[sid]
         old = dict(zip(ref.annual["year"].to_list(), ref.annual["cost_gbp"].to_list()))
         for y, v in vals.items():
@@ -127,7 +130,8 @@ class ToRegister:
 
     def __call__(self, df: pl.DataFrame, lines: tuple[str, ...], *, first_year: int = 0,
                  value_col: str = "cost_gbp") -> pl.DataFrame:
-        vals = line_values(self.pinned["register"], self.pinned["product"], lines)
+        vals = line_values(self.pinned["register"], self.pinned["product"], lines,
+                           self.pinned.get("selection"))
         return rescale_closed_years(df, vals, self.pinned["closed_through"], first_year=first_year,
                                     value_col=value_col, checks=self.checks, line="+".join(lines))
 

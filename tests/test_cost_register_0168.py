@@ -102,8 +102,11 @@ def test_every_closed_year_of_every_covered_line_is_the_registers(base_model):
         "cfd_renewable": (("CFD",), False), "capacity_market": (("CM_PAID",), True),
     }
     n = 0
+    # the Clock's line is the register's line less the adjustments reference/clock_findings.yaml drops
+    from subsidy_engine_uk import findings as F
+    sel = F.load(ROOT / "reference" / "clock_findings.yaml", reg, product=prod)
     for sid, (lines, raw) in checks.items():
-        vals = R.line_values(reg, prod, lines)
+        vals = R.line_values(reg, prod, lines, sel)
         s = _scheme(base_model, sid)
         got = ({int(r["year"]): r["cost"] for r in s.extras["raw_annual"]} if raw else
                {r["year"]: r["cost_gbp"] for r in s.annual.to_dicts()})

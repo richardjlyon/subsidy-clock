@@ -33,7 +33,10 @@ schemes:
     note: >-
       HMRC publishes the CCL/CPF receipts split by calendar year only from
       2014; for 2013 (CPF started April 2013) the CPF component is therefore
-      omitted entirely, so 2013 is understated (conservative). Pre-2013 values
+      omitted entirely from this file, so 2013 here is understated. The Clock
+      itself counts CPS from 1 April 2013: it reads every closed year from
+      the shared cost register, whose CPS series carries April-December 2013
+      (reference/clock_findings.yaml, cps_from_april_2013). Pre-2013 values
       are electricity main-rate declarations only. Main-rate figures are
       accrued declarations rather than cash receipts because receipts have no
       commodity split.

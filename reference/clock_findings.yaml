@@ -1,0 +1,19 @@
+# Fixes Richard approved that remove a live error held in the shared cost register's clock_live adjustments
+# (aios-harness#42; mechanism from card t_b468cbeb). Each names, by item id only, the register adjustment the
+# Clock no longer takes (`drop`). This file holds no figures (decision 0168): every number is the register's.
+#
+# Approval: Richard, 1 Nov 2026, "technical fixes approved, done without further rulings, each tested and
+# measured" (report-series/clock-alignment/decisions.md). Anything not approved does not go in this file.
+
+findings:
+
+  cps_from_april_2013:
+    status: applied
+    kind: data_error
+    reason: >-
+      Carbon Price Support was charged from 1 April 2013. The live Clock counted it from 2014 because HMRC's
+      calendar-year CCL/CPF split starts in 2014. The register's CPS series carries April-December 2013 (the
+      engine's estimate); the Clock now takes it.
+    approved: "Richard, 1 Nov 2026 (decisions.md, technical fixes: CPS from 1 Apr 2013)"
+    definitions: D-10 (i)
+    drop: [clock.CPS.not_counted_2013]

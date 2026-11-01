@@ -361,6 +361,8 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
            if model.get("elexon_first_year") is not None else {}),
         # decision 0168: the shared cost register every closed year was read from
         **({"register": model["register"]} if model.get("register") else {}),
+        # aios-harness#42: the approved fixes this build applied (register adjustments not taken)
+        **({"findings": model["findings"]} if model.get("findings") else {}),
         "schemes": [
             {
                 "id": s.scheme_id,
