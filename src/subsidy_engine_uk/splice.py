@@ -6,6 +6,7 @@ it (aios-harness#37). Terms as in GLOSSARY.md.
 """
 from __future__ import annotations
 
+from collections.abc import Iterable
 from datetime import date, timedelta
 
 import polars as pl
@@ -28,11 +29,13 @@ _WORDS = {
 }
 
 
-def splice(scheme: str, history: ReferenceScheme,
-           daily: pl.DataFrame) -> tuple[pl.DataFrame, str, str]:
-    """Join ``history`` (carrying the pin) with ``daily`` (one row per held day: date,
-    cost_gbp; not empty). Returns the spliced annual series and the held window (first
-    and last held day, ISO). Raises ValueError, naming the setting, for an unsafe pin.
+def splice(scheme: str, history: ReferenceScheme, daily: pl.DataFrame,
+           held: Iterable[str]) -> tuple[pl.DataFrame, str, str]:
+    """Join ``history`` (carrying the pin) with ``daily`` (date, cost_gbp; not empty).
+    ``held`` is the scheme's held days (ISO); it can include days with no rows in
+    ``daily``, e.g. a constraints day Elexon answered with no wind bids (£0). Returns the
+    spliced annual series and the first and last day in ``daily`` (ISO). Raises
+    ValueError, naming the setting, for an unsafe pin.
 
     Years from the pin come from bottom-up, as do part years after the history's last
     year (nothing to replace); every other year stays on the history."""
@@ -42,11 +45,11 @@ def splice(scheme: str, history: ReferenceScheme,
         raise ValueError(f"{scheme} history states no bottom_up_from: the first year "
                          f"{w['bu']} replaces {w['ref']} must be stated in {w['file']}")
     last_history_year = int(history.annual["year"].max())
-    held = {d.isoformat() for d in daily["date"].to_list()}
-    _check(scheme, pin, held, last_history_year)
+    _check(scheme, pin, {d for d in held if len(d) == 10}, last_history_year)
     usable = annualise_daily(daily).filter(
         (pl.col("year") >= pin) | (pl.col("year") > last_history_year))
-    return merge_annual(history.annual, usable), min(held), max(held)
+    return (merge_annual(history.annual, usable),
+            daily["date"].min().isoformat(), daily["date"].max().isoformat())
 
 
 def _check(scheme: str, value, held: set[str], last_history_year: int) -> None:

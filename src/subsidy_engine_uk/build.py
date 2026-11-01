@@ -279,7 +279,8 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
     if con_daily is not None and con_daily.height:
         daily = (con_daily.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date"))
         # Elexon replaces REF from the reference file's pin, guarded (splice module)
-        annual, held_from, held_to = splice("constraints", history, daily)
+        annual, held_from, held_to = splice("constraints", history, daily,
+                                            store.partitions("constraints", "daily"))
         elexon_first_year = history.bottom_up_from
         runrate = trailing_runrate(daily)
         data_to = daily["date"].max()
@@ -423,7 +424,9 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         if bs_daily is not None and bs_daily.height:
             daily = bs_daily.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date")
             # NESO replaces the history from the reference file's pin, guarded
-            raw_annual, held_from, held_to = splice("bsuos", hist, daily)
+            # held days: the dates in the data (BSUoS is stored by fiscal year)
+            raw_annual, held_from, held_to = splice(
+                "bsuos", hist, daily, [d.isoformat() for d in daily["date"].to_list()])
             raw_runrate = trailing_runrate(daily)
             data_to = daily["date"].max()
         else:

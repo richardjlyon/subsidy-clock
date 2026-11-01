@@ -30,8 +30,16 @@ def _daily(earliest, latest=date(2025, 1, 3), missing=(), per_day=1.0e6):
                         schema={"date": pl.Date, "cost_gbp": pl.Float64})
 
 
+def _held(daily):
+    return [d.isoformat() for d in daily["date"].to_list()]
+
+
+def _splice(scheme, hist, daily, held=None):
+    return splice.splice(scheme, hist, daily, _held(daily) if held is None else held)
+
+
 def _con(pin, **kw):
-    return splice.splice("constraints", _history(pin), _daily(kw.pop("earliest", date(2023, 8, 25)), **kw))
+    return _splice("constraints", _history(pin), _daily(kw.pop("earliest", date(2023, 8, 25)), **kw))
 
 
 def _year(annual, y):
@@ -61,7 +69,7 @@ def test_the_backfill_passing_1_jan_2023_moves_no_year():
 
 def test_a_part_year_after_the_history_ends_is_kept():
     hist = _history(2024, {2022: 1.0, 2023: 2.0})
-    annual, _, _ = splice.splice("constraints", hist, _daily(date(2023, 1, 1), date(2024, 3, 31)))
+    annual, _, _ = _splice("constraints", hist, _daily(date(2023, 1, 1), date(2024, 3, 31)))
     assert _year(annual, 2024) == 91 * 1.0e6
 
 
@@ -111,6 +119,14 @@ def test_pin_2024_with_a_missing_day_says_to_fetch_it_not_to_raise_the_pin():
     assert "partial year" in str(err.value)
 
 
+def test_a_held_day_with_no_rows_counts_as_held():
+    # Elexon answered 15 Jun 2024 with no wind bids: stored empty, held, cost nothing
+    daily = _daily(date(2023, 8, 25), missing={date(2024, 6, 15)})
+    annual, _, _ = _splice("constraints", _history(2024), daily,
+                           _held(daily) + ["2024-06-15"])
+    assert _year(annual, 2024) == 365 * 1.0e6
+
+
 # --- the live pin: no year at or after it goes back on the history
 
 def test_a_pin_after_the_live_pin_fails_naming_the_setting():
@@ -129,7 +145,7 @@ def test_a_raised_pin_fails_when_2024_has_a_missing_day():
 def test_a_pin_after_the_live_pin_builds_when_nothing_from_the_live_pin_is_held():
     # unit fixtures hold one day of 2026 and pin 2026
     hist = _history(2026, {2024: 200.0})
-    annual, _, _ = splice.splice("constraints", hist, _daily(date(2026, 4, 10), date(2026, 4, 10)))
+    annual, _, _ = _splice("constraints", hist, _daily(date(2026, 4, 10), date(2026, 4, 10)))
     assert _year(annual, 2026) == 1.0e6
 
 
@@ -139,7 +155,7 @@ def test_bsuos_holds_a_fully_held_year_before_its_pin_on_the_history():
     # the risk the old "first year held from 1 Jan" rule left open: if Jan-Mar 2016 were
     # ever stored, 2016 would have switched from the history to NESO unannounced
     hist = _history(2017, {2015: 1.0, 2016: 2.0})
-    annual, held_from, _ = splice.splice("bsuos", hist, _daily(date(2016, 1, 1), date(2017, 12, 31)))
+    annual, held_from, _ = _splice("bsuos", hist, _daily(date(2016, 1, 1), date(2017, 12, 31)))
     assert _year(annual, 2016) == 2.0
     assert _year(annual, 2017) == 365 * 1.0e6
     assert held_from == "2016-01-01"
@@ -147,13 +163,13 @@ def test_bsuos_holds_a_fully_held_year_before_its_pin_on_the_history():
 
 def test_bsuos_errors_name_its_own_reference_file():
     with pytest.raises(ValueError, match=r"bsuos bottom_up_from '2017'.*indirect_annual.yaml"):
-        splice.splice("bsuos", _history("2017"), _daily(date(2016, 4, 1)))
+        _splice("bsuos", _history("2017"), _daily(date(2016, 4, 1)))
 
 
 def test_bsuos_pin_after_its_live_pin_fails_while_neso_holds_those_years():
     hist = _history(2018, {2016: 2.0, 2017: 3.0})
     with pytest.raises(ValueError, match=r"bsuos bottom_up_from 2018 .*later than 2017"):
-        splice.splice("bsuos", hist, _daily(date(2016, 4, 1), date(2018, 3, 31)))
+        _splice("bsuos", hist, _daily(date(2016, 4, 1), date(2018, 3, 31)))
 
 
 # --- the live pins move with the reference files
