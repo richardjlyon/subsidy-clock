@@ -47,7 +47,12 @@ import httpx
 import polars as pl
 
 from subsidy_engine import ckan
+from subsidy_engine.money import SchemeResult, annualise_daily, trailing_runrate, _latest_index
+from subsidy_engine.reference import ReferenceScheme
 from subsidy_engine.store import SnapshotStore
+from subsidy_engine_uk.schemes import constraint_turnup
+from subsidy_engine_uk.splice import splice
+from subsidy_engine_uk.uplift import BASELINE_YEARS, baseline_uplift
 
 DATASET = "current-balancing-services-use-of-system-bsuos-data"
 DATASET_URL = ("https://www.neso.energy/data-portal/"
@@ -227,3 +232,111 @@ def update(store: SnapshotStore, *, client: httpx.Client | None = None) -> None:
     finally:
         if own:
             client.close()
+
+
+# --- Result (moved from build.py, aios-harness#38)
+
+def result(store: SnapshotStore, hist: ReferenceScheme, baseline_gbp: float,
+           deflators: pl.DataFrame, constraints: SchemeResult) -> list[SchemeResult]:
+    """The BSUoS uplift line, preceded by the constraint turn-up line when turn-up is
+    measured. ``hist`` is the pre-2017 history (carrying the pin); ``baseline_gbp`` the
+    2002-05 baseline; ``constraints`` the constraints result, whose payments the uplift
+    is counted net of."""
+    out: list[SchemeResult] = []
+    bs_daily = store.read_all_partitions("bsuos", "daily")
+    if bs_daily is not None and bs_daily.height:
+        daily = bs_daily.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date")
+        # NESO replaces the history from the reference file's pin, guarded
+        # held days: the dates in the data (BSUoS is stored by fiscal year)
+        raw_annual, held_from, held_to = splice(
+            "bsuos", hist, daily, [d.isoformat() for d in daily["date"].to_list()])
+        raw_runrate = trailing_runrate(daily)
+        data_to = daily["date"].max()
+    else:
+        raw_annual = hist.annual
+        held_from = held_to = None
+        raw_runrate = float(raw_annual["cost_gbp"][-1])
+        data_to = date(int(raw_annual["year"].max()), 12, 31)
+    # Uplift after wind constraint payments, then split constraint turn-up
+    # out of it (spec: constraint-turnup). The turn-up line is capped at the
+    # uplift, so BSUoS residual + turn-up == uplift exactly and the indirect
+    # total cannot move; where no cap binds, residual + turn-up + wind
+    # constraints + indexed baseline == raw BSUoS.
+    uplift = baseline_uplift(raw_annual, baseline_gbp,
+                             deflators, subtract=constraints.annual.select("year", "cost_gbp"))
+    latest_baseline = (baseline_gbp
+                       * _latest_index(deflators)
+                       / float(deflators.filter(
+                           pl.col("year").is_between(*BASELINE_YEARS))["index"].mean()))
+    uplift_runrate = max(0.0, raw_runrate - latest_baseline
+                         - constraints.runrate_gbp_per_year)
+    # Same window as the BSUoS data, so a lagging BSUoS feed never has
+    # turn-up subtracted for days it does not yet cover.
+    tu_daily = constraint_turnup.daily_cost(store).filter(pl.col("date") <= data_to)
+    if tu_daily.height:
+        tu_measured = annualise_daily(tu_daily).rename({"cost_gbp": "tu"})
+        split = (uplift.join(tu_measured, on="year", how="left")
+                 .with_columns(pl.col("tu").fill_null(0.0))
+                 .with_columns(pl.min_horizontal("tu", "cost_gbp").alias("tu")))
+        tu_annual = split.select("year", pl.col("tu").alias("cost_gbp"))
+        attributed = split.select("year", (pl.col("cost_gbp") - pl.col("tu"))
+                                  .alias("cost_gbp"))
+        tu_runrate = min(trailing_runrate(tu_daily), uplift_runrate)
+        runrate = uplift_runrate - tu_runrate
+        measured = constraint_turnup.read(store).filter(
+            pl.col("date") <= data_to)
+        by_fuel = (measured.filter(pl.col("basis") == constraint_turnup.ACCEPTED_WIND)
+                   .group_by("fuel")
+                   .agg(pl.col("cost_gbp").sum().alias("cost"),
+                        pl.col("volume_mwh").sum())
+                   .sort("cost", descending=True).to_dicts())
+        cross_check = {b: float(measured.filter(pl.col("basis") == b)["cost_gbp"].sum())
+                       for b in (constraint_turnup.ACCEPTED,
+                                 constraint_turnup.ACCEPTED_WIND)}
+        tu_cum = float(tu_annual["cost_gbp"].sum())
+        out.append(SchemeResult(
+            scheme_id="constraint_turnup",
+            label="Constraint turn-up (paid to switch on)",
+            perspectives=[], cadence="daily", layer="indirect",
+            annual=tu_annual,
+            cumulative_gbp=tu_cum,
+            runrate_gbp_per_year=tu_runrate,
+            data_to=tu_daily["date"].max(),
+            attribution_pct=1.0,
+            attribution_note=(
+                "Estimated cost of paying other stations to replace the wind "
+                "energy switched off for network constraints: each half-hour's "
+                "switched-off wind volume priced against that half-hour's "
+                "accepted offers (Octopus Energy Wasted Wind method). Taken out "
+                "of the balancing (BSUoS) uplift, never more than it, so no "
+                "total changes."),
+            attribution_confidence="low",
+            extras={"by_fuel_while_wind_constrained": by_fuel,
+                    "cross_check_cumulative": cross_check,
+                    "measured_from": tu_daily["date"].min().isoformat(),
+                    "measured_annual": tu_measured.rename(
+                        {"tu": "cost"}).to_dicts(),
+                    "source": "Elexon Insights settlement stacks (bids and offers)",
+                    "source_url": constraint_turnup.SOURCE_URL},
+        ))
+    else:
+        attributed = uplift
+        runrate = uplift_runrate
+    raw_total = float(raw_annual["cost_gbp"].sum())
+    cum = float(attributed["cost_gbp"].sum())
+    out.append(SchemeResult(
+        scheme_id="bsuos", label="Balancing costs (BSUoS uplift)",
+        perspectives=[], cadence="daily", layer="indirect",
+        annual=attributed,
+        cumulative_gbp=cum,
+        runrate_gbp_per_year=runrate,
+        data_to=data_to,
+        attribution_pct=(cum / raw_total) if raw_total else 0.0,
+        attribution_note=hist.attribution_rule,
+        attribution_confidence=hist.attribution_confidence or "low",
+        extras={"raw_annual": raw_annual.rename({"cost_gbp": "cost"}).to_dicts(),
+                "source": hist.source, "source_url": hist.source_url,
+                "verified": hist.verified,
+                "held_from": held_from, "held_to": held_to},
+    ))
+    return out

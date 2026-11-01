@@ -7,7 +7,10 @@ import httpx
 import polars as pl
 
 from subsidy_engine.ckan import dataset_resources, fetch_all_records
+from subsidy_engine.money import (PERSPECTIVES, SchemeResult, annualise_daily, cumulative,
+                                  gross_net, trailing_runrate)
 from subsidy_engine.store import SnapshotStore
+from subsidy_engine_uk.stations import group_by_station
 
 GENERATION_RESOURCE = "37d1bef4-55d7-4b8e-8a47-1d24b123a20e"
 # In-period Tracking is read through its dataset, not a fixed resource id:
@@ -170,3 +173,168 @@ def update(store: SnapshotStore, *, client: httpx.Client | None = None) -> None:
     store.write("cfd", "tracking", trk, source_url=TRACKING_URL, date_col="date")
     port = parse_portfolio(fetch_all_records(PORTFOLIO_RESOURCE, client=client))
     store.write("cfd", "portfolio", port, source_url=PORTFOLIO_URL)
+
+
+# --- Result (moved from build.py, aios-harness#38)
+
+def _station_detail(sub: pl.DataFrame, station_rows: list,
+                    statuses: dict | None = None) -> list:
+    """Per-station panel detail for the mapped CfD recipients.
+
+    For each grouped station: the quarterly net payment/generation series
+    (calendar quarters across all the station's contracts — negative quarters
+    are real paybacks and pass through unclamped) and per-contract rows with
+    first settlement date and latest strike price. Feeds the per-asset JSONs
+    (sitedata.build); everything derives from the same daily settlement rows
+    the scheme totals use, so the panel reconciles by construction."""
+    out = []
+    for row in station_rows:
+        ids = [c["cfd_id"] for c in row["contracts"]]
+        d = sub.filter(pl.col("cfd_id").is_in(ids)).sort("date")
+        quarters = (
+            d.with_columns(
+                (pl.col("date").dt.year().cast(pl.Utf8) + "-Q"
+                 + ((pl.col("date").dt.month() - 1) // 3 + 1).cast(pl.Utf8))
+                .alias("q"))
+            .group_by("q")
+            .agg(pl.col("payment_gbp").sum(), pl.col("generation_mwh").sum())
+            .sort("q").to_dicts())
+        contracts = []
+        for c in row["contracts"]:
+            cd = d.filter(pl.col("cfd_id") == c["cfd_id"])
+            strikes = cd.drop_nulls("strike_price_gbp_mwh")
+            contracts.append({
+                "cfd_id": c["cfd_id"],
+                "unit_name": c["unit_name"],
+                "technology": c["technology"],
+                # LCCC lifecycle status placed verbatim; None -> the pinned
+                # "unknown" wording at site-data build, never a guess
+                "status": (statuses or {}).get(c["cfd_id"]),
+                "cumulative_gbp": c["cost"],
+                "first_settlement": cd["date"].min().isoformat() if cd.height else None,
+                "latest_strike_gbp_mwh": (float(strikes["strike_price_gbp_mwh"][-1])
+                                          if strikes.height else None),
+            })
+        out.append({
+            "station": row["station"],
+            "technology": row["technology"],
+            "cost": row["cost"],
+            "generation_mwh": float(d["generation_mwh"].sum() or 0.0),
+            "data_to": d["date"].max().isoformat() if d.height else None,
+            "quarters": quarters,
+            "contracts": contracts,
+        })
+    return out
+
+
+# Outage-strip significance filter, disclosed in the panel's pinned wording
+# (sitedata.ASSET_STRINGS["outages_label"]): a REMIT message becomes a panel
+# window only if it ran >= 24h with >= 20% of the unit's normal capacity
+# unavailable. Big thermal units publish hundreds of small redeclarations a
+# year; without a disclosed threshold the strip is noise.
+OUTAGE_MIN_HOURS = 24
+OUTAGE_MIN_SHARE = 0.20
+
+
+def _attach_outages(station_detail: list, bmu_map: dict,
+                    outages: pl.DataFrame) -> None:
+    """Attach significant REMIT outage windows to each mapped station's detail.
+
+    Stations absent from ``bmu_map`` are left untouched — the panel renders
+    the pinned unavailable wording (unknown, never zero)."""
+    from subsidy_engine_uk.schemes.remit import COVERAGE_FROM
+    df = (outages
+          .with_columns(
+              pl.col("event_start").str.to_datetime("%Y-%m-%dT%H:%M:%S%#z",
+                                                    strict=False).alias("start_dt"),
+              pl.col("event_end").str.to_datetime("%Y-%m-%dT%H:%M:%S%#z",
+                                                  strict=False).alias("end_dt"))
+          .drop_nulls(["start_dt", "end_dt", "unavailable_mw", "normal_mw"])
+          .filter(
+              ((pl.col("end_dt") - pl.col("start_dt"))
+               >= pl.duration(hours=OUTAGE_MIN_HOURS))
+              & (pl.col("normal_mw") > 0)
+              & (pl.col("unavailable_mw")
+                 >= OUTAGE_MIN_SHARE * pl.col("normal_mw"))))
+    for d in station_detail:
+        ids = bmu_map.get(d["station"])
+        if not ids:
+            continue
+        w = df.filter(pl.col("bmu").is_in(ids)).sort("start_dt")
+        d["outages"] = {
+            "coverage_from": COVERAGE_FROM.isoformat(),
+            "windows": [
+                {"start": r["start_dt"].date().isoformat(),
+                 "end": r["end_dt"].date().isoformat(),
+                 "type": ("Planned" if (r["unavailability_type"] or "")
+                          .lower().startswith("plan") else "Unplanned"),
+                 "mw_lost": r["unavailable_mw"]}
+                for r in w.to_dicts()
+            ],
+        }
+
+
+def result(store: SnapshotStore, *, station_map: dict | None = None,
+           bmu_map: dict | None = None) -> list[SchemeResult]:
+    """The CfD lines: renewables, and nuclear once it pays out. ``station_map``
+    (cfd_id -> physical-station short name) collapses phased contracts into one station
+    for the recipients view; ``bmu_map`` attaches REMIT outages to station detail."""
+    out: list[SchemeResult] = []
+    # --- CfD: bottom-up, split renewable / non-renewable by technology (M-7).
+    # is_renewable is classified here from the stored technology label, so the
+    # split reflects the current policy across the whole history rather than
+    # whatever was frozen into each snapshot at fetch time (cfd.classify also
+    # fails the build on any unclassified technology label).
+    gen = store.latest("cfd", "generation")
+    if gen is not None and gen.height:
+        gen = classify(gen)
+        for part, flag, perspectives, label in [
+            ("cfd_renewable", True, PERSPECTIVES, "CfD - renewables"),
+            ("cfd_low_carbon", False, ["low_carbon"],
+             "CfD - nuclear"),
+        ]:
+            sub = gen.filter(pl.col("is_renewable") == flag)
+            # Only emit a line that has payments. Nuclear holds CfDs but has not
+            # generated, so it has no rows yet and simply does not appear until
+            # Hinkley Point C starts paying out — no £0 placeholder to carry.
+            if not sub.height:
+                continue
+            daily = (sub.group_by("date").agg(pl.col("payment_gbp").sum().alias("cost_gbp"))
+                     .sort("date"))
+            gross, net = gross_net(sub, "payment_gbp")
+            by_station = group_by_station(
+                sub.group_by("cfd_id", "unit_name", "technology")
+                   .agg(pl.col("payment_gbp").sum().alias("cost"))
+                   .to_dicts(),
+                station_map or {})[:25]
+            extras = {"gross": gross, "net": net,
+                      "mwh": float(sub["generation_mwh"].sum() or 0.0),
+                      "by_technology": sub.group_by("technology")
+                          .agg(pl.col("payment_gbp").sum().alias("cost"),
+                               pl.col("generation_mwh").sum())
+                          .sort("cost", descending=True).to_dicts(),
+                      "by_recipient": sub.group_by("unit_name", "technology")
+                          .agg(pl.col("payment_gbp").sum().alias("cost"))
+                          .sort("cost", descending=True).head(25).to_dicts(),
+                      "by_station": by_station}
+            if flag:
+                # renewables carry the mapped stations' panel detail
+                port = store.latest("cfd", "portfolio")
+                statuses = (dict(zip(port["cfd_id"], port["status"]))
+                            if port is not None and port.height else {})
+                extras["station_detail"] = _station_detail(sub, by_station,
+                                                           statuses)
+                if bmu_map:
+                    remit_df = store.latest("remit", "outages")
+                    if remit_df is not None and remit_df.height:
+                        _attach_outages(extras["station_detail"], bmu_map,
+                                        remit_df)
+            out.append(SchemeResult(
+                scheme_id=part, label=label, perspectives=perspectives, cadence="daily",
+                annual=annualise_daily(daily),
+                cumulative_gbp=cumulative(daily),
+                runrate_gbp_per_year=trailing_runrate(daily),
+                data_to=daily["date"].max() if daily.height else None,
+                extras=extras,
+            ))
+    return out

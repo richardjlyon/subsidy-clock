@@ -1,204 +1,26 @@
 """The UK build: assembles the UK scheme results the dashboard presents.
 
-Moved verbatim from subsidy_engine.money in the Phase 1 shared-core extraction.
-The generic money primitives stay in subsidy_engine.money; the UK-policy-specific
-pieces (the CPIH 2002-05 uplift baseline, the scheme wiring) live here.
+Each scheme with data of its own builds its result in its scheme module
+(subsidy_engine_uk.schemes.*, aios-harness#38); the annual reference schemes are built
+here. The generic money primitives stay in subsidy_engine.money.
 """
 
 from __future__ import annotations
 
-from datetime import date
-
 import polars as pl
 
-# Explicit import list, never `import *`: `*` excludes underscore-prefixed names,
-# which would silently drop _latest_index and NameError inside build().
 from subsidy_engine.money import (
-    PERSPECTIVES,
     SchemeResult,
     add_real,
     annual_to_result,
-    annualise_daily,
-    cumulative,
-    gross_net,
     latest_real_factor,
     layer_total,
     perspective_totals,
-    trailing_runrate,
-    # Deliberate private cross-package import, deferred: renaming _latest_index to a
-    # public name is behaviour-neutral but a drive-by on money.py. Revisit in Phase 2
-    # when a second adapter needs it.
-    _latest_index,
 )
 from subsidy_engine.reference import ReferenceScheme
 from subsidy_engine.store import SnapshotStore
-from subsidy_engine_uk.stations import group_by_station
-from subsidy_engine_uk.schemes import cfd, constraint_turnup
-from subsidy_engine_uk.splice import splice
-
-BASELINE_YEARS = (2002, 2005)  # inclusive 4-year calendar window (2002,2003,2004,2005) for uplift baselines
-
-
-CM_SHARE_DRIFT = 0.02   # max relative gap between the Clock's annual CM and the engine's cm_paid
-
-
-def cm_netzero_shares(raw_annual: pl.DataFrame, cm_share: dict) -> pl.DataFrame:
-    """Per calendar year of Capacity Market data: the share of the levy that
-    net zero caused (central, low, high) and its basis.
-
-    Years the engine covers take its own share; any later year takes the share
-    of ``carry_forward_from`` (basis "carried forward"); a year BEFORE the
-    engine's first year is an error, not a silent 100%. Fails if the Clock's own
-    annual total for a covered year drifts more than CM_SHARE_DRIFT from the
-    engine's cm_paid, because the share was computed against that total."""
-    years = cm_share["years"]
-    carry = cm_share["carry_forward_from"]
-    first = min(years)
-    rows = []
-    for r in raw_annual.to_dicts():
-        y = int(r["year"])
-        if y in years:
-            row, basis = years[y], "modelled"
-            paid = float(row["cm_paid_gbp"])
-            if abs(r["cost_gbp"] - paid) > CM_SHARE_DRIFT * paid:
-                raise ValueError(
-                    f"Capacity Market {y}: the Clock's total {r['cost_gbp']:,.0f} differs "
-                    f"from the {paid:,.0f} the net-zero share was computed against by more "
-                    f"than {CM_SHARE_DRIFT:.0%}; rerun the gas-counterfactual engine")
-        elif y > carry:
-            row, basis = years[carry], f"carried forward from {carry}"
-        else:
-            raise ValueError(f"Capacity Market {y}: no net-zero share (engine starts {first})")
-        rows.append({"year": y, "share": row["share"], "share_low": row["share_low"],
-                     "share_high": row["share_high"], "basis": basis})
-    return pl.DataFrame(rows, schema={"year": pl.Int64, "share": pl.Float64,
-                                      "share_low": pl.Float64, "share_high": pl.Float64,
-                                      "basis": pl.String})
-
-
-def baseline_uplift(
-    raw_annual: pl.DataFrame,
-    baseline_gbp: float,
-    deflators: pl.DataFrame,
-    *,
-    subtract: pl.DataFrame | None = None,
-) -> pl.DataFrame:
-    """Conservative attribution: cost above the CPIH-indexed 2002-05 baseline,
-    optionally net of costs already counted elsewhere, floored at zero."""
-    lo, hi = BASELINE_YEARS
-    base_idx = float(deflators.filter(
-        pl.col("year").is_between(lo, hi))["index"].mean())
-    latest = _latest_index(deflators)
-    df = raw_annual.join(deflators, on="year", how="left").with_columns(
-        (baseline_gbp * pl.col("index").fill_null(latest) / base_idx).alias("baseline"))
-    if subtract is not None:
-        df = (df.join(subtract.rename({"cost_gbp": "sub"}).select("year", "sub"),
-                      on="year", how="left")
-              .with_columns(pl.col("sub").fill_null(0.0)))
-    else:
-        df = df.with_columns(pl.lit(0.0).alias("sub"))
-    return (df.with_columns(
-                pl.max_horizontal(pl.lit(0.0),
-                                  pl.col("cost_gbp") - pl.col("baseline") - pl.col("sub"))
-                .alias("cost_gbp"))
-            .select("year", "cost_gbp"))
-
-
-def _station_detail(sub: pl.DataFrame, station_rows: list,
-                    statuses: dict | None = None) -> list:
-    """Per-station panel detail for the mapped CfD recipients.
-
-    For each grouped station: the quarterly net payment/generation series
-    (calendar quarters across all the station's contracts — negative quarters
-    are real paybacks and pass through unclamped) and per-contract rows with
-    first settlement date and latest strike price. Feeds the per-asset JSONs
-    (sitedata.build); everything derives from the same daily settlement rows
-    the scheme totals use, so the panel reconciles by construction."""
-    out = []
-    for row in station_rows:
-        ids = [c["cfd_id"] for c in row["contracts"]]
-        d = sub.filter(pl.col("cfd_id").is_in(ids)).sort("date")
-        quarters = (
-            d.with_columns(
-                (pl.col("date").dt.year().cast(pl.Utf8) + "-Q"
-                 + ((pl.col("date").dt.month() - 1) // 3 + 1).cast(pl.Utf8))
-                .alias("q"))
-            .group_by("q")
-            .agg(pl.col("payment_gbp").sum(), pl.col("generation_mwh").sum())
-            .sort("q").to_dicts())
-        contracts = []
-        for c in row["contracts"]:
-            cd = d.filter(pl.col("cfd_id") == c["cfd_id"])
-            strikes = cd.drop_nulls("strike_price_gbp_mwh")
-            contracts.append({
-                "cfd_id": c["cfd_id"],
-                "unit_name": c["unit_name"],
-                "technology": c["technology"],
-                # LCCC lifecycle status placed verbatim; None -> the pinned
-                # "unknown" wording at site-data build, never a guess
-                "status": (statuses or {}).get(c["cfd_id"]),
-                "cumulative_gbp": c["cost"],
-                "first_settlement": cd["date"].min().isoformat() if cd.height else None,
-                "latest_strike_gbp_mwh": (float(strikes["strike_price_gbp_mwh"][-1])
-                                          if strikes.height else None),
-            })
-        out.append({
-            "station": row["station"],
-            "technology": row["technology"],
-            "cost": row["cost"],
-            "generation_mwh": float(d["generation_mwh"].sum() or 0.0),
-            "data_to": d["date"].max().isoformat() if d.height else None,
-            "quarters": quarters,
-            "contracts": contracts,
-        })
-    return out
-
-
-# Outage-strip significance filter, disclosed in the panel's pinned wording
-# (sitedata.ASSET_STRINGS["outages_label"]): a REMIT message becomes a panel
-# window only if it ran >= 24h with >= 20% of the unit's normal capacity
-# unavailable. Big thermal units publish hundreds of small redeclarations a
-# year; without a disclosed threshold the strip is noise.
-OUTAGE_MIN_HOURS = 24
-OUTAGE_MIN_SHARE = 0.20
-
-
-def _attach_outages(station_detail: list, bmu_map: dict,
-                    outages: pl.DataFrame) -> None:
-    """Attach significant REMIT outage windows to each mapped station's detail.
-
-    Stations absent from ``bmu_map`` are left untouched — the panel renders
-    the pinned unavailable wording (unknown, never zero)."""
-    from subsidy_engine_uk.schemes.remit import COVERAGE_FROM
-    df = (outages
-          .with_columns(
-              pl.col("event_start").str.to_datetime("%Y-%m-%dT%H:%M:%S%#z",
-                                                    strict=False).alias("start_dt"),
-              pl.col("event_end").str.to_datetime("%Y-%m-%dT%H:%M:%S%#z",
-                                                  strict=False).alias("end_dt"))
-          .drop_nulls(["start_dt", "end_dt", "unavailable_mw", "normal_mw"])
-          .filter(
-              ((pl.col("end_dt") - pl.col("start_dt"))
-               >= pl.duration(hours=OUTAGE_MIN_HOURS))
-              & (pl.col("normal_mw") > 0)
-              & (pl.col("unavailable_mw")
-                 >= OUTAGE_MIN_SHARE * pl.col("normal_mw"))))
-    for d in station_detail:
-        ids = bmu_map.get(d["station"])
-        if not ids:
-            continue
-        w = df.filter(pl.col("bmu").is_in(ids)).sort("start_dt")
-        d["outages"] = {
-            "coverage_from": COVERAGE_FROM.isoformat(),
-            "windows": [
-                {"start": r["start_dt"].date().isoformat(),
-                 "end": r["end_dt"].date().isoformat(),
-                 "type": ("Planned" if (r["unavailability_type"] or "")
-                          .lower().startswith("plan") else "Unplanned"),
-                 "mw_lost": r["unavailable_mw"]}
-                for r in w.to_dicts()
-            ],
-        }
+from subsidy_engine_uk.schemes import bsuos, capacity_market, cfd, constraints
+from subsidy_engine_uk.uplift import baseline_uplift
 
 
 def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
@@ -214,179 +36,10 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
     ``ro_stations`` are the named RO recipients (buy-out basis) surfaced in the
     recipients table; omitted in unit tests."""
     schemes: list[SchemeResult] = []
-
-    # --- CfD: bottom-up, split renewable / non-renewable by technology (M-7).
-    # is_renewable is classified here from the stored technology label, so the
-    # split reflects the current policy across the whole history rather than
-    # whatever was frozen into each snapshot at fetch time (cfd.classify also
-    # fails the build on any unclassified technology label).
-    gen = store.latest("cfd", "generation")
-    if gen is not None and gen.height:
-        gen = cfd.classify(gen)
-        for part, flag, perspectives, label in [
-            ("cfd_renewable", True, PERSPECTIVES, "CfD - renewables"),
-            ("cfd_low_carbon", False, ["low_carbon"],
-             "CfD - nuclear"),
-        ]:
-            sub = gen.filter(pl.col("is_renewable") == flag)
-            # Only emit a line that has payments. Nuclear holds CfDs but has not
-            # generated, so it has no rows yet and simply does not appear until
-            # Hinkley Point C starts paying out — no £0 placeholder to carry.
-            if not sub.height:
-                continue
-            daily = (sub.group_by("date").agg(pl.col("payment_gbp").sum().alias("cost_gbp"))
-                     .sort("date"))
-            gross, net = gross_net(sub, "payment_gbp")
-            by_station = group_by_station(
-                sub.group_by("cfd_id", "unit_name", "technology")
-                   .agg(pl.col("payment_gbp").sum().alias("cost"))
-                   .to_dicts(),
-                station_map or {})[:25]
-            extras = {"gross": gross, "net": net,
-                      "mwh": float(sub["generation_mwh"].sum() or 0.0),
-                      "by_technology": sub.group_by("technology")
-                          .agg(pl.col("payment_gbp").sum().alias("cost"),
-                               pl.col("generation_mwh").sum())
-                          .sort("cost", descending=True).to_dicts(),
-                      "by_recipient": sub.group_by("unit_name", "technology")
-                          .agg(pl.col("payment_gbp").sum().alias("cost"))
-                          .sort("cost", descending=True).head(25).to_dicts(),
-                      "by_station": by_station}
-            if flag:
-                # renewables carry the mapped stations' panel detail
-                port = store.latest("cfd", "portfolio")
-                statuses = (dict(zip(port["cfd_id"], port["status"]))
-                            if port is not None and port.height else {})
-                extras["station_detail"] = _station_detail(sub, by_station,
-                                                           statuses)
-                if bmu_map:
-                    remit_df = store.latest("remit", "outages")
-                    if remit_df is not None and remit_df.height:
-                        _attach_outages(extras["station_detail"], bmu_map,
-                                        remit_df)
-            schemes.append(SchemeResult(
-                scheme_id=part, label=label, perspectives=perspectives, cadence="daily",
-                annual=annualise_daily(daily),
-                cumulative_gbp=cumulative(daily),
-                runrate_gbp_per_year=trailing_runrate(daily),
-                data_to=daily["date"].max() if daily.height else None,
-                extras=extras,
-            ))
-
-    # --- Constraints: bottom-up daily merged with curated annual history
-    con_daily = store.read_all_partitions("constraints", "daily")
-    history = refs["constraints_history"]
-    if con_daily is not None and con_daily.height:
-        daily = (con_daily.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date"))
-        # Elexon replaces REF from the reference file's pin, guarded (splice module)
-        annual, held_from, held_to = splice("constraints", history, daily,
-                                            store.partitions("constraints", "daily"))
-        elexon_first_year = history.bottom_up_from
-        runrate = trailing_runrate(daily)
-        data_to = daily["date"].max()
-        by_recipient = (con_daily.group_by("lead_party")
-                        .agg(pl.col("cost_gbp").sum().alias("cost"),
-                             pl.col("volume_mwh").sum())
-                        .sort("cost", descending=True).head(25).to_dicts())
-        curtailed_mwh = float(-con_daily["volume_mwh"].sum())
-    else:
-        annual = history.annual
-        runrate = float(annual["cost_gbp"][-1])
-        data_to = date(int(annual["year"].max()), 12, 31)
-        by_recipient, curtailed_mwh = [], 0.0
-        held_from = held_to = None
-        elexon_first_year = None   # no Elexon data used: publish no Elexon year
-    constraints_annual = annual.select("year", "cost_gbp")
-    schemes.append(SchemeResult(
-        scheme_id="constraints", label="Constraint payments (paid to switch off)",
-        perspectives=PERSPECTIVES, cadence="daily",
-        annual=annual,
-        cumulative_gbp=float(annual["cost_gbp"].sum()),
-        runrate_gbp_per_year=runrate,
-        data_to=data_to,
-        extras={"by_recipient": by_recipient, "curtailed_mwh": curtailed_mwh,
-                "history_source_url": history.source_url,
-                "held_from": held_from, "held_to": held_to},
-    ))
-
-    # --- Capacity Market: bottom-up monthly, net-zero share only (change of
-    # 13 Oct 2026). Any power system needs backup, so the levy is NOT counted
-    # in full: each month's LCCC payment is scaled by share(year) = (CM paid -
-    # what "Reliable Britain", the actual system with net-zero policy removed,
-    # would have paid for its own backup) / CM paid, from
-    # reference/capacity_market_netzero_share.yaml (gas-counterfactual engine,
-    # spec 5.4). The same rule as TNUoS/BSUoS: count only what net zero added.
-    # Years after the engine's last year carry its last share forward.
-    # Rejected: pasting in the engine's pounds per year. Scaling the measured
-    # months keeps the line on LCCC's live data, so a restated month moves it
-    # in proportion; the drift guard below says when the shares are stale.
-    cm = store.latest("capacity_market", "payments")
-    if cm is not None and cm.height:
-        if cm_share is None:
-            raise ValueError(
-                "capacity_market data present but no cm_share table: the Clock "
-                "counts only the net-zero share of the Capacity Market "
-                "(reference/capacity_market_netzero_share.yaml)")
-        daily_like = cm.rename({"payment_gbp": "cost_gbp"})
-        monthly = daily_like.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date")
-        raw_annual_cm = annualise_daily(monthly)
-        shares = cm_netzero_shares(raw_annual_cm, cm_share)
-        weighted = (monthly.with_columns(pl.col("date").dt.year().cast(pl.Int64).alias("year"))
-                    .join(shares, on="year", how="left"))
-        attributed_monthly = weighted.select(
-            "date", (pl.col("cost_gbp") * pl.col("share")).alias("cost_gbp"))
-        # run-rate: the 12 calendar months ending at the latest published month
-        max_d = monthly["date"].max()
-        cutoff = date(max_d.year - 1, max_d.month, 1)
-        last12 = attributed_monthly.filter(pl.col("date") > cutoff)
-        cm_annual = annualise_daily(attributed_monthly)
-        raw_total = cumulative(monthly)
-        cm_cum = cumulative(attributed_monthly)
-        rng = {}
-        for tag in ("low", "high"):
-            band = annualise_daily(weighted.select(
-                "date", (pl.col("cost_gbp") * pl.col(f"share_{tag}")).alias("cost_gbp")))
-            band = add_real(band, deflators)
-            rng[tag] = {"cumulative": float(band["cost_gbp"].sum()),
-                        "cumulative_real": float(band["cost_gbp_2024"].sum())}
-        carry = cm_share["carry_forward_from"]
-        carry_pct = cm_share["years"][carry]["share"] * 100
-        schemes.append(SchemeResult(
-            scheme_id="capacity_market", label="Capacity Market",
-            perspectives=[], cadence="monthly",
-            layer="indirect",
-            attribution_pct=(cm_cum / raw_total) if raw_total else 0.0,
-            attribution_note=(
-                "Only the part of the Capacity Market that net zero caused is "
-                "counted. Any power system needs backup, so each year's levy is "
-                "reduced by what the same system without net-zero policy would "
-                "have paid at that year's capacity price for its own backup; the "
-                "remainder is counted. Shares for 2016-" + str(carry) + " come "
-                "from a model of that system; later years use the " + str(carry) +
-                f" share ({carry_pct:.1f}%) until the model covers them. The "
-                "figure is a floor: a 550 g/kWh emissions limit has kept about 11 GW "
-                "of coal out of the four-year-ahead auctions since 2021, and "
-                "capacity prices rose after it; no published source measures how "
-                "much of that rise net zero caused, so none of it is counted."),
-            attribution_confidence="medium",
-            annual=cm_annual,
-            cumulative_gbp=cm_cum,
-            runrate_gbp_per_year=float(last12["cost_gbp"].sum()),
-            data_to=monthly["date"].max(),
-            extras={"source": "LCCC data portal, capacity market payments",
-                    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
-                    "raw_annual": raw_annual_cm.rename({"cost_gbp": "cost"}).to_dicts(),
-                    "netzero_share": [
-                        {"year": r["year"], "share": r["share"],
-                         "share_low": r["share_low"], "share_high": r["share_high"],
-                         "basis": r["basis"]}
-                        for r in shares.to_dicts()],
-                    "range": rng,
-                    "share_provenance": {
-                        k: cm_share.get("provenance", {}).get(k)
-                        for k in ("engine", "commit", "commit_date", "file")},
-                    "carry_forward_from": carry},
-        ))
+    schemes += cfd.result(store, station_map=station_map, bmu_map=bmu_map)
+    con = constraints.result(store, refs["constraints_history"])
+    schemes += con
+    schemes += capacity_market.result(store, cm_share, deflators)
 
     # --- Annual reference schemes (RO, FIT). RO carries named per-station
     # recipients (buy-out basis) for the recipients table; the scheme total
@@ -419,104 +72,8 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
         schemes.append(result)
 
     if "bsuos_history" in refs and "bsuos" in baselines:
-        hist = refs["bsuos_history"]
-        bs_daily = store.read_all_partitions("bsuos", "daily")
-        if bs_daily is not None and bs_daily.height:
-            daily = bs_daily.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date")
-            # NESO replaces the history from the reference file's pin, guarded
-            # held days: the dates in the data (BSUoS is stored by fiscal year)
-            raw_annual, held_from, held_to = splice(
-                "bsuos", hist, daily, [d.isoformat() for d in daily["date"].to_list()])
-            raw_runrate = trailing_runrate(daily)
-            data_to = daily["date"].max()
-        else:
-            raw_annual = hist.annual
-            held_from = held_to = None
-            raw_runrate = float(raw_annual["cost_gbp"][-1])
-            data_to = date(int(raw_annual["year"].max()), 12, 31)
-        # Uplift after wind constraint payments, then split constraint turn-up
-        # out of it (spec: constraint-turnup). The turn-up line is capped at the
-        # uplift, so BSUoS residual + turn-up == uplift exactly and the indirect
-        # total cannot move; where no cap binds, residual + turn-up + wind
-        # constraints + indexed baseline == raw BSUoS.
-        uplift = baseline_uplift(raw_annual, float(baselines["bsuos"]["value"]),
-                                 deflators, subtract=constraints_annual)
-        latest_baseline = (float(baselines["bsuos"]["value"])
-                           * _latest_index(deflators)
-                           / float(deflators.filter(
-                               pl.col("year").is_between(*BASELINE_YEARS))["index"].mean()))
-        constraints_runrate = next(
-            s.runrate_gbp_per_year for s in schemes if s.scheme_id == "constraints")
-        uplift_runrate = max(0.0, raw_runrate - latest_baseline - constraints_runrate)
-        # Same window as the BSUoS data, so a lagging BSUoS feed never has
-        # turn-up subtracted for days it does not yet cover.
-        tu_daily = constraint_turnup.daily_cost(store).filter(pl.col("date") <= data_to)
-        if tu_daily.height:
-            tu_measured = annualise_daily(tu_daily).rename({"cost_gbp": "tu"})
-            split = (uplift.join(tu_measured, on="year", how="left")
-                     .with_columns(pl.col("tu").fill_null(0.0))
-                     .with_columns(pl.min_horizontal("tu", "cost_gbp").alias("tu")))
-            tu_annual = split.select("year", pl.col("tu").alias("cost_gbp"))
-            attributed = split.select("year", (pl.col("cost_gbp") - pl.col("tu"))
-                                      .alias("cost_gbp"))
-            tu_runrate = min(trailing_runrate(tu_daily), uplift_runrate)
-            runrate = uplift_runrate - tu_runrate
-            measured = constraint_turnup.read(store).filter(
-                pl.col("date") <= data_to)
-            by_fuel = (measured.filter(pl.col("basis") == constraint_turnup.ACCEPTED_WIND)
-                       .group_by("fuel")
-                       .agg(pl.col("cost_gbp").sum().alias("cost"),
-                            pl.col("volume_mwh").sum())
-                       .sort("cost", descending=True).to_dicts())
-            cross_check = {b: float(measured.filter(pl.col("basis") == b)["cost_gbp"].sum())
-                           for b in (constraint_turnup.ACCEPTED,
-                                     constraint_turnup.ACCEPTED_WIND)}
-            tu_cum = float(tu_annual["cost_gbp"].sum())
-            schemes.append(SchemeResult(
-                scheme_id="constraint_turnup",
-                label="Constraint turn-up (paid to switch on)",
-                perspectives=[], cadence="daily", layer="indirect",
-                annual=tu_annual,
-                cumulative_gbp=tu_cum,
-                runrate_gbp_per_year=tu_runrate,
-                data_to=tu_daily["date"].max(),
-                attribution_pct=1.0,
-                attribution_note=(
-                    "Estimated cost of paying other stations to replace the wind "
-                    "energy switched off for network constraints: each half-hour's "
-                    "switched-off wind volume priced against that half-hour's "
-                    "accepted offers (Octopus Energy Wasted Wind method). Taken out "
-                    "of the balancing (BSUoS) uplift, never more than it, so no "
-                    "total changes."),
-                attribution_confidence="low",
-                extras={"by_fuel_while_wind_constrained": by_fuel,
-                        "cross_check_cumulative": cross_check,
-                        "measured_from": tu_daily["date"].min().isoformat(),
-                        "measured_annual": tu_measured.rename(
-                            {"tu": "cost"}).to_dicts(),
-                        "source": "Elexon Insights settlement stacks (bids and offers)",
-                        "source_url": constraint_turnup.SOURCE_URL},
-            ))
-        else:
-            attributed = uplift
-            runrate = uplift_runrate
-        raw_total = float(raw_annual["cost_gbp"].sum())
-        cum = float(attributed["cost_gbp"].sum())
-        schemes.append(SchemeResult(
-            scheme_id="bsuos", label="Balancing costs (BSUoS uplift)",
-            perspectives=[], cadence="daily", layer="indirect",
-            annual=attributed,
-            cumulative_gbp=cum,
-            runrate_gbp_per_year=runrate,
-            data_to=data_to,
-            attribution_pct=(cum / raw_total) if raw_total else 0.0,
-            attribution_note=hist.attribution_rule,
-            attribution_confidence=hist.attribution_confidence or "low",
-            extras={"raw_annual": raw_annual.rename({"cost_gbp": "cost"}).to_dicts(),
-                    "source": hist.source, "source_url": hist.source_url,
-                    "verified": hist.verified,
-                    "held_from": held_from, "held_to": held_to},
-        ))
+        schemes += bsuos.result(store, refs["bsuos_history"],
+                                float(baselines["bsuos"]["value"]), deflators, con[0])
 
     # --- Real-terms columns on every scheme, then totals
     for s in schemes:
@@ -531,5 +88,6 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
     return {"schemes": schemes, "perspectives": out_perspectives,
             # the first year Elexon replaces REF for constraints (fix 5 guard); published
             # in breakdown.json so the pages state the same year as the figures
-            "elexon_first_year": elexon_first_year,
+            "elexon_first_year": (refs["constraints_history"].bottom_up_from
+                                  if con[0].extras["held_from"] else None),
             "indirect": out_indirect}

@@ -25,7 +25,10 @@ import httpx
 import polars as pl
 
 from subsidy_engine_uk import elexon
+from subsidy_engine.money import PERSPECTIVES, SchemeResult, trailing_runrate
+from subsidy_engine.reference import ReferenceScheme
 from subsidy_engine.store import SnapshotStore
+from subsidy_engine_uk.splice import splice
 
 SOURCE_URL = elexon.API_BASE + "/balancing/settlement/stack/all/bid"
 
@@ -142,3 +145,40 @@ def update(store: SnapshotStore, *, days: int = 3, client: httpx.Client | None =
     """Refetch the last `days` complete days (settlement data firms up)."""
     end = datetime.now(timezone.utc).date() - timedelta(days=1)
     backfill(store, end - timedelta(days=days - 1), end, client=client, skip_existing=False)
+
+
+# --- Result (moved from build.py, aios-harness#38)
+
+def result(store: SnapshotStore, history: ReferenceScheme) -> list[SchemeResult]:
+    """The constraints line: bottom-up daily spliced with ``history`` (REF), or the
+    history alone with no Elexon data (``held_from`` then None)."""
+    con_daily = store.read_all_partitions("constraints", "daily")
+    if con_daily is not None and con_daily.height:
+        daily = (con_daily.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date"))
+        # Elexon replaces REF from the reference file's pin, guarded (splice module)
+        annual, held_from, held_to = splice("constraints", history, daily,
+                                            store.partitions("constraints", "daily"))
+        runrate = trailing_runrate(daily)
+        data_to = daily["date"].max()
+        by_recipient = (con_daily.group_by("lead_party")
+                        .agg(pl.col("cost_gbp").sum().alias("cost"),
+                             pl.col("volume_mwh").sum())
+                        .sort("cost", descending=True).head(25).to_dicts())
+        curtailed_mwh = float(-con_daily["volume_mwh"].sum())
+    else:
+        annual = history.annual
+        runrate = float(annual["cost_gbp"][-1])
+        data_to = date(int(annual["year"].max()), 12, 31)
+        by_recipient, curtailed_mwh = [], 0.0
+        held_from = held_to = None
+    return [SchemeResult(
+        scheme_id="constraints", label="Constraint payments (paid to switch off)",
+        perspectives=PERSPECTIVES, cadence="daily",
+        annual=annual,
+        cumulative_gbp=float(annual["cost_gbp"].sum()),
+        runrate_gbp_per_year=runrate,
+        data_to=data_to,
+        extras={"by_recipient": by_recipient, "curtailed_mwh": curtailed_mwh,
+                "history_source_url": history.source_url,
+                "held_from": held_from, "held_to": held_to},
+    )]

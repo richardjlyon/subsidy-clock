@@ -9,7 +9,7 @@ import polars as pl
 import pytest
 
 from subsidy_engine import reference, sitedata
-from subsidy_engine_uk import build as uk_build
+from subsidy_engine_uk.schemes import capacity_market
 
 REF = Path("reference/capacity_market_netzero_share.yaml")
 
@@ -18,15 +18,6 @@ def deflators():
     return pl.DataFrame({"year": [2002, 2003, 2004, 2005, 2023, 2024, 2025],
                          "index": [70.0, 71.0, 72.0, 73.0, 128.0, 132.0, 136.0]},
                         schema={"year": pl.Int64, "index": pl.Float64})
-
-
-def _ref(scheme_id):
-    from subsidy_engine.reference import ReferenceScheme
-    annual = pl.DataFrame({"year": [2024], "cost_gbp": [1.0]},
-                          schema={"year": pl.Int64, "cost_gbp": pl.Float64})
-    return ReferenceScheme(scheme_id, scheme_id, ["renewables", "low_carbon"], "annual",
-                           "s", "https://s", True, annual, attribution_rule="r",
-                           attribution_confidence="medium")
 
 
 def _share_table(rows: dict[int, tuple[float, float, float, float]], carry: int) -> dict:
@@ -46,10 +37,7 @@ def _build_cm(tmp_path, payments: dict[date, float], cm_share):
                        "payment_gbp": list(payments.values())},
                       schema={"date": pl.Date, "auction": pl.String, "payment_gbp": pl.Float64})
     store.write("capacity_market", "payments", cm, source_url="u", date_col="date")
-    refs = {k: _ref(k) for k in ("constraints_history", "ro", "fit")}
-    model = uk_build.build(store, refs, deflators=deflators(), baselines={},
-                           cm_share=cm_share)
-    return model, {s.scheme_id: s for s in model["schemes"]}["capacity_market"]
+    return None, capacity_market.result(store, cm_share, deflators())[0]
 
 
 def test_per_year_share_applied_to_each_month(tmp_path):

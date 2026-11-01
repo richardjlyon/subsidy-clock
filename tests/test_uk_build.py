@@ -4,6 +4,7 @@ from datetime import date
 import polars as pl
 
 from subsidy_engine_uk import build as uk_build
+from subsidy_engine_uk.uplift import baseline_uplift
 
 
 def deflators():
@@ -17,7 +18,7 @@ def test_baseline_uplift_floors_at_zero_and_nets_subtraction():
                        schema={"year": pl.Int64, "cost_gbp": pl.Float64})
     constraints = pl.DataFrame({"year": [2023], "cost_gbp": [100.0]},
                                schema={"year": pl.Int64, "cost_gbp": pl.Float64})
-    out = uk_build.baseline_uplift(raw, 100.0, deflators(), subtract=constraints)
+    out = baseline_uplift(raw, 100.0, deflators(), subtract=constraints)
     rows = {r["year"]: r["cost_gbp"] for r in out.to_dicts()}
     # baseline index = mean(70,71,72,73) = 71.5
     # 2003: 60 - 100*(71/71.5) = negative -> floored to 0

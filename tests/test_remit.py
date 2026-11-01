@@ -5,7 +5,7 @@ import pytest
 
 from subsidy_engine_uk.schemes import remit
 from subsidy_engine_uk.stations import load_station_bmus
-from subsidy_engine_uk import build as uk_build
+from subsidy_engine_uk.schemes import cfd
 
 
 def _msg(mrid, rev, bmu="T_TEST-1", start="2021-06-08T08:00:00Z",
@@ -51,7 +51,7 @@ def test_attach_outages_filters_and_stamps_coverage():
              mw=50.0, normal=1000.0),
     ])
     detail = [{"station": "Mapped Farm"}, {"station": "Unmapped Farm"}]
-    uk_build._attach_outages(detail, {"Mapped Farm": ["T_TEST-1"]}, outages)
+    cfd._attach_outages(detail, {"Mapped Farm": ["T_TEST-1"]}, outages)
     o = detail[0]["outages"]
     assert o["coverage_from"] == remit.COVERAGE_FROM.isoformat()
     assert [w["type"] for w in o["windows"]] == ["Unplanned"]
