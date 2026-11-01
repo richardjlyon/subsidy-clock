@@ -17,3 +17,14 @@ findings:
     approved: "Richard, 1 Nov 2026 (decisions.md, technical fixes: CPS from 1 Apr 2013)"
     definitions: D-10 (i)
     drop: [clock.CPS.not_counted_2013]
+
+  fit_scheme_years_2019_2022:
+    status: applied
+    kind: data_error
+    reason: >-
+      The live Clock carried FiT scheme year 2019-20 at 2022-23's Ofgem scheme value and 2022-23 at
+      2019-20's. The register's reading of Ofgem's FiT annual reports puts each value in its own scheme year;
+      the 2002-24 cash total is unchanged. Ported from hermes/modeller/t_b468cbeb-rb-findings dfe0aaff6.
+    approved: "Richard, 1 Nov 2026 (decisions.md, technical fixes: FiT 2019/2022 swap)"
+    definitions: D-01 (data error part)
+    drop: [clock_live.FIT.sy2019_sy2022_as_published]

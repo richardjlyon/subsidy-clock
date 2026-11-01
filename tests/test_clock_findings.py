@@ -102,3 +102,18 @@ def test_cps_is_counted_from_1_april_2013(model):
     got = _annual(model, "ccl")
     for y in range(2002, 2025):
         assert got[y] == pytest.approx((ccl[y] + cps[y]) * 1e6, abs=0.01), y
+
+
+# ---- step 4: FiT scheme years 2019-20 and 2022-23 in their own years ----
+
+def test_fit_scheme_values_sit_in_their_own_scheme_years(model):
+    """The live Clock swapped scheme years 2019-20 and 2022-23 (data error). Each FiT year is the register's
+    FIT series plus its scheme-value adjustment (the Clock's basis), and nothing else."""
+    reg = _reg()
+    series = reg.series("FIT")
+    sv = reg.adjustments("FIT", "clock_live")["alt.FIT.ofgem_scheme_value"]
+    got = _annual(model, "fit")
+    for y in range(2010, 2025):
+        assert got[y] == pytest.approx((series[y] + sv.get(y, 0.0)) * 1e6, abs=0.01), (
+            f"FiT {y}: {got[y] / 1e6:,.3f}m on the Clock, Ofgem's scheme value for scheme year {y} is "
+            f"{series[y] + sv.get(y, 0.0):,.3f}m")
