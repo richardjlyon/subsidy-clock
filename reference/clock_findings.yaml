@@ -39,3 +39,15 @@ findings:
     approved: "Richard, 1 Nov 2026 (decisions.md: TNUoS 2005-12, BSUoS history and ETS 2009-11, option B, primary sources)"
     definitions: D-09
     drop: [clock.BSUOS.clock_source_history]
+
+  tnuos_primary_sources_calendar_years:
+    status: ruled
+    kind: source
+    reason: >-
+      The live Clock's TNUoS was the flat 2002-05 baseline (2002-04), REF Table 2 (2005-12) and NESO via
+      Turver (2013-24), charging years keyed as calendar years. The register's TNUOS series is the primary
+      sources on calendar years for every year; taking it for all of 2002-24 keeps one basis (no Jan-Mar 2013
+      gap), so 2013-24 move as well.
+    approved: "Richard, 1 Nov 2026 (decisions.md: TNUoS 2005-12 option B, primary sources; calendar-year basis D-13); all of 2002-24 per the coordinator, aios-harness#43"
+    definitions: D-09, D-13
+    drop: [clock.TNUOS.clock_source_history]

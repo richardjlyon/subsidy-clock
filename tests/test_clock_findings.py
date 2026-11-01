@@ -142,3 +142,23 @@ def test_no_ref_figures_left_in_the_bsuos_history_file():
     series = _reg().series("BSUOS")
     for y, v in doc["annual"].items():
         assert v == pytest.approx(series[int(y)] * 1e6, abs=0.01), y
+
+
+# ---- aios-harness#43 step 1: TNUoS 2002-24 from the register's primary series, calendar years (D-09, D-13) ----
+
+def test_tnuos_is_the_registers_primary_series_on_calendar_years(model):
+    """Richard, 1 Nov 2026: primary sources, calendar years. Each raw TNUoS year 2002-24 is the register's
+    TNUOS series itself (no Jan-Mar 2013 gap between a calendar 2012 and a charging-year 2013)."""
+    series = _reg().series("TNUOS")
+    raw = _raw(model, "tnuos")
+    for y in range(2002, 2025):
+        assert raw[y] == pytest.approx(series[y] * 1e6, abs=0.01), y
+
+
+def test_no_ref_figures_left_in_the_tnuos_file():
+    doc = yaml.safe_load((ROOT / "reference" / "indirect_annual.yaml").read_text())["schemes"]["tnuos"]
+    text = " ".join(str(doc.get(k, "")) for k in ("source", "note"))
+    assert "REF" not in text
+    series = _reg().series("TNUOS")
+    for y, v in doc["annual"].items():
+        assert v == pytest.approx(series[int(y)] * 1e6, abs=0.01), y

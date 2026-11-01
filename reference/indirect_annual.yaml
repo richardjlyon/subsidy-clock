@@ -230,19 +230,17 @@ schemes:
     label: Transmission Network Use of System (attributed uplift)
     perspectives: []
     cadence: annual
+    year_basis: calendar
     source: >-
-      2013-2024: NESO TNUoS charging statements (total revenue), as compiled in
-      David Turver's "TNUoS and BSUoS summary" workbook from NESO's Final TNUoS
-      Tariffs publications. Calendar mapping is fiscal-year-ended-March minus one
-      (the period starting April of the calendar year); validated because the
-      2022-24 calendar values reproduce our three independent NESO anchors
-      exactly - "Final TNUoS Tariffs for 2023/24" (GBP 4,416.4m, our 2023) and
-      "Final TNUoS Tariffs for 2024/25" (MAR Total Revenue GBP 4,188.5m, our
-      2024). 2002-2004: GBP 0.9bn/yr per the verified 2002-05 baseline
-      (reference/baselines.yaml). Earliest intermediate years 2005-2012: REF
-      April 2025 study Table 2 total-charge column (in parentheses), itself
-      compiled from NESO/Ofgem charging statements - pending primary
-      confirmation (not reached by the Turver/NESO series).
+      The shared cost register (reference/register_pin.yaml), line TNUOS, its
+      primary-source series of the whole charge (demand and generators'
+      parts), calendar years: 2006-24 from Ofgem's TPCR4 final proposals and
+      Transmission Annual Reports and NESO's TNUoS tariff statements, charging
+      years weighted to calendar years (1/4 previous + 3/4 own); 2002-05 the
+      gas-counterfactual engine's assembled transmission owners' allowances
+      (NGC, SP Transmission, SHETL; no GB charge before BETTA). Richard's
+      rulings of 1 Nov 2026 (primary sources; calendar years;
+      aios-harness#43).
     source_url: https://www.neso.energy/industry-information/charging/tnuos-charges
     verified: false
     expected_next_update: 2027-02-28   # NESO TNUoS charging statements
@@ -253,36 +251,36 @@ schemes:
         attributed to renewables, floored at zero.
       confidence: low
     note: >-
-      NESO-traced years: 2013-2024 (NESO TNUoS charging statements via the
-      Turver workbook; 2022-2024 also confirmed directly against NESO Final
-      TNUoS Tariffs documents). Baseline years: 2002-2004. Still pending primary
-      confirmation: 2005-2012 (REF Table 2's total-charge column - the
-      Turver/NESO series does not reach before 2013/14). 2024/25 figure is
-      NESO's final-tariff-setting forecast of revenue to be recovered.
+      Raw annual TNUoS, calendar years 2002-2024. The build reads every closed
+      year from the shared cost register; the figures below are the
+      register's, copied here so the file says what the Clock counts. Until 1
+      Nov 2026 the Clock keyed each April-March charging year to the calendar
+      year it starts in, from NESO via David Turver's workbook (2013-24) and
+      a third-party compilation (2005-12).
     annual:
-      2002: 900000000
-      2003: 900000000
-      2004: 900000000
-      2005: 900000000
-      2006: 1000000000
-      2007: 1000000000
-      2008: 1400000000
-      2009: 1600000000
-      2010: 1600000000
-      2011: 1600000000
-      2012: 1600000000
-      2013: 2196600000
-      2014: 2524300000
-      2015: 2636700000
-      2016: 2708700000
-      2017: 2631500000
-      2018: 2670300000
-      2019: 2837400000
-      2020: 2843000000
-      2021: 3594000000
-      2022: 3594000000
-      2023: 4416400000
-      2024: 4188500000
+      2002: 961134248.1908686
+      2003: 974957267.237115
+      2004: 990413095.7684834
+      2005: 1017766642.5667552
+      2006: 1227578157.76383
+      2007: 1297765036.5642867
+      2008: 1390902500.0000002
+      2009: 1454232499.9999998
+      2010: 1537775000.0
+      2011: 1682750000.0
+      2012: 1891750000.0
+      2013: 2101750000.0
+      2014: 2396225000.0000005
+      2015: 2596850000.0
+      2016: 2690700000.0
+      2017: 2650800000.0
+      2018: 2660375000.0
+      2019: 2795550000.0
+      2020: 2841600000.0
+      2021: 3199250000.0
+      2022: 3525189465.840515
+      2023: 4210876321.0343003
+      2024: 4245479388.584709
   bsuos_history:
     label: Balancing Services Use of System, pre-2017 history (raw totals)
     perspectives: []
