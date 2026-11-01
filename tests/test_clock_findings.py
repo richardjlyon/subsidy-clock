@@ -128,7 +128,8 @@ def _raw(model, sid):
 def test_bsuos_history_is_the_registers_primary_series(model):
     """Richard, 1 Nov 2026 (option B): BSUoS history from primary sources (Ofgem, National Grid, NAO) as in the
     shared register, not REF Table 2. Each raw year 2002-16 is the register's BSUOS series itself."""
-    series = _reg().series("BSUOS")
+    # since aios-harness#45 less the generators' share (the register's rb row, taken by name)
+    series = F.line(_reg(), "clock_live", "BSUOS", F.load(FILE, _reg()))
     raw = _raw(model, "bsuos")
     for y in range(2002, 2017):
         assert raw[y] == pytest.approx(series[y] * 1e6, abs=0.01), y
@@ -138,7 +139,7 @@ def test_no_ref_figures_left_in_the_bsuos_history_file():
     doc = yaml.safe_load((ROOT / "reference" / "indirect_annual.yaml").read_text())["schemes"]["bsuos_history"]
     text = " ".join(str(doc.get(k, "")) for k in ("source", "note"))
     assert "REF" not in text
-    series = _reg().series("BSUOS")
+    series = F.line(_reg(), "clock_live", "BSUOS", F.load(FILE, _reg()))   # what the Clock counts
     for y, v in doc["annual"].items():
         assert v == pytest.approx(series[int(y)] * 1e6, abs=0.01), y
 
@@ -148,7 +149,8 @@ def test_no_ref_figures_left_in_the_bsuos_history_file():
 def test_tnuos_is_the_registers_primary_series_on_calendar_years(model):
     """Richard, 1 Nov 2026: primary sources, calendar years. Each raw TNUoS year 2002-24 is the register's
     TNUOS series itself (no Jan-Mar 2013 gap between a calendar 2012 and a charging-year 2013)."""
-    series = _reg().series("TNUOS")
+    # since aios-harness#45 less the generators' share (the register's rb row, taken by name)
+    series = F.line(_reg(), "clock_live", "TNUOS", F.load(FILE, _reg()))
     raw = _raw(model, "tnuos")
     for y in range(2002, 2025):
         assert raw[y] == pytest.approx(series[y] * 1e6, abs=0.01), y
@@ -158,6 +160,27 @@ def test_no_ref_figures_left_in_the_tnuos_file():
     doc = yaml.safe_load((ROOT / "reference" / "indirect_annual.yaml").read_text())["schemes"]["tnuos"]
     text = " ".join(str(doc.get(k, "")) for k in ("source", "note"))
     assert "REF" not in text
-    series = _reg().series("TNUOS")
+    series = F.line(_reg(), "clock_live", "TNUOS", F.load(FILE, _reg()))   # what the Clock counts
     for y, v in doc["annual"].items():
         assert v == pytest.approx(series[int(y)] * 1e6, abs=0.01), y
+
+
+# ---- aios-harness#45: take another product's named adjustment ----
+
+def test_take_names_another_products_register_row_or_fails(tmp_path):
+    ok = _one(drop=[], take=[["TNUOS", "rb", "rb.TNUOS.generators_share_out"]])
+    assert F.load(_write(tmp_path, ok), _reg()).take == [("TNUOS", "rb", "rb.TNUOS.generators_share_out")]
+    with pytest.raises(F.FindingsError, match="no_such"):
+        F.load(_write(tmp_path, _one(drop=[], take=[["TNUOS", "rb", "rb.TNUOS.no_such"]])), _reg())
+    with pytest.raises(F.FindingsError, match="BSUOS"):   # right item, wrong line
+        F.load(_write(tmp_path, _one(drop=[], take=[["BSUOS", "rb", "rb.TNUOS.generators_share_out"]])), _reg())
+
+
+def test_take_moves_the_line_by_exactly_the_register_row(tmp_path):
+    reg = _reg()
+    sel = F.load(_write(tmp_path, _one(drop=[], take=[["TNUOS", "rb", "rb.TNUOS.generators_share_out"]])), reg)
+    got = F.line(reg, "clock_live", "TNUOS", sel)
+    base = F.line(reg, "clock_live", "TNUOS", F.Selection())
+    gen = reg.adjustments("TNUOS", "rb")["rb.TNUOS.generators_share_out"]
+    for y, v in gen.items():
+        assert got[y] == pytest.approx(base[y] + v, abs=1e-9), y

@@ -88,36 +88,38 @@ schemes:
         negative (signed years, as Reliable Britain).
       confidence: low
     note: >-
-      Raw annual TNUoS, calendar years 2002-2024. The build reads every closed
+      Raw annual TNUoS less the generators' share (left out of the Clock,
+      0024; the register's rb.TNUOS.generators_share_out row, taken by
+      reference/clock_findings.yaml), calendar years 2002-2024. The build reads every closed
       year from the shared cost register; the figures below are the
       register's, copied here so the file says what the Clock counts. Until 1
       Nov 2026 the Clock keyed each April-March charging year to the calendar
       year it starts in, from NESO via David Turver's workbook (2013-24) and
       a third-party compilation (2005-12).
     annual:
-      2002: 961134248.1908686
-      2003: 974957267.237115
-      2004: 990413095.7684834
-      2005: 1017766642.5667552
-      2006: 1227578157.76383
-      2007: 1297765036.5642867
-      2008: 1390902500.0000002
-      2009: 1454232499.9999998
-      2010: 1537775000.0
-      2011: 1682750000.0
-      2012: 1891750000.0
-      2013: 2101750000.0
-      2014: 2396225000.0000005
-      2015: 2596850000.0
-      2016: 2690700000.0
-      2017: 2650800000.0
-      2018: 2660375000.0
-      2019: 2795550000.0
-      2020: 2841600000.0
-      2021: 3199250000.0
-      2022: 3525189465.840515
-      2023: 4210876321.0343003
-      2024: 4245479388.584709
+      2002: 701628001.179334
+      2003: 711718805.0830939
+      2004: 723001559.9109929
+      2005: 742969649.0737313
+      2006: 896132055.1675959
+      2007: 947368476.6919293
+      2008: 1015358825.0
+      2009: 1061589724.9999998
+      2010: 1122575750.0
+      2011: 1228407500.0
+      2012: 1380977500.0
+      2013: 1534277500.0
+      2014: 1749086730.924506
+      2015: 1970804743.6415017
+      2016: 2197725000.0
+      2017: 2245353499.9999995
+      2018: 2240434500.0000005
+      2019: 2385400000.0
+      2020: 2459550000.0
+      2021: 2525704500.0
+      2022: 2700449873.2996297
+      2023: 3292507871.273864
+      2024: 3216053641.527057
   bsuos_history:
     label: Balancing Services Use of System, pre-2017 history (raw totals)
     perspectives: []
@@ -151,7 +153,9 @@ schemes:
         and taken out of this one.
       confidence: low
     note: >-
-      Raw annual BSUoS, calendar years 2002-2016, before the first full
+      Raw annual BSUoS less the generators' share (left out of the Clock,
+      0024; the register's rb.BSUOS.generators_share_out row), calendar years
+      2002-2016, before the first full
       calendar year the settled NESO series covers (2017). The build reads
       every closed year from the shared cost register; the figures below are
       the register's, copied here so the file says what the Clock counts.
@@ -161,18 +165,18 @@ schemes:
       2026-09-30, amendment `bsuos-basis-2026-09-30`). Being on calendar years,
       the series no longer counts January-March 2017 in both 2016 and 2017.
     annual:
-      2002: 498979037.533642
-      2003: 476032510.51808584
-      2004: 499377530.0433188
-      2005: 609050810.8057181
-      2006: 605315938.4048433
-      2007: 660349479.468281
-      2008: 925942500.0
-      2009: 844775000.0000001
-      2010: 712012456.5174586
-      2011: 866695818.8391529
-      2012: 912375000.0
-      2013: 978375000.0
-      2014: 992849999.9999999
-      2015: 1009750000.0
-      2016: 1231246489.4550018
+      2002: 249489518.766821
+      2003: 238016255.25904292
+      2004: 249688765.0216594
+      2005: 304525405.40285903
+      2006: 302657969.20242167
+      2007: 330174739.7341405
+      2008: 462971250.0
+      2009: 422387500.00000006
+      2010: 356006228.2587293
+      2011: 433347909.41957647
+      2012: 456187500.0
+      2013: 490690500.00000006
+      2014: 499895400.0
+      2015: 510438599.99999994
+      2016: 624965016.643141

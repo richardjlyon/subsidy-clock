@@ -154,19 +154,37 @@ def engine_export(root: Path) -> tuple[dict, dict]:
     return ex, mp
 
 
+def _run_file(root: Path, mp: dict) -> dict:
+    """The pinned engine release's run file (aios-harness#44), refusing any other bytes."""
+    p = root / mp["run_file"]
+    if hashlib.sha256(p.read_bytes()).hexdigest() != mp["run_sha256"]:
+        raise ValueError(f"{p}: sha256 is not the model pin's run_sha256 {mp['run_sha256']}")
+    run = json.loads(p.read_text())
+    if run["meta"]["engine_version"] != mp["engine_version"]:
+        raise ValueError(f"{p}: engine_version {run['meta']['engine_version']} is not the pin's")
+    return run
+
+
 def road_from_engine(root: Path) -> dict:
     """The no-net-zero road TNUoS and BSUoS are counted above (ruling C, aios-harness#43): GO5 grid and GO4
-    balancing per calendar year from the pinned engine export (central; generators' share included), with
-    the export's carry-forward year. {"tnuos": road, "bsuos": road}."""
+    balancing per calendar year, GB, GBP nominal, with the generators' share REMOVED (Richard, 1 Nov 2026:
+    ruling B, 0024 stands for the Clock; aios-harness#45), from the pinned run file's fossil-Britain bill.
+    The Clock export carries only the share-included basis, so it gives the carry-forward year only.
+    {"tnuos": road, "bsuos": road}."""
     ex, mp = engine_export(root)
-    if ex["grid"].get("gen_share", "included") != "included":
-        raise ValueError("engine export grid is not on the generators'-share-included basis the Clock uses")
+    run = _run_file(root, mp)
     out = {}
-    for key, block, what in (("tnuos", "grid", "GO5 high-voltage grid"), ("bsuos", "balancing", "GO4 balancing")):
-        out[key] = {"years": {int(y): float(r["central_gbp"]) for y, r in ex[block]["years"].items()},
-                    "carry_forward_from": int(ex["carry_forward"]["from"]),
-                    "engine_version": mp["engine_version"], "what": what,
-                    "method": ex[block].get("method", "")}
+    for key, go, what in (("tnuos", "GO5", "GO5 high-voltage grid"), ("bsuos", "GO4", "GO4 balancing")):
+        years = {}
+        for y, bill in run["bills"].items():
+            item = next(i for i in bill["gasonly"] if i["id"] == go)
+            if item.get("geo") != "GB" or "generators' share" not in item.get("years_note", ""):
+                raise ValueError(f"run file {go} {y}: not GB or not on a stated generators'-share basis")
+            years[int(y)] = float(item["national_gbp_m_nominal"]) * 1e6
+        out[key] = {"years": years, "carry_forward_from": int(ex["carry_forward"]["from"]),
+                    "engine_version": mp["engine_version"],
+                    "what": f"{what}, generators' share removed",
+                    "method": ex["grid" if go == "GO5" else "balancing"].get("method", "")}
     return out
 
 
@@ -176,12 +194,7 @@ def carbon_from_engine(root: Path) -> dict:
     share), from the pinned engine release's run file, refusing any other bytes. 2025 (provisional in the
     engine) is left out: the Clock's closed years end in 2024 and the counter carries the line on."""
     _, mp = engine_export(root)
-    p = root / mp["run_file"]
-    if hashlib.sha256(p.read_bytes()).hexdigest() != mp["run_sha256"]:
-        raise ValueError(f"{p}: sha256 is not the model pin's run_sha256 {mp['run_sha256']}")
-    run = json.loads(p.read_text())
-    if run["meta"]["engine_version"] != mp["engine_version"]:
-        raise ValueError(f"{p}: engine_version {run['meta']['engine_version']} is not the pin's")
+    run = _run_file(root, mp)
     cc = run["carbon_crosscheck"]
     years = {}
     for y in range(2002, 2025):

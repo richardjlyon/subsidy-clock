@@ -97,7 +97,9 @@ def test_every_closed_year_of_every_covered_line_is_the_registers(base_model):
     checks = {
         "ro": (("RO",), False), "fit": (("FIT",), False), "ccl": (("CCL_ELEC",), False),
         "tnuos": (("TNUOS",), True), "bsuos": (("BSUOS",), True),
-        "constraints": (("CONSTRAINTS",), False), "constraint_turnup": (("TURNUP",), False),
+        # turn-up: the register carries it as measured, before the cap at the balancing line (which binds
+        # in some years since the generators' share left, aios-harness#45)
+        "constraints": (("CONSTRAINTS",), False), "constraint_turnup": (("TURNUP",), "measured_annual"),
         "cfd_renewable": (("CFD",), False), "capacity_market": (("CM_PAID",), True),
     }
     n = 0
@@ -107,7 +109,8 @@ def test_every_closed_year_of_every_covered_line_is_the_registers(base_model):
     for sid, (lines, raw) in checks.items():
         vals = R.line_values(reg, prod, lines, sel)
         s = _scheme(base_model, sid)
-        got = ({int(r["year"]): r["cost"] for r in s.extras["raw_annual"]} if raw else
+        key = raw if isinstance(raw, str) else "raw_annual"
+        got = ({int(r["year"]): r["cost"] for r in s.extras[key]} if raw else
                {r["year"]: r["cost_gbp"] for r in s.annual.to_dicts()})
         for y, v in vals.items():
             if y <= closed and y in got:

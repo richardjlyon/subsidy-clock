@@ -89,5 +89,4 @@ def road_extras(years: list[int], road: dict, deflators: pl.DataFrame,
                     if data_to is not None and y == data_to.year and part_year_fraction(data_to) < 1
                     else "")}
                 for y, v in zip(ser["year"].to_list(), ser["road"].to_list())],
-            "road_source": (f"gas-counterfactual engine {road['engine_version']}, {road['what']}; "
-                            "generators' share included")}
+            "road_source": f"gas-counterfactual engine {road['engine_version']}, {road['what']}"}

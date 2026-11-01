@@ -40,3 +40,17 @@ findings:
     approved: "Richard, 1 Nov 2026 (decisions.md: TNUoS 2005-12 option B, primary sources; calendar-year basis D-13); all of 2002-24 per the coordinator, aios-harness#43"
     definitions: D-09, D-13
     drop: [clock.TNUOS.clock_source_history]
+
+  generators_share_out:
+    status: ruled
+    kind: definition
+    reason: >-
+      The generators' share of TNUoS and BSUoS is left out of the Clock (0024 stands), so it is not counted
+      twice beside the subsidies and matches the Reliable Britain paper's named difference. The Clock takes
+      the register's own rows that remove it for Reliable Britain (product rb), by item id; the road is taken
+      on the same basis (engine GO5/GO4, generators' share removed; reference/model_pin.yaml).
+    approved: "Richard, 1 Nov 2026 (decisions.md: generators' share of grid and balancing charges, B, left out; aios-harness#45)"
+    definitions: D-06
+    take:
+      - [TNUOS, rb, rb.TNUOS.generators_share_out]
+      - [BSUOS, rb, rb.BSUOS.generators_share_out]

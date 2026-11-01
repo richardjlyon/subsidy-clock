@@ -26,10 +26,13 @@ class FindingsError(ValueError):
 class Selection:
     applied: list[str] = field(default_factory=list)
     drop: set[str] = field(default_factory=set)
+    take: list[tuple[str, str, str]] = field(default_factory=list)   # (line, product, item_id)
 
     def record(self) -> dict:
-        """What breakdown.json publishes: the findings applied and the register adjustments they drop."""
-        return {"applied": list(self.applied), "dropped": sorted(self.drop)}
+        """What breakdown.json publishes: the findings applied, the register adjustments they drop, and
+        those they take from another product's rows."""
+        return {"applied": list(self.applied), "dropped": sorted(self.drop),
+                "taken": [list(t) for t in self.take]}
 
 
 def _register_items(reg: CR.Register) -> dict[str, set[str]]:
@@ -41,9 +44,16 @@ def _register_items(reg: CR.Register) -> dict[str, set[str]]:
     return out
 
 
+def _register_line_items(reg: CR.Register) -> set[tuple[str, str, str]]:
+    """(line, product, item_id) for every input adjustment row."""
+    return {(r["line_id"], p, r["item_id"]) for r in reg.rows if r["row_type"] == "input_adjustment"
+            for p in r["applies_to"].split(";")}
+
+
 def load(path: Path | str, reg: CR.Register, *, product: str = "clock_live") -> Selection:
     doc = yaml.safe_load(Path(path).read_text()) or {}
     items = _register_items(reg)
+    line_items = _register_line_items(reg)
     sel = Selection()
     for fid, f in (doc.get("findings") or {}).items():
         if f.get("status") not in STATUSES:
@@ -56,20 +66,36 @@ def load(path: Path | str, reg: CR.Register, *, product: str = "clock_live") -> 
             if product not in items.get(item, ()):
                 raise FindingsError(f"{fid}: the register has no input adjustment {item!r} for {product}")
             sel.drop.add(item)
+        # take: another product's named adjustment, applied to the Clock's line as the register holds it
+        for t in f.get("take") or []:
+            ln, prod, item = t
+            if (ln, prod, item) not in line_items:
+                raise FindingsError(f"{fid}: the register has no {ln} input adjustment {item!r} for {prod}")
+            if prod == product:
+                raise FindingsError(f"{fid}: {item!r} already applies to {product}; take is for another "
+                                    f"product's rows")
+            sel.take.append((ln, prod, item))
         sel.applied.append(fid)
     return sel
 
 
 def line(reg: CR.Register, product: str, line_id: str, sel: Selection | None) -> dict[int, float]:
-    """The product's register line, less the adjustments the Clock does not take. With no selection, exactly
-    reg.line(line_id, product)."""
-    if sel is None or not sel.drop:
+    """The product's register line, less the adjustments the Clock does not take, plus those it takes from
+    another product's rows. With no selection, exactly reg.line(line_id, product)."""
+    if sel is None or not (sel.drop or sel.take):
         return reg.line(line_id, product)
     out = reg.series(line_id)
     for item, vals in reg.adjustments(line_id, product).items():
         if item in sel.drop:
             continue
         for y, v in vals.items():
+            if y not in out:
+                raise FindingsError(f"{item}: {y} has no {line_id} series row")
+            out[y] += v
+    for ln, prod, item in sel.take:
+        if ln != line_id:
+            continue
+        for y, v in reg.adjustments(ln, prod)[item].items():
             if y not in out:
                 raise FindingsError(f"{item}: {y} has no {line_id} series row")
             out[y] += v
