@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 35022625.59,
+ "hero_gbp": 35131514.5,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -90,7 +90,7 @@
   {
    "q": "2023-Q1",
    "payment_gbp": -1420753.0800000003,
-   "generation_mwh": 60879.821999999986
+   "generation_mwh": 60879.82199999998
   },
   {
    "q": "2023-Q2",
@@ -114,7 +114,7 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 2567220.9200000023,
+   "payment_gbp": 2567220.9100000025,
    "generation_mwh": 41531.924999999996
   },
   {
@@ -124,8 +124,8 @@
   },
   {
    "q": "2024-Q4",
-   "payment_gbp": 2241935.51,
-   "generation_mwh": 62497.03899999999
+   "payment_gbp": 2241935.5100000002,
+   "generation_mwh": 62497.039
   },
   {
    "q": "2025-Q1",
@@ -139,8 +139,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 2633787.04,
-   "generation_mwh": 43830.196
+   "payment_gbp": 2633924.64,
+   "generation_mwh": 43832.226
   },
   {
    "q": "2025-Q4",
@@ -149,23 +149,23 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 2458796.07,
-   "generation_mwh": 69333.601
+   "payment_gbp": 2458850.2399999998,
+   "generation_mwh": 69333.19499999999
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 1838801.1800000006,
-   "generation_mwh": 45446.59899999998
+   "payment_gbp": 1838859.6800000002,
+   "generation_mwh": 45447.36199999997
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 820310.9200000004,
-   "generation_mwh": 41665.242
+   "payment_gbp": 826477.1600000001,
+   "generation_mwh": 41540.32999999998
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": -70890.95999999999,
-   "generation_mwh": 3698.147
+   "payment_gbp": 31581.450000000033,
+   "generation_mwh": 9598.476
   }
  ],
  "contracts": [
@@ -174,7 +174,7 @@
    "unit_name": "Kype Muir Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 35022625.59,
+   "cumulative_gbp": 35131514.5,
    "first_settlement": "2019-03-28",
    "latest_strike_gbp_mwh": 120.28
   }
@@ -185,15 +185,15 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-07"
+  "data_to": "2026-10-21"
  },
  "outages": {
   "coverage_from": "2016-01-01",
   "windows": []
  },
  "tiles": {
-  "generation_mwh": 1487380.17,
-  "rate_gbp_per_mwh": 23.546519105468512,
+  "generation_mwh": 1493157.9739999997,
+  "rate_gbp_per_mwh": 23.528330633286366,
   "rate_label": "payment per subsidised MWh"
  }
 }
