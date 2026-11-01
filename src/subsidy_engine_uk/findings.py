@@ -15,7 +15,7 @@ import yaml
 
 from subsidy_engine import cost_register as CR
 
-STATUSES = ("applied",)
+STATUSES = ("applied", "ruled")
 
 
 class FindingsError(ValueError):
@@ -47,7 +47,7 @@ def load(path: Path | str, reg: CR.Register, *, product: str = "clock_live") -> 
     sel = Selection()
     for fid, f in (doc.get("findings") or {}).items():
         if f.get("status") not in STATUSES:
-            raise FindingsError(f"{fid}: status {f.get('status')!r} is not one of {STATUSES}; only a fix "
+            raise FindingsError(f"{fid}: status {f.get('status')!r} is not one of {STATUSES}; only a fix or ruling "
                                 f"Richard approved goes in this file")
         for key in ("reason", "approved"):
             if not f.get(key):

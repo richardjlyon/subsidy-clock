@@ -288,14 +288,14 @@ schemes:
     perspectives: []
     cadence: annual
     source: >-
-      2005, 2011-2013: NAO "Electricity Balancing Services" (May 2014, HC 41,
-      from Ofgem/National Grid data): total balancing costs recovered through
-      BSUoS GBP 642m in 2005-06 rising to GBP 1,002m in 2013-14; 2011-12 plus
-      2012-13 expenditure totalled GBP 1,723m (split evenly here, the lower
-      of NAO and REF figures). 2002-2004: GBP 0.4bn/yr per the verified
-      2002-05 baseline (reference/baselines.yaml). 2006-2010 and 2014-2016:
-      REF April 2025 study Table 2 total-charge column, pending confirmation
-      against National Grid Monthly Balancing Services Summary archives.
+      The shared cost register (reference/register_pin.yaml), line BSUOS, its
+      primary-source series: 2006-16 from Ofgem's Transmission Annual Reports
+      (2008-09, 2009-10), National Grid's Monthly Balancing Services Summaries
+      (March 2011-2016) and the NAO's "Electricity Balancing Services" (May
+      2014, HC 41), charging years weighted to calendar years (1/4 previous +
+      3/4 own); 2002-05 the gas-counterfactual engine's modelled base (no
+      comparable charge series exists). Richard's ruling of 1 Nov 2026
+      (option B, primary sources; aios-harness#43).
     source_url: https://www.nao.org.uk/wp-content/uploads/2014/05/Electricity-Balancing-Services.pdf
     verified: false
     # expected_next_update: none — static: series ends 2016, where the fetched BSUoS data takes over. No refresh.
@@ -314,45 +314,28 @@ schemes:
         and taken out of this one.
       confidence: low
     note: >-
-      Raw annual BSUoS for fiscal years starting 2002-2016, i.e. before the
-      first full calendar year the settled NESO series covers. The money model
-      uses these only for years not covered by the bottom-up NESO series. Not
-      fully verified: 2006-2010 and 2014-2016 are from REF Table 2's
-      total-charge column pending primary confirmation; 2005 and 2011-2013
-      are verified against the NAO report (Figure 9, total balancing costs
-      recovered through BSUoS); 2002-2004 against the project baseline.
-      BASIS - this series, the 2002-05 baseline and the fetched series must all
-      be GROSS BSUoS (the balancing cost recovered from users), or the engine
-      splices two definitions mid-run. That is exactly the defect corrected on
-      2026-09-30 (amendment `bsuos-basis-2026-09-30`): the fetched series was
-      taken from NESO's Daily Balancing Costs dataset, which is 23-39% narrower,
-      and the join to this history showed a 63% cliff between 2016 and 2017.
-      Any future replacement for these years must be checked on the same basis.
-      David Turver's NESO "balancing costs" series was evaluated as a
-      replacement but is likewise narrower (it excludes National Grid's
-      internal/admin costs, ~GBP 130m/yr, which the NAO Figure 9 series and
-      our 2002-05 baseline include), so adopting it would reintroduce a splice;
-      the gross BSUoS basis is retained here pending a shared definition agreed
-      with David.
-      The 2016 entry is RETAINED and still in use: the corrected fetched series
-      begins 1 April 2016, so calendar 2016 is only nine months of data and the
-      engine's first-full-year rule correctly excludes it from the bottom-up
-      series. For reference, the settled NESO data gives GBP 1,303m for fiscal
-      2016-17 against this entry's GBP 1,200m for calendar 2016 - consistent,
-      and not a like-for-like comparison.
+      Raw annual BSUoS, calendar years 2002-2016, before the first full
+      calendar year the settled NESO series covers (2017). The build reads
+      every closed year from the shared cost register; the figures below are
+      the register's, copied here so the file says what the Clock counts.
+      BASIS - this series and the fetched series are both GROSS BSUoS (the
+      balancing cost recovered from users, generators' and demand parts), or
+      the build splices two definitions mid-run (the defect corrected on
+      2026-09-30, amendment `bsuos-basis-2026-09-30`). Being on calendar years,
+      the series no longer counts January-March 2017 in both 2016 and 2017.
     annual:
-      2002: 400000000
-      2003: 400000000
-      2004: 400000000
-      2005: 642000000
-      2006: 700000000
-      2007: 700000000
-      2008: 1000000000
-      2009: 800000000
-      2010: 700000000
-      2011: 861500000
-      2012: 861500000
-      2013: 1002000000
-      2014: 1000000000
-      2015: 1100000000
-      2016: 1200000000
+      2002: 498979037.533642
+      2003: 476032510.51808584
+      2004: 499377530.0433188
+      2005: 609050810.8057181
+      2006: 605315938.4048433
+      2007: 660349479.468281
+      2008: 925942500.0
+      2009: 844775000.0000001
+      2010: 712012456.5174586
+      2011: 866695818.8391529
+      2012: 912375000.0
+      2013: 978375000.0
+      2014: 992849999.9999999
+      2015: 1009750000.0
+      2016: 1231246489.4550018

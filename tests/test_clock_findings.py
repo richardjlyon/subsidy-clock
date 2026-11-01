@@ -117,3 +117,28 @@ def test_fit_scheme_values_sit_in_their_own_scheme_years(model):
         assert got[y] == pytest.approx((series[y] + sv.get(y, 0.0)) * 1e6, abs=0.01), (
             f"FiT {y}: {got[y] / 1e6:,.3f}m on the Clock, Ofgem's scheme value for scheme year {y} is "
             f"{series[y] + sv.get(y, 0.0):,.3f}m")
+
+
+# ---- aios-harness#43 step 1: BSUoS history 2002-16 from the register's primary series (D-09) ----
+
+def _raw(model, sid):
+    s = next(s for s in model["schemes"] if s.scheme_id == sid)
+    return {int(r["year"]): r["cost"] for r in s.extras["raw_annual"]}
+
+
+def test_bsuos_history_is_the_registers_primary_series(model):
+    """Richard, 1 Nov 2026 (option B): BSUoS history from primary sources (Ofgem, National Grid, NAO) as in the
+    shared register, not REF Table 2. Each raw year 2002-16 is the register's BSUOS series itself."""
+    series = _reg().series("BSUOS")
+    raw = _raw(model, "bsuos")
+    for y in range(2002, 2017):
+        assert raw[y] == pytest.approx(series[y] * 1e6, abs=0.01), y
+
+
+def test_no_ref_figures_left_in_the_bsuos_history_file():
+    doc = yaml.safe_load((ROOT / "reference" / "indirect_annual.yaml").read_text())["schemes"]["bsuos_history"]
+    text = " ".join(str(doc.get(k, "")) for k in ("source", "note"))
+    assert "REF" not in text
+    series = _reg().series("BSUOS")
+    for y, v in doc["annual"].items():
+        assert v == pytest.approx(series[int(y)] * 1e6, abs=0.01), y

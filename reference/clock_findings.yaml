@@ -1,5 +1,5 @@
-# Fixes Richard approved that remove a live error held in the shared cost register's clock_live adjustments
-# (aios-harness#42; mechanism from card t_b468cbeb). Each names, by item id only, the register adjustment the
+# Fixes Richard approved, and his rulings, that remove a live input held in the shared cost register's
+# clock_live adjustments (aios-harness#42, #43; mechanism from card t_b468cbeb). Each names, by item id only, the register adjustment the
 # Clock no longer takes (`drop`). This file holds no figures (decision 0168): every number is the register's.
 #
 # Approval: Richard, 1 Nov 2026, "technical fixes approved, done without further rulings, each tested and
@@ -28,3 +28,14 @@ findings:
     approved: "Richard, 1 Nov 2026 (decisions.md, technical fixes: FiT 2019/2022 swap)"
     definitions: D-01 (data error part)
     drop: [clock_live.FIT.sy2019_sy2022_as_published]
+
+  bsuos_history_primary_sources:
+    status: ruled
+    kind: source
+    reason: >-
+      The live Clock's BSUoS history 2002-16 was REF's Table 2 (2006-10, 2014-16), the NAO (2005, 2011-13)
+      and the flat 2002-05 baseline (2002-04), charging years keyed as calendar years. The register's BSUOS
+      series is the primary sources (Ofgem, National Grid, NAO) on calendar years; the Clock now takes it.
+    approved: "Richard, 1 Nov 2026 (decisions.md: TNUoS 2005-12, BSUoS history and ETS 2009-11, option B, primary sources)"
+    definitions: D-09
+    drop: [clock.BSUOS.clock_source_history]
