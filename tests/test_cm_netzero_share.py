@@ -94,13 +94,18 @@ def test_cm_data_without_a_share_table_fails_rather_than_counting_in_full(tmp_pa
 # ---- the committed reference file and the published data ----
 
 def test_reference_file_shares_match_the_engine_and_2025_carries():
-    cm = reference.load_cm_netzero_share(REF)
+    # aios-harness#42 (decision 0168): the s32 hand copy (reference/capacity_market_netzero_share.yaml) is
+    # retired; the shares are the pinned engine release's netzero_gbp over the register's CM paid
+    from subsidy_engine_uk import register as R
+    root = Path(".").resolve()
+    assert not (root / "reference/capacity_market_netzero_share.yaml").exists()
+    cm = R.cm_share_from_engine(root, R.load_pinned(root))
     assert sorted(cm["years"]) == list(range(2016, 2026))
     assert cm["carry_forward_from"] == 2025
     y25 = cm["years"][2025]
-    # Richard's decision: 2026 onward uses 396.33 / 1431.46
-    assert y25["share"] == pytest.approx(396.333094 / 1431.463285, rel=1e-6)
-    assert cm["provenance"]["commit"].startswith("e0bfd73")
+    # v4-s43 Clock export: netzero 209,095,098.25 over CM paid 1,431,463,285.03 (register CM_PAID 2025)
+    assert y25["share"] == pytest.approx(209.09509825 / 1431.46328503, rel=1e-6)
+    assert cm["provenance"]["engine"] == "gas-counterfactual v4-s43"
     for y, r in cm["years"].items():
         assert 0.0 <= r["share_low"] <= r["share"] <= r["share_high"] == pytest.approx(1.0), y
     assert all(cm["years"][y]["share"] < 0.5 for y in range(2017, 2026))
@@ -126,13 +131,14 @@ def _published():
 def test_published_cm_line_is_the_netzero_share_not_the_full_levy():
     bd, _, ts, _ = _published()
     cm = next(s for s in bd["schemes"] if s["id"] == "capacity_market")
-    ref = reference.load_cm_netzero_share(REF)
+    # the shares published beside the line (site/data is rebuilt only at release, so the committed
+    # build may carry an older engine's shares than the pin; the pin is tested in test_cost_register_0168)
+    shares = {r["year"]: r["share"] for r in cm["netzero_share"]}
     raw = {r["year"]: r["cost"] for r in cm["raw_annual"]}
     counted = {r["year"]: r["cost"] for r in ts["schemes"]["capacity_market"]["annual"]}
-    assert raw.keys() == counted.keys()
+    assert raw.keys() == counted.keys() == shares.keys()
     for y, paid in raw.items():
-        s = ref["years"].get(y, ref["years"][ref["carry_forward_from"]])["share"]
-        assert counted[y] == pytest.approx(paid * s, rel=1e-9), y
+        assert counted[y] == pytest.approx(paid * shares[y], rel=1e-9), y
     assert cm["cumulative"] < 0.5 * sum(raw.values())   # not the full levy
     assert "counted in full" not in cm["attribution_note"]
 

@@ -359,6 +359,8 @@ def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
         # the constraints pin: first year Elexon replaces REF (fix 5 guard; splice module)
         **({"elexon_first_year": model["elexon_first_year"]}
            if model.get("elexon_first_year") is not None else {}),
+        # decision 0168: the shared cost register every closed year was read from
+        **({"register": model["register"]} if model.get("register") else {}),
         "schemes": [
             {
                 "id": s.scheme_id,

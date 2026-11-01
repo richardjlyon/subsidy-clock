@@ -85,15 +85,17 @@ def cm_netzero_shares(raw_annual: pl.DataFrame, cm_share: dict) -> pl.DataFrame:
 
 
 def result(store: SnapshotStore, cm_share: dict | None,
-           deflators: pl.DataFrame) -> list[SchemeResult]:
-    """The Capacity Market line, or none without data."""
+           deflators: pl.DataFrame, to_register=None) -> list[SchemeResult]:
+    """The Capacity Market line, or none without data. ``to_register``
+    (subsidy_engine_uk.register.ToRegister) makes each closed year of CM paid the shared
+    cost register's (0168); omitted in unit tests."""
     # --- Capacity Market: bottom-up monthly, net-zero share only (change of
     # 13 Oct 2026). Any power system needs backup, so the levy is NOT counted
     # in full: each month's LCCC payment is scaled by share(year) = (CM paid -
     # what "Reliable Britain", the actual system with net-zero policy removed,
-    # would have paid for its own backup) / CM paid, from
-    # reference/capacity_market_netzero_share.yaml (gas-counterfactual engine,
-    # spec 5.4). The same rule as TNUoS/BSUoS: count only what net zero added.
+    # would have paid for its own backup) / CM paid, from the pinned engine
+    # release (reference/model_pin.yaml; gas-counterfactual engine, spec 5.4)
+    # over the register's CM paid (subsidy_engine_uk.register). The same rule as TNUoS/BSUoS: count only what net zero added.
     # Years after the engine's last year carry its last share forward.
     # Rejected: pasting in the engine's pounds per year. Scaling the measured
     # months keeps the line on LCCC's live data, so a restated month moves it
@@ -105,9 +107,11 @@ def result(store: SnapshotStore, cm_share: dict | None,
         raise ValueError(
             "capacity_market data present but no cm_share table: the Clock "
             "counts only the net-zero share of the Capacity Market "
-            "(reference/capacity_market_netzero_share.yaml)")
+            "(reference/model_pin.yaml)")
     daily_like = cm.rename({"payment_gbp": "cost_gbp"})
     monthly = daily_like.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date")
+    if to_register is not None:
+        monthly = to_register(monthly, ("CM_PAID",))
     raw_annual_cm = annualise_daily(monthly)
     shares = cm_netzero_shares(raw_annual_cm, cm_share)
     weighted = (monthly.with_columns(pl.col("date").dt.year().cast(pl.Int64).alias("year"))

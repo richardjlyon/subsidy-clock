@@ -28,18 +28,23 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
           station_map: dict | None = None,
           ro_stations: list | None = None,
           bmu_map: dict | None = None,
-          cm_share: dict | None = None) -> dict:
+          cm_share: dict | None = None,
+          to_register=None) -> dict:
     """Assemble every scheme result plus perspective totals and the indirect layer total.
 
     ``station_map`` (cfd_id -> physical-station short name) collapses phased CfD
     contracts into one station for the recipients view; omitted in unit tests.
     ``ro_stations`` are the named RO recipients (buy-out basis) surfaced in the
-    recipients table; omitted in unit tests."""
+    recipients table; omitted in unit tests. ``to_register``
+    (subsidy_engine_uk.register.ToRegister) makes every closed year of the daily and
+    monthly lines sum to the shared cost register's figure (decision 0168); omitted in
+    unit tests."""
     schemes: list[SchemeResult] = []
-    schemes += cfd.result(store, station_map=station_map, bmu_map=bmu_map)
-    con = constraints.result(store, refs["constraints_history"])
+    schemes += cfd.result(store, station_map=station_map, bmu_map=bmu_map,
+                          to_register=to_register)
+    con = constraints.result(store, refs["constraints_history"], to_register)
     schemes += con
-    schemes += capacity_market.result(store, cm_share, deflators)
+    schemes += capacity_market.result(store, cm_share, deflators, to_register)
 
     # --- Annual reference schemes (RO, FIT). RO carries named per-station
     # recipients (buy-out basis) for the recipients table; the scheme total
@@ -73,7 +78,8 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
 
     if "bsuos_history" in refs and "bsuos" in baselines:
         schemes += bsuos.result(store, refs["bsuos_history"],
-                                float(baselines["bsuos"]["value"]), deflators, con[0])
+                                float(baselines["bsuos"]["value"]), deflators, con[0],
+                                to_register)
 
     # --- Real-terms columns on every scheme, then totals
     for s in schemes:
@@ -90,4 +96,6 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
             # in breakdown.json so the pages state the same year as the figures
             "elexon_first_year": (refs["constraints_history"].bottom_up_from
                                   if con[0].extras["held_from"] else None),
+            # 0168: the register read, and any closed year where a feed differs from it
+            **({"register": to_register.report()} if to_register is not None else {}),
             "indirect": out_indirect}

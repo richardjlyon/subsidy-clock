@@ -149,12 +149,17 @@ def update(store: SnapshotStore, *, days: int = 3, client: httpx.Client | None =
 
 # --- Result (moved from build.py, aios-harness#38)
 
-def result(store: SnapshotStore, history: ReferenceScheme) -> list[SchemeResult]:
+def result(store: SnapshotStore, history: ReferenceScheme,
+           to_register=None) -> list[SchemeResult]:
     """The constraints line: bottom-up daily spliced with ``history`` (REF), or the
-    history alone with no Elexon data (``held_from`` then None)."""
+    history alone with no Elexon data (``held_from`` then None). ``to_register``
+    (subsidy_engine_uk.register.ToRegister) makes each closed Elexon year from the pin
+    the shared cost register's (0168); omitted in unit tests."""
     con_daily = store.read_all_partitions("constraints", "daily")
     if con_daily is not None and con_daily.height:
         daily = (con_daily.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date"))
+        if to_register is not None and history.bottom_up_from is not None:
+            daily = to_register(daily, ("CONSTRAINTS",), first_year=history.bottom_up_from)
         # Elexon replaces REF from the reference file's pin, guarded (splice module)
         annual, held_from, held_to = splice("constraints", history, daily,
                                             store.partitions("constraints", "daily"))

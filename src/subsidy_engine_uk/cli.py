@@ -71,12 +71,32 @@ def cmd_backfill_turnup(args: argparse.Namespace) -> int:
     return 0
 
 
+def assemble_model(root: Path) -> tuple[dict, dict]:
+    """The model the site is built from, and the register overlay report (decision 0168). Reads every covered
+    series for a closed year from the pinned shared cost register (subsidy_engine_uk.register)."""
+    from subsidy_engine_uk import register as reg_mod
+
+    store = make_store(root)
+    refs = reference.load_annual_costs(root / "reference" / "annual_scheme_costs.yaml")
+    refs.update(reference.load_annual_costs(root / "reference" / "indirect_annual.yaml"))
+    pinned = reg_mod.load_pinned(root)
+    moved = reg_mod.overlay_refs(refs, pinned)
+    deflators = reference.load_deflators(root / "reference" / "deflators.yaml")
+    baselines = reference.load_baselines(root / "reference" / "baselines.yaml")
+    cm_share = reg_mod.cm_share_from_engine(root, pinned)
+    model = uk_build.build(store, refs, deflators=deflators, baselines=baselines,
+                           station_map=stations.load_station_map(root / "reference" / "cfd_stations.csv"),
+                           ro_stations=stations.load_ro_stations(root / "reference" / "ro_stations.csv"),
+                           bmu_map=stations.load_station_bmus(root / "reference" / "station_bmu_map.csv"),
+                           cm_share=cm_share, to_register=reg_mod.ToRegister(pinned))
+    return model, {"refs_moved": moved, "refs": refs}
+
+
 def cmd_build_site(args: argparse.Namespace) -> int:
     import polars as pl
 
     store = make_store(args.root)
-    refs = reference.load_annual_costs(args.root / "reference" / "annual_scheme_costs.yaml")
-    refs.update(reference.load_annual_costs(args.root / "reference" / "indirect_annual.yaml"))
+    model, overlay = assemble_model(args.root)
     ctx = reference.load_context(args.root / "reference" / "context.yaml")
     equivalences = yaml.safe_load(
         (args.root / "reference" / "equivalences.yaml").read_text())
@@ -87,18 +107,11 @@ def cmd_build_site(args: argparse.Namespace) -> int:
     bill_yaml = yaml.safe_load((args.root / "reference" / "electricity_bill.yaml").read_text())
     bill_info = {"source": bill_yaml["source"], "source_url": bill_yaml["source_url"],
                  "verified": bill_yaml.get("verified", False)}
-    baselines = reference.load_baselines(args.root / "reference" / "baselines.yaml")
-    cm_share = reference.load_cm_netzero_share(
-        args.root / "reference" / "capacity_market_netzero_share.yaml")
-    station_map = stations.load_station_map(args.root / "reference" / "cfd_stations.csv")
-    ro_stations = stations.load_ro_stations(args.root / "reference" / "ro_stations.csv")
     station_coords = stations.load_station_coords(args.root / "reference" / "station_coords.csv")
-    station_bmus = stations.load_station_bmus(args.root / "reference" / "station_bmu_map.csv")
     enforcement_notes = stations.load_enforcement_notes(args.root / "reference" / "enforcement_notes.csv")
     map_tiles = json.loads((args.root / "reference" / "map_tiles.json").read_text())
-    model = uk_build.build(store, refs, deflators=deflators, baselines=baselines,
-                           station_map=station_map, ro_stations=ro_stations,
-                           bmu_map=station_bmus, cm_share=cm_share)
+    if overlay["refs_moved"]:
+        print(f"[register] closed years moved by the register: {overlay['refs_moved']}")
     freshness = {}
     for scheme_id, table in [("cfd", "generation"), ("constraints", "daily"),
                               ("capacity_market", "payments"), ("bsuos", "daily"),

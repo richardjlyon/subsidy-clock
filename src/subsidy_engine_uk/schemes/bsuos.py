@@ -237,15 +237,20 @@ def update(store: SnapshotStore, *, client: httpx.Client | None = None) -> None:
 # --- Result (moved from build.py, aios-harness#38)
 
 def result(store: SnapshotStore, hist: ReferenceScheme, baseline_gbp: float,
-           deflators: pl.DataFrame, constraints: SchemeResult) -> list[SchemeResult]:
+           deflators: pl.DataFrame, constraints: SchemeResult,
+           to_register=None) -> list[SchemeResult]:
     """The BSUoS uplift line, preceded by the constraint turn-up line when turn-up is
     measured. ``hist`` is the pre-2017 history (carrying the pin); ``baseline_gbp`` the
     2002-05 baseline; ``constraints`` the constraints result, whose payments the uplift
-    is counted net of."""
+    is counted net of. ``to_register`` (subsidy_engine_uk.register.ToRegister) makes
+    each closed year of the NESO and turn-up feeds the shared cost register's (0168);
+    omitted in unit tests."""
     out: list[SchemeResult] = []
     bs_daily = store.read_all_partitions("bsuos", "daily")
     if bs_daily is not None and bs_daily.height:
         daily = bs_daily.group_by("date").agg(pl.col("cost_gbp").sum()).sort("date")
+        if to_register is not None and hist.bottom_up_from is not None:
+            daily = to_register(daily, ("BSUOS",), first_year=hist.bottom_up_from)
         # NESO replaces the history from the reference file's pin, guarded
         # held days: the dates in the data (BSUoS is stored by fiscal year)
         raw_annual, held_from, held_to = splice(
@@ -273,6 +278,8 @@ def result(store: SnapshotStore, hist: ReferenceScheme, baseline_gbp: float,
     # Same window as the BSUoS data, so a lagging BSUoS feed never has
     # turn-up subtracted for days it does not yet cover.
     tu_daily = constraint_turnup.daily_cost(store).filter(pl.col("date") <= data_to)
+    if to_register is not None:
+        tu_daily = to_register(tu_daily, ("TURNUP",))
     if tu_daily.height:
         tu_measured = annualise_daily(tu_daily).rename({"cost_gbp": "tu"})
         split = (uplift.join(tu_measured, on="year", how="left")

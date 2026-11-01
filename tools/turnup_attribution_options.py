@@ -18,24 +18,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from subsidy_engine import money, reference  # noqa: E402
-from subsidy_engine.store import SnapshotStore  # noqa: E402
-from subsidy_engine_uk import build as uk_build  # noqa: E402
-from subsidy_engine_uk import stations  # noqa: E402
 
 
 def run_build():
-    r = ROOT / "reference"
-    refs = reference.load_annual_costs(r / "annual_scheme_costs.yaml")
-    refs.update(reference.load_annual_costs(r / "indirect_annual.yaml"))
-    deflators = reference.load_deflators(r / "deflators.yaml")
-    m = uk_build.build(
-        SnapshotStore(ROOT / "data"), refs, deflators=deflators,
-        baselines=reference.load_baselines(r / "baselines.yaml"),
-        station_map=stations.load_station_map(r / "cfd_stations.csv"),
-        ro_stations=stations.load_ro_stations(r / "ro_stations.csv"),
-        bmu_map=stations.load_station_bmus(r / "station_bmu_map.csv"),
-        cm_share=reference.load_cm_netzero_share(r / "capacity_market_netzero_share.yaml"))
-    return m, deflators
+    # 0168 (card t_af5fbf06): the same model the site is built from, read from the shared cost register
+    from subsidy_engine_uk.cli import assemble_model
+    deflators = reference.load_deflators(ROOT / "reference" / "deflators.yaml")
+    return assemble_model(ROOT)[0], deflators
 
 
 def real(df: pl.DataFrame, deflators: pl.DataFrame) -> float:

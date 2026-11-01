@@ -1,0 +1,18 @@
+# The engine release the Clock takes its one counterfactual figure from (decision 0168 point 4: each product
+# depends on the register and the one current engine release; aios-harness#42).
+#
+# The Clock reads only the Capacity Market's net-zero part from the engine: netzero_gbp (and its low and high)
+# per year from the release's Clock export, divided by the CM paid in the shared cost register. This replaces
+# reference/capacity_market_netzero_share.yaml (shares hand-copied from the engine's s32 run of 13 Oct, commit
+# e0bfd735). In v4-s43 the export's cm_paid_gbp equals the register's CM_PAID to the penny; the register's is
+# the one used (one number, one source).
+#
+# TNUoS and BSUoS keep the live Clock's baselines (reference/baselines.yaml).
+#
+# Engine registry: model-gas-counterfactual/releases.yaml (Gitea). A new engine release is never applied
+# automatically: vendor its out/clock/<version>.json, edit this pin, rebuild, measure, and log it.
+engine_version: v4-s43
+clock_export_file: reference/engine/v4-s43.json
+sha256: e1cf23af9fd6129cc7e4b1dc7b1a5b058c9f20d0e1a64077d6817decea3828cf
+engine_commit: 8a5b0e1a070b561a4a964e55c5d29fbc6d03274b
+release_date: "2026-10-24"

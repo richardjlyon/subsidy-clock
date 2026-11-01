@@ -275,10 +275,12 @@ def _attach_outages(station_detail: list, bmu_map: dict,
 
 
 def result(store: SnapshotStore, *, station_map: dict | None = None,
-           bmu_map: dict | None = None) -> list[SchemeResult]:
+           bmu_map: dict | None = None, to_register=None) -> list[SchemeResult]:
     """The CfD lines: renewables, and nuclear once it pays out. ``station_map``
     (cfd_id -> physical-station short name) collapses phased contracts into one station
-    for the recipients view; ``bmu_map`` attaches REMIT outages to station detail."""
+    for the recipients view; ``bmu_map`` attaches REMIT outages to station detail.
+    ``to_register`` (subsidy_engine_uk.register.ToRegister) makes each closed year of
+    the renewables line the shared cost register's (0168); omitted in unit tests."""
     out: list[SchemeResult] = []
     # --- CfD: bottom-up, split renewable / non-renewable by technology (M-7).
     # is_renewable is classified here from the stored technology label, so the
@@ -301,6 +303,9 @@ def result(store: SnapshotStore, *, station_map: dict | None = None,
                 continue
             daily = (sub.group_by("date").agg(pl.col("payment_gbp").sum().alias("cost_gbp"))
                      .sort("date"))
+            if flag and to_register is not None:
+                # 0168: CFD = every technology LCCC has paid (no nuclear yet)
+                daily = to_register(daily, ("CFD",))
             gross, net = gross_net(sub, "payment_gbp")
             by_station = group_by_station(
                 sub.group_by("cfd_id", "unit_name", "technology")
