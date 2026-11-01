@@ -37,7 +37,9 @@ def model():
         perspectives=["renewables", "low_carbon"], cadence="daily",
         annual=annual, cumulative_gbp=4.0e9, runrate_gbp_per_year=2.0e9,
         data_to=date(2026, 6, 1),
-        extras={"by_technology": [], "by_recipient": [], "gross": 4.1e9, "net": 4.0e9},
+        # every field the page contract lists for CfD (sitedata.SCHEME_FIELDS)
+        extras={"by_technology": [], "by_recipient": [], "gross": 4.1e9, "net": 4.0e9,
+                "mwh": 0.0, "by_station": [], "station_detail": []},
     )
     indirect = SchemeResult(
         scheme_id="bsuos", label="Balancing costs (BSUoS uplift)",
@@ -46,6 +48,8 @@ def model():
         data_to=date(2026, 6, 1),
         attribution_pct=0.4, attribution_note="uplift above baseline",
         attribution_confidence="low",
+        extras={"source": "s", "source_url": "https://s", "verified": False,
+                "raw_annual": [], "held_from": None, "held_to": None},
     )
     block = {"cumulative_gbp": 4.0e9, "runrate_gbp_per_year": 2.0e9,
              "rate_gbp_per_sec": 63.38, "annual": annual, "since_year": 2025,
