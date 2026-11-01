@@ -79,7 +79,7 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
     if "bsuos_history" in refs and "bsuos" in baselines:
         schemes += bsuos.result(store, refs["bsuos_history"],
                                 float(baselines["bsuos"]["value"]), deflators, con[0],
-                                to_register)
+                                to_register, refs["constraints_history"])
 
     # --- Real-terms columns on every scheme, then totals
     for s in schemes:

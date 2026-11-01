@@ -187,3 +187,28 @@ def result(store: SnapshotStore, history: ReferenceScheme,
                 "history_source_url": history.source_url,
                 "held_from": held_from, "held_to": held_to},
     )]
+
+
+def annual_through(store: SnapshotStore, history: ReferenceScheme, line: SchemeResult,
+                   last_day: date) -> pl.DataFrame:
+    """The constraints line's annual (year, cost_gbp) with ``last_day``'s year counting only its
+    days up to ``last_day``, when that year comes from Elexon (from the pin, or after the
+    history's last year). For netting off a feed that ends on ``last_day`` (BSUoS): a
+    constraint day after it is in no figure of that feed (Grok row 7; aios-harness#42, ported
+    from 5c61b9f4). Any register scaling of that year is kept in proportion."""
+    annual = line.annual.select("year", "cost_gbp")
+    y = last_day.year
+    pin = history.bottom_up_from
+    from_elexon = ((pin is not None and y >= pin)
+                   or y > int(history.annual["year"].max()))
+    con_daily = store.read_all_partitions("constraints", "daily")
+    if not from_elexon or con_daily is None or not con_daily.height:
+        return annual
+    days = con_daily.filter(pl.col("date").dt.year() == y)
+    whole = float(days["cost_gbp"].sum())
+    if not whole:
+        return annual
+    part = float(days.filter(pl.col("date") <= last_day)["cost_gbp"].sum())
+    return annual.with_columns(
+        pl.when(pl.col("year") == y).then(pl.col("cost_gbp") * (part / whole))
+        .otherwise(pl.col("cost_gbp")).alias("cost_gbp"))

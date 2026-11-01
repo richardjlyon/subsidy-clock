@@ -51,6 +51,7 @@ from subsidy_engine.money import SchemeResult, annualise_daily, trailing_runrate
 from subsidy_engine.reference import ReferenceScheme
 from subsidy_engine.store import SnapshotStore
 from subsidy_engine_uk.schemes import constraint_turnup
+from subsidy_engine_uk.schemes import constraints as constraints_mod
 from subsidy_engine_uk.splice import splice
 from subsidy_engine_uk.uplift import BASELINE_YEARS, baseline_uplift
 
@@ -238,13 +239,15 @@ def update(store: SnapshotStore, *, client: httpx.Client | None = None) -> None:
 
 def result(store: SnapshotStore, hist: ReferenceScheme, baseline_gbp: float,
            deflators: pl.DataFrame, constraints: SchemeResult,
-           to_register=None) -> list[SchemeResult]:
+           to_register=None,
+           constraints_history: ReferenceScheme | None = None) -> list[SchemeResult]:
     """The BSUoS uplift line, preceded by the constraint turn-up line when turn-up is
     measured. ``hist`` is the pre-2017 history (carrying the pin); ``baseline_gbp`` the
     2002-05 baseline; ``constraints`` the constraints result, whose payments the uplift
     is counted net of. ``to_register`` (subsidy_engine_uk.register.ToRegister) makes
     each closed year of the NESO and turn-up feeds the shared cost register's (0168);
-    omitted in unit tests."""
+    omitted in unit tests. ``constraints_history`` (the constraints REF history) lets the
+    netting take only the constraint days the BSUoS data covers in its last year."""
     out: list[SchemeResult] = []
     bs_daily = store.read_all_partitions("bsuos", "daily")
     if bs_daily is not None and bs_daily.height:
@@ -267,8 +270,13 @@ def result(store: SnapshotStore, hist: ReferenceScheme, baseline_gbp: float,
     # uplift, so BSUoS residual + turn-up == uplift exactly and the indirect
     # total cannot move; where no cap binds, residual + turn-up + wind
     # constraints + indexed baseline == raw BSUoS.
-    uplift = baseline_uplift(raw_annual, baseline_gbp,
-                             deflators, subtract=constraints.annual.select("year", "cost_gbp"))
+    # Net only the constraint days the BSUoS data covers: in BSUoS's last year a constraint
+    # day after BSUoS's last day is in no BSUoS figure (Grok row 7; 5c61b9f4, aios-harness#42).
+    # Turn-up is cut to the same window below.
+    netted = (constraints_mod.annual_through(store, constraints_history, constraints, data_to)
+              if constraints_history is not None
+              else constraints.annual.select("year", "cost_gbp"))
+    uplift = baseline_uplift(raw_annual, baseline_gbp, deflators, subtract=netted)
     latest_baseline = (baseline_gbp
                        * _latest_index(deflators)
                        / float(deflators.filter(
