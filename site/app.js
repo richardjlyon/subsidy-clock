@@ -429,7 +429,7 @@
       var pct = grand > 0 ? Math.round(100 * v / grand) : 0;
       return '<a class="krow krow-est" href="/methodology#freshness">' +
         '<span class="dot" style="background:transparent;border:1px dashed var(--faint)"></span>' +
-        '<span class="nm">Estimated since each source’s latest data</span>' +
+        '<span class="nm">Estimated since the latest data</span>' +
         '<span class="amt money num">' + fmtCompact(v) + '</span>' +
         '<span class="pct num">' + pct + '%</span></a>';
     }
