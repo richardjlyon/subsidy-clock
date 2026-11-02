@@ -66,3 +66,14 @@ findings:
     approved: "Richard, 1 Nov 2026 (decisions.md: Feed-in Tariffs, A, valued as the levelisation fund; aios-harness#45)"
     definitions: D-01
     drop: [alt.FIT.ofgem_scheme_value]
+
+  unrounded_official_figures:
+    status: ruled
+    kind: source
+    reason: >-
+      The live Clock rounded each Renewables Obligation year down to GBP 10m and took HMRC's Climate Change
+      Levy receipts rounded to GBP 0.1m. The best account is the official figure itself (Ofgem's scheme
+      value, HMRC's Table 1b), as the register holds it and Reliable Britain reads it (D-07).
+    approved: "Richard, 2 Nov 2026 (fix everything fixable in this one release; best account, primary sources; aios-harness#57)"
+    definitions: D-07
+    drop: [clock.RO.ofgem_headline_rounded, clock.CCL.hmrc_rounded_0_1m]

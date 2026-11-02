@@ -189,8 +189,29 @@ def test_take_moves_the_line_by_exactly_the_register_row(tmp_path):
 
 def test_ro_includes_mutualisation_received(model):
     reg = _reg()
-    ro, mut = reg.line("RO", "clock_live"), reg.series("RO_MUT")
+    ro, mut = reg.series("RO"), reg.series("RO_MUT")   # Ofgem's figure unrounded (aios-harness#57)
     got = _annual(model, "ro")
     for y in range(2002, 2025):
         assert got[y] == pytest.approx((ro[y] + mut.get(y, 0.0)) * 1e6, abs=0.01), y
     assert sum(mut[y] for y in range(2017, 2022)) == pytest.approx(525.5, abs=0.1)   # received, not billed
+
+
+# ---- aios-harness#57: Ofgem's and HMRC's figures unrounded (D-07; Richard, 2 Nov 2026: fix everything) ----
+
+def test_ro_is_ofgems_figure_unrounded(model):
+    """The live Clock rounded each RO year down to GBP 10m (clock.RO.ofgem_headline_rounded). The best account is
+    Ofgem's figure itself: each RO year is the register's RO series plus mutualisation received, nothing taken off."""
+    reg = _reg()
+    ro, mut = reg.series("RO"), reg.series("RO_MUT")
+    got = _annual(model, "ro")
+    for y in range(2002, 2025):
+        assert got[y] == pytest.approx((ro[y] + mut.get(y, 0.0)) * 1e6, abs=0.01), y
+
+
+def test_ccl_is_hmrcs_figure_unrounded(model):
+    """The live Clock's CCL input was HMRC's Table 1b rounded to GBP 0.1m (clock.CCL.hmrc_rounded_0_1m). Each CCL
+    year is now the register's CCL_ELEC series itself."""
+    series = _reg().series("CCL_ELEC")
+    got = _annual(model, "ccl")
+    for y in range(2002, 2025):
+        assert got[y] == pytest.approx(series[y] * 1e6, abs=0.01), y
