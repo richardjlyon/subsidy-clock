@@ -734,7 +734,7 @@
     var barW = bandW * 0.72;
 
     var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' +
-      (cumulative ? 'Cumulative' : 'Annual') + ' subsidy cost by scheme, ' + layerWords + ', ' + firstYear + ' to ' + currentYear + ', ' + basisShort + '">';
+      (cumulative ? 'Cumulative' : 'Annual') + (state.combined ? ' cost' : ' subsidy cost') + ' by scheme, ' + layerWords + ', ' + firstYear + ' to ' + currentYear + ', ' + basisShort + '">';
 
     var indirectIds = memberIds.filter(isIndirectScheme);
 
@@ -858,7 +858,7 @@
     var DIRECT = 'var(--c-ro)', HATCH = 'var(--c-cm)', OTHER = 'var(--c-other)';
     // FT skin renders the indirect band as a solid blue tone; other skins hatch it.
     var INDIRECT = ftSkin ? 'var(--c-cm)' : 'url(#share-hatch)';
-    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + (lowCarbon ? 'Low-carbon energy' : 'Renewable') + ' subsidy as a share of the total electricity bill, ' + firstYear + ' to ' + lastYear + '">';
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + (lowCarbon ? 'Low-carbon energy' : 'Renewables') + ' bill, direct and estimated indirect, as a share of the total electricity bill, ' + firstYear + ' to ' + lastYear + '">';
     svg += '<defs><pattern id="share-hatch" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">' +
       '<line x1="0" y1="0" x2="0" y2="5" stroke="' + HATCH + '" stroke-width="1.8"/></pattern></defs>';
 

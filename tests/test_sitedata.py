@@ -102,7 +102,7 @@ def test_factoids_floored_figures_and_sentences(tmp_path):
     # 220e9 / 406,485 = 541,224 -> 541,000
     assert by_slug["homes"]["figure"] == "541,000"
     assert by_slug["homes"]["frame"] == "the current £220bn+ full cost would have built"
-    assert "£220bn+ full cost" in by_slug["homes"]["sentence"]
+    assert "£220bn+ bill for UK renewables" in by_slug["homes"]["sentence"]
     assert "social homes" in by_slug["homes"]["label"]
 
     # hinkley: 35e9 * 132.9/100 = 46.515e9; 220 / 46.515 = 4.73 -> 4

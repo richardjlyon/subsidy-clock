@@ -176,20 +176,19 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
         facts += [
             {"slug": "headline",
              "figure": fmt_full(_run(rr) + _run(ir)),
-             "label": "the full cost of subsidising UK renewables since "
+             "label": "the bill for UK renewables since "
                       f"{yr}, including estimated indirect costs and an estimate since "
                       "each source’s latest data, in today’s money",
              "anchor": None, "stub": True, "group": HEAD, "scope": "full"},
             {"slug": "run-rate-full",
              "figure": fmt_full(rr["runrate_per_year"] + ir["runrate_per_year"]),
-             "label": "a year — the full cost of UK renewable subsidy including "
+             "label": "a year — the bill for UK renewables, including "
                       "estimated indirect costs, in today’s money",
              "anchor": None, "stub": True, "group": HEAD, "scope": "full"},
             {"slug": "household-full",
              "figure": fmt_pence(rr["per_household_per_year"] + ir["per_household_per_year"]),
-             "label": "per household per year in subsidy to renewable generators "
-                      "— the full cost including estimated indirect costs, in "
-                      "today’s money",
+             "label": "per household per year — the bill for UK renewables, "
+                      "including estimated indirect costs, in today’s money",
              "anchor": None, "stub": True, "group": HEAD, "scope": "full"},
             {"slug": "per-mwh-full",
              "figure": fmt_pence(rr["per_mwh_delivered"] + ir["per_mwh_delivered"]),
@@ -200,8 +199,8 @@ def load_facts(data_dir: Path | str) -> tuple[list[dict], str, str]:
             # full-cost total
             {"slug": "the-bill",
              "figure": fmt_full(rr["cumulative"] + ir["cumulative"]),
-             "label": "the cumulative cost of direct and estimated indirect "
-                      f"subsidy to renewables since {yr}, in today’s money",
+             "label": "the cumulative bill for UK renewables, direct and "
+                      f"estimated indirect, since {yr}, in today’s money",
              "anchor": "cost-per-year", "stub": True, "chart": True,
              "group": HEAD, "scope": "graph"},
         ]
