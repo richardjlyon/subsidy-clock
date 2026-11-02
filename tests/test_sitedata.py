@@ -566,12 +566,14 @@ def test_repo_changelog_loads_and_keeps_its_corrections():
     # the real log must pass validation, and its corrections are unchanged
     entries = sitedata.load_changelog("changelog.jsonl")
     corr = [e for e in entries if e["kind"] == "correction"]
-    assert sorted((e["date"], e["figure"]) for e in corr) == [
+    # corrections are never removed; the RB-alignment release adds four (aios-harness#48)
+    assert {"fit-scheme-years", "bsuos-2026-netting", "ets-2024", "turnup-octopus"} <= {e["figure"] for e in corr}
+    assert set(sorted((e["date"], e["figure"]) for e in corr if e["date"] < "2026-11-01")) == set(sorted([
         ("2026-06-24", "factoid-police"), ("2026-09-01", "emissions-trading"),
         ("2026-09-30", "bsuos"), ("2026-09-30", "headline-caption"),
         ("2026-10-01", "factoid-homes"), ("2026-10-01", "factoid-hospitals"),
         ("2026-10-10", "constraints"), ("2026-10-17", "headline-basis"),
-        ("2026-10-17", "share-of-bill"), ("2026-10-17", "sources-statement")]
+        ("2026-10-17", "share-of-bill"), ("2026-10-17", "sources-statement")]))
     assert all(e.get("status") is None for e in corr)
 
 
