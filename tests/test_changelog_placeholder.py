@@ -1,9 +1,10 @@
 """Guard: the DEPLOY-DATE placeholder must never be merged, built or deployed.
 
 The REF-removal changelog entry carries the date placeholder DEPLOY-DATE until
-Richard approves the release; the real date goes in as the last commit. These
-tests are RED while the placeholder is in, on purpose: the branch cannot be
-merged or built by accident.
+Richard approves the release; the real date goes in as the last commit. The
+placeholder check is a release check (marker `release`): `uv run pytest --release` is RED while
+the placeholder is in, and the build itself always refuses it, so the branch cannot be built or
+deployed by accident. Everyday runs skip it (tests/conftest.py).
 """
 import json
 from pathlib import Path
@@ -16,6 +17,7 @@ ROOT = Path(__file__).resolve().parent.parent
 PLACEHOLDER = "DEPLOY-DATE"
 
 
+@pytest.mark.release
 @pytest.mark.parametrize("rel", ["changelog.jsonl",
                                  "site/data/changelog.json",
                                  "site/data/changelog.csv"])

@@ -1,5 +1,6 @@
 """The whole build-site run on the repository's own data, written to a temporary folder
-(aios-harness#53). Fails while changelog.jsonl carries the DEPLOY-DATE placeholder, as the
+(aios-harness#53). Everyday runs read the changelog with a stand-in release date
+(tests/conftest.py); with --release it fails while the DEPLOY-DATE placeholder is in, as the
 real build does."""
 import csv
 import json

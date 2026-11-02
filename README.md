@@ -33,7 +33,8 @@ Requires Python ≥ 3.12 and [uv](https://docs.astral.sh/uv/).
 
 ```sh
 uv sync
-uv run pytest                                # the money model is verified to the penny
+tools/test.sh                                # the standard test run (this machine and the Mac Mini); every test passes
+tools/test.sh --release                      # before a release: also fails while a changelog date is DEPLOY-DATE
 uv run python -m subsidy_engine update all   # fetch latest data from all sources
 uv run python -m subsidy_engine build-site   # write site/data/*.json and the /data CSVs
 cd site && python3 -m http.server
