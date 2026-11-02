@@ -32,6 +32,13 @@
       basisEl.innerHTML = '≈ <span class="num">' + SC.fmtCompact(realCum) +
         '</span> in today\u2019s money';
     }
+    // the box ticks published + the estimate since the line's data end (#46); the prose quotes the
+    // published figure, so say how much of the box is estimated (aios-harness#48)
+    var cfEst = s.carry_forward && s.carry_forward.estimated_since;
+    if (basisEl && cfEst > 0) {
+      basisEl.innerHTML += (basisEl.innerHTML ? ' · ' : '') + 'incl. ≈ <span class="num">' +
+        SC.fmtCompact(cfEst) + '</span> estimated since the latest data';
+    }
 
     // live prose slots: <span data-live="cumulative|runrate|household|rate"></span>
     // turn-up only: what was actually paid on constraint-flagged offers while

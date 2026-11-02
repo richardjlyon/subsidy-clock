@@ -40,7 +40,7 @@
 <main>
   <h1 class="fig" id="fig">£233,423,517,442</h1>
   <div class="meta">
-    <div class="what"><span id="what">paid to UK renewable generators plus estimated indirect system costs since 2002</span> · as of <span id="asof">1 November 2026</span></div>
+    <div class="what"><span id="what">paid to UK renewable generators plus estimated indirect system costs since 2002, part estimated since the latest data</span> · as of <span id="asof">1 November 2026</span></div>
     <div class="attr"><a href="https://subsidyclock.co.uk" target="_blank" rel="noopener">The Subsidy Clock — subsidyclock.co.uk</a></div>
   </div>
 </main>
@@ -58,8 +58,8 @@
   var basis = q.get('basis') === 'nominal' ? 'nominal' : 'real';
   var scope = q.get('scope') === 'direct' ? 'direct' : 'combined';
   document.getElementById('what').textContent = scope === 'combined'
-    ? 'paid to UK renewable generators plus estimated indirect system costs since 2002'
-    : 'paid to UK renewable generators since 2002';
+    ? 'paid to UK renewable generators plus estimated indirect system costs since 2002, part estimated since the latest data'
+    : 'paid to UK renewable generators since 2002, part estimated since the latest data';
 
   function pick(t) {
     var p = t.perspectives.renewables;

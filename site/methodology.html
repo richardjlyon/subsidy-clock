@@ -62,7 +62,7 @@
     <a href="#sources">Sources that are not official statistics</a> ·
     <a href="#equivalences">Equivalences</a> ·
     <a href="#map">Map &amp; asset panels</a> ·
-    <a href="#freshness">Data freshness</a> ·
+    <a href="#freshness">Data freshness and the running total</a> ·
     <a href="#corrections">Corrections</a> ·
     <a href="#citing">Citing this site</a></p>
 
@@ -80,59 +80,56 @@
 
   <h2>Renewables Obligation (RO)</h2>
   <p class="scheme-meta" id="ro-meta"></p>
-  <p><strong>Formula in words:</strong> annual official scheme values from Ofgem’s Renewables Obligation annual reports — the number of ROCs presented multiplied by the worth of a ROC, or the headline scheme value where Ofgem states it directly. These are official annual totals pending per-generator reconstruction.</p>
+  <p><strong>Formula in words:</strong> annual official scheme values from Ofgem’s Renewables Obligation annual reports — the number of ROCs presented multiplied by the worth of a ROC, or the headline scheme value where Ofgem states it directly, unrounded. Mutualisation is added in the scheme year it makes good: when suppliers failed in 2017–2021 without paying what they owed the scheme, the remaining suppliers covered the shortfall (£525.5m received). In 2024 prices an April–March scheme year is priced three quarters at its first year’s CPIH and one quarter at the next.</p>
   <p class="src-quote" id="ro-source"></p>
 
   <h2>Feed-in Tariffs (FIT)</h2>
   <p class="scheme-meta" id="fit-meta"></p>
-  <p><strong>Formula in words:</strong> annual official scheme values from Ofgem’s Feed-in Tariffs annual reports. These are official annual totals pending per-generator reconstruction.</p>
+  <p><strong>Formula in words:</strong> what licensed suppliers paid into the Feed-in Tariff levelisation fund each scheme year (April–March), from Ofgem’s annual reports and annual levelisation notices: the money that reached bills, as Reliable Britain counts it. In 2024 prices each scheme year is priced as the Renewables Obligation’s.</p>
   <p class="src-quote" id="fit-source"></p>
 
   <h2 id="perspectives">Perspectives: renewables, and all low-carbon</h2>
   <p>The dashboard's headline counts <strong>renewable generators</strong> — wind, solar, hydro and the biomass plants (Drax and the like) that hold renewable contracts and count towards the UK's renewable targets. The all-low-carbon view adds the one kind of low-carbon generation that is not renewable: nuclear. Hinkley Point C has not yet generated, so its CfD payments stand at <span class="num" id="persp-delta"></span>: the all-low-carbon total (<span class="num" id="persp-lowcarbon"></span>) is for now identical to the renewables headline (<span class="num" id="persp-renewables"></span>), and the gap will open only once Hinkley begins to pay out. Indirect costs (network, balancing, carbon pricing, capacity) are tracked separately and always marked estimated. The dashboard's <em>Include indirect costs</em> switch controls whether they are added to the headline counter; it starts on, so the figure you first see is the combined total, and the counter's own caption says so. Switch it off and the counter falls back to the direct, measured payments alone.</p>
 
   <h2 id="indirect">Indirect subsidies (estimated)</h2>
-  <p>Beyond the direct schemes above, renewable generation imposes costs that reach bill-payers and taxpayers through network charges, balancing costs, carbon pricing and the capacity levy. The dashboard shows these as ‘the indirect bill’, always marked <strong>estimated</strong>: each component’s <em>amount</em> is measured from an official source — recent years are verified against primary sources, while some earlier years (pre-2013 TNUoS, the 2006–2010 and 2014–2016 BSUoS years, and pre-2019 ETS) rest on the Renewable Energy Foundation’s published tabulation pending primary confirmation, as noted in each component’s source notes — and the share <em>attributable</em> to renewables is a stated judgement. The attribution rule for each component is quoted verbatim below. From 2017 onwards the BSUoS series is measured from NESO’s settled data; the hand-maintained years end at 2016 because the settled data begins on 1 April 2016 and so covers no complete calendar year before 2017.</p>
+  <p>Beyond the direct schemes above, renewable generation imposes costs that reach bill-payers and taxpayers through network charges, balancing costs, carbon pricing and the capacity levy. The dashboard shows these as ‘the indirect bill’, always marked <strong>estimated</strong>: each component’s <em>amount</em> is measured from official and primary sources (Ofgem, NESO, HMRC, LCCC, National Grid, the NAO and ONS), or modelled by the engine behind Reliable Britain where no measurement exists, as each component’s source notes say, and the share <em>attributable</em> to net-zero policy is a stated judgement. The attribution rule for each component is quoted verbatim below. From 2017 onwards the BSUoS series is measured from NESO’s settled data; the hand-maintained years end at 2016 because the settled data begins on 1 April 2016 and so covers no complete calendar year before 2017.</p>
 
   <h3>Capacity Market</h3>
   <p class="scheme-meta" id="im-capacity_market"></p>
   <blockquote id="attr-capacity_market"></blockquote>
-  <p>The Capacity Market pays power stations, batteries, interconnectors and demand response to be available at times of system stress; bill-payers fund it through a levy. <strong>Any power system needs backup</strong> for the coldest, stillest evening, so the whole levy is not a cost of net zero. Since 13 October 2026 the Clock counts only the part net zero caused, the same rule it applies to network and balancing charges, which count only growth above a pre-renewables baseline.</p>
+  <p>The Capacity Market pays power stations, batteries, interconnectors and demand response to be available at times of system stress; bill-payers fund it through a levy. <strong>Any power system needs backup</strong> for the coldest, stillest evening, so the whole levy is not a cost of net zero. Since 13 October 2026 the Clock counts only the part net zero caused, the same rule it applies to network and balancing charges, which count only the cost above what a Britain without net-zero policy would have paid.</p>
   <p><strong>What is counted.</strong> For each year: the Capacity Market actually paid (LCCC), less what the same system with net-zero policy removed would have paid for its own backup at that year’s capacity price. That system keeps the actual demand, nuclear, interconnectors and pumped storage; builds no wind or solar; keeps coal open where it pays; and builds gas to meet the remaining peak. Its own capacity bill is the actual price per kilowatt times the firm capacity it would have contracted. New and kept-open plant in that system are already charged at their full build and keep-open cost in the model, so they are not charged a capacity payment as well. The resulting share is applied to each month’s payment in that year.</p>
   <p id="raw-capacity_market"></p>
   <p><strong>Why the figure is a floor.</strong> The system without net-zero policy is charged the capacity price that actually cleared. Since 2021 a 550&nbsp;g/kWh emissions limit has kept the 11&nbsp;GW of coal that bid into earlier four-year-ahead auctions out of them (<a href="https://www.ofgem.gov.uk/publications/annual-report-operation-capacity-market-202021-and-202122">Ofgem, Annual Report on the Operation of the Capacity Market 2020/21 and 2021/22</a>), and clearing prices rose after it. Without net zero that coal would have bid and held prices down. No published source measures how much of the price rise net zero caused, so none of it is counted.</p>
-  <p><strong>Range.</strong> Low: kept-open coal in the system without net zero would also have needed a capacity agreement. High: the whole levy, the rule the Clock used before 13 October 2026. Both are shown below. The shares for 2016–2025 come from Richard Lyon’s model of the system without net-zero policy, which is not yet published; it will be linked here when it is. <strong>2026 onward</strong> uses the 2025 share until the model is run for those years. The per-year shares, the amounts and their provenance are published in <a href="data/breakdown.json">breakdown.json</a> (<code>netzero_share</code>) and summarised on the <a href="changelog">change log</a>. Attribution confidence stays <strong>medium</strong>.</p>
+  <p><strong>Range.</strong> Low: kept-open coal in the system without net zero would also have needed a capacity agreement. High: the whole levy, the rule the Clock used before 13 October 2026. Both are shown below. The shares for 2016–2025 come from the model of the system without net-zero policy behind Reliable Britain (Report No. 1; engine release v4-s43). <strong>2026 onward</strong> uses the 2025 share until the model is run for those years. The per-year shares, the amounts and their provenance are published in <a href="data/breakdown.json">breakdown.json</a> (<code>netzero_share</code>) and summarised on the <a href="changelog">change log</a>. Attribution confidence stays <strong>medium</strong>.</p>
 
-  <h3>Climate Change Levy and Carbon Price Support</h3>
+  <h3>Climate Change Levy</h3>
   <p class="scheme-meta" id="im-ccl"></p>
   <blockquote id="attr-ccl"></blockquote>
-  <p>The Climate Change Levy and Carbon Price Support are two distinct taxes, not the same instrument: both are captured here, and identified separately. Conservative direction: only electricity’s share of main-rate CCL declarations is counted — gas and solid-fuel CCL is excluded — plus Carbon Price Support, which falls wholly on electricity generation. The figure errs <strong>low</strong>.</p>
+  <p>Only electricity’s share of main-rate CCL declarations is counted, as HMRC receives it; gas and solid-fuel CCL is excluded. Carbon Price Support, the tax generators pay on their fuel, is counted in the carbon line below. The figure errs <strong>low</strong>.</p>
 
-  <h3>Emissions trading (UK and EU ETS)</h3>
-  <p class="scheme-meta" id="im-ets"></p>
-  <blockquote id="attr-ets"></blockquote>
-  <p>Conservative direction: only <em>auctioned</em> allowance revenue is counted, scaled by the power sector’s share of verified covered emissions. Power generation receives no free allocation, so it buys a larger share of auctioned allowances than its emissions share — the figure is a <strong>lower bound</strong>.</p>
-  <p><strong>This apportionment is an assumption, not a published statistic.</strong> The
-  revenue and emissions inputs are read from primary sources, but no publication
-  attributes UK ETS auction revenue or auction volumes to individual sectors, so
-  the power sector's share of that revenue is inferred from its share of verified
-  emissions. It is the weakest step in this figure, and it is why the scheme is
-  marked estimated rather than verified. Two gaps follow from the sources
-  themselves: 2025 emissions by sector are not yet published — the relevant DESNZ
-  report is expected in late 2026 — and no primary document gives a power-sector
-  figure for 2021 at all, so that year's share cannot be traced.</p>
+  <h3>Carbon in the electricity price</h3>
+  <p class="scheme-meta" id="im-carbon"></p>
+  <blockquote id="attr-carbon"></blockquote>
+  <p>Generators that burn gas or coal pay for the carbon they emit: an allowance for every tonne of CO₂ and, from 1 April 2013, Carbon Price Support on their fuel. The most expensive plant running sets the price of power, so the carbon cost raises the price of all electricity sold. This line counts that whole effect on the wholesale price, year by year, as the engine behind Reliable Britain models it (Great Britain).</p>
+  <p>It is shown in two parts. <strong>Tax collected by the Treasury</strong>: Carbon Price Support (HMRC receipts) and the power sector’s share of emissions-trading auction receipts; for 2013–2020 that share is estimated, because no publication attributes auction revenue to sectors. <strong>The rest of the carbon in the price</strong>: the rise in the price of power that no one collected as tax, which generators kept. From 2005 to 2012 generators were given most of their allowances free and paid little for them, but the carbon price still set the price of power, so those years count, as in Reliable Britain. Attribution confidence is <strong>medium</strong>.</p>
+
+  <h3>VAT on household bills</h3>
+  <p class="scheme-meta" id="im-vat"></p>
+  <blockquote id="attr-vat"></blockquote>
+  <p>Households pay 5% VAT on their electricity bills, so the counted costs that reach household bills carry VAT too. This line is 5% of households’ share of each counted line, as Reliable Britain counts it; households’ share of electricity each year comes from the same engine. The Climate Change Levy is left out, because households do not pay it.</p>
 
   <h3>Transmission charges (TNUoS)</h3>
   <p class="scheme-meta" id="im-tnuos"></p>
   <blockquote id="attr-tnuos"></blockquote>
   <p id="raw-tnuos"></p>
-  <p>Conservative direction: only the growth in transmission revenue above the inflation-indexed pre-renewables baseline is attributed, and the uplift is floored at zero in any year where revenue falls below the baseline.</p>
+  <p>Each year’s charge is compared with what the same year would have cost in a Britain without net-zero policy: the 2002–05 grid carried forward, as the engine behind Reliable Britain models it. Only the difference is counted, and a year below that comparison counts as negative. The part of the charge that generators pay is left out of both, because generators recover it through prices and subsidies already counted.</p>
 
   <h3>Balancing costs (BSUoS)</h3>
   <p class="scheme-meta" id="im-bsuos"></p>
   <blockquote id="attr-bsuos"></blockquote>
   <p id="raw-bsuos"></p>
-  <p>Conservative direction: as for TNUoS, only the uplift above the inflation-indexed baseline is attributed, floored at zero.</p>
+  <p>As for TNUoS: each year is compared with what balancing would have cost the same year in a Britain without net-zero policy, as the engine behind Reliable Britain models it; only the difference counts, a year below it counts as negative, and the generators’ part of the charge is left out of both. For the current year the comparison is cut to the days the data cover.</p>
   <p><strong>Corrected 30 September 2026.</strong> This series previously came from NESO’s <em>Daily Balancing Costs</em> dataset, which breaks down balancing-mechanism and ancillary spend. That is not the same quantity as the balancing cost recovered from bill-payers through BSUoS: it ran 23–39% below the outturn in NESO’s own <em>Annual Balancing Costs Report</em> in every year from 2018-19. Because the pre-2017 history and the baseline are both on the gross BSUoS basis, the old series joined two different definitions mid-run. The series now reads NESO’s settled BSUoS charge data — the half-hourly charge up to 31 March 2023, and actual BSUoS cost thereafter, because the April 2023 fixed-tariff reform broke the identity between what users are charged and what balancing costs. Full detail, and the effect on the totals, is on the <a href="corrections.html">corrections page</a>.</p>
 
   <h3 id="attr-constraint_turnup">Paid to switch on (constraint turn-up)</h3>
@@ -149,8 +146,9 @@
   wind bids accepted as constraint actions is priced against that half-hour's accepted offers:
   offers not marked as constraint actions first, then in the order they were accepted, with a
   part-share of the offer that crosses the volume. Short-duration offers are left out, as Octopus
-  leaves them out. We reproduce Octopus's published figures to within 0.1% (2025: £1,466.8m
-  against £1,467.0m). It is counted with the indirect costs, not the direct payments, because
+  leaves them out. Together with the payments to switch wind off, our figures reproduce Octopus's
+  published total to within 0.1% (2025: £1,465.7m against £1,466.8m); turn-up alone came to
+  £1,083.6m (Octopus: £1,083.7m). It is counted with the indirect costs, not the direct payments, because
   the money goes to the replacement stations, not to renewable generators, and because it is an
   estimate rather than a record of payments.</p>
   <p>As a cross-check we also total what was actually paid on offers marked as constraint
@@ -166,7 +164,6 @@
 
   <h3>Indirect costs <em>not</em> counted</h3>
   <ul>
-    <li>Free ETS allowance allocations (a transfer forgone, not a cash flow counted here)</li>
     <li>SECR reporting and corporate PPA effects on power prices</li>
     <li>Smart Export Guarantee (SEG) payments</li>
     <li>Offtaker of Last Resort (OLR) arrangements</li>
@@ -175,7 +172,7 @@
   <h2 id="headline-figure">How the headline figure is made up</h2>
   <p id="combined-real-note"></p>
   <p class="caveat">Price basis for real-terms figures: CPIH, 2024 — see <a href="#real-terms">Real terms</a>;
-  the deflator vintage is refreshed annually.</p>
+  annual averages, and ONS’s published months for a year not yet averaged; today’s money is priced at the latest month.</p>
 
   <h3 id="share">Share of the electricity bill</h3>
   <p>
@@ -230,15 +227,13 @@
     Energy Foundation&rsquo;s <a href="https://www.ref.org.uk/constraints/index.php?tab=yr">published
     annual totals</a>. REF builds them from Elexon data, but they are REF&rsquo;s figures. From
     1 January <span class="elexon-first-year">2024</span> the Clock measures them bottom-up from Elexon settlement data.</li>
-    <li><strong>Some earlier indirect costs</strong> (TNUoS before 2013, BSUoS for 2006&ndash;2010
-    and 2014&ndash;2016, and carbon pricing before 2019) rest on REF&rsquo;s published tabulation
-    until they are checked against primary sources.</li>
     <li><strong>Renewables Obligation payments to named stations</strong> (the largest-recipients
     table and the map) come from David Turver&rsquo;s reconstruction of certificates (ROCs) issued
     to each station, valued at the buy-out price. The RO total is Ofgem&rsquo;s own figure.</li>
     <li><strong>The share of the Capacity Market counted as a cost of net zero</strong> comes from
-    Richard Lyon&rsquo;s model of the power system without net-zero policy, which is not yet
-    published (see <a href="#indirect">Indirect subsidies</a>).</li>
+    the model of the power system without net-zero policy behind Reliable Britain, as do the
+    no-net-zero comparisons for grid and balancing charges and the carbon line (see
+    <a href="#indirect">Indirect subsidies</a>).</li>
     <li><strong>The stadium comparison</strong> uses the cost of the Tottenham Hotspur Stadium as
     given on <a href="https://en.wikipedia.org/wiki/Tottenham_Hotspur_Stadium">Wikipedia</a>.</li>
     <li><strong>Other comparison figures</strong> use the published source named beside each one,
@@ -283,8 +278,6 @@
   attribution list</a>. Map tiles are fetched by your browser directly from those
   providers; no identifier beyond the tile request itself is sent.</p>
 
-  <h2>Run-rate semantics</h2>
-  <p>The per-second rates that drive the live counter are derived from each scheme’s recent run-rate: the trailing 365 days for daily schemes (CfD and constraints), the last 12 months for the Capacity Market, and the latest completed scheme year for RO and FIT. Values shown between official data updates are therefore <strong>estimates</strong>, and are replaced by official figures as they are published.</p>
 
   <h2 id="prices">2024 prices, and cash</h2>
   <p>The headline is in <strong>2024 prices</strong>: each year's cost converted to 2024 prices with the ONS CPIH index (2024&nbsp;=&nbsp;100), so that a pound paid in 2002 and a pound paid in 2026 are worth the same. The same annual series is shown here in cash, money summed as it was actually paid. The cash total is <em>smaller</em>, because early-years subsidy was worth more in 2024 prices.</p>
@@ -296,7 +289,7 @@
 
   <h2 id="equivalences">The equivalence figures</h2>
   <p>The dashboard's comparison lines use deliberately conservative denominators, and every
-  count divides the quoted £230bn+ floor — not the raw total — then rounds down:</p>
+  count divides the quoted £280bn+ floor — not the raw total — then rounds down:</p>
   <ul>
     <li><strong>NHS nurses</strong> — Band 5 annual salary at the top of the band
     (<a href="https://www.nhsemployers.org/articles/pay-scales-202627">Agenda for Change,
@@ -307,14 +300,15 @@
     homes). The full cost is used, not the far lower public grant per home.</li>
     <li><strong>Hinkley Point C</strong> — EDF's <a href="https://www.newcivilengineer.com/latest/hinkley-point-cs-cost-climbs-to-35bn-with-confirmation-unit-1-will-power-up-in-2030-20-02-2026/">£35bn
     estimate</a> is in 2015 prices; the Clock converts it to 2024 prices with the same ONS
-    CPIH series it uses everywhere (about £46.5bn) before dividing. Dividing £230bn by the
-    unadjusted £35bn would give 6 stations; the like-for-like comparison gives 4.</li>
+    CPIH series it uses everywhere (about £46.5bn) before dividing. Dividing £280bn by the
+    unadjusted £35bn would give 8 stations; the like-for-like comparison gives 6.</li>
     <li><strong>Per MWh</strong> — divides by electricity finally consumed by end users
     (273.8&nbsp;TWh/year), not total demand including network losses (320.2&nbsp;TWh), so
     the figure is not inflated by losses.</li>
   </ul>
 
-  <h2 id="freshness">Data freshness</h2>
+  <h2 id="freshness">Data freshness and the running total</h2>
+  <p>Every source publishes in arrears, each to its own date. The counter is the published figure for each line up to that line’s latest data, plus an <strong>estimate</strong> since then: each line carried forward from its own data end at its latest yearly rate. That rate is the last complete year for annual lines (RO, FiT, the levy, carbon, grid charges), the trailing 365 days for daily feeds (CfD, constraints, balancing, turn-up), and the last 12 months for the Capacity Market; VAT is carried with the lines it is charged on. The estimate is shown separately on the dashboard (‘Estimated since the latest data’) and is replaced by published data as each source updates. In 2024 prices, the estimate is priced at ONS’s latest monthly CPIH.</p>
   <p class="scheme-meta" id="freshness-detail"></p>
   <p>Each scheme on the dashboard carries a badge showing its update cadence and the latest date its data covers. Every source publishes in arrears — LCCC releases daily CfD data weekly, NESO publishes settled BSUoS data roughly three weeks behind the days it covers, and Capacity Market monthly data follows the settlement calendar — so a publication lag is normal and is not flagged. A scheme is marked <strong>stale</strong> only when its latest data is older than that scheme’s normal publication lag: 21 days for CfD, 3 days for constraints, 30 days for BSUoS, 75 days after the end of the latest data month for the Capacity Market, and 2 years for RO and FIT annual reports.</p>
   <p class="caveat">The BSUoS threshold was 7 days until 30 September 2026, when the series moved to NESO’s settled BSUoS data. That source is slower than the daily extract it replaced — about three weeks behind rather than one — because settlement runs take time to finalise. The Clock accepts roughly twelve days less timeliness for a figure that measures the right quantity; see <a href="corrections.html">corrections</a>.</p>
@@ -436,15 +430,19 @@
   (function () {
     var r = totals.perspectives.renewables, ind = totals.indirect;
     if (!r.real || !ind || !ind.real) return;
+    // published to each line's latest data, plus the estimate since (aios-harness#46/#48)
+    var run = function (b) { return b.running_total != null ? b.running_total : b.cumulative; };
     var direct = r.real.cumulative, indirect = ind.real.cumulative;
-    var combined = direct + indirect;
+    var published = direct + indirect;
+    var combined = run(r.real) + run(ind.real);
     var floored = Math.floor(combined / 1e10) * 1e10;
     if (floored === combined) floored -= 1e10;
     document.getElementById('combined-real-note').innerHTML =
-      'The dashboard lead-in’s figure decomposes as: measured direct subsidy of ' +
+      'The dashboard lead-in’s figure decomposes as: direct subsidy of ' +
       fmtBn(direct) + ' plus estimated indirect costs of ' + fmtBn(indirect) +
-      ', both in 2024 prices and counted to today — <strong>' + fmtBn(combined) +
-      '</strong> combined. The lead-in quotes this as ‘over £' + (floored / 1e9) +
+      ', both in 2024 prices and published to each source’s latest data (' + fmtBn(published) +
+      '), plus ' + fmtBn(combined - published) + ' estimated since then (<a href="#freshness">how</a>) — <strong>' +
+      fmtBn(combined) + '</strong> at the last build. The lead-in quotes this as ‘over £' + (floored / 1e9) +
       '&nbsp;billion’: floored to the £10&nbsp;billion step strictly below it, never rounded up.';
   })();
 
@@ -518,12 +516,13 @@
   var INDIRECT_SOURCE_NAMES = {
     capacity_market: 'LCCC, capacity obligation by auction',
     ccl: 'HMRC Environmental Taxes Bulletin',
-    ets: 'BEIS/DESNZ Annual Report and Accounts Trust Statements; EC UK auction platform reports',
+    carbon: 'Gas-counterfactual engine (Reliable Britain), HMRC CPS receipts, emissions-trading auction results',
+    vat: 'Households\' share (gas-counterfactual engine) of the counted lines, at 5%',
     tnuos: 'NESO Final TNUoS Tariffs publications',
     bsuos: 'NESO settled BSUoS charge data; NAO Electricity Balancing Services',
     constraint_turnup: 'Elexon settlement stacks (accepted bids and offers)'
   };
-  ['capacity_market', 'ccl', 'ets', 'tnuos', 'bsuos', 'constraint_turnup'].forEach(function (id) {
+  ['capacity_market', 'ccl', 'carbon', 'vat', 'tnuos', 'bsuos', 'constraint_turnup'].forEach(function (id) {
     var s = byId[id];
     if (!s) return;
     var srcLabel = esc(INDIRECT_SOURCE_NAMES[id] || s.source_url || id);
@@ -573,7 +572,7 @@
   // real-terms deflator
   document.getElementById('deflator-note').innerHTML =
     'Real-terms (2024 £) figures restate nominal pounds in ' + esc(meta.deflator.base_year) +
-    ' prices using annual averages of <a href="' + esc(meta.deflator.source_url) + '">' +
+    ' prices using <a href="' + esc(meta.deflator.source_url) + '">' +
     esc(meta.deflator.source) + '</a>.' +
     (meta.deflator.verified ? ' <span class="tick-ok">✓ verified against the published series</span>' : '');
 
