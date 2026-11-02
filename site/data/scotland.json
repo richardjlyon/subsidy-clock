@@ -1,24 +1,24 @@
 {
- "generated_at": "2026-11-01T12:05:48.107992+00:00",
+ "generated_at": "2026-11-02T10:11:32.276796+00:00",
  "window": {
-  "from": "2023-05-14",
+  "from": "2016-01-01",
   "to": "2026-10-31"
  },
- "gb_cost": 1300813380.07,
- "scotland_cost": 1240248010.36,
- "scotland_share": 0.9534,
- "scotland_mwh": 31980505,
- "gb_mwh": 32620433,
+ "gb_cost": 2509759869.35,
+ "scotland_cost": 2344451409.37,
+ "scotland_share": 0.9341,
+ "scotland_mwh": 48587517,
+ "gb_mwh": 50165561,
  "scotland_last12_cost": 352946714.68,
  "gb_last12_cost": 358696831.43,
- "scotland_per_mwh": 38.78,
+ "scotland_per_mwh": 48.25,
  "unplaced_cost": 0.0,
- "n_farms_paid": 108,
+ "n_farms_paid": 111,
  "farms": [
   {
    "farm": "Moray East",
-   "cost": 211128528.13,
-   "mwh": 5422522,
+   "cost": 311831682.71,
+   "mwh": 6918060,
    "units": [
     "T_MOWEO-1",
     "T_MOWEO-2",
@@ -39,6 +39,15 @@
    ]
   },
   {
+   "farm": "Whitelee",
+   "cost": 125166843.0,
+   "mwh": 1760427,
+   "units": [
+    "T_WHILW-1",
+    "T_WHILW-2"
+   ]
+  },
+  {
    "farm": "Moray West",
    "cost": 95366467.65,
    "mwh": 2934416,
@@ -51,8 +60,8 @@
   },
   {
    "farm": "Stronelairg",
-   "cost": 55757690.03,
-   "mwh": 654534,
+   "cost": 92429536.39,
+   "mwh": 1155399,
    "units": [
     "T_STLGW-1",
     "T_STLGW-2",
@@ -60,37 +69,9 @@
    ]
   },
   {
-   "farm": "Dorenell",
-   "cost": 42663073.73,
-   "mwh": 993464,
-   "units": [
-    "T_DOREW-1",
-    "T_DOREW-2"
-   ]
-  },
-  {
-   "farm": "Viking Energy",
-   "cost": 31755112.41,
-   "mwh": 2582961,
-   "units": [
-    "T_VKNGW-1",
-    "T_VKNGW-2",
-    "T_VKNGW-3",
-    "T_VKNGW-4"
-   ]
-  },
-  {
-   "farm": "Bhlaraidh",
-   "cost": 28974114.81,
-   "mwh": 360684,
-   "units": [
-    "T_BHLAW-1"
-   ]
-  },
-  {
    "farm": "Beatrice",
-   "cost": 24687516.79,
-   "mwh": 260597,
+   "cost": 82015613.44,
+   "mwh": 1149290,
    "units": [
     "T_BEATO-1",
     "T_BEATO-2",
@@ -99,72 +80,526 @@
    ]
   },
   {
-   "farm": "Neart na Gaoithe",
-   "cost": 22520855.56,
-   "mwh": 384258,
-   "units": [
-    "T_NNGAO-1",
-    "T_NNGAO-2"
-   ]
-  },
-  {
-   "farm": "Aikengall",
-   "cost": 21955199.44,
-   "mwh": 320957,
-   "units": [
-    "T_AKGLW-2",
-    "T_AKGLW-3"
-   ]
-  },
-  {
    "farm": "Kilgallioch",
-   "cost": 20893911.64,
-   "mwh": 259374,
+   "cost": 78139130.76,
+   "mwh": 1102805,
    "units": [
     "T_KLGLW-1"
    ]
   },
   {
-   "farm": "Whitelee",
-   "cost": 19596281.46,
-   "mwh": 221304,
+   "farm": "Bhlaraidh",
+   "cost": 67435059.23,
+   "mwh": 918551,
    "units": [
-    "T_WHILW-1",
-    "T_WHILW-2"
+    "T_BHLAW-1"
+   ]
+  },
+  {
+   "farm": "Griffin",
+   "cost": 62777089.34,
+   "mwh": 834285,
+   "units": [
+    "T_GRIFW-1",
+    "T_GRIFW-2"
+   ]
+  },
+  {
+   "farm": "Fallago Rig",
+   "cost": 58895815.89,
+   "mwh": 792928,
+   "units": [
+    "T_FALGW-1"
+   ]
+  },
+  {
+   "farm": "Dorenell",
+   "cost": 58261676.08,
+   "mwh": 1702223,
+   "units": [
+    "T_DOREW-1",
+    "T_DOREW-2"
+   ]
+  },
+  {
+   "farm": "Clyde North",
+   "cost": 56154673.63,
+   "mwh": 752981,
+   "units": [
+    "T_CLDNW-1"
    ]
   },
   {
    "farm": "Dunmaglass",
-   "cost": 18062827.42,
-   "mwh": 208331,
+   "cost": 48880971.6,
+   "mwh": 648932,
    "units": [
     "T_DUNGW-1"
    ]
   },
   {
-   "farm": "Gordon Bush",
-   "cost": 17608470.27,
-   "mwh": 431071,
+   "farm": "Clyde Central",
+   "cost": 47708643.41,
+   "mwh": 638894,
    "units": [
-    "T_GORDW-1",
-    "T_GORDW-2"
+    "T_CLDCW-1"
    ]
   },
   {
-   "farm": "Creag Riabhach",
-   "cost": 17445888.93,
-   "mwh": 267232,
+   "farm": "Strathy North",
+   "cost": 45470038.53,
+   "mwh": 645332,
    "units": [
-    "T_CREAW-1"
+    "T_STRNW-1"
    ]
   }
  ],
- "top_farms_share": 0.6376,
+ "top_farms_share": 0.5941,
  "monthly": [
   {
+   "month": "2016-01",
+   "scotland": 13876116,
+   "rest": 17309
+  },
+  {
+   "month": "2016-02",
+   "scotland": 6050745,
+   "rest": 11184
+  },
+  {
+   "month": "2016-03",
+   "scotland": 3745651,
+   "rest": 638262
+  },
+  {
+   "month": "2016-04",
+   "scotland": 2409546,
+   "rest": 117607
+  },
+  {
+   "month": "2016-05",
+   "scotland": 4829456,
+   "rest": 516796
+  },
+  {
+   "month": "2016-06",
+   "scotland": 1051463,
+   "rest": 365188
+  },
+  {
+   "month": "2016-07",
+   "scotland": 1592346,
+   "rest": 1951223
+  },
+  {
+   "month": "2016-08",
+   "scotland": 6923790,
+   "rest": 138312
+  },
+  {
+   "month": "2016-09",
+   "scotland": 11226511,
+   "rest": 4392224
+  },
+  {
+   "month": "2016-10",
+   "scotland": 2824624,
+   "rest": 4122661
+  },
+  {
+   "month": "2016-11",
+   "scotland": 5144231,
+   "rest": 6883
+  },
+  {
+   "month": "2016-12",
+   "scotland": 10103526,
+   "rest": 261041
+  },
+  {
+   "month": "2017-01",
+   "scotland": 3725979,
+   "rest": 7534
+  },
+  {
+   "month": "2017-02",
+   "scotland": 7482811,
+   "rest": 279976
+  },
+  {
+   "month": "2017-03",
+   "scotland": 4420861,
+   "rest": 127471
+  },
+  {
+   "month": "2017-04",
+   "scotland": 4589203,
+   "rest": 332900
+  },
+  {
+   "month": "2017-05",
+   "scotland": 3074957,
+   "rest": 699843
+  },
+  {
+   "month": "2017-06",
+   "scotland": 18595835,
+   "rest": 1143717
+  },
+  {
+   "month": "2017-07",
+   "scotland": 7070939,
+   "rest": 123271
+  },
+  {
+   "month": "2017-08",
+   "scotland": 9245369,
+   "rest": 627128
+  },
+  {
+   "month": "2017-09",
+   "scotland": 6424942,
+   "rest": 403196
+  },
+  {
+   "month": "2017-10",
+   "scotland": 22139049,
+   "rest": 1113645
+  },
+  {
+   "month": "2017-11",
+   "scotland": 9090354,
+   "rest": 69540
+  },
+  {
+   "month": "2017-12",
+   "scotland": 8304949,
+   "rest": 224142
+  },
+  {
+   "month": "2018-01",
+   "scotland": 6566733,
+   "rest": 28305
+  },
+  {
+   "month": "2018-02",
+   "scotland": 1949079,
+   "rest": 37482
+  },
+  {
+   "month": "2018-03",
+   "scotland": 3338958,
+   "rest": 145978
+  },
+  {
+   "month": "2018-04",
+   "scotland": 6765059,
+   "rest": 492150
+  },
+  {
+   "month": "2018-05",
+   "scotland": 3731587,
+   "rest": 108866
+  },
+  {
+   "month": "2018-06",
+   "scotland": 9481956,
+   "rest": 230607
+  },
+  {
+   "month": "2018-07",
+   "scotland": 7403172,
+   "rest": 2353818
+  },
+  {
+   "month": "2018-08",
+   "scotland": 7000886,
+   "rest": 959139
+  },
+  {
+   "month": "2018-09",
+   "scotland": 26860484,
+   "rest": 1743926
+  },
+  {
+   "month": "2018-10",
+   "scotland": 23390297,
+   "rest": 2650212
+  },
+  {
+   "month": "2018-11",
+   "scotland": 9176399,
+   "rest": 375390
+  },
+  {
+   "month": "2018-12",
+   "scotland": 10578525,
+   "rest": 282657
+  },
+  {
+   "month": "2019-01",
+   "scotland": 9618587,
+   "rest": 43365
+  },
+  {
+   "month": "2019-02",
+   "scotland": 9617153,
+   "rest": 328605
+  },
+  {
+   "month": "2019-03",
+   "scotland": 31217301,
+   "rest": 533961
+  },
+  {
+   "month": "2019-04",
+   "scotland": 10667428,
+   "rest": 307896
+  },
+  {
+   "month": "2019-05",
+   "scotland": 4060445,
+   "rest": 212497
+  },
+  {
+   "month": "2019-06",
+   "scotland": 7849628,
+   "rest": 595583
+  },
+  {
+   "month": "2019-07",
+   "scotland": 2695719,
+   "rest": 129284
+  },
+  {
+   "month": "2019-08",
+   "scotland": 7960632,
+   "rest": 1045289
+  },
+  {
+   "month": "2019-09",
+   "scotland": 10039882,
+   "rest": 999679
+  },
+  {
+   "month": "2019-10",
+   "scotland": 18022091,
+   "rest": 1523780
+  },
+  {
+   "month": "2019-11",
+   "scotland": 3816892,
+   "rest": 446112
+  },
+  {
+   "month": "2019-12",
+   "scotland": 17084881,
+   "rest": 2675780
+  },
+  {
+   "month": "2020-01",
+   "scotland": 30986876,
+   "rest": 944310
+  },
+  {
+   "month": "2020-02",
+   "scotland": 39482883,
+   "rest": 1935738
+  },
+  {
+   "month": "2020-03",
+   "scotland": 17886612,
+   "rest": 1253354
+  },
+  {
+   "month": "2020-04",
+   "scotland": 9377681,
+   "rest": 1448296
+  },
+  {
+   "month": "2020-05",
+   "scotland": 18588560,
+   "rest": 4246831
+  },
+  {
+   "month": "2020-06",
+   "scotland": 16532842,
+   "rest": 4671289
+  },
+  {
+   "month": "2020-07",
+   "scotland": 13806777,
+   "rest": 4960742
+  },
+  {
+   "month": "2020-08",
+   "scotland": 4573332,
+   "rest": 4365314
+  },
+  {
+   "month": "2020-09",
+   "scotland": 10707150,
+   "rest": 1020083
+  },
+  {
+   "month": "2020-10",
+   "scotland": 20568463,
+   "rest": 3306015
+  },
+  {
+   "month": "2020-11",
+   "scotland": 49887358,
+   "rest": 2202034
+  },
+  {
+   "month": "2020-12",
+   "scotland": 19851011,
+   "rest": 399632
+  },
+  {
+   "month": "2021-01",
+   "scotland": 2581404,
+   "rest": 453545
+  },
+  {
+   "month": "2021-02",
+   "scotland": 30385335,
+   "rest": 391520
+  },
+  {
+   "month": "2021-03",
+   "scotland": 18561350,
+   "rest": 2228570
+  },
+  {
+   "month": "2021-04",
+   "scotland": 2063198,
+   "rest": 937809
+  },
+  {
+   "month": "2021-05",
+   "scotland": 2087935,
+   "rest": 441866
+  },
+  {
+   "month": "2021-06",
+   "scotland": 5734508,
+   "rest": 128349
+  },
+  {
+   "month": "2021-07",
+   "scotland": 669561,
+   "rest": 315995
+  },
+  {
+   "month": "2021-08",
+   "scotland": 448057,
+   "rest": 150531
+  },
+  {
+   "month": "2021-09",
+   "scotland": 3386061,
+   "rest": 195135
+  },
+  {
+   "month": "2021-10",
+   "scotland": 15274539,
+   "rest": 612804
+  },
+  {
+   "month": "2021-11",
+   "scotland": 37633400,
+   "rest": 2377251
+  },
+  {
+   "month": "2021-12",
+   "scotland": 19161743,
+   "rest": 1201159
+  },
+  {
+   "month": "2022-01",
+   "scotland": 28724799,
+   "rest": 2224005
+  },
+  {
+   "month": "2022-02",
+   "scotland": 36045698,
+   "rest": 2860437
+  },
+  {
+   "month": "2022-03",
+   "scotland": 9589760,
+   "rest": 1930938
+  },
+  {
+   "month": "2022-04",
+   "scotland": 9789575,
+   "rest": 615349
+  },
+  {
+   "month": "2022-05",
+   "scotland": 12915260,
+   "rest": 593970
+  },
+  {
+   "month": "2022-06",
+   "scotland": 24944304,
+   "rest": 843256
+  },
+  {
+   "month": "2022-07",
+   "scotland": 4555938,
+   "rest": 772196
+  },
+  {
+   "month": "2022-08",
+   "scotland": 5013921,
+   "rest": 250285
+  },
+  {
+   "month": "2022-09",
+   "scotland": 6427713,
+   "rest": 1824339
+  },
+  {
+   "month": "2022-10",
+   "scotland": 40639574,
+   "rest": 1258520
+  },
+  {
+   "month": "2022-11",
+   "scotland": 29980569,
+   "rest": 2472180
+  },
+  {
+   "month": "2022-12",
+   "scotland": 10083115,
+   "rest": 1282743
+  },
+  {
+   "month": "2023-01",
+   "scotland": 15138878,
+   "rest": 1595157
+  },
+  {
+   "month": "2023-02",
+   "scotland": 17834932,
+   "rest": 882678
+  },
+  {
+   "month": "2023-03",
+   "scotland": 9570322,
+   "rest": 1387851
+  },
+  {
+   "month": "2023-04",
+   "scotland": 24830038,
+   "rest": 4875849
+  },
+  {
    "month": "2023-05",
-   "scotland": 2097374,
-   "rest": 455912
+   "scotland": 7142716,
+   "rest": 3399662
   },
   {
    "month": "2023-06",
@@ -376,13 +811,13 @@
   "scotland_consumption_twh": 21.6573,
   "gb_consumption_twh": 249.2477,
   "scotland_consumption_share": 0.0869,
-  "paid_in_scotland": 107765982.33,
-  "paid_elsewhere": 1132482028.03,
+  "paid_in_scotland": 203710957.04,
+  "paid_elsewhere": 2140740452.33,
   "source": "DESNZ, Subnational electricity consumption statistics, Electricity consumption by Region, 2005 to 2024",
   "source_url": "https://www.gov.uk/government/statistics/regional-and-local-authority-electricity-consumption-statistics"
  },
  "turnup_same_window": {
-  "cost": 3905761408.88,
+  "cost": 5767361306.86,
   "to": "2026-10-31",
   "basis": "replacement_estimate (GB-wide)"
  },

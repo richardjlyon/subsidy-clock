@@ -12,43 +12,40 @@
     --bg: #f7f4ee; --ink: #23211c; --money: #99311f; --muted: #6e6a5f; --brand: #7a2419;
     background: var(--bg); color: var(--ink);
     font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    overflow: hidden;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 8px 14px; overflow: hidden;
   }
-  main { height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 8px 14px; }
   body.dark { --bg: #221f1a; --ink: #f0ece2; --money: #e08a72; --muted: #a39d8d; --brand: #e0c9a8; }
   .fig { font-weight: 700; color: var(--money);
          font-variant-numeric: tabular-nums; font-size: 22px; line-height: 1.1; }
   .what { font-size: 11px; color: var(--muted); margin-top: 2px; }
   .attr { font-size: 10px; margin-top: 3px; }
-  .attr a { color: var(--brand); text-decoration: none; font-weight: 600;
-            display: inline-block; padding: 7px 0; margin: -7px 0; } /* 24px tap area, same layout */
+  .attr a { color: var(--brand); text-decoration: none; font-weight: 600; }
   /* banner 728x90: figure and text side by side */
-  body.banner main { flex-direction: row; align-items: center; gap: 14px; justify-content: flex-start; }
+  body.banner { flex-direction: row; align-items: center; gap: 14px; justify-content: flex-start; }
   body.banner .fig { font-size: 26px; }
   body.banner .meta { min-width: 0; }
   /* card 300x250: stacked, larger figure */
   body.card .fig { font-size: 28px; }
   body.card { text-align: center; }
   /* strip: one line, full width */
-  body.strip main { flex-direction: row; align-items: baseline; gap: 10px; padding: 4px 14px; }
+  body.strip { flex-direction: row; align-items: baseline; gap: 10px; padding: 4px 14px; }
   body.strip .fig { font-size: 18px; }
   body.strip .what { margin: 0; }
   body.strip .attr { margin: 0; margin-left: auto; }
 </style>
 </head>
 <body>
-<main>
-  <h1 class="fig" id="fig">£233,423,517,442</h1>
+  <div class="fig" id="fig">£289,640,714,359</div>
   <div class="meta">
-    <div class="what"><span id="what">paid to UK renewable generators plus estimated indirect system costs since 2002, part estimated since the latest data</span> · as of <span id="asof">1 November 2026</span></div>
+    <div class="what"><span id="what">paid to UK renewable generators plus estimated indirect system costs since 2002</span> · as of <span id="asof">2 November 2026</span></div>
     <div class="attr"><a href="https://subsidyclock.co.uk" target="_blank" rel="noopener">The Subsidy Clock — subsidyclock.co.uk</a></div>
   </div>
-</main>
 <script>
 (function () {
   'use strict';
   // stamped at build time; the fetch below refreshes them if this file is cached
-  var stamped = { "cum": 233423517442.39392, "rate": 655.4895353581427, "generated": "2026-11-01T12:05:48.107992+00:00" };
+  var stamped = { "cum": 289640714359.5348, "rate": 694.027127187672, "generated": "2026-11-02T10:11:32.276796+00:00" };
 
   var q = new URLSearchParams(location.search);
   var size = q.get('size');
@@ -58,27 +55,38 @@
   var basis = q.get('basis') === 'nominal' ? 'nominal' : 'real';
   var scope = q.get('scope') === 'direct' ? 'direct' : 'combined';
   document.getElementById('what').textContent = scope === 'combined'
-    ? 'paid to UK renewable generators plus estimated indirect system costs since 2002, part estimated since the latest data'
-    : 'paid to UK renewable generators since 2002, part estimated since the latest data';
+    ? 'paid to UK renewable generators plus estimated indirect system costs since 2002'
+    : 'paid to UK renewable generators since 2002';
 
+  // published to each line's latest data + the estimate since each line's data end
+  // at its latest rate (per-line carry-forward, as the front page; aios-harness#46)
   function pick(t) {
     var p = t.perspectives.renewables;
-    var d = basis === 'real' ? p.real : p;
-    var cum = d.cumulative, rate = d.rate_per_sec;
-    if (scope === 'combined' && t.indirect) {
-      var iv = basis === 'real' ? t.indirect.real : t.indirect;
-      cum += iv.cumulative;
-      rate += iv.rate_per_sec;
-    }
-    return { cum: cum, rate: rate };
+    var blocks = [basis === 'real' ? p.real : p];
+    if (scope === 'combined' && t.indirect)
+      blocks.push(basis === 'real' ? t.indirect.real : t.indirect);
+    var cum = 0, lines = [], rate = 0;
+    blocks.forEach(function (b) {
+      cum += b.cumulative; rate += b.rate_per_sec;
+      (b.carry_forward || []).forEach(function (l) {
+        lines.push({ from: Date.parse(l.from), rate: l.rate_per_sec });
+      });
+    });
+    return { cum: cum, lines: lines, rate: rate };
+  }
+  function liveValue(v, t, generated) {
+    if (!v.lines.length) return v.cum + v.rate * (t - generated) / 1000;
+    var x = v.cum;
+    v.lines.forEach(function (l) { if (t > l.from) x += l.rate * (t - l.from) / 1000; });
+    return x;
   }
 
   function fmtFull(v) { return '£' + Math.floor(v).toLocaleString('en-GB'); }
-  function start(cum, rate, generatedIso) {
+  function start(v, generatedIso) {
     var generated = Date.parse(generatedIso);
     var el = document.getElementById('fig');
     function tick() {
-      el.textContent = fmtFull(cum + rate * (Date.now() - generated) / 1000);
+      el.textContent = fmtFull(liveValue(v, Date.now(), generated));
       setTimeout(tick, 1000);
     }
     tick();
@@ -89,9 +97,10 @@
     var d = new Date(t.generated_at);
     document.getElementById('asof').textContent = d.getUTCDate() + ' ' +
       d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
-    start(v.cum, v.rate, t.generated_at);
+    start(v, t.generated_at);
   }).catch(function () {
-    start(stamped.cum, stamped.rate, stamped.generated);
+    // stamped.cum is the running total at the build: tick on at the total rate
+    start({ cum: stamped.cum, lines: [], rate: stamped.rate }, stamped.generated);
   });
 
   // log embed loads as Matomo events (image tracker: no script, no cookies)

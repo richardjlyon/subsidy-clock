@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-01T12:05:48.107992+00:00",
+ "generated_at": "2026-11-02T10:11:32.276796+00:00",
  "corrections": [
   {
    "date": "2026-06-24",
@@ -137,6 +137,54 @@
    "cause": [
     "The footer of every page said that every figure traces to an official source. That was not true. Constraint payments before the Clock's own Elexon record begins are the Renewable Energy Foundation's figures; some earlier indirect costs rest on REF's tabulation; Renewables Obligation payments to named stations come from David Turver's reconstruction; the Capacity Market share counted as a cost of net zero comes from Richard Lyon's model, which is not yet published; and the stadium comparison uses a cost taken from Wikipedia.",
     "The footer now says what is true, and the methodology page has a new list, 'Sources that are not official statistics', naming each exception. No figure changed."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-11-02",
+   "kind": "correction",
+   "figure": "fit-scheme-years",
+   "figure_label": "Feed-in Tariffs, 2019-20 and 2022-23",
+   "was": "Each of the two scheme years carried the other's value (\u00a31,732m and \u00a31,606m).",
+   "now": "Each scheme year carries its own value; the total is unchanged.",
+   "cause": [
+    "A data error in our own input file. It moved \u00a3126m between the two years; the cash total did not change."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-11-02",
+   "kind": "correction",
+   "figure": "bsuos-2026-netting",
+   "figure_label": "Balancing the grid, 2026",
+   "was": "Constraint payments were taken off the balancing total for days the balancing data did not yet cover.",
+   "now": "Only the days both series cover are netted: +\u00a321.6m (cash) in 2026.",
+   "cause": [
+    "The netting that stops a constraint payment being counted twice ran past the balancing data's last day."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-11-02",
+   "kind": "correction",
+   "figure": "ets-2024",
+   "figure_label": "Emissions trading, January to March 2024",
+   "was": "January to March 2024 was counted twice, about \u00a30.2bn.",
+   "now": "The emissions-trading line is replaced by the carbon line, which does not double count.",
+   "cause": [
+    "Two overlapping sources both covered the first quarter of 2024."
+   ],
+   "credit": ""
+  },
+  {
+   "date": "2026-11-02",
+   "kind": "correction",
+   "figure": "turnup-octopus",
+   "figure_label": "Paid to switch on: the comparison with Octopus",
+   "was": "The page said turn-up came to \u00a31,466.8m in 2025, against Octopus's \u00a31,467.0m.",
+   "now": "Turn-up came to \u00a31,083.6m (Octopus \u00a31,083.7m); \u00a31,465.7m against Octopus's \u00a31,466.8m is switch-off and switch-on together.",
+   "cause": [
+    "The figure quoted was the combined total, labelled as turn-up alone. Wording only; no figure on the counter changed."
    ],
    "credit": ""
   }
