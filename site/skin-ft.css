@@ -37,7 +37,7 @@ html[data-skin="ft"] {
 
   --ink:        #1f242b;
   --muted:      #6a6053;
-  --faint:      #9b8f7c;
+  --faint:      #726552;   /* 5.0:1 on oat, 5.7:1 on white (WCAG AA; was #9b8f7c, 2.8:1) */
   --line:       #e7d9c2;
   --line-soft:  #efe4d2;
 
@@ -47,6 +47,7 @@ html[data-skin="ft"] {
 
   --amber:      #9e1b32;   /* claret accent */
   --amber-dark: #7d1427;
+  --amber-text: #7d1427;
 
   --stale:      #a8702a;
   --stale-bg:   #f3e6cf;
@@ -226,6 +227,7 @@ html[data-skin="ft"] .ft-lead strong { font-weight: 700; }
 html[data-skin="ft"] .since-opened {
   margin: 0; padding: 0; border: 0; background: none;
   display: block; font-size: 0;          /* hides the inline label text node */
+  color: var(--muted);                    /* hidden at 0px, but give audits a passing colour */
 }
 html[data-skin="ft"] .since-opened .money {
   color: var(--amber);

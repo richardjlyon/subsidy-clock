@@ -6,7 +6,7 @@
 @font-face { font-family:'Concourse'; src:url('../assets/fonts/concourse_t3_bold.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
 :root {
   --paper: #faf7f1; --card: #fefcf7; --ink: #23282e; --muted: #5d6470;
-  --faint: #8f94a0; --line: #d9d2c4; --line-soft: #e7e1d4;
+  --faint: #656b77; --line: #d9d2c4; --line-soft: #e7e1d4;
   --money: #16243a; --money-deep: #101b2d; --amber: #e3a13c;
   --c-ro: #e3a13c; --c-fit: #c8862a; --c-cfdr: #a86e22; --c-cfdl: #855417; --c-con: #5e3a0e;
   --c-cm: #16243a; --c-ccl: #274b73; --c-ets: #3f74a3; --c-tnuos: #7ba6c9; --c-bsuos: #b8d0e2; --c-tu: #5d7f99;
@@ -85,7 +85,7 @@ body {
 html[data-skin="ft"] {
   font-size: 17px;         /* lift the root so copy AND titles scale up together */
   --paper: #f9efdf; --card: #ffffff; --paper-dim: #f2e6d2;
-  --ink: #1f242b; --muted: #6a6053; --faint: #9b8f7c;
+  --ink: #1f242b; --muted: #6a6053; --faint: #726552;
   --line: #e7d9c2; --line-soft: #efe4d2;
   --money: #1f242b; --money-deep: #14181e;
   --amber: #9e1b32;            /* claret accent */

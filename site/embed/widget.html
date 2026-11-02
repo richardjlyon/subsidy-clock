@@ -12,35 +12,38 @@
     --bg: #f7f4ee; --ink: #23211c; --money: #99311f; --muted: #6e6a5f; --brand: #7a2419;
     background: var(--bg); color: var(--ink);
     font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 8px 14px; overflow: hidden;
+    overflow: hidden;
   }
+  main { height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 8px 14px; }
   body.dark { --bg: #221f1a; --ink: #f0ece2; --money: #e08a72; --muted: #a39d8d; --brand: #e0c9a8; }
   .fig { font-weight: 700; color: var(--money);
          font-variant-numeric: tabular-nums; font-size: 22px; line-height: 1.1; }
   .what { font-size: 11px; color: var(--muted); margin-top: 2px; }
   .attr { font-size: 10px; margin-top: 3px; }
-  .attr a { color: var(--brand); text-decoration: none; font-weight: 600; }
+  .attr a { color: var(--brand); text-decoration: none; font-weight: 600;
+            display: inline-block; padding: 7px 0; margin: -7px 0; } /* 24px tap area, same layout */
   /* banner 728x90: figure and text side by side */
-  body.banner { flex-direction: row; align-items: center; gap: 14px; justify-content: flex-start; }
+  body.banner main { flex-direction: row; align-items: center; gap: 14px; justify-content: flex-start; }
   body.banner .fig { font-size: 26px; }
   body.banner .meta { min-width: 0; }
   /* card 300x250: stacked, larger figure */
   body.card .fig { font-size: 28px; }
   body.card { text-align: center; }
   /* strip: one line, full width */
-  body.strip { flex-direction: row; align-items: baseline; gap: 10px; padding: 4px 14px; }
+  body.strip main { flex-direction: row; align-items: baseline; gap: 10px; padding: 4px 14px; }
   body.strip .fig { font-size: 18px; }
   body.strip .what { margin: 0; }
   body.strip .attr { margin: 0; margin-left: auto; }
 </style>
 </head>
 <body>
-  <div class="fig" id="fig">£233,423,517,442</div>
+<main>
+  <h1 class="fig" id="fig">£233,423,517,442</h1>
   <div class="meta">
     <div class="what"><span id="what">paid to UK renewable generators plus estimated indirect system costs since 2002</span> · as of <span id="asof">1 November 2026</span></div>
     <div class="attr"><a href="https://subsidyclock.co.uk" target="_blank" rel="noopener">The Subsidy Clock — subsidyclock.co.uk</a></div>
   </div>
+</main>
 <script>
 (function () {
   'use strict';

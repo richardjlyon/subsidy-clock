@@ -23,6 +23,7 @@
   --navy-deep: #101b2d;
   --amber: #e3a13c;
   --amber-dark: #c8862a;
+  --amber-text: #9a6420;   /* amber for text on light grounds: 4.9:1 on --card (amber-dark is 3.0:1) */
 
   --paper: #faf7f1;        /* the cream ground — never pure white */
   --paper-dim: #f2ede3;
@@ -30,7 +31,7 @@
 
   --ink: #23282e;
   --muted: #5d6470;
-  --faint: #8f94a0;
+  --faint: #656b77;        /* 5.2:1 on --card, 4.6:1 on --paper-dim (was #8f94a0, 3.0:1) */
   --line: #d9d2c4;
   --line-soft: #e7e1d4;
 
@@ -295,7 +296,7 @@ a:hover { color: var(--amber-dark); }
 .krow .amt { font-weight: 700; font-family: var(--sans); }
 .krow .pct { width: 44px; text-align: right; color: var(--faint); font-size: 0.78rem; font-family: var(--sans); }
 .card-foot { font-size: 0.82rem; color: var(--muted); margin: 10px 0 0; }
-.card-foot a { color: var(--amber-dark); }
+.card-foot a { color: var(--amber-text); }
 main > .card-pair { margin: 24px 0; }
 
 /* ---------- stat rows ---------- */
@@ -318,7 +319,7 @@ main > .card-pair { margin: 24px 0; }
 .badge-stale { color: var(--stale); border-color: var(--stale); background: var(--stale-bg); font-weight: 700; }
 .badge-conf-high { color: var(--navy); border-color: var(--navy); }
 .badge-conf-medium { color: var(--muted); border-color: var(--muted); }
-.badge-conf-low { color: var(--amber-dark); border-color: var(--amber-dark); }
+.badge-conf-low { color: var(--amber-text); border-color: var(--amber-text); }
 .bar-track { height: 11px; border-radius: 2px; background: var(--line-soft); overflow: hidden; position: relative; }
 .bar-fill { height: 100%; border-radius: 2px; background: var(--navy); min-width: 2px; }
 .bar-fill.neg { background: var(--c-cm); }
@@ -396,7 +397,7 @@ main > .card-pair { margin: 24px 0; }
   text-transform: uppercase; letter-spacing: 0.09em; font-weight: 700;
   color: var(--faint);
 }
-.corr-kind-correction { color: var(--amber-dark); }
+.corr-kind-correction { color: var(--amber-text); }
 
 .corr-notes { margin: 34px 0 0; }
 .corr-notes h3 {
@@ -412,7 +413,7 @@ main > .card-pair { margin: 24px 0; }
 .corr-note:last-child { border-bottom: 0; }
 .corr-note-n {
   font-family: var(--sans); font-weight: 700; font-size: 0.9rem;
-  color: var(--amber-dark); font-variant-numeric: tabular-nums;
+  color: var(--amber-text); font-variant-numeric: tabular-nums;
 }
 .corr-note-body { max-width: 52ch; }
 .corr-note-head {
@@ -585,7 +586,7 @@ main > .card-pair { margin: 24px 0; }
 #crosscheck-table th.num-col, #crosscheck-table td.num-col { padding-right: 16px; }
 .prose .src-quote { font-size: 0.86rem; color: var(--muted); }
 .tick-ok { color: var(--navy); font-weight: 700; }
-tr.out-of-tolerance td { color: var(--amber-dark); font-weight: 500; }
+tr.out-of-tolerance td { color: var(--amber-text); font-weight: 500; }
 .data-table tr.total-row td:not(.cell-dim) { border-top: 2px solid var(--line); font-weight: 700; }
 .scheme-meta { font-size: 0.8rem; color: var(--faint); margin: 2px 0 12px; font-family: var(--serif); }
 
@@ -707,3 +708,21 @@ tr.out-of-tolerance td { color: var(--amber-dark); font-weight: 500; }
 .paper-actions { font-size: 14px; }
 .paper-callout { border-left: 4px solid var(--c-con); padding: 10px 14px; background: var(--paper-dim); }
 @media print { .paper-actions { display: none; } }
+
+/* Touch screens: every control at least 24px tall (WCAG 2.2 SC 2.5.8), share buttons 44px.
+   Desktop (fine pointer) is unchanged. Site audit 2 Nov 2026, aios-harness#55. */
+@media (pointer: coarse) {
+  .hero-share-pill { min-height: 44px; padding-top: 0; padding-bottom: 0; }
+  .eq-foot .eq-src, .eq-foot .eq-cardlink { display: inline-flex; align-items: center; min-height: 28px; }
+  .rec-expand { min-height: 28px; }
+}
+
+/* Energy Trap skin: the switches and the eyebrow sit on the navy hero, so they take the
+   on-navy tints (the default ink and navy were invisible there: 1.1:1). The FT skin sets
+   its own hero, so these rules stay out of it. Site audit 2 Nov 2026, aios-harness#55. */
+html:not([data-skin="ft"]) .hero .switch-label { color: var(--on-navy-1); }
+html:not([data-skin="ft"]) .hero .switch { background: transparent; box-shadow: inset 0 0 0 1.5px var(--on-navy-3); }
+html:not([data-skin="ft"]) .hero .switch[aria-checked="true"] { box-shadow: none; }
+html:not([data-skin="ft"]) .hero .switch[aria-checked="true"] { background: var(--amber); }
+html:not([data-skin="ft"]) .hero .switch:focus-visible { outline-color: var(--amber); }
+html:not([data-skin="ft"]) .hero .eq-eyebrow { color: var(--on-navy-2); }
