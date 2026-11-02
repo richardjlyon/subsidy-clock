@@ -216,43 +216,18 @@
     // part to each line's latest data, and the carry-forward since, for the active basis/scope.
     var heroSplit = document.getElementById('hero-split');
     if (heroSplit) {
-      var now = Date.now();
-      var published = active().blocks.reduce(function (sum, b) {
-        return sum + (b.published_cumulative != null ? b.published_cumulative : b.cumulative);
-      }, 0);
-      var estimated = liveCumulative(now) - published;
-      heroSplit.innerHTML = '<span class="num">' + fmtCompact(published) + '</span> is from ' +
-        'published official data, up to each source’s latest figures; about ' +
-        '<span class="num">' + fmtCompact(estimated) + '</span> is estimated since then, at ' +
-        'each source’s latest yearly rate. ' +
-        '<a href="/methodology#freshness">How the running total works</a>.';
+      // the explanation lives on the FAQ page (Richard, 2 Nov 2026): one line under the clock
+      heroSplit.innerHTML = '<strong>What\u2019s in this number?</strong> ' +
+        '<a href="/faq">Questions and answers \u2192</a>';
     }
     // FT skin: left-box descriptive paragraph (inert markup in other skins).
     // The FT skin hides .hero-leadin and .hero-sub, so this paragraph is the
     // ONLY prose describing the counter. It must therefore say what the counter
     // includes in BOTH states: naming just the four direct schemes while the
     // figure above is the combined total describes a £100bn-smaller number.
+    // FT skin: the descriptive paragraph moved to the FAQ page (Richard, 2 Nov 2026)
     var ftLead = document.getElementById('ft-lead');
-    if (ftLead) {
-      var ftInd = iv();
-      var combinedBn = ftInd
-        ? floorStepBelow(blockLive(pv(), Date.now()) + blockLive(ftInd, Date.now())) / 1e9 : null;
-      var directNames =
-        'the Renewables Obligation, Contracts for Difference, Feed-in Tariffs ' +
-        'and constraint payments';
-      ftLead.innerHTML = state.combined
-        // counter IS the combined figure: name the direct schemes, then say
-        // plainly that the estimated indirect layer is inside this total.
-        ? 'Paid to renewable generators through ' + directNames +
-          ', <strong>plus estimated indirect costs</strong> — network and balancing ' +
-          'charges, carbon pricing and the capacity levy. ' +
-          '<a href="/methodology#indirect">How indirect costs are attributed</a>.'
-        // counter is direct-only: name what the fuller picture would be.
-        : 'Paid to renewable generators through ' + directNames + '.' +
-          (combinedBn != null
-            ? ' With estimated indirect costs, <strong>£' + combinedBn + 'bn+</strong>.'
-            : '');
-    }
+    if (ftLead) { ftLead.innerHTML = ''; ftLead.hidden = true; }
   }
 
   // ---------- ticking ----------
