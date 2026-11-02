@@ -49,10 +49,10 @@ def test_one_carbon_line_replaces_ets_and_cps(model):
     c = _s(model, "carbon")
     assert c.layer == "indirect" and c.perspectives == []
     assert c.data_to == date(2024, 12, 31)
-    # the CCL line is the levy alone: the register's CCL_ELEC line, no CPS in it
+    # the CCL line is the levy alone: the register's CCL_ELEC series, no CPS in it (unrounded since #57)
     reg = R.load_pinned(ROOT)["register"]
     ccl = {r["year"]: r["cost_gbp"] for r in _s(model, "ccl").annual.to_dicts()}
-    for y, v in reg.line("CCL_ELEC", "clock_live").items():
+    for y, v in reg.series("CCL_ELEC").items():
         if y <= 2024:
             assert ccl[y] == pytest.approx(v * 1e6, abs=0.01), y
 
