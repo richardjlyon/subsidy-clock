@@ -215,6 +215,13 @@ html[data-skin="ft"] .hero-basis {
   color: var(--ink);
 }
 
+html[data-skin="ft"] .hero-split {
+  margin: 6px 0 0; max-width: 40em;
+  font-family: var(--sans); font-size: 0.86rem; line-height: 1.45;
+  color: var(--muted);
+}
+html[data-skin="ft"] .hero-split a { color: var(--ink); }
+
 html[data-skin="ft"] .ft-lead {
   margin: 18px 0 0;
   font-family: var(--serif);

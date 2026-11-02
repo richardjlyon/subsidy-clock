@@ -181,8 +181,9 @@
               totals.perspectives.renewables.real);
   }
 
-  var FN = '<sup class="hero-fn" title="Estimated between official updates: the counter ' +
-    'advances at each scheme’s most recent published run-rate.">†</sup>';
+  var FN = '<sup class="hero-fn" title="Estimated between official updates: each line is ' +
+    'carried forward from its latest data at its latest yearly rate, and replaced as new data ' +
+    'are published.">†</sup>';
   function renderHeroStatic() {
     var sinceYear = persp().since_year;
     document.getElementById('hero-value').textContent = fmtFull(liveCumulative(Date.now()));
@@ -210,6 +211,21 @@
       heroBasis.textContent = state.real
         ? 'In 2024 prices (adjusted for inflation with ONS CPIH, 2024 = 100).'
         : 'In cash, as actually paid (not adjusted for inflation).';
+    }
+    // Published vs estimated (aios-harness#46/#48, wording Richard 2 Nov 2026): the published
+    // part to each line's latest data, and the carry-forward since, for the active basis/scope.
+    var heroSplit = document.getElementById('hero-split');
+    if (heroSplit) {
+      var now = Date.now();
+      var published = active().blocks.reduce(function (sum, b) {
+        return sum + (b.published_cumulative != null ? b.published_cumulative : b.cumulative);
+      }, 0);
+      var estimated = liveCumulative(now) - published;
+      heroSplit.innerHTML = '<span class="num">' + fmtCompact(published) + '</span> is from ' +
+        'published official data, up to each source’s latest figures; about ' +
+        '<span class="num">' + fmtCompact(estimated) + '</span> is estimated since then, at ' +
+        'each source’s latest yearly rate. ' +
+        '<a href="/methodology#freshness">How the running total works</a>.';
     }
     // FT skin: left-box descriptive paragraph (inert markup in other skins).
     // The FT skin hides .hero-leadin and .hero-sub, so this paragraph is the

@@ -201,6 +201,8 @@ a:hover { color: var(--amber-dark); }
 .hero-sub { margin: 16px auto 0; max-width: 34em; font-size: 1.04rem; color: var(--on-navy-2); }
 /* price basis of the hero figure: visible in every skin and at every width */
 .hero-basis { margin: 10px auto 0; max-width: 34em; font-size: 0.98rem; font-weight: 600; color: var(--on-navy-1); }
+.hero-split { margin: 6px auto 0; max-width: 38em; font-size: 0.88rem; line-height: 1.45; color: var(--on-navy-2); }
+.hero-split a { color: inherit; text-underline-offset: 3px; }
 
 .since-opened {
   margin: 28px auto 0; display: inline-block;
