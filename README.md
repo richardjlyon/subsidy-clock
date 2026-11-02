@@ -40,6 +40,8 @@ uv run python -m subsidy_engine build-site   # write site/data/*.json and the /d
 cd site && python3 -m http.server
 ```
 
+**Testing.** `tools/test.sh` is the one standard run, on VM 113, where the sibling projects it checks against live (`/srv/aios/projects`). Every test passes; the only skips are the release checks, which `--release` runs. Measured 2 Nov 2026: whole suite 2 minutes, slowest test 10 s, peak memory about 290 MB, so nothing needs the Mac Mini. A test that is genuinely compute-heavy is moved to the Mac Mini case by case, and says so in its docstring.
+
 Open http://localhost:8000 to view the dashboard. (The deployed site uses clean URLs, so multi-page links have no `.html`; with `http.server` either add the `.html` suffix or run `npx serve site`, which matches production.) Two further commands:
 
 ```sh
