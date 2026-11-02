@@ -116,9 +116,11 @@ def backfill(
     *,
     client: httpx.Client | None = None,
     skip_existing: bool = True,
-) -> None:
+) -> int:
+    """Fetch and store each day from start to end; returns how many days Elexon answered with bids."""
     own = client is None
     client = client or httpx.Client(timeout=60)
+    answered_days = 0
     try:
         wind = elexon.wind_bmu_map(client)
         d = start
@@ -135,10 +137,12 @@ def backfill(
             # last year reaches it
             if answered:
                 write_day(store, partition, daily_summary(raw))
+                answered_days += 1
             d += timedelta(days=1)
     finally:
         if own:
             client.close()
+    return answered_days
 
 
 def update(store: SnapshotStore, *, days: int = 3, client: httpx.Client | None = None) -> None:

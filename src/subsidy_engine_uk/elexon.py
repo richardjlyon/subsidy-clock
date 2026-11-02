@@ -2,7 +2,13 @@
 
 from __future__ import annotations
 
+from datetime import date
+
 import httpx
+
+# The settlement stack's first day: earlier days return no rows. Checked against the API on 2 Nov 2026
+# (bids from late on 6 Nov 2015, full days from 7 Nov). The backward backfill stops here (0176).
+STACK_FIRST_DAY = date(2015, 11, 6)
 
 API_BASE = "https://data.elexon.co.uk/bmrs/api/v1"
 

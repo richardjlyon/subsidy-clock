@@ -22,7 +22,9 @@ jobs:
           EARLIEST=$(ls data/raw/constraints/daily | sort | head -1)
           START=$(date -u -d "$EARLIEST - 7 days" +%Y-%m-%d)
           END=$(date -u -d "$EARLIEST - 1 day" +%Y-%m-%d)
-          uv run python -m subsidy_engine backfill-constraints --start "$START" --end "$END"
+          # exit 3 = a week with no bids (0176, option C): carry on, turn the run red at the end
+          rc=0; uv run python -m subsidy_engine backfill-constraints --start "$START" --end "$END" || rc=$?
+          if [ "$rc" -eq 3 ]; then echo "BACKFILL_STALLED=$START to $END" >> "$GITHUB_ENV"; elif [ "$rc" -ne 0 ]; then exit "$rc"; fi
       - run: uv run python -m subsidy_engine build-site
       - name: Cache Playwright Chromium
         uses: actions/cache@v4
@@ -50,3 +52,8 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: 99b63c8b76711ecc6e202087e5860cc2
         run: npx -y wrangler@4.144.0 pages deploy site --project-name=subsidy-clock --branch=master --commit-dirty=true
+      - name: Alert on a stalled constraints backfill (0176, option C)
+        if: env.BACKFILL_STALLED != ''
+        run: |
+          echo "::error::Constraints backfill stalled: Elexon returned no bids for $BACKFILL_STALLED. The site updated; the backward backfill did not move."
+          exit 1

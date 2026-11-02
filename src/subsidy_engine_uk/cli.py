@@ -18,6 +18,7 @@ from subsidy_engine.store import SnapshotStore
 from subsidy_engine_uk import inputs
 from subsidy_engine_uk import stations
 from subsidy_engine_uk import scotland
+from subsidy_engine_uk import elexon
 from subsidy_engine_uk.schemes import (bsuos, capacity_market, cfd, constraint_turnup,
                                       constraints, remit)
 
@@ -52,9 +53,23 @@ def cmd_update(args: argparse.Namespace) -> int:
     return 1 if failures else 0
 
 
+# Exit code of a backward-backfill week with no bids (0176, option C): the daily workflow still builds and
+# deploys, then turns the run red so Richard is alerted.
+BACKFILL_STALLED = 3
+
+
 def cmd_backfill_constraints(args: argparse.Namespace) -> int:
     store = make_store(args.root)
-    constraints.backfill(store, date.fromisoformat(args.start), date.fromisoformat(args.end))
+    start, end = date.fromisoformat(args.start), date.fromisoformat(args.end)
+    first = elexon.STACK_FIRST_DAY
+    if end < first:
+        print(f"[backfill] constraints: Elexon's data starts on {first:%-d %B %Y}; nothing earlier to fetch")
+        return 0
+    start = max(start, first)
+    if constraints.backfill(store, start, end) == 0:
+        print(f"[stall] constraints backfill: no bids from Elexon for {start} to {end}; the next run will ask "
+              f"for the same week (0176: the site still updates; this run is marked failed)", file=sys.stderr)
+        return BACKFILL_STALLED
     return 0
 
 
