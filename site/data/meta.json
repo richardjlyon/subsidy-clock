@@ -1,35 +1,35 @@
 {
- "generated_at": "2026-11-02T13:33:04.196650+00:00",
+ "generated_at": "2026-11-02T13:54:30.614506+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-11-01T11:58:22.462691+00:00",
+   "retrieved_at": "2026-11-02T13:45:36.153363+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
    "row_count": 119780
   },
   "constraints": {
-   "retrieved_at": "2026-11-02T00:06:52.963538+00:00",
-   "source_date": "2016-01-10",
+   "retrieved_at": "2026-11-02T13:54:18.471064+00:00",
+   "source_date": "2015-12-31",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 0
+   "row_count": 5
   },
   "capacity_market": {
-   "retrieved_at": "2026-11-01T11:58:45.502322+00:00",
+   "retrieved_at": "2026-11-02T13:46:35.545333+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 805
   },
   "bsuos": {
-   "retrieved_at": "2026-11-01T11:59:05.417933+00:00",
+   "retrieved_at": "2026-11-02T13:47:06.348534+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/current-balancing-services-use-of-system-bsuos-data",
-   "row_count": 205
+   "row_count": 208
   },
   "constraint_turnup": {
-   "retrieved_at": "2026-11-01T11:58:44.807160+00:00",
-   "source_date": "2026-10-31",
+   "retrieved_at": "2026-11-02T13:46:34.466392+00:00",
+   "source_date": "2026-11-01",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/offer",
-   "row_count": 8
+   "row_count": 10
   }
  },
  "context": {
@@ -76,9 +76,9 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 261899732904.7141,
-  "combined_real_running": 289649106479.9332,
-  "running_at": "2026-11-02T13:33:04.196650+00:00"
+  "combined_real": 261972351964.65298,
+  "combined_real_running": 289699990473.6353,
+  "running_at": "2026-11-02T13:54:30.614506+00:00"
  },
  "factoids": [
   {
