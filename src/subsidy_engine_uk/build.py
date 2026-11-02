@@ -19,6 +19,7 @@ from subsidy_engine.money import (
 )
 from subsidy_engine.reference import ReferenceScheme
 from subsidy_engine.store import SnapshotStore
+from subsidy_engine_uk.calendar_years import OBLIGATION_YEAR_LINES
 from subsidy_engine_uk.schemes import bsuos, capacity_market, carbon as carbon_mod, cfd, constraints, vat
 from subsidy_engine_uk.uplift import road_extras, road_uplift
 
@@ -91,8 +92,10 @@ def build(store: SnapshotStore, refs: dict[str, ReferenceScheme],
     schemes += vat.result(schemes, domestic_share)
 
     # --- Real-terms columns on every scheme, then totals
+    # RO and FiT are April-March obligation years: priced by quarter (aios-harness#57)
     for s in schemes:
-        s.annual = add_real(s.annual, deflators)
+        s.annual = add_real(s.annual, deflators,
+                            "obligation_apr" if s.scheme_id in OBLIGATION_YEAR_LINES else "calendar")
 
     out_perspectives = perspective_totals(schemes)
     out_indirect = layer_total(schemes, "indirect")

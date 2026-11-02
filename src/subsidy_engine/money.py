@@ -119,17 +119,31 @@ def _latest_index(deflators: pl.DataFrame) -> float:
     return float(deflators.sort("year")["index"][-1])
 
 
-def add_real(annual: pl.DataFrame, deflators: pl.DataFrame) -> pl.DataFrame:
+def add_real(annual: pl.DataFrame, deflators: pl.DataFrame,
+             year_basis: str = "calendar") -> pl.DataFrame:
     """Add cost_gbp_2024 restated in REAL_BASE_YEAR prices; years beyond the
-    deflator series use the latest index (recent money ~ current prices)."""
+    deflator series use the latest index (recent money ~ current prices).
+
+    An obligation year (year_basis "obligation_apr": April-March, keyed by its
+    start year) was paid three quarters in its start year and one quarter in the
+    next, so it is priced 0.75 at its own index and 0.25 at the next year's
+    (aios-harness#57, H9; the same weights as the calendarisation, D-13)."""
     base = _base_index(deflators)
     latest = _latest_index(deflators)
-    return (
-        annual.join(deflators.select("year", "index"), on="year", how="left")
-        .with_columns((pl.col("cost_gbp") * base / pl.col("index").fill_null(latest))
-                      .alias("cost_gbp_2024"))
-        .drop("index")
-    )
+    idx = deflators.select("year", "index")
+    out = annual.join(idx, on="year", how="left").with_columns(pl.col("index").fill_null(latest))
+    if year_basis == "obligation_apr":
+        nxt = idx.rename({"index": "index_next"}).with_columns(pl.col("year") - 1)
+        out = (out.join(nxt, on="year", how="left")
+               .with_columns(pl.col("index_next").fill_null(latest))
+               .with_columns((pl.col("cost_gbp") * base * (0.75 / pl.col("index") + 0.25 / pl.col("index_next")))
+                             .alias("cost_gbp_2024"))
+               .drop("index_next"))
+    elif year_basis == "calendar":
+        out = out.with_columns((pl.col("cost_gbp") * base / pl.col("index")).alias("cost_gbp_2024"))
+    else:
+        raise ValueError(f"unknown year_basis {year_basis!r}; known: calendar, obligation_apr")
+    return out.drop("index")
 
 
 def latest_real_factor(deflators: pl.DataFrame) -> float:

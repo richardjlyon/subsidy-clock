@@ -159,3 +159,20 @@ def test_today_money_is_priced_at_the_current_index():
     rows = {r["year"]: r["cost_gbp_2024"] for r in money.add_real(annual, d).to_dicts()}
     assert rows[2026] == 132.0 and rows[2027] == 132.0
     assert money.latest_real_factor(d) == 132.0 / 144.0
+
+
+def test_an_april_march_year_is_priced_three_quarters_in_its_own_year():
+    """aios-harness#57 C14 (H9): an obligation year (April-March, keyed by start year) was paid three quarters in
+    its start year and one quarter in the next, so it is priced 0.75 at its own index and 0.25 at the next
+    (a year beyond the series at the current index). Cash is unchanged."""
+    d = pl.DataFrame({"year": [2023, 2024, 2025], "index": [120.0, 132.0, 140.0],
+                      "current": [144.0, 144.0, 144.0]})
+    annual = pl.DataFrame({"year": [2023, 2025], "cost_gbp": [100.0, 100.0]},
+                          schema={"year": pl.Int64, "cost_gbp": pl.Float64})
+    rows = {r["year"]: r for r in money.add_real(annual, d, year_basis="obligation_apr").to_dicts()}
+    assert rows[2023]["cost_gbp"] == 100.0
+    assert abs(rows[2023]["cost_gbp_2024"] - 100.0 * 132.0 * (0.75 / 120.0 + 0.25 / 132.0)) < 1e-9
+    assert abs(rows[2025]["cost_gbp_2024"] - 100.0 * 132.0 * (0.75 / 140.0 + 0.25 / 144.0)) < 1e-9
+    # calendar lines are priced at their own year, as before
+    cal = {r["year"]: r["cost_gbp_2024"] for r in money.add_real(annual, d).to_dicts()}
+    assert abs(cal[2023] - 100.0 * 132.0 / 120.0) < 1e-9

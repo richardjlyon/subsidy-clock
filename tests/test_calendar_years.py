@@ -79,3 +79,18 @@ def test_running_totals_are_not_calendarised(model):
     """The site's running totals keep each line's own year keys: the cut is for fixed-period figures only."""
     s = next(s for s in model["schemes"] if s.scheme_id == "ro")
     assert s.cumulative_gbp == pytest.approx(float(s.annual["cost_gbp"].sum()), rel=1e-12)
+
+
+def test_ro_and_fit_running_real_totals_are_priced_by_quarter(model, deflators):
+    """aios-harness#57 C14: on the site, RO and FiT years (April-March) are priced 0.75 at the start year's CPIH
+    and 0.25 at the next year's, so their running real totals agree with the calendarised fixed-period totals'
+    pricing."""
+    d = deflators
+    idx = dict(d.select("year", "index").iter_rows())
+    cur = float(d["current"][0])
+    for sid in ("ro", "fit"):
+        s = next(s for s in model["schemes"] if s.scheme_id == sid)
+        for r in s.annual.to_dicts():
+            y = r["year"]
+            want = r["cost_gbp"] * idx[2024] * (0.75 / idx.get(y, cur) + 0.25 / idx.get(y + 1, cur))
+            assert abs(r["cost_gbp_2024"] - want) < 0.01, (sid, y)
