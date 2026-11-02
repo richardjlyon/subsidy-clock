@@ -4,11 +4,11 @@
 <script>(function(){var s=new URLSearchParams(location.search).get('skin');if(s==='ft'||s==='energy-trap')document.documentElement.setAttribute('data-skin',s);})();</script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Emissions trading — The Subsidy Clock</title>
-  <meta name="description" content="What the UK Emissions Trading Scheme is, why it exists, and what the power-sector share has cost.">
+  <title>Carbon in the electricity price — The Subsidy Clock</title>
+  <meta name="description" content="What carbon pricing adds to the price of electricity, who collects it, and what it has cost.">
   <link rel="canonical" href="https://subsidyclock.co.uk/explainers/emissions-trading">
-  <meta property="og:title" content="Emissions trading — The Subsidy Clock">
-  <meta property="og:description" content="What the UK Emissions Trading Scheme is, why it exists, and what the power-sector share has cost.">
+  <meta property="og:title" content="Carbon in the electricity price — The Subsidy Clock">
+  <meta property="og:description" content="What carbon pricing adds to the price of electricity, who collects it, and what it has cost.">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="The Subsidy Clock">
   <meta property="og:url" content="https://subsidyclock.co.uk/explainers/emissions-trading">
@@ -23,7 +23,7 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
-<body data-scheme-id="ets" data-scheme-slug="emissions-trading">
+<body data-scheme-id="carbon" data-scheme-slug="emissions-trading">
 <header class="masthead">
   <div class="masthead-inner">
     <p class="brand"><span class="brand-tick" aria-hidden="true"></span><a href="/">The Subsidy Clock</a></p>
@@ -35,33 +35,40 @@
   <p class="crumb"><a href="/">← All subsidies</a> · The Subsidy Clock</p>
   <div class="xhead">
     <span class="chip" style="background:var(--c-ets)"></span>
-    <h1>Emissions trading</h1>
+    <h1>Carbon in the electricity price</h1>
     <span class="badge est">indirect · estimated</span>
   </div>
 
   <div class="xstrip">
-    <div class="m"><div class="k">Total since 2009 (cash as paid)</div><div class="v num" id="x-total">&nbsp;</div><div class="basis" id="x-total-basis"></div></div>
+    <div class="m"><div class="k">Total since 2005 (cash as paid)</div><div class="v num" id="x-total">&nbsp;</div><div class="basis" id="x-total-basis"></div></div>
     <div class="m"><div class="k">Right now</div><div class="v num" id="x-rate">&nbsp;</div></div>
     <div class="m"><div class="k">Your household</div><div class="v num" id="x-household">&nbsp;</div></div>
   </div>
 
   <div class="xbody">
     <h2>What is it?</h2>
-    <p>Under the UK Emissions Trading Scheme, electricity generators must buy an allowance for every
-    tonne of CO₂ they emit. Generators price those allowances into the electricity they sell, so
-    the cost flows into the wholesale price of power — and into your bill.</p>
+    <p>Generators that burn gas or coal pay for the carbon they emit. They buy an allowance for
+    every tonne of CO₂, and since April 2013 they have also paid Carbon Price Support, a tax on
+    their fuel. They build that cost into the price of their power. The most expensive plant
+    running sets the price for everyone, so the carbon cost raises the price of all electricity
+    sold, not just power from fossil plant.</p>
 
     <h2>Why does it exist?</h2>
-    <p>Carbon pricing is the textbook tool for cutting emissions: make emitting expensive and cleaner
-    options win on price. The revenue goes to the Treasury.</p>
+    <p>Carbon pricing is the textbook tool for cutting emissions: make emitting expensive and
+    cleaner options win on price. Only part of what it adds to the price reaches the Treasury.</p>
 
     <h2>What has it cost?</h2>
     <div class="spark" id="x-spark" style="--spark-c: var(--c-ets)"></div>
-    <p><span data-live="cumulative"></span> in cash as paid since 2009, currently growing at about
+    <p><span data-live="cumulative"></span> in cash as paid since 2005, currently growing at about
     <span data-live="runrate"></span> a year — <span data-live="rate"></span> every second.
     Spread across Britain's households, that is about <span data-live="household"></span>
-    per household per year, reaching you through the wholesale price of power. Only the
-    power-sector share of auction revenue is counted here.</p>
+    per household per year, reaching you through the wholesale price of power. Of the total,
+    <span data-live="part:tax_collected"></span> is tax collected by the Treasury: Carbon Price
+    Support and the power sector's share of emissions-trading auctions. The other
+    <span data-live="part:rest_of_carbon_in_price"></span> is the rest of the carbon in the price,
+    which generators kept. From 2005 to 2012 generators were given most of their allowances free,
+    but the carbon price still set the price of power, so the cost still reached bills. Those
+    years count, as in Reliable Britain.</p>
 
     <h2>Where it hides on your bill</h2>
     <div class="bill">
@@ -69,20 +76,19 @@
       <div class="ln hi"><span>&nbsp;&nbsp;↳ inside it: the wholesale price of electricity</span><span class="num">—</span></div>
       <div class="ln"><span>Standing charge (per day)</span><span class="num">57p</span></div>
     </div>
-    <p>Illustrative bill, not your tariff. There is no ETS line on a bill; it is embedded in the
+    <p>Illustrative bill, not your tariff. There is no carbon line on a bill; it is embedded in the
     price generators charge for power.</p>
 
     <h2>How sure are we?</h2>
-    <p>Auction revenue is measured from published UK ETS auction results — the total is solid. What
-    is estimated is the power sector's share. The rule scales auction revenue by the power sector's
-    share of verified covered emissions. Power generation receives no free allocation, so it buys a
-    larger share of auctioned allowances than its share of total covered emissions — the figures
-    here are therefore a lower bound on what the power sector actually pays. Only the power
-    sector's share of auctioned allowances is counted here. Attribution confidence
-    is <strong>medium</strong>.</p>
+    <p>The tax part comes from published receipts: HMRC's Carbon Price Support receipts and the
+    emissions-trading auction results. For 2013 to 2020 the power sector's share of the auctions
+    is estimated. The rest is modelled: the engine behind Reliable Britain works out, year by
+    year, how much carbon pricing raised the wholesale price of power in Great Britain.
+    Attribution confidence is <strong>medium</strong>.</p>
 
     <h2>Sources</h2>
-    <p class="src">UK ETS auction results (power-sector share) — see the
+    <p class="src">The gas-counterfactual engine behind Reliable Britain (v4-s43), HMRC Carbon
+    Price Support receipts and emissions-trading auction results — see the
     <a href="/methodology">methodology</a>.
     Totals are nominal £ as paid.
     Unit rate and standing charge from

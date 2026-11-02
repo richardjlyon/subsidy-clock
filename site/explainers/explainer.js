@@ -59,6 +59,15 @@
             { day: 'numeric', month: 'long', year: 'numeric' })
         : ''
     };
+    // parts of one line (carbon: tax collected / the rest of the carbon in the price),
+    // summed over every year: <span data-live="part:tax_collected"></span>
+    if (Array.isArray(s.parts) && s.part_labels) {
+      Object.keys(s.part_labels).forEach(function (k) {
+        var sum = 0;
+        s.parts.forEach(function (row) { sum += row[k] || 0; });
+        liveVals['part:' + k] = SC.fmtCompact(sum);
+      });
+    }
     // REF / Elexon year split: the pin, elexon_first_year in breakdown.json.
     // Accept it only as an integer from 2010 to next year; otherwise the
     // markup's data-fallback text stays
