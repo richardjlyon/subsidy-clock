@@ -261,7 +261,8 @@ def _factoids(model: dict, equivalences: list[dict],
     runrate = r.get("runrate_gbp_per_year_2024", r["runrate_gbp_per_year"])
     full_floor = _combined_real_floored_gbp(model, generated_at)
     full_str = f"£{int(full_floor / 1e9)}bn+" if full_floor is not None else None
-    idx = dict(deflators.iter_rows()) if deflators is not None else None
+    idx = (dict(deflators.select("year", "index").iter_rows())
+           if deflators is not None else None)
 
     out: list[dict] = []
     for rec in equivalences:

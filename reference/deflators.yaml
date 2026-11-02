@@ -1,9 +1,9 @@
 # ONS CPIH annual average index, 2015 = 100 (spec: real-terms toggle, base 2024).
 # Refresh annually.
-source: ONS, CPIH Index 00 All Items 2015=100, annual averages (series L522)
+source: ONS, CPIH Index 00 All Items 2015=100 (series L522), annual averages; monthly for a year not yet averaged
 source_url: https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/l522/mm23
 verified: true
-expected_next_update: 2027-02-28   # ONS CPIH annual averages for the prior year
+expected_next_update: 2026-11-18   # next ONS monthly release (Oct 2026); the 2026 annual average in Feb 2027
 base_year: 2024
 index:
   2002: 75.7
@@ -30,3 +30,7 @@ index:
   2023: 128.6
   2024: 132.9
   2025: 138.0
+# A year with no annual average yet: ONS's published months (L522 monthly, release 21 Oct 2026, Jan-Sep 2026).
+# Its money is priced at the mean of these months; today's money at the latest month (aios-harness#57).
+months:
+  2026: [139.4, 140.0, 140.8, 141.8, 142.1, 142.3, 142.7, 143.4, 144.0]

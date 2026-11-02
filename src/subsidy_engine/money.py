@@ -112,6 +112,10 @@ def _base_index(deflators: pl.DataFrame) -> float:
 
 
 def _latest_index(deflators: pl.DataFrame) -> float:
+    """The price level of today's money: the `current` column (ONS's latest month) when the frame has it,
+    else the latest year's index."""
+    if "current" in deflators.columns:
+        return float(deflators["current"][0])
     return float(deflators.sort("year")["index"][-1])
 
 
@@ -121,7 +125,7 @@ def add_real(annual: pl.DataFrame, deflators: pl.DataFrame) -> pl.DataFrame:
     base = _base_index(deflators)
     latest = _latest_index(deflators)
     return (
-        annual.join(deflators, on="year", how="left")
+        annual.join(deflators.select("year", "index"), on="year", how="left")
         .with_columns((pl.col("cost_gbp") * base / pl.col("index").fill_null(latest))
                       .alias("cost_gbp_2024"))
         .drop("index")

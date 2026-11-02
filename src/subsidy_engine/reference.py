@@ -71,13 +71,25 @@ def load_context(path: Path) -> dict:
 
 
 def load_deflators(path: Path) -> pl.DataFrame:
-    """ONS CPIH annual index as (year, index), sorted."""
+    """ONS CPIH as (year, index, current), sorted.
+
+    `index` is the annual average; a year ONS has not yet averaged takes the mean of its published months
+    (`months`), so its money is priced at the months it was paid in. `current` (the same on every row) is the
+    latest published month, or the latest annual index when no months are held: the price level of today's
+    money (aios-harness#57; Richard, 2 Nov 2026: best account)."""
     raw = yaml.safe_load(Path(path).read_text())
+    index = {int(y): float(v) for y, v in raw["index"].items()}
+    months = {int(y): [float(v) for v in vs] for y, vs in (raw.get("months") or {}).items()}
+    for y, vs in months.items():
+        if y in index:
+            raise ValueError(f"{path}: {y} has both an annual index and months")
+        index[y] = sum(vs) / len(vs)
+    current = months[max(months)][-1] if months else index[max(index)]
+    years = sorted(index)
     return pl.DataFrame(
-        {"year": list(raw["index"].keys()),
-         "index": [float(v) for v in raw["index"].values()]},
-        schema={"year": pl.Int64, "index": pl.Float64},
-    ).sort("year")
+        {"year": years, "index": [index[y] for y in years], "current": [current] * len(years)},
+        schema={"year": pl.Int64, "index": pl.Float64, "current": pl.Float64},
+    )
 
 
 def load_electricity_bill(path: Path) -> pl.DataFrame:

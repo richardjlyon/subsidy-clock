@@ -148,3 +148,14 @@ def test_annual_to_result_data_to_honours_year_basis():
     assert cal.data_to == date(2024, 12, 31)
     obl = money.annual_to_result("x", mk("obligation_apr"), layer="direct")
     assert obl.data_to == date(2025, 3, 31)
+
+
+def test_today_money_is_priced_at_the_current_index():
+    """aios-harness#57: a deflator frame with a `current` column (ONS's latest month) prices today's money and
+    years beyond the series at it; a known year keeps its own index."""
+    d = pl.DataFrame({"year": [2024, 2026], "index": [132.0, 141.0], "current": [144.0, 144.0]})
+    annual = pl.DataFrame({"year": [2026, 2027], "cost_gbp": [141.0, 144.0]},
+                          schema={"year": pl.Int64, "cost_gbp": pl.Float64})
+    rows = {r["year"]: r["cost_gbp_2024"] for r in money.add_real(annual, d).to_dicts()}
+    assert rows[2026] == 132.0 and rows[2027] == 132.0
+    assert money.latest_real_factor(d) == 132.0 / 144.0

@@ -31,7 +31,7 @@ def test_load_context():
 
 def test_load_deflators():
     df = reference.load_deflators(REF_DIR / "deflators.yaml")
-    assert df.columns == ["year", "index"]
+    assert df.columns == ["year", "index", "current"]
     years = df["year"].to_list()
     assert years[0] == 2002 and years == sorted(years)
     # CPIH roughly doubles 2002 -> 2024
@@ -100,3 +100,32 @@ def test_year_basis_defaults_and_calendar_override():
     indirect = reference.load_annual_costs(REF_DIR / "indirect_annual.yaml")
     assert indirect["ccl"].year_basis == "calendar"
     assert indirect["tnuos"].year_basis == "calendar"
+
+
+# ---- aios-harness#57 C12: a year with no annual CPIH average yet is priced from ONS's published months ----
+
+def test_a_partial_year_is_the_mean_of_its_published_months(tmp_path):
+    p = tmp_path / "deflators.yaml"
+    p.write_text("index:\n  2024: 132.9\n  2025: 138.0\n"
+                 "months:\n  2026: [139.4, 140.0, 140.8]\n")
+    df = reference.load_deflators(p)
+    rows = {r["year"]: r["index"] for r in df.to_dicts()}
+    assert rows[2025] == 138.0
+    assert abs(rows[2026] - (139.4 + 140.0 + 140.8) / 3) < 1e-9
+    # today's money is priced at the latest published month
+    assert df["current"].unique().to_list() == [140.8]
+
+
+def test_without_months_current_is_the_latest_annual_index(tmp_path):
+    p = tmp_path / "deflators.yaml"
+    p.write_text("index:\n  2024: 132.9\n  2025: 138.0\n")
+    assert reference.load_deflators(p)["current"].unique().to_list() == [138.0]
+
+
+def test_the_repo_deflators_carry_2026_from_onss_months():
+    raw = __import__("yaml").safe_load((REF_DIR / "deflators.yaml").read_text())
+    df = reference.load_deflators(REF_DIR / "deflators.yaml")
+    m = raw["months"][2026]
+    assert 2026 not in raw["index"] and len(m) >= 9          # ONS release of 21 Oct 2026: Jan-Sep
+    assert df.filter(df["year"] == 2026)["index"][0] == sum(m) / len(m)
+    assert df["current"][0] == m[-1]
