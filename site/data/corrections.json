@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-02T10:11:32.276796+00:00",
+ "generated_at": "2026-11-02T10:30:08.717418+00:00",
  "corrections": [
   {
    "date": "2026-06-24",
@@ -12,7 +12,7 @@
     "The police-officer equivalence divided a year of subsidy by a constable's pay that was out of date: \u00a348,231, the 2024 rate. The pay award of 1 September 2025 raised it to \u00a350,256, so the same year of subsidy pays fewer officers. The count fell from 255,000 to 245,000.",
     "Recorded retrospectively on 10 October 2026 from the public repository history (commit 51d10136)."
    ],
-   "credit": ""
+   "credit": "Richard Lyon"
   },
   {
    "date": "2026-09-01",
@@ -72,7 +72,7 @@
     "The equivalence now divides by the NAO's \u00a360bn total for the whole New Hospital Programme (46 schemes). Because that total includes future inflation, the count of 4 understates rather than overstates.",
     "Recorded retrospectively on 10 October 2026 from the public repository history (commit c9e4eb90)."
    ],
-   "credit": ""
+   "credit": "Richard Lyon"
   },
   {
    "date": "2026-10-01",
@@ -85,7 +85,7 @@
     "The cost of one social home, \u00a3393,333 (Cebr: \u00a335.4bn for 90,000 homes), is stated in 2023 prices. It was divided into a total in 2024 prices without first being brought up to 2024 prices, which overstated the number of homes by about 3%. Converted to 2024 prices, the count is 590,000.",
     "Recorded retrospectively on 10 October 2026 from the public repository history (commit 68c39523)."
    ],
-   "credit": ""
+   "credit": "Richard Lyon"
   },
   {
    "date": "2026-10-10",
@@ -112,7 +112,7 @@
     "The share-of-bill figure under the counter, and the last bar of its chart, used 2025. The 2025 bill total was in, but the 2025 subsidy was not: the Renewables Obligation, Feed-in Tariffs, Climate Change Levy, carbon pricing and TNUoS report a year or more in arrears and have not yet reported 2025. So 2025 set part of a year's subsidy (\u00a35.8bn, against \u00a319.4bn for 2024) against a full year's bill (\u00a362.7bn), which gave 9%. The methodology page already said the chart showed complete years only; the page did not do what it said.",
     "The figure and the chart now leave a year out until every scheme has reported it, and name the year shown. The latest complete year is 2024: \u00a312.30bn of direct subsidy plus \u00a37.08bn of estimated indirect costs, against a bill of \u00a366.19bn, is 29%. With the indirect costs switched off it is 19%."
    ],
-   "credit": ""
+   "credit": "Richard Lyon"
   },
   {
    "date": "2026-10-17",
@@ -125,7 +125,7 @@
     "The headline total is in 2024 prices, but the line saying so was hidden by the page's style on both desktop and mobile, so a visitor saw the total with no price basis. It is now shown under the total at every screen width, and says 'In cash, as actually paid' when inflation adjustment is switched off.",
     "Where the home page and the methodology page said 'today's money' they now say '2024 prices', which is what the figures are. No figure changed."
    ],
-   "credit": ""
+   "credit": "Richard Lyon"
   },
   {
    "date": "2026-10-17",
@@ -138,7 +138,7 @@
     "The footer of every page said that every figure traces to an official source. That was not true. Constraint payments before the Clock's own Elexon record begins are the Renewable Energy Foundation's figures; some earlier indirect costs rest on REF's tabulation; Renewables Obligation payments to named stations come from David Turver's reconstruction; the Capacity Market share counted as a cost of net zero comes from Richard Lyon's model, which is not yet published; and the stadium comparison uses a cost taken from Wikipedia.",
     "The footer now says what is true, and the methodology page has a new list, 'Sources that are not official statistics', naming each exception. No figure changed."
    ],
-   "credit": ""
+   "credit": "Richard Lyon"
   },
   {
    "date": "2026-11-02",
@@ -150,7 +150,7 @@
    "cause": [
     "A data error in our own input file. It moved \u00a3126m between the two years; the cash total did not change."
    ],
-   "credit": ""
+   "credit": "Richard Lyon"
   },
   {
    "date": "2026-11-02",
@@ -162,7 +162,7 @@
    "cause": [
     "The netting that stops a constraint payment being counted twice ran past the balancing data's last day."
    ],
-   "credit": ""
+   "credit": "Richard Lyon"
   },
   {
    "date": "2026-11-02",
@@ -174,7 +174,7 @@
    "cause": [
     "Two overlapping sources both covered the first quarter of 2024."
    ],
-   "credit": ""
+   "credit": "Richard Lyon"
   },
   {
    "date": "2026-11-02",
@@ -186,7 +186,7 @@
    "cause": [
     "The figure quoted was the combined total, labelled as turn-up alone. Wording only; no figure on the counter changed."
    ],
-   "credit": ""
+   "credit": "Richard Lyon"
   }
  ]
 }

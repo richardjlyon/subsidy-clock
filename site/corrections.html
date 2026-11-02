@@ -116,6 +116,10 @@
 </script>
 <script>
 (function () {
+  // a note may carry [text](https://...) links; applied after escaping, https only
+  function linkify(h) {
+    return h.replace(/\[([^\]]+)\]\((https:\/\/[^\s)"<>]+)\)/g, '<a href="$2">$1</a>');
+  }
   function esc(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
@@ -171,7 +175,7 @@
             '<span class="corr-label">was</span><span class="corr-was-val">' + esc(c.was) + '</span>' +
             '<span class="corr-label">now</span><span class="corr-now-val">' + esc(c.now) + '</span>' +
             '</div>' +
-            paras.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') +
+            paras.map(function (p) { return '<p>' + linkify(esc(p)) + '</p>'; }).join('') +
             '</div></div>';
         }).join('');
       document.getElementById('corrections-table').hidden = false;
