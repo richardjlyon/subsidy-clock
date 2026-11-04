@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 3597664.36,
+ "hero_gbp": 3623934.79,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -44,7 +44,7 @@
   },
   {
    "q": "2021-Q3",
-   "payment_gbp": -768525.0300000001,
+   "payment_gbp": -768525.03,
    "generation_mwh": 18600.550000000003
   },
   {
@@ -80,7 +80,7 @@
   {
    "q": "2023-Q2",
    "payment_gbp": 337102.8099999999,
-   "generation_mwh": 17014.587
+   "generation_mwh": 17014.586999999996
   },
   {
    "q": "2023-Q3",
@@ -114,8 +114,8 @@
   },
   {
    "q": "2025-Q1",
-   "payment_gbp": 515957.94999999995,
-   "generation_mwh": 37817.491
+   "payment_gbp": 515957.95,
+   "generation_mwh": 37817.490999999995
   },
   {
    "q": "2025-Q2",
@@ -124,8 +124,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 1119308.2799999998,
-   "generation_mwh": 24058.572999999997
+   "payment_gbp": 1119319.2999999998,
+   "generation_mwh": 24058.657
   },
   {
    "q": "2025-Q4",
@@ -134,8 +134,8 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 864244.4000000001,
-   "generation_mwh": 35413.137999999984
+   "payment_gbp": 864245.4700000001,
+   "generation_mwh": 35413.461999999985
   },
   {
    "q": "2026-Q2",
@@ -144,13 +144,13 @@
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": -161100.40999999995,
-   "generation_mwh": 22990.906
+   "payment_gbp": -160252.61999999997,
+   "generation_mwh": 22973.078999999998
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": -184943.72999999998,
-   "generation_mwh": 5332.178
+   "payment_gbp": -159533.18,
+   "generation_mwh": 5701.911
   }
  ],
  "contracts": [
@@ -159,7 +159,7 @@
    "unit_name": "Nanclach Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 3597664.36,
+   "cumulative_gbp": 3623934.79,
    "first_settlement": "2019-10-01",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -170,11 +170,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-22"
+  "data_to": "2026-10-25"
  },
  "tiles": {
-  "generation_mwh": 827083.105,
-  "rate_gbp_per_mwh": 4.3498220895226725,
+  "generation_mwh": 827435.4189999999,
+  "rate_gbp_per_mwh": 4.379719198363203,
   "rate_label": "payment per subsidised MWh"
  }
 }

@@ -1,14 +1,14 @@
 {
- "generated_at": "2026-11-03T13:04:33.092120+00:00",
+ "generated_at": "2026-11-04T13:20:01.500371+00:00",
  "window": {
-  "from": "2015-12-18",
+  "from": "2015-12-11",
   "to": "2026-11-02"
  },
- "gb_cost": 2522620651.71,
- "scotland_cost": 2357074825.37,
+ "gb_cost": 2522831537.99,
+ "scotland_cost": 2357285711.65,
  "scotland_share": 0.9344,
- "scotland_mwh": 48778091,
- "gb_mwh": 50358077,
+ "scotland_mwh": 48781342,
+ "gb_mwh": 50361329,
  "scotland_last12_cost": 347188653.3,
  "gb_last12_cost": 352799412.77,
  "scotland_per_mwh": 48.32,
@@ -40,8 +40,8 @@
   },
   {
    "farm": "Whitelee",
-   "cost": 128626871.92,
-   "mwh": 1815801,
+   "cost": 128666748.79,
+   "mwh": 1816440,
    "units": [
     "T_WHILW-1",
     "T_WHILW-2"
@@ -106,8 +106,8 @@
   },
   {
    "farm": "Fallago Rig",
-   "cost": 60410757.05,
-   "mwh": 810767,
+   "cost": 60420848.21,
+   "mwh": 810886,
    "units": [
     "T_FALGW-1"
    ]
@@ -147,8 +147,8 @@
   },
   {
    "farm": "Strathy North",
-   "cost": 45922826.64,
-   "mwh": 652958,
+   "cost": 45928249.91,
+   "mwh": 653049,
    "units": [
     "T_STRNW-1"
    ]
@@ -158,7 +158,7 @@
  "monthly": [
   {
    "month": "2015-12",
-   "scotland": 12658924,
+   "scotland": 12869811,
    "rest": 237310
   },
   {
@@ -821,13 +821,13 @@
   "scotland_consumption_twh": 21.6573,
   "gb_consumption_twh": 249.2477,
   "scotland_consumption_share": 0.0869,
-  "paid_in_scotland": 204807814.14,
-  "paid_elsewhere": 2152267011.23,
+  "paid_in_scotland": 204826138.19,
+  "paid_elsewhere": 2152459573.46,
   "source": "DESNZ, Subnational electricity consumption statistics, Electricity consumption by Region, 2005 to 2024",
   "source_url": "https://www.gov.uk/government/statistics/regional-and-local-authority-electricity-consumption-statistics"
  },
  "turnup_same_window": {
-  "cost": 5776045600.15,
+  "cost": 5776200733.76,
   "to": "2026-11-02",
   "basis": "replacement_estimate (GB-wide)"
  },
