@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 119535086.5,
+ "hero_gbp": 119359051.71000001,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -94,8 +94,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 22854017.85,
-   "generation_mwh": 532105.896
+   "payment_gbp": 22854380.02,
+   "generation_mwh": 532110.592
   },
   {
    "q": "2025-Q4",
@@ -104,8 +104,8 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 23026793.149999995,
-   "generation_mwh": 927032.6200000001
+   "payment_gbp": 23027217.239999995,
+   "generation_mwh": 927038.765
   },
   {
    "q": "2026-Q2",
@@ -114,13 +114,13 @@
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": -2974421.869999998,
-   "generation_mwh": 533207.5100000004
+   "payment_gbp": -2972854.529999998,
+   "generation_mwh": 533187.1080000004
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": -4857171.9399999995,
-   "generation_mwh": 245813.63899999997
+   "payment_gbp": -5035560.329999999,
+   "generation_mwh": 262373.313
   }
  ],
  "contracts": [
@@ -129,7 +129,7 @@
    "unit_name": "Triton Knoll Offshore Wind Farm Phase 3",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 130578963.51,
+   "cumulative_gbp": 130494816.09,
    "first_settlement": "2023-03-31",
    "latest_strike_gbp_mwh": 108.2
   },
@@ -138,7 +138,7 @@
    "unit_name": "Triton Knoll Offshore Wind Farm Phase 2",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": -4755824.34,
+   "cumulative_gbp": -4799852.34,
    "first_settlement": "2021-07-06",
    "latest_strike_gbp_mwh": 108.2
   },
@@ -147,7 +147,7 @@
    "unit_name": "Triton Knoll Offshore Wind Farm Phase 1",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": -6288052.67,
+   "cumulative_gbp": -6335912.04,
    "first_settlement": "2021-05-17",
    "latest_strike_gbp_mwh": 108.2
   }
@@ -158,7 +158,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-25"
+  "data_to": "2026-10-26"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -232,8 +232,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 12429081.096,
-  "rate_gbp_per_mwh": 9.617371193954916,
+  "generation_mwh": 12445631.209,
+  "rate_gbp_per_mwh": 9.590437777369305,
   "rate_label": "payment per subsidised MWh"
  }
 }

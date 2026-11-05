@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 7901103.02,
+ "hero_gbp": 7901943.81,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -49,7 +49,7 @@
   },
   {
    "q": "2021-Q2",
-   "payment_gbp": 293962.42,
+   "payment_gbp": 293962.42000000004,
    "generation_mwh": 10345.603
   },
   {
@@ -134,8 +134,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 846811.2900000005,
-   "generation_mwh": 14541.679000000006
+   "payment_gbp": 846820.3900000004,
+   "generation_mwh": 14541.803000000002
   },
   {
    "q": "2025-Q4",
@@ -144,8 +144,8 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 794451.9300000002,
-   "generation_mwh": 23409.548999999995
+   "payment_gbp": 794469.0800000001,
+   "generation_mwh": 23409.774999999998
   },
   {
    "q": "2026-Q2",
@@ -154,13 +154,13 @@
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 101046.21999999999,
-   "generation_mwh": 10301.401999999998
+   "payment_gbp": 102883.45000000003,
+   "generation_mwh": 10412.600999999999
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": 10426.259999999987,
-   "generation_mwh": 2652.5799999999995
+   "payment_gbp": 9403.569999999989,
+   "generation_mwh": 2639.3039999999996
   }
  ],
  "contracts": [
@@ -169,7 +169,7 @@
    "unit_name": "Coire Na Cloiche Windfarm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 7901103.02,
+   "cumulative_gbp": 7901943.81,
    "first_settlement": "2019-06-25",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -180,15 +180,15 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-25"
+  "data_to": "2026-10-26"
  },
  "outages": {
   "coverage_from": "2016-01-01",
   "windows": []
  },
  "tiles": {
-  "generation_mwh": 484201.755,
-  "rate_gbp_per_mwh": 16.317790958853504,
+  "generation_mwh": 484300.02800000005,
+  "rate_gbp_per_mwh": 16.31621588508353,
   "rate_label": "payment per subsidised MWh"
  }
 }

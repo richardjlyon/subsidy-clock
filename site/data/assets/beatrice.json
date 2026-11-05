@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 1452324746.18,
+ "hero_gbp": 1453019611.69,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -144,8 +144,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 56477836.86,
-   "generation_mwh": 410591.0800000001
+   "payment_gbp": 56478219.72,
+   "generation_mwh": 410593.1440000001
   },
   {
    "q": "2025-Q4",
@@ -154,8 +154,8 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 77025794.06999998,
-   "generation_mwh": 682559.5500000002
+   "payment_gbp": 77026718.29999998,
+   "generation_mwh": 682565.5330000002
   },
   {
    "q": "2026-Q2",
@@ -164,13 +164,13 @@
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 36265693.20999999,
-   "generation_mwh": 386229.6360000001
+   "payment_gbp": 36265446.25999999,
+   "generation_mwh": 386218.1270000001
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": 9070479.479999999,
-   "generation_mwh": 110700.38900000001
+   "payment_gbp": 9764284.849999998,
+   "generation_mwh": 116665.69900000001
   }
  ],
  "contracts": [
@@ -179,7 +179,7 @@
    "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 2)",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 803664844.35,
+   "cumulative_gbp": 804066616.9,
    "first_settlement": "2019-04-28",
    "latest_strike_gbp_mwh": 205.7
   },
@@ -188,7 +188,7 @@
    "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 1)",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 648659901.83,
+   "cumulative_gbp": 648952994.79,
    "first_settlement": "2018-11-06",
    "latest_strike_gbp_mwh": 205.7
   }
@@ -199,7 +199,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-25"
+  "data_to": "2026-10-26"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -621,8 +621,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 15334442.339000002,
-  "rate_gbp_per_mwh": 94.7099812352687,
+  "generation_mwh": 15340404.186999999,
+  "rate_gbp_per_mwh": 94.71846986413436,
   "rate_label": "payment per subsidised MWh"
  }
 }

@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 1600919913.05,
+ "hero_gbp": 1601334055.76,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -174,8 +174,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 49188032.43999998,
-   "generation_mwh": 320669.2080000002
+   "payment_gbp": 49188552.12999998,
+   "generation_mwh": 320672.0220000003
   },
   {
    "q": "2025-Q4",
@@ -184,8 +184,8 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 67445767.77000001,
-   "generation_mwh": 505608.1590000001
+   "payment_gbp": 67446369.32000002,
+   "generation_mwh": 505611.5360000001
   },
   {
    "q": "2026-Q2",
@@ -194,13 +194,13 @@
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 31998238.870000023,
-   "generation_mwh": 292106.12400000007
+   "payment_gbp": 31998216.260000028,
+   "generation_mwh": 292100.07300000003
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": 12005143.699999996,
-   "generation_mwh": 129146.22900000004
+   "payment_gbp": 12418187.779999996,
+   "generation_mwh": 133524.77900000004
   }
  ],
  "contracts": [
@@ -209,7 +209,7 @@
    "unit_name": "Dudgeon Phase 2",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 828877485.5,
+   "cumulative_gbp": 829094370.08,
    "first_settlement": "2017-08-02",
    "latest_strike_gbp_mwh": 220.95
   },
@@ -218,7 +218,7 @@
    "unit_name": "Dudgeon Phase 3",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 402156581.8,
+   "cumulative_gbp": 402261809.08,
    "first_settlement": "2017-10-01",
    "latest_strike_gbp_mwh": 220.95
   },
@@ -227,7 +227,7 @@
    "unit_name": "Dudgeon Phase 1",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 369885845.75,
+   "cumulative_gbp": 369977876.6,
    "first_settlement": "2017-04-27",
    "latest_strike_gbp_mwh": 220.95
   }
@@ -238,7 +238,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-25"
+  "data_to": "2026-10-26"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -576,8 +576,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 14914916.639000002,
-  "rate_gbp_per_mwh": 107.33683276940772,
+  "generation_mwh": 14919295.328999998,
+  "rate_gbp_per_mwh": 107.33308916054102,
   "rate_label": "payment per subsidised MWh"
  }
 }
