@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from subsidy_engine import sitedata
+from clocksite import sitedata
 
 ROOT = Path(__file__).resolve().parent.parent
 PLACEHOLDER = "DEPLOY-DATE"

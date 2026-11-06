@@ -9,8 +9,8 @@ from pathlib import Path
 import polars as pl
 import pytest
 
-from subsidy_engine import schemes, sharecards, sitedata
-from subsidy_engine.money import SchemeResult
+from clocksite import schemes, sharecards, sitedata
+from clocksite.results import SchemeResult
 
 SITE = Path(__file__).parent.parent / "site"
 APP = (SITE / "app.js").read_text()

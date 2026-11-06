@@ -72,7 +72,7 @@ def build() -> None:
     for pc in REPO.rglob("__pycache__"):
         if ".venv" not in str(pc):
             shutil.rmtree(pc, ignore_errors=True)
-    r = subprocess.run(["uv", "run", "python", "-m", "subsidy_engine", "build-site"],
+    r = subprocess.run(["uv", "run", "python", "-m", "clocksite", "build-site"],
                        cwd=REPO, env=_env(), capture_output=True, text=True)
     if r.returncode != 0:
         print("BUILD FAILED:\n" + r.stderr[-2000:])

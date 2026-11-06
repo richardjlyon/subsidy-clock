@@ -2,6 +2,8 @@
 
 Read at session start. Update when state changes. Durable knowledge lives in the vault hub `Projects/The Subsidy Clock.md`; this is live working state only.
 
+**6 Nov 2026 (aios-harness#140):** the Clock's sums (engine, schemes, `data/raw`, the reference inputs the sums read) moved to `/srv/aios/projects/model-bill-already-paid` (package `billpaid`, Gitea `rjl/model-bill-already-paid`). This repository is the website only (package `clocksite`): it builds from the model's `results/clock.json`, pinned in `reference/results_pin.yaml`.
+
 ## Headline figures (always re-read live — these go stale)
 
 - Direct hero (ticking, nominal, renewables-only, measured): **~£105–110bn**
@@ -66,7 +68,7 @@ Read at session start. Update when state changes. Durable knowledge lives in the
 - Octopus Wasted Wind method (replacement estimate), reproduced to 0.1%.
   **Richard ruled 10 Oct: stays indirect** (paid to gas, and an estimate).
   Moving to direct (+£5.39bn real) would need the hero to say "caused by".
-- Store: `data/raw/constraint_turnup/daily`, from 1 Nov 2015, 63 MB. Nightly
+- Store (model-bill-already-paid): `data/raw/constraint_turnup/daily`, from 1 Nov 2015, 63 MB. Nightly
   `update all` fetches the last 3 days. Counted only to the BSUoS `data_to`.
 - REF checks fold turn-up back into BSUoS (`REF_KEY` in `cli.py`): REF's
   BSUoS is the whole charge.
@@ -170,7 +172,7 @@ Read at session start. Update when state changes. Durable knowledge lives in the
   on its first run.
 - **ETS/DUKES figures are edition-dependent.** DESNZ restates: 2023 power
   emissions moved ~1.0 Mt between report editions, and DUKES revised 2010–2024.
-  `reference/indirect_annual.yaml` now records the edition per figure
+  model-bill-already-paid's `reference/indirect_annual.yaml` now records the edition per figure
   (`emissions_vintage`). Always state which edition a number came from.
 
 ## Verification machinery

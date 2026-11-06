@@ -17,7 +17,7 @@ Sources computed live:
                                    and Northern Ireland flow (MOYLE_FLOW), half-hourly
   Elexon B1610                     metered output of named farms and of
                                    Torness + Peterhead, 2025 / 13 Oct 2025
-  Clock store                      switch-off payments per farm (constraints)
+  Clock store (model-bill-already-paid) switch-off payments per farm (constraints)
                                    and CfD payments per farm (cfd/generation)
 """
 from __future__ import annotations
@@ -38,7 +38,9 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from subsidy_engine.store import SnapshotStore  # noqa: E402
+# The data store and the sums' reference inputs are the bill-already-paid model's (aios-harness#140):
+# `compute` reads them from its checkout beside this one.
+MODEL_ROOT = ROOT.parent / "model-bill-already-paid"
 
 ELEXON = "https://data.elexon.co.uk/bmrs/api/v1"
 NESO_DEMAND_PKG = "https://api.neso.energy/api/3/action/package_show?id=historic-demand-data"
@@ -170,12 +172,14 @@ def farm_units(client: httpx.Client) -> tuple[dict[str, list[str]], dict[str, fl
 
 
 def zones_all() -> dict[str, str]:
-    return {r["bmu"]: r["nation"] for r in csv.DictReader(open(ROOT / "reference/bmu_zone.csv"))}
+    return {r["bmu"]: r["nation"] for r in csv.DictReader(open(MODEL_ROOT / "reference/bmu_zone.csv"))}
 
 
 def compute() -> None:
     client = httpx.Client(timeout=180)
-    store = SnapshotStore(ROOT / "data")
+    sys.path.insert(0, str(MODEL_ROOT / "src"))
+    from billpaid.store import SnapshotStore
+    store = SnapshotStore(MODEL_ROOT / "data")
     out: dict = {"generated_at": datetime.now(timezone.utc).isoformat(), "checked": CHECKED,
                  "quoted": QUOTED}
     out["border"] = border(client)
@@ -225,7 +229,7 @@ def compute() -> None:
     out["cfd_2025"] = {"total": round(sc["payment_gbp"].sum()),
                        "farms": [{"farm": r[0].strip(), "paid": round(r[1])} for r in by.iter_rows()],
                        "source": "LCCC, Contracts for Difference generation and payments (the Clock's CfD series)"}
-    ctx = yaml.safe_load(open(ROOT / "reference/context.yaml"))["electricity_consumption_by_nation"]
+    ctx = yaml.safe_load(open(MODEL_ROOT / "reference/context.yaml"))["electricity_consumption_by_nation"]
     out["consumption"] = {"share": round(ctx["scotland_gwh"] / ctx["gb_gwh"], 4),
                           "source": ctx["source"], "url": ctx["source_url"]}
     zones = zones_all()
@@ -369,7 +373,7 @@ def render() -> None:
     # content-hash ?v= the build stamps on every page (sharecards). Without it
     # the build re-stamped this frozen page and the page no longer matched its
     # own render. site/share is the rendered cards, not live site data.
-    from subsidy_engine import sharecards
+    from clocksite import sharecards
     html, _ = sharecards.stamp_og_html(html, sharecards.png_versions(ROOT / "site/share"))
     (PAPER / "index.html").write_text(html)
     print("wrote", PAPER / "index.html")

@@ -8,6 +8,7 @@ Steward of the Clock: its correspondence, its data freshness, its public standin
 
 ## Where things live
 
+- **The sums (6 Nov 2026, aios-harness#140):** `/srv/aios/projects/model-bill-already-paid`. This repository is the website only; it reads the model's results file, pinned in `reference/results_pin.yaml`.
 - **Code / work product:** `/Users/rjl/AIOS/Projects/subsidy-clock` (public `github.com/richardjlyon/subsidy-clock`; gitea mirror). Hosted on Cloudflare Pages: the daily data workflow deploys itself, and a push to `master` touching `site/` deploys via `deploy.yml` — so a push is a publication.
 - **Tasks:** Plane project `SUBCLK` (https://plane.kwlan.net, workspace `claude`). Use the `plane` skill at the AIOS root.
 - **Knowledge:** Obsidian vault `Projects/The Subsidy Clock*.md` — the canonical hub and its spokes. Authoritative for purpose, data discipline, audit posture, findings. Do not duplicate it here.

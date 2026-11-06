@@ -47,4 +47,4 @@ Used by `/wayfinder`. The **map** is a single issue with **child** issues as tic
 
 ## This repo, as set up 1 Nov 2026
 
-The Subsidy Clock's code lives on Gitea (`rjl/web-subsidy-clock`); the live site deploys from the public GitHub copy, so a push there is a publication and is Richard's alone. Tickets for Claude's work on the Clock go to `richardjlyon/aios-harness` with the `subsidy-clock` label, linked from map #12. `gh` on VM 113 is authenticated as richardjlyon.
+The Subsidy Clock's website lives on Gitea (`rjl/web-subsidy-clock`); its sums are `rjl/model-bill-already-paid` since 6 Nov 2026 (aios-harness#140); the live site deploys from the public GitHub copy, so a push there is a publication and is Richard's alone. Tickets for Claude's work on the Clock go to `richardjlyon/aios-harness` with the `subsidy-clock` label, linked from map #12. `gh` on VM 113 is authenticated as richardjlyon.

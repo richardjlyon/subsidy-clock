@@ -1,8 +1,14 @@
 name: Update data and site
 
+# The site's morning run (aios-harness#140): take the bill-already-paid model's results file
+# (written by its own robot at 05:30 UTC, richardjlyon/model-bill-already-paid), build the
+# site data and share cards from it, commit, and deploy. fetch-results refuses a file from any
+# model version other than the pin (reference/results_pin.yaml), or one whose fingerprint does
+# not match: the run then fails and yesterday's site stays live.
+
 on:
   schedule:
-    - cron: "30 5 * * *"   # daily 05:30 UTC - after Elexon/LCCC publish
+    - cron: "30 6 * * *"   # daily 06:30 UTC - an hour after the model's run
   workflow_dispatch: {}
 
 permissions:
@@ -14,18 +20,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
-      - run: uv sync
-      - name: Update all schemes (a failing scheme does not block the others)
-        run: uv run python -m subsidy_engine update all || echo "::warning::one or more schemes failed - stale data will be flagged on the site"
-      - name: Extend constraints history backwards (one week per run)
-        run: |
-          EARLIEST=$(ls data/raw/constraints/daily | sort | head -1)
-          START=$(date -u -d "$EARLIEST - 7 days" +%Y-%m-%d)
-          END=$(date -u -d "$EARLIEST - 1 day" +%Y-%m-%d)
-          # exit 3 = a week with no bids (0176, option C): carry on, turn the run red at the end
-          rc=0; uv run python -m subsidy_engine backfill-constraints --start "$START" --end "$END" || rc=$?
-          if [ "$rc" -eq 3 ]; then echo "BACKFILL_STALLED=$START to $END" >> "$GITHUB_ENV"; elif [ "$rc" -ne 0 ]; then exit "$rc"; fi
-      - run: uv run python -m subsidy_engine build-site
+      - run: uv sync --frozen
+      - name: Take the model's results file (refused unless it is the pinned version's)
+        run: uv run python -m clocksite fetch-results
+      - run: uv run python -m clocksite build-site
       - name: Cache Playwright Chromium
         uses: actions/cache@v4
         with:
@@ -35,14 +33,14 @@ jobs:
         run: uv run playwright install --with-deps chromium
       - name: Rebuild share cards
         # a render failure never blocks the data update - yesterday's dated cards remain live
-        run: uv run python -m subsidy_engine build-cards || echo "::warning::share cards failed - previous cards remain"
+        run: uv run python -m clocksite build-cards || echo "::warning::share cards failed - previous cards remain"
       - name: Commit updated data
         run: |
           git config user.name "subsidy-counter-bot"
           git config user.email "actions@users.noreply.github.com"
           # site/papers: a frozen paper's og:image carries the headline card's
           # content-hash token, which build-cards re-stamps when the card changes
-          git add data site/data site/share site/s site/embed site/index.html site/papers
+          git add site/data site/share site/s site/embed site/index.html site/papers
           git diff --cached --quiet || git commit -m "data: scheduled update $(date -u +%F)"
           git push
       - name: Deploy to Cloudflare Pages
@@ -52,8 +50,3 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: 99b63c8b76711ecc6e202087e5860cc2
         run: npx -y wrangler@4.144.0 pages deploy site --project-name=subsidy-clock --branch=master --commit-dirty=true
-      - name: Alert on a stalled constraints backfill (0176, option C)
-        if: env.BACKFILL_STALLED != ''
-        run: |
-          echo "::error::Constraints backfill stalled: Elexon returned no bids for $BACKFILL_STALLED. The site updated; the backward backfill did not move."
-          exit 1

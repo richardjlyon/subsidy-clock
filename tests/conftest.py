@@ -16,7 +16,7 @@ from pathlib import Path
 
 import pytest
 
-from subsidy_engine import sitedata
+from clocksite import results, sitedata
 
 ROOT = Path(__file__).resolve().parent.parent
 REPO_CHANGELOG = (ROOT / "changelog.jsonl").resolve()
@@ -62,3 +62,13 @@ def _repo_changelog_stand_in_date(request, monkeypatch, tmp_path_factory):
         return original(path)
 
     monkeypatch.setattr(sitedata, "load_changelog", load)
+
+
+@pytest.fixture(scope="session")
+def real_results():
+    """The model's real results file, as the site reads it: results/clock.json, fetched by
+    tools/test.sh (`python -m clocksite fetch-results`) and checked against the pin."""
+    path = ROOT / "results" / results.FILE
+    if not path.is_file():
+        pytest.fail(f"{path} is missing: run `uv run python -m clocksite fetch-results` (tools/test.sh does)")
+    return results.read(path, results.load_pin(ROOT))

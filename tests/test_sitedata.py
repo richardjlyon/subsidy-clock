@@ -8,8 +8,8 @@ import yaml
 
 import polars as pl
 
-from subsidy_engine import sitedata
-from subsidy_engine.money import SchemeResult
+from clocksite import sitedata
+from clocksite.results import SchemeResult
 
 CTX = {
     "households": {"value": 28_400_000, "source": "ONS", "source_url": "https://ons", "as_of": 2023},
@@ -502,7 +502,7 @@ def test_changelog_and_corrections_derive_from_one_file(tmp_path):
     edited = CORR_VALID.replace("£1.59bn", "£1.58bn")
     log, corr, _, _ = _published(tmp_path, [edited, CHANGE_VALID])
     assert log["entries"][0]["now"] == corr["corrections"][0]["now"] == "£1.58bn"
-    cli = Path("src/subsidy_engine_uk/cli.py").read_text()
+    cli = Path("src/clocksite/cli.py").read_text()
     assert cli.count("load_changelog(") == 1 and "changelog.jsonl" in cli
     assert not Path("corrections.jsonl").exists()   # no second log, no alias
     assert Path("changelog.jsonl").is_file()

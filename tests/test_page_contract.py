@@ -7,8 +7,8 @@ from datetime import date
 import polars as pl
 import pytest
 
-from subsidy_engine import sitedata
-from subsidy_engine.money import SchemeResult
+from clocksite import sitedata
+from clocksite.results import SchemeResult
 
 REF_EXTRAS = {"source": "s", "source_url": "u", "verified": True}
 

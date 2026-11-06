@@ -1,6 +1,6 @@
 """Share-card TEXT layer for the golden master — no Playwright, no PNGs.
 
-Reproduces every text surface cmd_build_cards (subsidy_engine_uk/cli.py)
+Reproduces every text surface cmd_build_cards (clocksite/cli.py)
 produces, without screenshotting and without writing inside the repo:
 
   s/<name>.html    share-stub pages       (sharecards.write_stubs -> tempdir)
@@ -21,14 +21,14 @@ object (surface-name -> text) to stdout; golden_master.py merges it into the
 snapshot under 'cards:'-prefixed keys.
 
 History: revived 2026-09-01 from the archived Phase 1 copy, which imported a
-superseded API (subsidy_engine_uk.cards, siteconfig.UK, a currency argument to
+superseded API (the old engine's cards module, siteconfig.UK, a currency argument to
 cumulative_svg). All three are gone; this version tracks the current signatures.
 """
 import json
 import tempfile
 from pathlib import Path
 
-from subsidy_engine import sharecards
+from clocksite import sharecards
 
 TEMPLATES = Path(sharecards.__file__).parent / "templates"
 

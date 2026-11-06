@@ -4,7 +4,7 @@
 
 Figures are reconstructed bottom-up from official sources — LCCC (Contracts for Difference and Capacity Market), Elexon (constraint payments), NESO (balancing costs and transmission charges), Ofgem (Renewables Obligation and Feed-in Tariffs), HMRC, DESNZ, the NAO and REF (cross-checks and constraint history) — with full provenance: every retrieved data point links to its source URL, retrieval timestamp and content hash.
 
-This repository is the complete system: the data engine, the raw data store, the reference inputs and the static site. It exists to be audited. If you find an error in a published figure, please say so — confirmed errors are corrected and logged in public on the [corrections page](https://subsidyclock.co.uk/corrections), or you can [open an issue](../../issues/new?template=correction.yml).
+This repository is the website. The sums (the data engine, the raw data store and the reference inputs) are in [model-bill-already-paid](https://github.com/richardjlyon/model-bill-already-paid), which writes one results file each morning; the site is built from that file, at a pinned model version. Both exist to be audited. If you find an error in a published figure, please say so — confirmed errors are corrected and logged in public on the [corrections page](https://subsidyclock.co.uk/corrections), or you can [open an issue](../../issues/new?template=correction.yml).
 
 ## What is counted
 
@@ -35,34 +35,30 @@ Requires Python ≥ 3.12 and [uv](https://docs.astral.sh/uv/).
 uv sync
 tools/test.sh                                # the standard test run (this machine and the Mac Mini); every test passes
 tools/test.sh --release                      # before a release: also fails while a changelog date is DEPLOY-DATE
-uv run python -m subsidy_engine update all   # fetch latest data from all sources
-uv run python -m subsidy_engine build-site   # write site/data/*.json and the /data CSVs
+uv run python -m clocksite fetch-results     # take the pinned model's results file into results/
+uv run python -m clocksite build-site        # write site/data/*.json and the /data CSVs from it
 cd site && python3 -m http.server
 ```
 
-**Testing.** `tools/test.sh` is the one standard run, on VM 113, where the sibling projects it checks against live (`/srv/aios/projects`). Every test passes; the only skips are the release checks, which `--release` runs. Measured 2 Nov 2026: whole suite 2 minutes, slowest test 10 s, peak memory about 290 MB, so nothing needs the Mac Mini. A test that is genuinely compute-heavy is moved to the Mac Mini case by case, and says so in its docstring.
+**Testing.** `tools/test.sh` is the one standard run, on VM 113, where the sibling projects it checks against live (`/srv/aios/projects`). Every test passes; the only skips are the release checks, which `--release` runs. Measured 6 Nov 2026: whole suite about 3 seconds (the model's own tests are in its repository), so nothing needs the Mac Mini. A test that is genuinely compute-heavy is moved to the Mac Mini case by case, and says so in its docstring.
 
-Open http://localhost:8000 to view the dashboard. (The deployed site uses clean URLs, so multi-page links have no `.html`; with `http.server` either add the `.html` suffix or run `npx serve site`, which matches production.) Two further commands:
+Open http://localhost:8000 to view the dashboard. (The deployed site uses clean URLs, so multi-page links have no `.html`; with `http.server` either add the `.html` suffix or run `npx serve site`, which matches production.) One further command:
 
 ```sh
-uv run python -m subsidy_engine backfill-constraints --start 2024-01-01 --end 2024-03-31
-                                             # extend bottom-up constraints history
-uv run python -m subsidy_engine build-cards  # render share-card PNGs (needs Playwright Chromium)
+uv run python -m clocksite build-cards       # render share-card PNGs (needs Playwright Chromium)
 ```
 
-The raw data store is committed, so **every published figure is reproducible from a clone with no network access**. The one exception is the map's basemap image, which is fetched live from Mapbox and needs an access token (see Deployment); the map's underlying data, like all figures, reproduces offline.
+The model's raw data store is committed in its repository, so **every published figure is reproducible from a clone with no network access**; the site reproduces from the results file it is pinned to (`reference/results_pin.yaml`: model, version, file format; a file from another version, or one whose fingerprint does not match, is refused). The one exception is the map's basemap image, which is fetched live from Mapbox and needs an access token (see Deployment); the map's underlying data, like all figures, reproduces offline.
 
 ## Repository layout
 
 ```
-src/subsidy_engine/   retrieval (ckan.py, elexon.py, schemes/), money model (money.py),
-                      reconciliation (reconcile.py), reference loaders (reference.py),
-                      station/recipient mapping (stations.py), site data (sitedata.py),
-                      share cards (sharecards.py), immutable store (store.py)
-reference/            reference inputs: CPIH deflators, buy-out prices, bill denominator,
-                      indirect-cost annuals and REF cross-checks (*.yaml); CfD→station and
-                      named-RO mappings, station coordinates (*.csv); the map basemap config
-data/raw/             the Parquet store (see below)
+src/clocksite/        the model's results file read and checked (results.py), site data
+                      (sitedata.py), share cards (sharecards.py), scheme names and
+                      colours (schemes.py), the map's inputs (inputs.py)
+reference/            the results pin (results_pin.yaml); station coordinates, enforcement
+                      notes, equivalences and the map basemap config
+results/              the model's results file, fetched (not committed)
 scripts/              deploy-time helper(s), e.g. Mapbox token injection
 site/                 the static site — no framework, no bundler
 tests/                pytest suite
@@ -75,11 +71,11 @@ data/raw/{scheme}/{table}/{partition}/{retrieved-at}/data.parquet
 data/raw/{scheme}/{table}/{partition}/{retrieved-at}/manifest.json
 ```
 
-`manifest.json` records `source_url`, `retrieved_at`, `sha256` (content hash of the table's canonical CSV serialisation) and `row_count`. The store is append-only:
+The store is in [model-bill-already-paid](https://github.com/richardjlyon/model-bill-already-paid). `manifest.json` records `source_url`, `retrieved_at`, `sha256` (content hash of the table's canonical CSV serialisation) and `row_count`. The store is append-only:
 
 - **Nothing is ever deleted.** When a source revises history, the new version is stored alongside the old and the change is logged in `restatements.jsonl` — published at [/data](https://subsidyclock.co.uk/data) as `restatements.csv`.
 - **Our own mistakes are logged the same way.** Confirmed errors in published figures go to `changelog.jsonl` as kind `correction`, published at [/corrections](https://subsidyclock.co.uk/corrections); deliberate changes of method, scope or source go in the same file as kind `change`. A published figure is never silently edited.
-- **Reconciliation guards run at build time.** Bottom-up totals are checked against official aggregates and REF's published series; the build fails loudly if they drift out of tolerance.
+- **Reconciliation guards run when the model runs.** Bottom-up totals are checked against official aggregates and REF's published series; the run fails loudly if they drift out of tolerance.
 
 ## Schemes
 
@@ -99,7 +95,7 @@ Attribution rules and their confidence levels are quoted in full on the [methodo
 
 ## Automation
 
-A GitHub Action (`.github/workflows/update.yml`) runs daily at 05:30 UTC, after LCCC and Elexon publish: it updates all schemes (a failing scheme flags stale data on the site rather than blocking the others), extends the constraints backfill by one week, rebuilds the site data and share cards, commits, and publishes `site/` to Cloudflare Pages. A second workflow (`deploy.yml`) publishes any hand-made change to `site/` pushed to `master`.
+The model's GitHub Action runs daily at 05:30 UTC, after LCCC and Elexon publish: it updates all schemes (a failing scheme flags stale data on the site rather than blocking the others), extends the constraints backfill by one week, and writes the results file. This repository's Action (`.github/workflows/update.yml`) runs at 06:30 UTC: it takes that file (refused unless it is the pinned version's), rebuilds the site data and share cards, commits, and publishes `site/` to Cloudflare Pages. A second workflow (`deploy.yml`) publishes any hand-made change to `site/` pushed to `master`.
 
 ## Deployment
 
@@ -111,6 +107,6 @@ Every published series is downloadable as CSV from [subsidyclock.co.uk/data](htt
 
 ## Licence
 
-- **Code** (engine, site, tests): [MIT](LICENSE).
-- **Published data** (the JSON and CSV series this engine produces): [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), credit "The Subsidy Clock — subsidyclock.co.uk".
+- **Code** (site, tests): [MIT](LICENSE).
+- **Published data** (the JSON and CSV series this site publishes): [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), credit "The Subsidy Clock — subsidyclock.co.uk".
 - **Upstream official data** (LCCC, Elexon, NESO, Ofgem, HMRC, DESNZ, NAO): subject to the source bodies' own terms, generally the [Open Government Licence v3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/).

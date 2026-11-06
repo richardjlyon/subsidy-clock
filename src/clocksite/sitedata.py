@@ -1,0 +1,892 @@
+"""Builds the JSON files the static dashboard consumes (spec D-1..D-12 and
+phase-2 spec section 5). This module is the engine<->dashboard contract."""
+
+from __future__ import annotations
+
+import json
+import math
+import re
+from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
+
+import polars as pl
+
+from clocksite.schemes import get as get_scheme
+
+
+def _annual_records(annual: pl.DataFrame) -> list[dict]:
+    cols = [pl.col("year").cast(pl.Int64),
+            pl.col("cost_gbp").cast(pl.Float64).alias("cost")]
+    if "cost_gbp_2024" in annual.columns:
+        cols.append(pl.col("cost_gbp_2024").cast(pl.Float64).alias("cost_real"))
+    return annual.select(cols).to_dicts()
+
+
+def _money_block(p: dict, households: int, population: int, demand_mwh: float) -> dict:
+    runrate = p["runrate_gbp_per_year"]
+    block = {
+        "cumulative": p["cumulative_gbp"],
+        "runrate_per_year": runrate,
+        "rate_per_sec": p["rate_gbp_per_sec"],
+        "per_household_per_year": _floor2(runrate / households),
+        "per_person_per_year": _floor2(runrate / population),
+        "per_mwh_delivered": _floor2(runrate / demand_mwh),
+        "since_year": p["since_year"],
+    }
+    if "cumulative_gbp_2024" in p:
+        real_run = p["runrate_gbp_per_year_2024"]
+        block["real"] = {
+            "cumulative": p["cumulative_gbp_2024"],
+            "runrate_per_year": real_run,
+            "rate_per_sec": p["rate_gbp_per_sec_2024"],
+            "per_household_per_year": _floor2(real_run / households),
+            "per_person_per_year": _floor2(real_run / population),
+            "per_mwh_delivered": _floor2(real_run / demand_mwh),
+        }
+    return block
+
+
+def _floor_to(v: float, step: float) -> float:
+    return math.floor(v / step) * step
+
+
+def _floor2(v: float) -> float:
+    """Floor a money value to 2 dp, so every per-unit framing understates and
+    the figure is identical wherever it appears (totals.json and the factoids
+    must never disagree by a rounding penny)."""
+    return math.floor(v * 100) / 100
+
+
+# --- Per-line carry-forward (Richard, 15 Oct 2026, confirmed 1 Nov; aios-harness#46;
+# ported from origin/model-pin 1ab8bdd4). Each block's `cumulative` stays the
+# PUBLISHED total, every line counted to its own latest data. The counter, widget
+# and share cards add, line by line, the cost since that line's data end at its
+# latest yearly rate (the line's run-rate: the last complete year for annual lines,
+# the trailing run-rate for daily and monthly feeds), labelled estimated. A later
+# build that moves a line's data end forward replaces that much estimate with
+# published data. VAT carries with the lines it is on.
+
+SECONDS_PER_YEAR = 365.25 * 86400  # 31_557_600
+
+
+def rate_per_second(runrate_gbp_per_year: float) -> float:
+    return runrate_gbp_per_year / SECONDS_PER_YEAR
+
+
+def carry_from(data_to: date) -> datetime:
+    """The instant a line's estimate starts: midnight UTC at the end of the last
+    day its published data cover (data_to is inclusive). Ported from
+    origin/model-pin 1ab8bdd4 (aios-harness#46)."""
+    d = data_to + timedelta(days=1)
+    return datetime(d.year, d.month, d.day, tzinfo=timezone.utc)
+
+
+def estimated_since(runrate_gbp_per_year: float, data_to: date | None,
+                    at: datetime) -> float:
+    """Cost incurred since a line's published data end, carried forward at the
+    line's latest yearly rate: rate x (at - end of data) / 365.25 days (Richard,
+    15 Oct 2026, confirmed 1 Nov). Never negative: a line whose data reach past
+    `at` carries nothing. When a later build moves data_to forward, published data
+    replace the estimate for those days (the estimate starts at the new end)."""
+    if data_to is None:
+        return 0.0
+    secs = (at - carry_from(data_to)).total_seconds()
+    return runrate_gbp_per_year * max(0.0, secs) / SECONDS_PER_YEAR
+
+
+def _carry_entries(s, by_id: dict, factor: float) -> list[dict]:
+    """The carry-forward entries for one line: {id, data_to, from, rate_per_sec}, cash.
+    A line with carry_with (VAT) has one entry per line it is on, at factor x its rate."""
+    if s.carry_with:
+        out = []
+        for sid, f in s.carry_with.items():
+            b = by_id.get(sid)
+            if b is None or b.data_to is None:
+                continue
+            out.append({"id": f"{s.scheme_id}:{sid}", "data_to": b.data_to.isoformat(),
+                        "from": carry_from(b.data_to).isoformat(),
+                        "rate_per_year": f * b.runrate_gbp_per_year})
+        return out
+    if s.data_to is None:
+        return []
+    return [{"id": s.scheme_id, "data_to": s.data_to.isoformat(),
+             "from": carry_from(s.data_to).isoformat(),
+             "rate_per_year": s.runrate_gbp_per_year}]
+
+
+def _carry_forward(members: list, by_id: dict, factor: float, at: datetime) -> dict:
+    """Carry-forward for one headline block. Real (2024 prices): the money falls after
+    the data end, so the cash rate is converted at the latest index (`factor`). Each
+    entry carries `from` and `rate_per_sec`, so a client computes the live value at t
+    as cumulative + sum(rate_per_sec x max(0, t - from))."""
+    lines, lines_real = [], []
+    est = 0.0
+    for s in members:
+        for e in _carry_entries(s, by_id, factor):
+            v = estimated_since(e["rate_per_year"], date.fromisoformat(e["data_to"]), at)
+            est += v
+            rate = rate_per_second(e["rate_per_year"])
+            base = {"id": e["id"], "data_to": e["data_to"], "from": e["from"]}
+            lines.append({**base, "rate_per_sec": rate, "estimated_since": v})
+            lines_real.append({**base, "rate_per_sec": rate * factor, "estimated_since": v * factor})
+    return {"estimated_since": est, "estimated_since_real": est * factor,
+            "lines": lines, "lines_real": lines_real}
+
+
+# the fields each totals.json block (and its `real` block) carries (aios-harness#46)
+TOTALS_CARRY_FIELDS = ("published_cumulative", "estimated_since", "running_total", "carry_forward")
+
+
+def _with_carry(block: dict, cf: dict | None) -> dict:
+    """Add the carry-forward fields to a _money_block: `cumulative` stays published;
+    published_cumulative (the same), estimated_since at generated_at, running_total
+    (the two summed: what every headline surface shows at the build instant), and the
+    per-line carry_forward."""
+    if cf is None:
+        return block
+    block["published_cumulative"] = block["cumulative"]
+    block["estimated_since"] = cf["estimated_since"]
+    block["running_total"] = block["cumulative"] + cf["estimated_since"]
+    block["carry_forward"] = cf["lines"]
+    if "real" in block:
+        r = block["real"]
+        r["published_cumulative"] = r["cumulative"]
+        r["estimated_since"] = cf["estimated_since_real"]
+        r["running_total"] = r["cumulative"] + cf["estimated_since_real"]
+        r["carry_forward"] = cf["lines_real"]
+    for b in (block, block.get("real") or {}):
+        if b and not all(k in b for k in TOTALS_CARRY_FIELDS):
+            raise ValueError(f"totals block lacks a carry-forward field ({TOTALS_CARRY_FIELDS})")
+    return block
+
+
+def running_total(block: dict) -> float:
+    """Published cumulative plus the estimate since each line's data end, at the
+    build instant (falls back to the published cumulative for older data)."""
+    return block.get("running_total", block["cumulative"])
+
+
+def _members(model: dict) -> dict:
+    schemes = model.get("schemes", [])
+    out = {p: [s for s in schemes if s.layer == "direct" and p in s.perspectives]
+           for p in model["perspectives"]}
+    out["indirect"] = [s for s in schemes if s.layer == "indirect"]
+    return out
+
+
+def _real_factor(model: dict) -> float:
+    if "real_factor" in model:
+        return model["real_factor"]
+    for p in [*model["perspectives"].values(), model.get("indirect") or {}]:
+        if p.get("runrate_gbp_per_year") and "runrate_gbp_per_year_2024" in p:
+            return p["runrate_gbp_per_year_2024"] / p["runrate_gbp_per_year"]
+    return 1.0
+
+
+def _carry_all(model: dict, generated_at: str) -> dict:
+    at = datetime.fromisoformat(generated_at)
+    factor = _real_factor(model)
+    by_id = {s.scheme_id: s for s in model.get("schemes", [])}
+    return {k: _carry_forward(v, by_id, factor, at) for k, v in _members(model).items()}
+
+
+def _scheme_carry(s, by_id: dict, generated_at: str, factor: float) -> dict:
+    """Per-line carry_forward in breakdown.json: published cumulative, the line's
+    entries (data end, start, rate) and the estimate since, cash and real."""
+    at = datetime.fromisoformat(generated_at)
+    entries = _carry_entries(s, by_id, factor)
+    est = sum(estimated_since(e["rate_per_year"], date.fromisoformat(e["data_to"]), at)
+              for e in entries)
+    one = entries[0] if len(entries) == 1 and not s.carry_with else None
+    return {"carry_forward": {
+        "published_cumulative": s.cumulative_gbp,
+        "data_to": one["data_to"] if one else (s.data_to.isoformat() if s.data_to else None),
+        "from": one["from"] if one else None,
+        "rate_per_year": one["rate_per_year"] if one else sum(e["rate_per_year"] for e in entries),
+        "rate_per_sec": rate_per_second(one["rate_per_year"] if one else
+                                              sum(e["rate_per_year"] for e in entries)),
+        "rate_per_year_real": (one["rate_per_year"] if one else
+                               sum(e["rate_per_year"] for e in entries)) * factor,
+        "estimated_since": est,
+        "estimated_since_real": est * factor,
+        "running_total": s.cumulative_gbp + est,
+        "label": "estimated",
+        **({"with_lines": [{"id": e["id"], "data_to": e["data_to"], "from": e["from"],
+                            "rate_per_sec": rate_per_second(e["rate_per_year"])}
+                           for e in entries]} if s.carry_with else {}),
+        "at": generated_at,
+    }}
+
+
+def _combined_running_real(model: dict, generated_at: str | None) -> float | None:
+    combined = _combined_real_gbp(model)
+    if combined is None or generated_at is None:
+        return combined
+    cf = _carry_all(model, generated_at)
+    return (combined + cf["renewables"]["estimated_since_real"]
+            + cf["indirect"]["estimated_since_real"])
+
+
+def _floor_step_below(v: float, step: float) -> float:
+    """Floor to the nearest step STRICTLY below v (the F8/I1 rule: a floor,
+    never a midpoint, so every sentence quoting it understates).
+    app.js's combinedRealFlooredGbp() applies the same rule - keep them in step."""
+    f = _floor_to(v, step)
+    return f - step if f == v else f
+
+
+def _combined_real_gbp(model: dict) -> float | None:
+    """The full combined direct+indirect cumulative in 2024 prices (no rounding).
+    This is the headline share card's figure — the impact is the full number."""
+    r = model["perspectives"]["renewables"]
+    if ("cumulative_gbp_2024" in r and "indirect" in model
+            and "cumulative_gbp_2024" in model["indirect"]):
+        return r["cumulative_gbp_2024"] + model["indirect"]["cumulative_gbp_2024"]
+    return None
+
+
+def _combined_real_floored_gbp(model: dict, generated_at: str | None = None) -> float | None:
+    """The combined direct+indirect cumulative in 2024 prices, floored to the
+    nearest £10bn STRICTLY BELOW (the I1/F8 rule: a floor, never a midpoint, so
+    every sentence quoting it understates). Used by the hero lead-in and the
+    'could have built' factoids — NOT the headline card, which shows the full
+    figure. app.js's combinedRealFlooredGbp() applies the same rule - keep them in step."""
+    combined = _combined_running_real(model, generated_at)
+    return _floor_step_below(combined, 1e10) if combined is not None else None
+
+
+_BAKED_FIGURE = re.compile(r"£\s*\d")
+
+
+def _check_no_baked_figures(rec: dict) -> None:
+    for field in ("frame", "sentence", "label"):
+        if _BAKED_FIGURE.search(rec.get(field, "")):
+            raise ValueError(
+                f"{rec['slug']}: baked £ figure in {field!r}; use {{full}}")
+
+
+def _subst(template: str, tokens: dict[str, str]) -> str:
+    """Fill {key} placeholders from tokens; raise if any {…} survives so a
+    typo'd or unresolved token never reaches the page."""
+    out = template.format(**tokens)
+    if "{" in out or "}" in out:
+        raise ValueError(f"unfilled token in: {template!r}")
+    return out
+
+
+def _factoids(model: dict, equivalences: list[dict],
+              deflators: pl.DataFrame | None,
+              generated_at: str | None = None) -> list[dict]:
+    """Generic equivalence factoids: each record divides a live numerator by a
+    high-end unit cost, floors the count, and resolves {full}/{n} tokens. All
+    records are emitted; the client shows a random three. Integrity: real-2024
+    basis, every division floors, full-basis counts divide the quoted £NNNbn+
+    floor. See reference/equivalences.yaml for the record schema."""
+    if not equivalences:
+        return []
+    r = model["perspectives"]["renewables"]
+    runrate = r.get("runrate_gbp_per_year_2024", r["runrate_gbp_per_year"])
+    full_floor = _combined_real_floored_gbp(model, generated_at)
+    full_str = f"£{int(full_floor / 1e9)}bn+" if full_floor is not None else None
+    idx = (dict(deflators.select("year", "index").iter_rows())
+           if deflators is not None else None)
+
+    out: list[dict] = []
+    for rec in equivalences:
+        _check_no_baked_figures(rec)
+        basis = rec["basis"]
+        numerator = full_floor if basis == "full" else runrate
+        if numerator is None:        # full unavailable (no indirect) -> skip full items
+            continue
+        unit = float(rec["unit_gbp"])
+        base = rec.get("price_base")
+        if base is not None:
+            if idx is None or base not in idx:
+                raise ValueError(
+                    f"{rec['slug']}: price_base {base} not in deflator index")
+            unit *= idx[2024] / idx[base]
+        n = int(_floor_to(numerator / unit, rec.get("round_to", 1)))
+        figure = f"{n:,}"
+        tokens = {"n": figure, "full": full_str or ""}
+        out.append({
+            "slug": rec["slug"],
+            "figure": figure,
+            "basis": basis,
+            "figure_label": rec["figure_label"],
+            "frame": _subst(rec["frame"], tokens),
+            "sentence": _subst(rec["sentence"], tokens),
+            "label": _subst(rec["label"], tokens),
+            "source_name": rec["source"],
+            "source_url": rec["source_url"],
+        })
+    return out
+
+
+# Panel wording for the per-asset JSONs — engine-pinned (test-pinned): the map
+# page places these strings verbatim, it never authors wording that matters.
+ASSET_STRINGS = {
+    "cfd_basis": ("Payments and generation are LCCC daily settlement data, "
+                  "summed per contract from first settlement. Quarters below "
+                  "zero are periods when the market price exceeded the strike "
+                  "price and the generator paid back."),
+    "ro_basis": ("Valued at Renewables Obligation buy-out only — the "
+                 "directly-sourced per-generator basis. The scheme's full cost "
+                 "also includes recycle value, so this understates the "
+                 "station's receipts. Ofgem publishes richer per-station ROC "
+                 "data; it is not yet shown here."),
+    "hero_label_cfd": "cumulative payments",
+    "status_unknown": "unknown",
+    "hero_label_ro": "cumulative buy-out value",
+    "rate_label": "payment per subsidised MWh",
+    "rate_not_shown": ("Payment per MWh is not shown: it is only computed when "
+                       "cumulative payment and generation are both positive."),
+    "outages_unavailable": "Outage history is not available for this station.",
+    "outages_label": ("Major outages (Elexon REMIT): periods of at least 24 "
+                      "hours with at least 20% of unit capacity unavailable. "
+                      "Records from {year}; earlier periods are not covered."),
+    "source_cfd": ("Source: LCCC actual CfD generation and payments, daily "
+                   "settlement."),
+    "source_ro": ("Source: Ofgem Renewables Obligation annual reports "
+                  "(buy-out basis)."),
+}
+
+
+def _asset_data(model: dict, map_data: dict,
+                notes: dict | None = None) -> dict:
+    """One JSON object per map marker: the asset X-ray panel's whole content.
+
+    CfD markers carry the quarterly series, contract rows and stat tiles from
+    ``station_detail`` (built from the same settlement rows as the scheme
+    totals, so figures reconcile by construction — and are re-checked here,
+    fail-loud). RO markers carry the honest-degradation shape: hero buy-out
+    value and the pinned understatement note, no tiles, no chart. The
+    effective-rate tile is suppressed (never negative, infinite, or zero
+    standing in for unknown) unless payment and generation are both positive."""
+    by_id = {s.scheme_id: s for s in model["schemes"]}
+    cfd = by_id.get("cfd_renewable")
+    detail = {d["station"]: d
+              for d in (cfd.extras.get("station_detail", []) if cfd else [])}
+    ro = by_id.get("ro")
+    ro_data_to = (ro.data_to.isoformat()
+                  if ro is not None and ro.data_to is not None else None)
+    notes = notes or {}
+    marker_names = {m["name"] for m in map_data["markers"]}
+    unknown = set(notes) - marker_names
+    if unknown:
+        raise ValueError("enforcement note(s) for station(s) not on the map: "
+                         + ", ".join(sorted(unknown)))
+    out = {}
+    for m in map_data["markers"]:
+        if m["scheme"] == "cfd_renewable":
+            assert cfd is not None  # a cfd marker implies the scheme exists
+            d = detail.get(m["name"])
+            if d is None:
+                raise ValueError("asset data: no station_detail for mapped "
+                                 f"CfD station {m['name']!r}")
+            tol = 1e-6 * max(1.0, abs(m["cost"]))
+            if abs(d["cost"] - m["cost"]) > tol:
+                raise ValueError("asset data: hero/marker cost mismatch for "
+                                 f"{m['name']!r}")
+            if abs(sum(c["cumulative_gbp"] for c in d["contracts"]) - d["cost"]) > tol:
+                raise ValueError("asset data: contract sum != station cost for "
+                                 f"{m['name']!r}")
+            asset = {
+                "slug": m["slug"], "name": m["name"],
+                "scheme": "cfd_renewable",
+                "scheme_label": cfd.label,
+                "technology": d["technology"],
+                "hero_gbp": d["cost"],
+                "hero_label": ASSET_STRINGS["hero_label_cfd"],
+                "quarters": d["quarters"],
+                # LCCC lifecycle status verbatim; absent -> pinned "unknown"
+                "contracts": [
+                    dict(c, status=c.get("status")
+                         or ASSET_STRINGS["status_unknown"])
+                    for c in d["contracts"]
+                ],
+                "strings": {
+                    "basis": ASSET_STRINGS["cfd_basis"],
+                    "outages_unavailable": ASSET_STRINGS["outages_unavailable"],
+                },
+                "provenance": {"source": ASSET_STRINGS["source_cfd"],
+                               "data_to": d["data_to"]},
+            }
+            if d.get("outages") is not None:
+                asset["outages"] = d["outages"]
+                asset["strings"]["outages_label"] = (
+                    ASSET_STRINGS["outages_label"].format(
+                        year=d["outages"]["coverage_from"][:4]))
+                del asset["strings"]["outages_unavailable"]
+            if d["cost"] > 0 and d["generation_mwh"] > 0:
+                asset["tiles"] = {
+                    "generation_mwh": d["generation_mwh"],
+                    "rate_gbp_per_mwh": d["cost"] / d["generation_mwh"],
+                    "rate_label": ASSET_STRINGS["rate_label"],
+                }
+            else:
+                asset["strings"]["rate_not_shown"] = ASSET_STRINGS["rate_not_shown"]
+        else:
+            asset = {
+                "slug": m["slug"], "name": m["name"],
+                "scheme": "ro",
+                "scheme_label": ro.label if ro is not None else "Renewables Obligation",
+                "technology": m["technology"],
+                "hero_gbp": m["cost"],
+                "hero_label": ASSET_STRINGS["hero_label_ro"],
+                "strings": {
+                    "basis": ASSET_STRINGS["ro_basis"],
+                    "outages_unavailable": ASSET_STRINGS["outages_unavailable"],
+                },
+                "provenance": {"source": ASSET_STRINGS["source_ro"],
+                               "data_to": ro_data_to},
+            }
+        if m["name"] in notes:
+            asset["note"] = notes[m["name"]]
+        out[m["slug"]] = asset
+    return out
+
+
+def _map_data(model: dict, coords: dict, tiles: dict) -> dict:
+    """One marker per station × scheme for the interactive recipients map.
+
+    Pulls the ``by_station`` lists from the ``cfd_renewable`` and ``ro``
+    SchemeResults' extras; a station appears once per scheme it pays out under
+    (so Drax yields two markers). Markers carry real (lat, lon) plus the pinned
+    slug from the coords reference — the client (MapLibre) does its own
+    projection, so no pixel-space maths happens here. Stations absent from
+    ``coords`` are dropped. ``tiles`` (reference/map_tiles.json) is passed
+    through verbatim: style/terrain URLs and the pinned attribution strings the
+    page must place."""
+    by_id = {s.scheme_id: s for s in model["schemes"]}
+    markers = []
+    for scheme_id in ("cfd_renewable", "ro"):
+        scheme = by_id.get(scheme_id)
+        if not scheme:
+            continue
+        for st in scheme.extras.get("by_station", []):
+            ll = coords.get(st["station"])
+            if ll is None:
+                continue
+            markers.append({
+                "slug": ll[2],
+                "name": st["station"],
+                "scheme": scheme_id,
+                "technology": st["technology"],
+                "cost": st["cost"],
+                "lat": ll[0],
+                "lon": ll[1],
+            })
+    return {"tiles": tiles, "markers": markers}
+
+
+
+# --- The page contract (aios-harness#52): every field breakdown.json publishes.
+# Pages and outside users read these; a field is added, renamed or dropped only here,
+# and the build fails on any field a scheme publishes that is not listed, or a listed
+# one it lacks (unless optional).
+
+COMMON_FIELDS = ("id", "label", "perspectives", "cadence", "layer", "attribution_pct",
+                 "attribution_note", "attribution_confidence", "cumulative",
+                 "runrate_per_year", "data_to",
+                 # aios-harness#46: published + estimated since the line's data end
+                 "carry_forward")
+
+_REF = ("source", "source_url", "verified")
+_CFD = ("gross", "net", "mwh", "by_technology", "by_recipient", "by_station")
+# scheme id -> (required fields, optional fields), beyond COMMON_FIELDS
+SCHEME_FIELDS = {
+    "cfd_renewable": (_CFD + ("station_detail",), ()),
+    "cfd_low_carbon": (_CFD, ()),
+    "constraints": (("by_recipient", "curtailed_mwh", "history_source_url",
+                     "held_from", "held_to"), ()),
+    "capacity_market": (("source", "source_url", "raw_annual", "netzero_share", "range",
+                         "share_provenance", "carry_forward_from"), ()),
+    # named recipients only when the station list is loaded
+    "ro": (_REF, ("by_station", "recipient_basis")),
+    "fit": (_REF, ()),
+    "ccl": (_REF, ()),
+    # aios-harness#44: one carbon line with its two parts (in place of "ets")
+    "carbon": (_REF + ("parts", "part_labels", "geography", "data_note"), ()),
+    # aios-harness#45: VAT on households' share of the counted lines
+    "vat": (_REF + ("base_lines", "rate", "domestic_share"), ()),
+    # road_annual, road_source: the engine's no-net-zero road subtracted each year (aios-harness#43)
+    "tnuos": (_REF + ("raw_annual", "road_annual", "road_source"), ()),
+    "bsuos": (_REF + ("raw_annual", "held_from", "held_to", "road_annual", "road_source"), ()),
+    "constraint_turnup": (("by_fuel_while_wind_constrained", "cross_check_cumulative",
+                           "measured_from", "measured_annual", "source", "source_url"), ()),
+}
+
+# top-level keys: (always, when present)
+BREAKDOWN_KEYS = (("generated_at", "schemes"), ("elexon_first_year", "register", "findings"))
+
+
+def scheme_fields(s) -> dict:
+    """The scheme's own published fields (its extras), checked against the contract."""
+    if s.scheme_id not in SCHEME_FIELDS:
+        raise ValueError(f"scheme {s.scheme_id!r} has no entry in the page contract "
+                         "(sitedata.SCHEME_FIELDS): add its published fields there")
+    required, optional = SCHEME_FIELDS[s.scheme_id]
+    unlisted = sorted(set(s.extras) - set(required) - set(optional))
+    if unlisted:
+        raise ValueError(f"scheme {s.scheme_id!r} publishes {unlisted[0]!r}, which is not in "
+                         f"the page contract (sitedata.SCHEME_FIELDS); unlisted: {unlisted}")
+    missing = [k for k in required if k not in s.extras]
+    if missing:
+        raise ValueError(f"scheme {s.scheme_id!r} lacks {missing[0]!r}, which the page "
+                         f"contract (sitedata.SCHEME_FIELDS) lists; missing: {missing}")
+    return dict(s.extras)
+
+
+def breakdown_doc(model: dict, generated_at: str) -> dict:
+    """breakdown.json: the top-level keys and each scheme's common and own fields."""
+    by_id = {s.scheme_id: s for s in model["schemes"]}
+    factor = _real_factor(model)
+    doc = {
+        "generated_at": generated_at,
+        # the constraints pin: first year Elexon replaces REF (fix 5 guard; splice module)
+        **({"elexon_first_year": model["elexon_first_year"]}
+           if model.get("elexon_first_year") is not None else {}),
+        # decision 0168: the shared cost register every closed year was read from
+        **({"register": model["register"]} if model.get("register") else {}),
+        # aios-harness#42: the approved fixes this build applied (register adjustments not taken)
+        **({"findings": model["findings"]} if model.get("findings") else {}),
+        "schemes": [
+            {
+                "id": s.scheme_id,
+                "label": s.label,
+                "perspectives": s.perspectives,
+                "cadence": s.cadence,
+                "layer": s.layer,
+                "attribution_pct": s.attribution_pct,
+                "attribution_note": s.attribution_note,
+                "attribution_confidence": s.attribution_confidence,
+                "cumulative": s.cumulative_gbp,
+                "runrate_per_year": s.runrate_gbp_per_year,
+                "data_to": s.data_to.isoformat() if s.data_to else None,
+                # aios-harness#46: the line's carry-forward (published + estimated since)
+                **_scheme_carry(s, by_id, generated_at, factor),
+                **scheme_fields(s),
+            }
+            for s in model["schemes"]
+        ],
+    }
+    always, present = BREAKDOWN_KEYS
+    assert set(always) <= set(doc) <= set(always) | set(present), sorted(doc)
+    return doc
+
+
+def build(model: dict, ctx: dict, freshness: dict, out_dir: Path | str,
+          *, generated_at: str, deflator_info: dict | None = None,
+          bill_annual: pl.DataFrame | None = None,
+          bill_info: dict | None = None,
+          deflators: pl.DataFrame | None = None,
+          coords: dict | None = None, tiles: dict | None = None,
+          notes: dict | None = None,
+          equivalences: list[dict] | None = None) -> None:
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    households = ctx["households"]["value"]
+    population = ctx["population"]["value"]
+    demand_mwh = ctx["annual_demand_twh"]["value"] * 1_000_000
+
+    carry = _carry_all(model, generated_at) if model.get("schemes") else {}
+    totals: dict = {
+        "generated_at": generated_at,
+        "perspectives": {
+            name: _with_carry(_money_block(p, households, population, demand_mwh),
+                              carry.get(name))
+            for name, p in model["perspectives"].items()
+        },
+    }
+    if "indirect" in model:
+        totals["indirect"] = _with_carry(_money_block(
+            model["indirect"], households, population, demand_mwh), carry.get("indirect"))
+    (out / "totals.json").write_text(json.dumps(totals, indent=1, allow_nan=False))
+
+    ts: dict = {
+        "generated_at": generated_at,
+        "perspectives": {
+            name: {"annual": _annual_records(p["annual"])}
+            for name, p in model["perspectives"].items()
+        },
+        "indirect": ({"annual": _annual_records(model["indirect"]["annual"])}
+                     if "indirect" in model else None),
+        "schemes": {
+            s.scheme_id: {"annual": _annual_records(s.annual)}
+            for s in model["schemes"]
+        },
+    }
+    if bill_annual is not None:
+        ts["electricity_bill"] = {"annual": bill_annual.select(
+            pl.col("year").cast(pl.Int64),
+            pl.col("total_bill_gbp").cast(pl.Float64).alias("total_bill"),
+            pl.col("total_bill_gbp_2024").cast(pl.Float64).alias("total_bill_real"),
+        ).to_dicts()}
+    (out / "timeseries.json").write_text(json.dumps(ts, indent=1, allow_nan=False))
+
+    (out / "breakdown.json").write_text(json.dumps(
+        breakdown_doc(model, generated_at), indent=1, default=str, allow_nan=False))
+
+    combined_real = _combined_real_gbp(model)
+    # combined_real stays the PUBLISHED figure; the running total adds the estimate
+    # since each line's data end (aios-harness#46)
+    headline = ({"combined_real": combined_real,
+                 "combined_real_running": _combined_running_real(model, generated_at),
+                 "running_at": generated_at}
+                if combined_real is not None else None)
+    (out / "meta.json").write_text(json.dumps({
+        "generated_at": generated_at,
+        "freshness": freshness,
+        "context": ctx,
+        "deflator": deflator_info,
+        "bill": bill_info,
+        "headline": headline,
+        "factoids": _factoids(model, equivalences or [], deflators, generated_at),
+    }, indent=1, allow_nan=False))
+
+    if coords is not None and tiles is not None:
+        map_data = _map_data(model, coords, tiles)
+        (out / "map.json").write_text(json.dumps(map_data, indent=1, allow_nan=False))
+        by_id = {s.scheme_id: s for s in model["schemes"]}
+        located = {m["name"] for m in map_data["markers"]}
+        wanted = {st["station"] for sid in ("cfd_renewable", "ro")
+                  if (s := by_id.get(sid))
+                  for st in s.extras.get("by_station", [])}
+        print(f"[map] {len(map_data['markers'])} markers, "
+              f"{len(wanted - located)} stations missing coords")
+        # per-asset X-ray JSONs, one per marker; dir cleared first so a
+        # renamed slug can't leave a stale orphan behind
+        assets = _asset_data(model, map_data, notes)
+        assets_dir = out / "assets"
+        assets_dir.mkdir(exist_ok=True)
+        for stale in assets_dir.glob("*.json"):
+            stale.unlink()
+        for slug, asset in assets.items():
+            (assets_dir / f"{slug}.json").write_text(
+                json.dumps(asset, indent=1, allow_nan=False))
+        print(f"[assets] {len(assets)} asset files")
+
+
+RESTATEMENT_COLS = ["scheme", "table", "detected_at", "partition",
+                    "previous_version", "new_version", "origin", "cause"]
+
+CHANGELOG_FIELDS = ["date", "kind", "figure", "figure_label", "was", "now", "cause"]
+# correction: we published something wrong. change: method, scope or source
+# moved on purpose. Nothing else — a third kind would be a second log in
+# disguise, and a correction must never be filed as a change to soften it.
+CHANGELOG_KINDS = ("correction", "change")
+# An entry with status "draft" is validated with the rest but never published:
+# it lets a pending change sit in the one log, checked by the build, until
+# Richard approves it. Absent status means published.
+CHANGELOG_STATUSES = ("draft",)
+
+
+CHANGELOG_DATE_PLACEHOLDER = "DEPLOY-DATE"
+
+
+def _check_changelog_date(value, name: str, line: int) -> None:
+    """Every entry needs a real ISO date (YYYY-MM-DD). The DEPLOY-DATE
+    placeholder, held in an entry until a release is approved, fails the build
+    by name so it can never be merged or deployed by accident."""
+    if value == CHANGELOG_DATE_PLACEHOLDER:
+        raise ValueError(
+            f"{name} line {line}: changelog entry has placeholder date "
+            f"{CHANGELOG_DATE_PLACEHOLDER}; put the real date in before merging")
+    ok = isinstance(value, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", value)
+    if ok:
+        try:
+            datetime.strptime(value, "%Y-%m-%d")
+        except ValueError:
+            ok = False
+    if not ok:
+        raise ValueError(f"{name} line {line}: date must be a real ISO date "
+                         f"(YYYY-MM-DD), got {value!r}")
+
+
+def load_changelog(path: Path | str) -> list[dict]:
+    """The one public change log: every confirmed error in our own published
+    figures (kind "correction", corrections C4 — the restatement-log honesty
+    pattern applied to our own mistakes) and every deliberate change of method,
+    scope or source (kind "change"). /corrections is the correction-only view
+    of this same file, so the two can never disagree.
+
+    A missing file means an empty log; a malformed entry fails the build
+    loudly — never publish a half-readable log. Every field in
+    CHANGELOG_FIELDS is required for both kinds: a change that moved no
+    published figure says so in `was`/`now` rather than leaving them blank, so
+    a blank can only ever mean a broken entry.
+
+    `cause` may be a string or a list of paragraphs, and is always returned as
+    a list. An explanation runs to several hundred words, which is prose, not
+    a table cell: the pages render it as numbered notes at reading measure, so
+    the paragraph breaks are part of the data rather than something the page
+    invents by guessing at sentence boundaries.
+
+    Drafts are returned (and validated) with `status: "draft"`; the writer
+    leaves them out of everything it publishes."""
+    p = Path(path)
+    if not p.is_file():
+        return []
+    entries = []
+    for i, line in enumerate(p.read_text().splitlines(), start=1):
+        if not line.strip():
+            continue
+        try:
+            rec = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"{p.name} line {i}: invalid JSON") from exc
+        missing = [k for k in CHANGELOG_FIELDS if not rec.get(k)]
+        if missing:
+            raise ValueError(f"{p.name} line {i}: missing {missing}")
+        _check_changelog_date(rec["date"], p.name, i)
+        if rec["kind"] not in CHANGELOG_KINDS:
+            raise ValueError(f"{p.name} line {i}: kind must be one of "
+                             f"{list(CHANGELOG_KINDS)}, got {rec['kind']!r}")
+        if "status" in rec and rec["status"] not in CHANGELOG_STATUSES:
+            raise ValueError(f"{p.name} line {i}: status must be one of "
+                             f"{list(CHANGELOG_STATUSES)} or absent, "
+                             f"got {rec['status']!r}")
+        out = {k: rec[k] for k in CHANGELOG_FIELDS}
+        cause = rec["cause"]
+        paras = [cause] if isinstance(cause, str) else list(cause)
+        if any(not isinstance(x, str) or not x.strip() for x in paras):
+            raise ValueError(
+                f"{p.name} line {i}: cause must be a non-empty string "
+                "or a list of non-empty strings")
+        out["cause"] = [" ".join(x.split()) for x in paras]
+        out["credit"] = rec.get("credit") or ""
+        if "status" in rec:
+            out["status"] = rec["status"]
+        entries.append(out)
+    entries.sort(key=lambda r: r["date"])
+    return entries
+
+
+def _attribution(generated: str) -> str:
+    """First two of the three comment lines at the top of every published CSV.
+    Stamped (to the minute, UTC) from the same generated_at as the JSON.
+    Documented on the /data page: skip with pandas comment='#' or R
+    comment.char='#'."""
+    return ("# The Subsidy Clock — subsidyclock.co.uk\n"
+            '# Licence: CC BY 4.0 (credit "The Subsidy Clock — '
+            'subsidyclock.co.uk") · contains public sector information '
+            f'licensed under OGL v3.0 — generated {generated[:10]} '
+            f'{generated[11:16]} UTC\n')
+
+
+def _write_log_csv(path: Path, entries: list[dict], cols: list[str],
+                   note: str, generated: str) -> None:
+    rows = [{k: (" ".join(r[k]) if k == "cause" else str(r.get(k, "")))
+             for k in cols} for r in entries]
+    path.write_text(
+        _attribution(generated) + note +
+        pl.DataFrame(rows, schema={k: pl.String for k in cols}).write_csv())
+
+
+def write_changelog(entries: list[dict], out_dir: Path | str,
+                    *, generated: str) -> None:
+    """Publish the change log and its corrections view from ONE list.
+
+    changelog.json/.csv carry every published entry, both kinds (/changelog).
+    corrections.json/.csv are the kind == "correction" subset (/corrections and
+    the /data table), in the shape the corrections page has always read.
+    Deriving both here from the same list is what guarantees they cannot
+    disagree. Drafts are never published. Written even when empty — the
+    absence of corrections is itself published, not implied."""
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    published = [r for r in entries if r.get("status") != "draft"]
+    corrections = [r for r in published if r["kind"] == "correction"]
+    (out / "changelog.json").write_text(json.dumps(
+        {"generated_at": generated, "entries": published}, indent=1))
+    (out / "corrections.json").write_text(json.dumps(
+        {"generated_at": generated, "corrections": corrections}, indent=1))
+    _write_log_csv(
+        out / "changelog.csv", published, CHANGELOG_FIELDS + ["credit"],
+        "# Change log — every correction to our own published figures and "
+        "every deliberate change of method, scope or source: "
+        "subsidyclock.co.uk/changelog\n", generated)
+    _write_log_csv(
+        out / "corrections.csv", corrections,
+        [k for k in CHANGELOG_FIELDS if k != "kind"] + ["credit"],
+        "# Corrections to our own published figures — every confirmed "
+        "error: subsidyclock.co.uk/corrections\n", generated)
+
+
+def _series_note(scheme) -> str:
+    """Third comment line: what kind of number this is, and where its
+    derivation lives. Measured-vs-estimated must travel with the file."""
+    reg = get_scheme(scheme.scheme_id)
+    if reg.series_note:
+        return reg.series_note
+    if scheme.layer == "indirect":
+        return ("# Estimated share attributed to renewables — method: "
+                f"subsidyclock.co.uk/methodology#{reg.anchor or 'indirect'}\n")
+    return ("# Measured payments — derivation: "
+            f"subsidyclock.co.uk/explainers/{reg.slug}\n")
+
+
+def write_csvs(model: dict, out_dir: Path | str,
+               *, restatements: list[dict], generated: str) -> None:
+    """Per-scheme annual CSVs, one combined wide table, and the restatement
+    log (distribution F4). Values are written from the same model that feeds
+    the JSON, so CSVs can never disagree with the dashboard. Every file
+    carries a three-line attribution header (source, licence, method)."""
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    header = _attribution(generated)
+
+    def write(df: pl.DataFrame, name: str, note: str) -> None:
+        # fixed 2 dp: measured pennies are kept intact, while estimated and
+        # deflated values stop carrying spurious float-tail precision
+        (out / name).write_text(header + note + df.write_csv(float_precision=2))
+
+    combined = None
+    for s in model["schemes"]:
+        name = get_scheme(s.scheme_id).csv
+        df = s.annual.sort("year")
+        write(df.rename({"cost_gbp": "cost", "cost_gbp_2024": "cost_real"},
+                        strict=False), f"{name}.csv", _series_note(s))
+        col = df.select(pl.col("year"),
+                        pl.col("cost_gbp").alias(s.scheme_id))
+        combined = col if combined is None else combined.join(
+            col, on="year", how="full", coalesce=True)
+    if combined is not None:
+        write(combined.sort("year"), "combined-annual.csv",
+              "# Mixes measured and estimated series — see "
+              "subsidyclock.co.uk/methodology#indirect\n")
+
+    rows = [{k: str(r.get(k, "")) for k in RESTATEMENT_COLS} for r in restatements]
+    write(pl.DataFrame(rows, schema={k: pl.String for k in RESTATEMENT_COLS}),
+          "restatements.csv",
+          "# Data revisions log: origin=publisher is a source restating its own "
+          "history; origin=ours is a basis change we made, with the cause named "
+          "— see subsidyclock.co.uk/corrections\n")
+
+
+WIDGET_TEMPLATE = Path(__file__).parent / "templates" / "widget.html"
+
+
+def write_widget(totals: dict, out_path: Path | str) -> None:
+    """Render the embeddable widget (distribution F5), stamping the latest
+    figure so a JS-blocked iframe still shows a dated number. The stamped
+    fallback uses the default embed state: real (2024 prices) + combined
+    (direct + estimated indirect), matching the front page."""
+    rr = totals["perspectives"]["renewables"]["real"]
+    ii = totals["indirect"]["real"]
+    # running total at the build: published + estimated since each line's data end
+    cum = running_total(rr) + running_total(ii)
+    rate = rr["rate_per_sec"] + ii["rate_per_sec"]
+    d = datetime.fromisoformat(totals["generated_at"])
+    asof = f"{d.day} {d.strftime('%B %Y')}"
+    html = (WIDGET_TEMPLATE.read_text()
+            .replace("{{CUM}}", repr(cum))
+            .replace("{{RATE}}", repr(rate))
+            .replace("{{GENERATED}}", totals["generated_at"])
+            .replace("{{FIGURE}}", f"£{int(cum):,}")
+            .replace("{{ASOF}}", asof))
+    if "{{" in html:
+        raise ValueError("unfilled token in widget template")
+    out = Path(out_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(html)

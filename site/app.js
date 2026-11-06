@@ -638,7 +638,7 @@
 
   // ---------- trend chart (stacked annual bars, inline SVG) ----------
   // These colours, this stack order and SCHEME_META mirror the scheme
-  // registry, src/subsidy_engine/schemes.py; tests/test_schemes.py fails if
+  // registry, src/clocksite/schemes.py; tests/test_schemes.py fails if
   // they differ.
   var SCHEME_COLOURS = {
     ro: 'var(--c-ro)', fit: 'var(--c-fit)', cfd_renewable: 'var(--c-cfdr)',

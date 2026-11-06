@@ -1,0 +1,9 @@
+# The bill-already-paid model the site is built from (aios-harness#140). The site reads only the
+# model's results file, and refuses one from any other model, version or file format, or one
+# whose fingerprint (clock.json.sha256, written by the model beside it) does not match.
+# Moving the pin is a release decision: the figures may move.
+model: model-bill-already-paid
+version: 1.0.0
+format: 1
+# where the daily robot takes the file from (the model's own robot writes it each morning)
+source: https://raw.githubusercontent.com/richardjlyon/model-bill-already-paid/master/results/clock.json

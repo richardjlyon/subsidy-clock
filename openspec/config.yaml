@@ -1,9 +1,10 @@
 schema: spec-driven
 
 context: |
-  The Subsidy Clock — subsidyclock.co.uk, live. Python 3.13 + uv + polars engine
-  (src/subsidy_engine core, subsidy_engine_uk adapter); static site (vanilla JS,
-  no framework) rendered from engine-built JSON+CSV in site/. Vercel serves the
+  The Subsidy Clock — subsidyclock.co.uk, live. Python 3.13 + uv + polars; the
+  sums are in model-bill-already-paid (since 6 Nov 2026, aios-harness#140), whose
+  results file src/clocksite reads; static site (vanilla JS, no framework)
+  rendered from the JSON+CSV it builds in site/. Vercel serves the
   committed files — no build step.
 
   Non-negotiables:

@@ -3,7 +3,7 @@ import struct
 
 import pytest
 
-from subsidy_engine import sharecards
+from clocksite import sharecards
 
 TOTALS = {
     "generated_at": "2026-06-11T05:45:00+00:00",
