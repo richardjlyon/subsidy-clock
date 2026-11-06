@@ -1,6 +1,6 @@
 # The Subsidy Clock
 
-**Live at [subsidyclock.co.uk](https://subsidyclock.co.uk)** — a public dashboard measuring, in pounds sterling, the subsidies paid to UK renewable and low-carbon electricity generators since 2002.
+**Live at [subsidyclock.co.uk](https://subsidyclock.co.uk)** — a public dashboard measuring, in pounds sterling, the subsidies paid to UK renewable electricity generators since 2002.
 
 Figures are reconstructed bottom-up from official sources — LCCC (Contracts for Difference and Capacity Market), Elexon (constraint payments), NESO (balancing costs and transmission charges), Ofgem (Renewables Obligation and Feed-in Tariffs), HMRC, DESNZ, the NAO and REF (cross-checks and constraint history) — with full provenance: every retrieved data point links to its source URL, retrieval timestamp and content hash.
 
@@ -10,10 +10,10 @@ This repository is the website. The sums (the data engine, the raw data store an
 
 Two layers, never invisibly blended:
 
-- **Direct subsidies (measured)** — payments traceable to generators in official settlement data: Contracts for Difference (renewables, including biomass), the Renewables Obligation, Feed-in Tariffs, and wind constraint payments. The dashboard's headline counts **renewable generators**, in nominal pounds. Biomass holds renewable contracts and counts towards the UK's renewable targets, so it is in the headline; the only CfD generation classed as non-renewable is nuclear (low-carbon but not renewable), which is tracked separately and appears once Hinkley Point C generates.
+- **Direct subsidies (measured)** — payments traceable to generators in official settlement data: Contracts for Difference (renewables, including biomass), the Renewables Obligation, Feed-in Tariffs, and wind constraint payments. The dashboard's headline counts **renewable generators**. Biomass holds renewable contracts and counts towards the UK's renewable targets, so it is in the headline; the only CfD generation classed as non-renewable is nuclear (low-carbon but not renewable), which is tracked separately and appears once Hinkley Point C generates.
 - **Indirect costs (estimated)** — costs that settlement data does not attribute to individual generators: the Capacity Market, Climate Change Levy and Carbon Price Support, emissions trading, transmission charges (TNUoS) and balancing costs (BSUoS). Each carries a published attribution rule and is always marked estimated. Some early years of the network and balancing series rest on a secondary tabulation pending confirmation against the primary source; this is disclosed in each scheme's source notes.
 
-Some figures do combine the layers — the "in today's money" lead-in, the bracketed chip figures, the cumulative chart — but a combined figure always says so, and the estimated share is never folded into the measured headline.
+The headline opens on both layers together, in 2024 prices, and says so ("including estimated indirect costs"); two switches beside it show direct payments only, or cash as actually paid. Every combined figure says it is combined, and every figure says which prices it is in.
 
 The full derivation, scheme by scheme, with every attribution rule and its confidence level, is on the [methodology page](https://subsidyclock.co.uk/methodology).
 
