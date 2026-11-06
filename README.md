@@ -4,7 +4,7 @@
 
 Figures are reconstructed bottom-up from official sources — LCCC (Contracts for Difference and Capacity Market), Elexon (constraint payments), NESO (balancing costs and transmission charges), Ofgem (Renewables Obligation and Feed-in Tariffs), HMRC, DESNZ, the NAO and REF (cross-checks and constraint history) — with full provenance: every retrieved data point links to its source URL, retrieval timestamp and content hash.
 
-This repository is the website. The sums (the data engine, the raw data store and the reference inputs) are in [model-bill-already-paid](https://github.com/richardjlyon/model-bill-already-paid), which writes one results file each morning; the site is built from that file, at a pinned model version. Both exist to be audited. If you find an error in a published figure, please say so — confirmed errors are corrected and logged in public on the [corrections page](https://subsidyclock.co.uk/corrections), or you can [open an issue](../../issues/new?template=correction.yml).
+This repository is the website. The sums (the data engine, the raw data store and the reference inputs) are in [model-bill-already-paid](https://github.com/rjl-claude/model-bill-already-paid), which writes one results file each morning; the site is built from that file, at a pinned model version. Both exist to be audited. If you find an error in a published figure, please say so — confirmed errors are corrected and logged in public on the [corrections page](https://subsidyclock.co.uk/corrections), or you can [open an issue](../../issues/new?template=correction.yml).
 
 ## What is counted
 
@@ -71,7 +71,7 @@ data/raw/{scheme}/{table}/{partition}/{retrieved-at}/data.parquet
 data/raw/{scheme}/{table}/{partition}/{retrieved-at}/manifest.json
 ```
 
-The store is in [model-bill-already-paid](https://github.com/richardjlyon/model-bill-already-paid). `manifest.json` records `source_url`, `retrieved_at`, `sha256` (content hash of the table's canonical CSV serialisation) and `row_count`. The store is append-only:
+The store is in [model-bill-already-paid](https://github.com/rjl-claude/model-bill-already-paid). `manifest.json` records `source_url`, `retrieved_at`, `sha256` (content hash of the table's canonical CSV serialisation) and `row_count`. The store is append-only:
 
 - **Nothing is ever deleted.** When a source revises history, the new version is stored alongside the old and the change is logged in `restatements.jsonl` — published at [/data](https://subsidyclock.co.uk/data) as `restatements.csv`.
 - **Our own mistakes are logged the same way.** Confirmed errors in published figures go to `changelog.jsonl` as kind `correction`, published at [/corrections](https://subsidyclock.co.uk/corrections); deliberate changes of method, scope or source go in the same file as kind `change`. A published figure is never silently edited.

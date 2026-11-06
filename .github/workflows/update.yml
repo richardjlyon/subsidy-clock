@@ -1,7 +1,7 @@
 name: Update data and site
 
 # The site's morning run (aios-harness#140): take the bill-already-paid model's results file
-# (written by its own robot, richardjlyon/model-bill-already-paid, on the same schedule),
+# (written by its own robot, rjl-claude/model-bill-already-paid, on the same schedule),
 # build the site data and share cards from it, commit, and deploy. GitHub often starts
 # scheduled runs hours late, so this run waits (up to 3 hours) for the file the model wrote
 # today, then builds from the latest it has. fetch-results refuses a file from any model
