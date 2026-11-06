@@ -95,7 +95,7 @@ Attribution rules and their confidence levels are quoted in full on the [methodo
 
 ## Automation
 
-The model's GitHub Action runs daily at 05:30 UTC, after LCCC and Elexon publish: it updates all schemes (a failing scheme flags stale data on the site rather than blocking the others), extends the constraints backfill by one week, and writes the results file. This repository's Action (`.github/workflows/update.yml`) runs at 06:30 UTC: it takes that file (refused unless it is the pinned version's), rebuilds the site data and share cards, commits, and publishes `site/` to Cloudflare Pages. A second workflow (`deploy.yml`) publishes any hand-made change to `site/` pushed to `master`.
+The model's GitHub Action runs daily at 05:30 UTC, after LCCC and Elexon publish: it updates all schemes (a failing scheme flags stale data on the site rather than blocking the others), extends the constraints backfill by one week, and writes the results file. This repository's Action (`.github/workflows/update.yml`) starts at the same time and waits (up to 3 hours) for that day's file: it takes the file (refused unless it is the pinned version's), rebuilds the site data and share cards, commits, and publishes `site/` to Cloudflare Pages. A second workflow (`deploy.yml`) publishes any hand-made change to `site/` pushed to `master`.
 
 ## Deployment
 

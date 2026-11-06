@@ -1,14 +1,16 @@
 name: Update data and site
 
 # The site's morning run (aios-harness#140): take the bill-already-paid model's results file
-# (written by its own robot at 05:30 UTC, richardjlyon/model-bill-already-paid), build the
-# site data and share cards from it, commit, and deploy. fetch-results refuses a file from any
-# model version other than the pin (reference/results_pin.yaml), or one whose fingerprint does
-# not match: the run then fails and yesterday's site stays live.
+# (written by its own robot, richardjlyon/model-bill-already-paid, on the same schedule),
+# build the site data and share cards from it, commit, and deploy. GitHub often starts
+# scheduled runs hours late, so this run waits (up to 3 hours) for the file the model wrote
+# today, then builds from the latest it has. fetch-results refuses a file from any model
+# version other than the pin (reference/results_pin.yaml), or one whose fingerprint does not
+# match: with no file to build from the run fails, and yesterday's site stays live.
 
 on:
   schedule:
-    - cron: "30 6 * * *"   # daily 06:30 UTC - an hour after the model's run
+    - cron: "30 5 * * *"   # daily 05:30 UTC, with the model's run; waits for its results below
   workflow_dispatch: {}
 
 permissions:
@@ -22,7 +24,15 @@ jobs:
       - uses: astral-sh/setup-uv@v5
       - run: uv sync --frozen
       - name: Take the model's results file (refused unless it is the pinned version's)
-        run: uv run python -m clocksite fetch-results
+        run: |
+          for i in $(seq 1 18); do
+            if uv run python -m clocksite fetch-results && uv run python -c "import json, datetime, sys; g = json.load(open('results/clock.json'))['meta']['generated_at'][:10]; sys.exit(g != datetime.datetime.now(datetime.timezone.utc).date().isoformat())"; then
+              exit 0
+            fi
+            echo "today's results file is not there yet; waiting 10 minutes ($i of 18)"; sleep 600
+          done
+          echo "::warning::no results file from today after 3 hours: building from the latest one"
+          test -f results/clock.json
       - run: uv run python -m clocksite build-site
       - name: Cache Playwright Chromium
         uses: actions/cache@v4
