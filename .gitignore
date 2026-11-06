@@ -29,3 +29,6 @@ __pycache__/
 
 # the model's results file, fetched by `python -m clocksite fetch-results` (aios-harness#140)
 /results/
+
+# private record: its own private Gitea repo, never on GitHub (aios-harness#88)
+private/
