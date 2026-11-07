@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-06T13:09:20.232401+00:00",
+ "generated_at": "2026-11-07T11:52:48.617624+00:00",
  "elexon_first_year": 2024,
  "register": {
   "sha256": "e38ae577d255e3cb6e350d8b4c4483d58c7903766d65ad879c49b7b6c3adf5b8",
@@ -14,25 +14,25 @@
     }
    },
    "BSUOS": {
-    "2019": {
-     "feed_gbp": 1487556555.39,
-     "register_gbp": 776045041.8086334
-    },
     "2022": {
      "feed_gbp": 4577543822.51,
      "register_gbp": 2426098225.9303
     },
-    "2023": {
-     "feed_gbp": 3258662770.01,
-     "register_gbp": 2768306283.1313
+    "2019": {
+     "feed_gbp": 1487556555.39,
+     "register_gbp": 776045041.8086334
+    },
+    "2020": {
+     "feed_gbp": 2004658460.17,
+     "register_gbp": 1059101023.2891667
     },
     "2017": {
      "feed_gbp": 1238377287.45,
      "register_gbp": 630922769.26204
     },
-    "2020": {
-     "feed_gbp": 2004658460.17,
-     "register_gbp": 1059101023.2891667
+    "2023": {
+     "feed_gbp": 3258662770.01,
+     "register_gbp": 2768306283.1313
     },
     "2018": {
      "feed_gbp": 1305499730.77,
@@ -98,11 +98,11 @@
     "rate_per_year": 2445752022.5350065,
     "rate_per_sec": 77.50120486142819,
     "rate_per_year_real": 2257225304.131266,
-    "estimated_since": 63935411.97384132,
-    "estimated_since_real": 59007057.300857715,
-    "running_total": 14013245681.82384,
+    "estimated_since": 70275660.39639167,
+    "estimated_since_real": 64858578.24083648,
+    "running_total": 14019585930.24639,
     "label": "estimated",
-    "at": "2026-11-06T13:09:20.232401+00:00"
+    "at": "2026-11-07T11:52:48.617624+00:00"
    },
    "gross": 15304012212.04,
    "net": 13949310270.539999,
@@ -111,22 +111,22 @@
     {
      "technology": "Offshore Wind",
      "cost": 10396023723.270004,
-     "generation_mwh": 142114061.4659998
+     "generation_mwh": 142114061.4659996
     },
     {
      "technology": "Biomass Conversion",
-     "cost": 3040490215.4100027,
-     "generation_mwh": 54917160.67699998
+     "cost": 3040490215.4100018,
+     "generation_mwh": 54917160.676999986
     },
     {
      "technology": "Dedicated Biomass",
-     "cost": 325174895.5699998,
-     "generation_mwh": 3661668.995000001
+     "cost": 325174895.56999964,
+     "generation_mwh": 3661668.995
     },
     {
      "technology": "Onshore Wind",
-     "cost": 223260837.54000062,
-     "generation_mwh": 11588097.125999998
+     "cost": 223260837.5400016,
+     "generation_mwh": 11588097.12599997
     },
     {
      "technology": "Advanced Conversion Technology",
@@ -135,13 +135,13 @@
     },
     {
      "technology": "Energy from Waste",
-     "cost": -9169071.8,
-     "generation_mwh": 788633.5510000006
+     "cost": -9169071.800000006,
+     "generation_mwh": 788633.5510000002
     },
     {
      "technology": "Solar PV",
-     "cost": -26470329.449999932,
-     "generation_mwh": 1625517.197000007
+     "cost": -26470329.449999962,
+     "generation_mwh": 1625517.1970000062
     }
    ],
    "by_recipient": [
@@ -3073,33 +3073,33 @@
      "quarters": [
       {
        "q": "2017-Q2",
-       "payment_gbp": 7704868.869999999,
-       "generation_mwh": 62562.64299999998
+       "payment_gbp": 7704868.87,
+       "generation_mwh": 62562.643
       },
       {
        "q": "2017-Q3",
-       "payment_gbp": 20342444.53000001,
-       "generation_mwh": 169953.18800000002
+       "payment_gbp": 20342444.53,
+       "generation_mwh": 169953.188
       },
       {
        "q": "2017-Q4",
-       "payment_gbp": 64136882.739999995,
-       "generation_mwh": 571196.1799999996
+       "payment_gbp": 64136882.74,
+       "generation_mwh": 571196.18
       },
       {
        "q": "2018-Q1",
        "payment_gbp": 55951929.39,
-       "generation_mwh": 511362.5320000002
+       "generation_mwh": 511362.532
       },
       {
        "q": "2018-Q2",
-       "payment_gbp": 35628024.37999999,
-       "generation_mwh": 307587.28300000005
+       "payment_gbp": 35628024.38,
+       "generation_mwh": 307587.283
       },
       {
        "q": "2018-Q3",
-       "payment_gbp": 30450729.38000001,
-       "generation_mwh": 286733.74199999997
+       "payment_gbp": 30450729.38,
+       "generation_mwh": 286733.742
       },
       {
        "q": "2018-Q4",
@@ -3108,163 +3108,163 @@
       },
       {
        "q": "2019-Q1",
-       "payment_gbp": 50754510.92999999,
-       "generation_mwh": 435685.67899999995
+       "payment_gbp": 50754510.93,
+       "generation_mwh": 435685.679
       },
       {
        "q": "2019-Q2",
-       "payment_gbp": 38722317.480000004,
-       "generation_mwh": 298854.2109999998
+       "payment_gbp": 38722317.48,
+       "generation_mwh": 298854.211
       },
       {
        "q": "2019-Q3",
-       "payment_gbp": 46082620.65999998,
+       "payment_gbp": 46082620.66,
        "generation_mwh": 344307.851
       },
       {
        "q": "2019-Q4",
-       "payment_gbp": 66573126.839999974,
-       "generation_mwh": 507971.5449999998
+       "payment_gbp": 66573126.839999996,
+       "generation_mwh": 507971.545
       },
       {
        "q": "2020-Q1",
-       "payment_gbp": 83270559.79999995,
-       "generation_mwh": 600215.8300000005
+       "payment_gbp": 83270559.8,
+       "generation_mwh": 600215.83
       },
       {
        "q": "2020-Q2",
        "payment_gbp": 46576705.07,
-       "generation_mwh": 304077.95399999997
+       "generation_mwh": 304077.954
       },
       {
        "q": "2020-Q3",
-       "payment_gbp": 45565732.69999998,
+       "payment_gbp": 45565732.7,
        "generation_mwh": 326316.635
       },
       {
        "q": "2020-Q4",
-       "payment_gbp": 66250543.59999999,
-       "generation_mwh": 509470.0029999999
+       "payment_gbp": 66250543.6,
+       "generation_mwh": 509470.003
       },
       {
        "q": "2021-Q1",
-       "payment_gbp": 54984498.28999997,
+       "payment_gbp": 54984498.29,
        "generation_mwh": 474567.244
       },
       {
        "q": "2021-Q2",
-       "payment_gbp": 29304842.06000001,
-       "generation_mwh": 268131.79099999997
+       "payment_gbp": 29304842.06,
+       "generation_mwh": 268131.791
       },
       {
        "q": "2021-Q3",
-       "payment_gbp": 14914621.899999997,
-       "generation_mwh": 271460.32300000003
+       "payment_gbp": 14914621.9,
+       "generation_mwh": 271460.323
       },
       {
        "q": "2021-Q4",
-       "payment_gbp": -3350208.9399999985,
-       "generation_mwh": 520670.17099999974
+       "payment_gbp": -3350208.94,
+       "generation_mwh": 520670.171
       },
       {
        "q": "2022-Q1",
-       "payment_gbp": -5600992.460000003,
-       "generation_mwh": 505952.84200000006
+       "payment_gbp": -5600992.46,
+       "generation_mwh": 505952.842
       },
       {
        "q": "2022-Q2",
-       "payment_gbp": 12836153.200000003,
-       "generation_mwh": 297223.3290000001
+       "payment_gbp": 12836153.2,
+       "generation_mwh": 297223.329
       },
       {
        "q": "2022-Q3",
-       "payment_gbp": -21143416.469999976,
-       "generation_mwh": 233385.27000000022
+       "payment_gbp": -21143416.47,
+       "generation_mwh": 233385.27
       },
       {
        "q": "2022-Q4",
-       "payment_gbp": 24915755.949999996,
-       "generation_mwh": 503846.6729999999
+       "payment_gbp": 24915755.95,
+       "generation_mwh": 503846.673
       },
       {
        "q": "2023-Q1",
-       "payment_gbp": 33652692.89000001,
-       "generation_mwh": 490920.24000000017
+       "payment_gbp": 33652692.89,
+       "generation_mwh": 490920.24
       },
       {
        "q": "2023-Q2",
-       "payment_gbp": 31763696.67000002,
-       "generation_mwh": 283784.10500000004
+       "payment_gbp": 31763696.67,
+       "generation_mwh": 283784.105
       },
       {
        "q": "2023-Q3",
-       "payment_gbp": 37256795.150000006,
-       "generation_mwh": 282488.5800000001
+       "payment_gbp": 37256795.15,
+       "generation_mwh": 282488.58
       },
       {
        "q": "2023-Q4",
-       "payment_gbp": 65987074.87000003,
-       "generation_mwh": 518825.1759999999
+       "payment_gbp": 65987074.87,
+       "generation_mwh": 518825.176
       },
       {
        "q": "2024-Q1",
-       "payment_gbp": 73831853.05999997,
-       "generation_mwh": 534942.2529999999
+       "payment_gbp": 73831853.06,
+       "generation_mwh": 534942.253
       },
       {
        "q": "2024-Q2",
-       "payment_gbp": 53121453.19000002,
-       "generation_mwh": 348765.7130000002
+       "payment_gbp": 53121453.19,
+       "generation_mwh": 348765.713
       },
       {
        "q": "2024-Q3",
-       "payment_gbp": 47047682.68000001,
+       "payment_gbp": 47047682.68,
        "generation_mwh": 318545.876
       },
       {
        "q": "2024-Q4",
        "payment_gbp": 59562967.33,
-       "generation_mwh": 464374.97700000013
+       "generation_mwh": 464374.977
       },
       {
        "q": "2025-Q1",
-       "payment_gbp": 46066024.32999998,
-       "generation_mwh": 410052.27899999975
+       "payment_gbp": 46066024.33,
+       "generation_mwh": 410052.279
       },
       {
        "q": "2025-Q2",
-       "payment_gbp": 48118173.579999976,
-       "generation_mwh": 316482.45499999967
+       "payment_gbp": 48118173.58,
+       "generation_mwh": 316482.455
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 49189626.80999998,
-       "generation_mwh": 320676.85900000023
+       "payment_gbp": 49189626.81,
+       "generation_mwh": 320676.859
       },
       {
        "q": "2025-Q4",
-       "payment_gbp": 81505596.26000005,
-       "generation_mwh": 557582.0399999997
+       "payment_gbp": 81505596.26,
+       "generation_mwh": 557582.04
       },
       {
        "q": "2026-Q1",
        "payment_gbp": 67446390.82,
-       "generation_mwh": 505611.73800000007
+       "generation_mwh": 505611.738
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 47510019.69000002,
+       "payment_gbp": 47510019.69,
        "generation_mwh": 352447.199
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 31993821.030000024,
+       "payment_gbp": 31993821.03,
        "generation_mwh": 292002.542
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": 12904974.489999996,
-       "generation_mwh": 137879.00200000004
+       "payment_gbp": 12904974.49,
+       "generation_mwh": 137879.002
       }
      ],
      "contracts": [
@@ -12702,8 +12702,8 @@
       },
       {
        "q": "2024-Q4",
-       "payment_gbp": 909094.0500000002,
-       "generation_mwh": 26784.77
+       "payment_gbp": 909094.0500000003,
+       "generation_mwh": 26784.769999999997
       },
       {
        "q": "2025-Q1",
@@ -12842,8 +12842,8 @@
       },
       {
        "q": "2023-Q1",
-       "payment_gbp": -490353.00000000006,
-       "generation_mwh": 18275.133999999995
+       "payment_gbp": -490353.0000000001,
+       "generation_mwh": 18275.134000000002
       },
       {
        "q": "2023-Q2",
@@ -13106,8 +13106,8 @@
       },
       {
        "q": "2022-Q3",
-       "payment_gbp": -1015557.71,
-       "generation_mwh": 5959.671
+       "payment_gbp": -1015557.7100000001,
+       "generation_mwh": 5959.671000000001
       },
       {
        "q": "2022-Q4",
@@ -13636,8 +13636,8 @@
       },
       {
        "q": "2024-Q4",
-       "payment_gbp": 278171.37,
-       "generation_mwh": 7919.603000000001
+       "payment_gbp": 278171.3700000001,
+       "generation_mwh": 7919.603000000002
       },
       {
        "q": "2025-Q1",
@@ -13951,17 +13951,17 @@
     "rate_per_year": 345315537.3345769,
     "rate_per_sec": 10.942389070606666,
     "rate_per_year_real": 318697464.66503656,
-    "estimated_since": 518234.08940609405,
-    "estimated_since_real": 478286.8783477076,
-    "running_total": 2671165075.580058,
+    "estimated_since": 1413413.269754229,
+    "estimated_since_real": 1304462.663544007,
+    "running_total": 2672060254.7604065,
     "label": "estimated",
-    "at": "2026-11-06T13:09:20.232401+00:00"
+    "at": "2026-11-07T11:52:48.617624+00:00"
    },
    "by_recipient": [
     {
      "lead_party": "SP Renewables (UK) Limited",
-     "cost": 395951523.88411784,
-     "volume_mwh": -6070232.301907407
+     "cost": 396213697.9392393,
+     "volume_mwh": -6074527.920807407
     },
     {
      "lead_party": "Moray Offshore Windfarn East L",
@@ -13975,8 +13975,8 @@
     },
     {
      "lead_party": "Clyde Windfarm (Scotland) Ltd",
-     "cost": 134788388.40854454,
-     "volume_mwh": -1810259.6173
+     "cost": 134847663.34153655,
+     "volume_mwh": -1811169.8589
     },
     {
      "lead_party": "Moray Offshore Windfarm East L",
@@ -13985,18 +13985,18 @@
     },
     {
      "lead_party": "SSE Generation Ltd",
-     "cost": 106315321.37569635,
-     "volume_mwh": -1756528.904508889
+     "cost": 106355171.1340069,
+     "volume_mwh": -1757141.4046088888
     },
     {
      "lead_party": "Statkraft Markets Gmbh",
-     "cost": 104063478.27481896,
-     "volume_mwh": -1362867.6236573625
+     "cost": 104073971.18150896,
+     "volume_mwh": -1363017.4569573626
     },
     {
      "lead_party": "Eneco Energy Trade",
-     "cost": 97483742.1881975,
-     "volume_mwh": -1134873.2565778669
+     "cost": 97652779.95175898,
+     "volume_mwh": -1136355.3307778668
     },
     {
      "lead_party": "Moray Offshore Wind West Ltd",
@@ -14015,13 +14015,13 @@
     },
     {
      "lead_party": "Griffin Wind Farm Ltd",
-     "cost": 64249274.1103344,
-     "volume_mwh": -857188.6066
+     "cost": 64306710.31999303,
+     "volume_mwh": -858071.5814
     },
     {
      "lead_party": "Fallago Rig Wind Farm Limited",
-     "cost": 61955760.92396421,
-     "volume_mwh": -828985.8471222222
+     "cost": 62255789.41230395,
+     "volume_mwh": -832521.2553222222
     },
     {
      "lead_party": "Dorenell Windfarm Limited",
@@ -14035,13 +14035,13 @@
     },
     {
      "lead_party": "Strathy Wind Farm Limited",
-     "cost": 46350431.36855853,
-     "volume_mwh": -660082.3233666667
+     "cost": 46380410.29769145,
+     "volume_mwh": -660578.1483666666
     },
     {
      "lead_party": "Smartestenergy Limited",
-     "cost": 45170438.10367681,
-     "volume_mwh": -619568.9422111111
+     "cost": 45174443.11087681,
+     "volume_mwh": -619624.5673111111
     },
     {
      "lead_party": "EDF Energy Customers Limited",
@@ -14060,8 +14060,8 @@
     },
     {
      "lead_party": "SSE Renewables Wind Farms",
-     "cost": 26274280.391391333,
-     "volume_mwh": -377812.2002
+     "cost": 26289109.30940733,
+     "volume_mwh": -378039.917
     },
     {
      "lead_party": "Erova Energy Limited",
@@ -14084,9 +14084,9 @@
      "volume_mwh": -229558.73907684788
     }
    ],
-   "curtailed_mwh": 50563353.84456393,
+   "curtailed_mwh": 50576408.27936393,
    "history_source_url": "https://www.ref.org.uk/constraints/index.php?tab=yr",
-   "held_from": "2015-11-27",
+   "held_from": "2015-11-20",
    "held_to": "2026-11-05"
   },
   {
@@ -14108,11 +14108,11 @@
     "rate_per_year": 268000002.90916276,
     "rate_per_sec": 8.492407626345564,
     "rate_per_year_real": 247341669.35158145,
-    "estimated_since": 48829307.6473007,
-    "estimated_since_real": 45065381.84948793,
-    "running_total": 1266117030.8591685,
+    "estimated_since": 49524057.801867515,
+    "estimated_since_real": 45706578.34630689,
+    "running_total": 1266811781.0137353,
     "label": "estimated",
-    "at": "2026-11-06T13:09:20.232401+00:00"
+    "at": "2026-11-07T11:52:48.617624+00:00"
    },
    "source": "LCCC data portal, capacity market payments",
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
@@ -14281,11 +14281,11 @@
     "rate_per_year": 7706343000.0,
     "rate_per_sec": 244.1992737090273,
     "rate_per_year_real": 7112312393.75,
-    "estimated_since": 12333274607.45563,
-    "estimated_since_real": 11382584689.79759,
-    "running_total": 87543595802.06563,
+    "estimated_since": 12353252155.710396,
+    "estimated_since_real": 11401022302.041052,
+    "running_total": 87563573350.3204,
     "label": "estimated",
-    "at": "2026-11-06T13:09:20.232401+00:00"
+    "at": "2026-11-07T11:52:48.617624+00:00"
    },
    "source": "Ofgem Renewables Obligation Annual Reports. 2024 (SY23): Annual Report 2024-25 headline scheme value (PDF, RO_24-25_SY23_Annual_Report, Mar 2026). 2010-2023 (SY9-SY22): scheme value = total ROCs presented x notional worth of a ROC, Figure A4.1 of the SY22 Annual Report (2023-24, PDF, Mar 2025), cross-checked against headline values stated in the SY22/SY23 report text (SY1 GBP 0.25bn, SY18 GBP 6.31bn, SY19 GBP 5.73bn, SY22 GBP 6.75bn, SY23 GBP 7.70bn). 2002-2009 (SY1-SY8): ROCs presented x worth of a ROC from the compliance tables of Ofgem's second annual report (2003-04, Feb 2005), the RO Annual Report 2004-2005 (Feb 2006), the RO Annual Report 2008-09 (Feb 2010) and the RO Annual Report 2010-11 (Mar 2012).",
    "source_url": "https://www.ofgem.gov.uk/transparency-document/renewables-obligation-ro-annual-report-scheme-year-22-april-2023-march-2024",
@@ -14441,11 +14441,11 @@
     "rate_per_year": 1725741218.0,
     "rate_per_sec": 54.68543926027328,
     "rate_per_year_real": 1592715332.4458332,
-    "estimated_since": 2761885935.131482,
-    "estimated_since_real": 2548990560.965097,
-    "running_total": 19522750705.663483,
+    "estimated_since": 2766359662.612576,
+    "estimated_since_real": 2553119438.619523,
+    "running_total": 19527224433.144577,
     "label": "estimated",
-    "at": "2026-11-06T13:09:20.232401+00:00"
+    "at": "2026-11-07T11:52:48.617624+00:00"
    },
    "source": "The shared cost register (reference/register_pin.yaml), line FIT: the levelisation fund cost, what licensed suppliers paid in, by scheme year (April-March, keyed by start year), GB (no FiT scheme in Northern Ireland), from Ofgem's FiT annual reports (SY1-5, SY14-15) and annual levelisation notices (2015-16 to 2022-23); includes correction C-008. Valued as the levelisation fund, as Reliable Britain does (0084; Richard, 1 Nov 2026; aios-harness#45), not Ofgem's scheme value.",
    "source_url": "https://www.ofgem.gov.uk/transparency-document/feed-tariffs-annual-report-scheme-year-15-april-2024-march-2025",
@@ -14470,11 +14470,11 @@
     "rate_per_year": 806774929.67,
     "rate_per_sec": 25.565154817539987,
     "rate_per_year_real": 744586028.8412708,
-    "estimated_since": 1489961771.2562227,
-    "estimated_since_real": 1375110551.3885555,
-    "running_total": 15173336351.60622,
+    "estimated_since": 1492053215.2898219,
+    "estimated_since_real": 1377040779.9445646,
+    "running_total": 15175427795.639818,
     "label": "estimated",
-    "at": "2026-11-06T13:09:20.232401+00:00"
+    "at": "2026-11-07T11:52:48.617624+00:00"
    },
    "source": "HMRC Environmental Taxes Bulletin (formerly Climate Change Levy and Carbon Price Floor Bulletin), March 2026 edition, tables ODS (2026_March_env_tabs_test.ods), Table 1b \"CCL and CPF receipts and clearances data by calendar year\": electricity main-rate declared liabilities (the only commodity split HMRC publishes), rounded down to the nearest GBP 0.1m, as read by the shared cost register (line CCL_ELEC). Carbon Price Support is not in this line: it is part of the carbon line's tax collected (aios-harness#44).",
    "source_url": "https://www.gov.uk/government/statistics/environmental-taxes-bulletin",
@@ -14499,11 +14499,11 @@
     "rate_per_year": 5579855189.031232,
     "rate_per_sec": 176.81494121958679,
     "rate_per_year_real": 5149741351.543407,
-    "estimated_since": 10304944557.713057,
-    "estimated_since_real": 9510605081.389341,
-    "running_total": 76965788960.24208,
+    "estimated_since": 10319409502.53753,
+    "estimated_since_real": 9523955020.050262,
+    "running_total": 76980253905.06656,
     "label": "estimated",
-    "at": "2026-11-06T13:09:20.232401+00:00"
+    "at": "2026-11-07T11:52:48.617624+00:00"
    },
    "parts": [
     {
@@ -14674,11 +14674,11 @@
     "rate_per_year": 1429699756.2032666,
     "rate_per_sec": 45.3044514222649,
     "rate_per_year_real": 1319493733.3292646,
-    "estimated_since": 2640386931.691763,
-    "estimated_since_real": 2436857105.7071896,
-    "running_total": 14581722426.36688,
+    "estimated_since": 2644093215.7060323,
+    "estimated_since_real": 2440277696.995359,
+    "running_total": 14585428710.38115,
     "label": "estimated",
-    "at": "2026-11-06T13:09:20.232401+00:00"
+    "at": "2026-11-07T11:52:48.617624+00:00"
    },
    "source": "The shared cost register (reference/register_pin.yaml), line TNUOS, its primary-source series of the whole charge (demand and generators' parts), calendar years: 2006-24 from Ofgem's TPCR4 final proposals and Transmission Annual Reports and NESO's TNUoS tariff statements, charging years weighted to calendar years (1/4 previous + 3/4 own); 2002-05 the gas-counterfactual engine's assembled transmission owners' allowances (NGC, SP Transmission, SHETL; no GB charge before BETTA). Richard's rulings of 1 Nov 2026 (primary sources; calendar years; aios-harness#43).",
    "source_url": "https://www.neso.energy/industry-information/charging/tnuos-charges",
@@ -14905,32 +14905,32 @@
    "attribution_pct": 1.0,
    "attribution_note": "Estimated cost of paying other stations to replace the wind energy switched off for network constraints: each half-hour's switched-off wind volume priced against that half-hour's accepted offers (Octopus Energy Wasted Wind method). Taken out of the balancing (BSUoS) uplift, never more than it, so no total changes.",
    "attribution_confidence": "low",
-   "cumulative": 5701359188.374316,
-   "runrate_per_year": 1855607421.330035,
-   "data_to": "2026-10-28",
+   "cumulative": 5705790699.443485,
+   "runrate_per_year": 1858926236.6934755,
+   "data_to": "2026-10-29",
    "carry_forward": {
-    "published_cumulative": 5701359188.374316,
-    "data_to": "2026-10-28",
-    "from": "2026-10-29T00:00:00+00:00",
-    "rate_per_year": 1855607421.330035,
-    "rate_per_sec": 58.800650915469966,
-    "rate_per_year_real": 1712571015.9358447,
-    "estimated_since": 43427822.405459575,
-    "estimated_since_real": 40080261.09503873,
-    "running_total": 5744787010.779776,
+    "published_cumulative": 5705790699.443485,
+    "data_to": "2026-10-29",
+    "from": "2026-10-30T00:00:00+00:00",
+    "rate_per_year": 1858926236.6934755,
+    "rate_per_sec": 58.90581782814522,
+    "rate_per_year_real": 1715634005.9483533,
+    "estimated_since": 43235021.68133491,
+    "estimated_since_real": 39902322.093398675,
+    "running_total": 5749025721.12482,
     "label": "estimated",
-    "at": "2026-11-06T13:09:20.232401+00:00"
+    "at": "2026-11-07T11:52:48.617624+00:00"
    },
    "by_fuel_while_wind_constrained": [
     {
      "fuel": "CCGT",
-     "cost": 2553068165.228697,
-     "volume_mwh": 18882958.434583537
+     "cost": 2554087917.6138916,
+     "volume_mwh": 18884630.81656076
     },
     {
      "fuel": "NESO_TRADE",
-     "cost": 1138237412.058071,
-     "volume_mwh": 8455288.133
+     "cost": 1143014959.908071,
+     "volume_mwh": 8472542.633
     },
     {
      "fuel": "BIOMASS",
@@ -14944,13 +14944,13 @@
     },
     {
      "fuel": "UNCLASSIFIED",
-     "cost": 13310300.44289434,
-     "volume_mwh": 96843.17022209134
+     "cost": 13341895.596036006,
+     "volume_mwh": 96983.57022209135
     },
     {
      "fuel": "PS",
-     "cost": 9889448.468903366,
-     "volume_mwh": 68431.87692393793
+     "cost": 9891274.718903368,
+     "volume_mwh": 68438.87692393793
     },
     {
      "fuel": "NO_ID",
@@ -14964,8 +14964,8 @@
     },
     {
      "fuel": "OTHER",
-     "cost": 3682868.3762260005,
-     "volume_mwh": 19533.138811446082
+     "cost": 3682868.663798917,
+     "volume_mwh": 19533.139853112745
     },
     {
      "fuel": "NPSHYD",
@@ -14974,8 +14974,8 @@
     }
    ],
    "cross_check_cumulative": {
-    "accepted_offers": 6218550771.319121,
-    "accepted_offers_wind": 3860603193.8419895
+    "accepted_offers": 6224691067.49503,
+    "accepted_offers_wind": 3866433915.7678986
    },
    "measured_from": "2015-11-06",
    "measured_annual": [
@@ -15025,7 +15025,7 @@
     },
     {
      "year": 2026,
-     "cost": 1636523978.7215278
+     "cost": 1640955489.7906976
     }
    ],
    "source": "Elexon Insights settlement stacks (bids and offers)",
@@ -15037,24 +15037,24 @@
    "perspectives": [],
    "cadence": "daily",
    "layer": "indirect",
-   "attribution_pct": 0.13479500341380826,
+   "attribution_pct": 0.13535694477354354,
    "attribution_note": "Raw totals stored; attribution happens in the money model. Only each year's cost above what the same year would have cost without net-zero policy (the gas-counterfactual engine's balancing road, GO4, reference/model_pin.yaml) is attributed, NET of wind constraint payments already counted in the direct layer; a year below it counts as negative (signed years, as Reliable Britain). The estimated cost of replacing switched-off wind (constraint turn-up) is then shown as its own line and taken out of this one.",
    "attribution_confidence": "low",
-   "cumulative": 3623457126.6414976,
-   "runrate_per_year": 1275668774.8111875,
-   "data_to": "2026-10-28",
+   "cumulative": 3642204037.445392,
+   "runrate_per_year": 1288805456.4616086,
+   "data_to": "2026-10-29",
    "carry_forward": {
-    "published_cumulative": 3623457126.6414976,
-    "data_to": "2026-10-28",
-    "from": "2026-10-29T00:00:00+00:00",
-    "rate_per_year": 1275668774.8111875,
-    "rate_per_sec": 40.42350415783163,
-    "rate_per_year_real": 1177335973.4194918,
-    "estimated_since": 29855192.625270918,
-    "estimated_since_real": 27553854.860406283,
-    "running_total": 3653312319.2667685,
+    "published_cumulative": 3642204037.445392,
+    "data_to": "2026-10-29",
+    "from": "2026-10-30T00:00:00+00:00",
+    "rate_per_year": 1288805456.4616086,
+    "rate_per_sec": 40.83978047955512,
+    "rate_per_year_real": 1189460035.8593595,
+    "estimated_since": 29975117.222646687,
+    "estimated_since_real": 27664535.27006767,
+    "running_total": 3672179154.668039,
     "label": "estimated",
-    "at": "2026-11-06T13:09:20.232401+00:00"
+    "at": "2026-11-07T11:52:48.617624+00:00"
    },
    "raw_annual": [
     {
@@ -15151,11 +15151,11 @@
     },
     {
      "year": 2025,
-     "cost": 3720984569.37
+     "cost": 3721182876.41
     },
     {
      "year": 2026,
-     "cost": 4282858851.78
+     "cost": 4309561484.68
     }
    ],
    "road_annual": [
@@ -15281,8 +15281,8 @@
     },
     {
      "year": 2026,
-     "cost": 1265792306.5560415,
-     "basis": "carried forward from 2025 by CPIH, pro-rated to 2026-10-28"
+     "cost": 1269997596.6110451,
+     "basis": "carried forward from 2025 by CPIH, pro-rated to 2026-10-29"
     }
    ],
    "road_source": "gas-counterfactual engine v4-s43, GO4 balancing, generators' share removed",
@@ -15290,7 +15290,7 @@
    "source_url": "https://www.nao.org.uk/wp-content/uploads/2014/05/Electricity-Balancing-Services.pdf",
    "verified": false,
    "held_from": "2016-04-01",
-   "held_to": "2026-10-28"
+   "held_to": "2026-10-29"
   },
   {
    "id": "vat",
@@ -15301,19 +15301,19 @@
    "attribution_pct": 1.0,
    "attribution_note": "5% VAT on households' share of the costs counted above (the Climate Change Levy apart, which households do not pay), as Reliable Britain counts it. Households' share is the engine's domestic share of electricity each year.",
    "attribution_confidence": "medium",
-   "cumulative": 3691023385.5185804,
-   "runrate_per_year": 413552154.6683172,
+   "cumulative": 3691446922.702237,
+   "runrate_per_year": 413852844.4607065,
    "data_to": "2026-11-05",
    "carry_forward": {
-    "published_cumulative": 3691023385.5185804,
+    "published_cumulative": 3691446922.702237,
     "data_to": "2026-11-05",
     "from": null,
-    "rate_per_year": 413552154.6683172,
-    "rate_per_sec": 13.104676992810518,
-    "rate_per_year_real": 381674176.07930106,
-    "estimated_since": 515790450.0150413,
-    "estimated_since_real": 476031602.8263818,
-    "running_total": 4206813835.533622,
+    "rate_per_year": 413852844.4607065,
+    "rate_per_sec": 13.11420527735653,
+    "rate_per_year_real": 381951687.70019364,
+    "estimated_since": 516712862.89840436,
+    "estimated_since_real": 476882913.04998565,
+    "running_total": 4208159785.6006413,
     "label": "estimated",
     "with_lines": [
      {
@@ -15360,18 +15360,18 @@
      },
      {
       "id": "vat:constraint_turnup",
-      "data_to": "2026-10-28",
-      "from": "2026-10-29T00:00:00+00:00",
-      "rate_per_sec": 1.074458917967285
+      "data_to": "2026-10-29",
+      "from": "2026-10-30T00:00:00+00:00",
+      "rate_per_sec": 1.076380623347068
      },
      {
       "id": "vat:bsuos",
-      "data_to": "2026-10-28",
-      "from": "2026-10-29T00:00:00+00:00",
-      "rate_per_sec": 0.7386549955086102
+      "data_to": "2026-10-29",
+      "from": "2026-10-30T00:00:00+00:00",
+      "rate_per_sec": 0.7462615746748409
      }
     ],
-    "at": "2026-11-06T13:09:20.232401+00:00"
+    "at": "2026-11-07T11:52:48.617624+00:00"
    },
    "base_lines": [
     "cfd_renewable",
