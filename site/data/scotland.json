@@ -1,17 +1,17 @@
 {
- "generated_at": "2026-11-08T12:06:34.484522+00:00",
+ "generated_at": "2026-11-09T14:13:49.335505+00:00",
  "window": {
-  "from": "2015-11-13",
+  "from": "2015-11-06",
   "to": "2026-11-05"
  },
- "gb_cost": 2542417536.65,
- "scotland_cost": 2376566406.29,
- "scotland_share": 0.9348,
- "scotland_mwh": 49070923,
- "gb_mwh": 50653460,
+ "gb_cost": 2547822372.73,
+ "scotland_cost": 2381944864.69,
+ "scotland_share": 0.9349,
+ "scotland_mwh": 49146557,
+ "gb_mwh": 50729268,
  "scotland_last12_cost": 339426125.08,
  "gb_last12_cost": 345079181.73,
- "scotland_per_mwh": 48.43,
+ "scotland_per_mwh": 48.47,
  "unplaced_cost": 0.0,
  "n_farms_paid": 111,
  "farms": [
@@ -40,8 +40,8 @@
   },
   {
    "farm": "Whitelee",
-   "cost": 133314888.34,
-   "mwh": 1890900,
+   "cost": 134472506.26,
+   "mwh": 1909454,
    "units": [
     "T_WHILW-1",
     "T_WHILW-2"
@@ -97,8 +97,8 @@
   },
   {
    "farm": "Griffin",
-   "cost": 64678525.35,
-   "mwh": 863797,
+   "cost": 65059682.73,
+   "mwh": 869659,
    "units": [
     "T_GRIFW-1",
     "T_GRIFW-2"
@@ -106,8 +106,8 @@
   },
   {
    "farm": "Fallago Rig",
-   "cost": 63129837.87,
-   "mwh": 842824,
+   "cost": 63957805.8,
+   "mwh": 852586,
    "units": [
     "T_FALGW-1"
    ]
@@ -123,8 +123,8 @@
   },
   {
    "farm": "Clyde North",
-   "cost": 57130859.1,
-   "mwh": 768128,
+   "cost": 57259506.18,
+   "mwh": 770106,
    "units": [
     "T_CLDNW-1"
    ]
@@ -139,27 +139,27 @@
   },
   {
    "farm": "Clyde Central",
-   "cost": 48641325.03,
-   "mwh": 653362,
+   "cost": 48844006.02,
+   "mwh": 656480,
    "units": [
     "T_CLDCW-1"
    ]
   },
   {
    "farm": "Strathy North",
-   "cost": 46516235.99,
-   "mwh": 662795,
+   "cost": 46527216.49,
+   "mwh": 662964,
    "units": [
     "T_STRNW-1"
    ]
   }
  ],
- "top_farms_share": 0.5933,
+ "top_farms_share": 0.5931,
  "monthly": [
   {
    "month": "2015-11",
-   "scotland": 9771517,
-   "rest": 77306
+   "scotland": 15149975,
+   "rest": 103683
   },
   {
    "month": "2015-12",
@@ -826,13 +826,13 @@
   "scotland_consumption_twh": 21.6573,
   "gb_consumption_twh": 249.2477,
   "scotland_consumption_share": 0.0869,
-  "paid_in_scotland": 206501450.69,
-  "paid_elsewhere": 2170064955.6,
+  "paid_in_scotland": 206968788.55,
+  "paid_elsewhere": 2174976076.14,
   "source": "DESNZ, Subnational electricity consumption statistics, Electricity consumption by Region, 2005 to 2024",
   "source_url": "https://www.gov.uk/government/statistics/regional-and-local-authority-electricity-consumption-statistics"
  },
  "turnup_same_window": {
-  "cost": 5790656553.2,
+  "cost": 5793638645.44,
   "to": "2026-11-05",
   "basis": "replacement_estimate (GB-wide)"
  },
