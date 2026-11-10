@@ -3,10 +3,17 @@ name: Deploy site
 # Publishes site/ to Cloudflare Pages when a hand-made change lands on master.
 # The daily data run (update.yml) deploys itself; GITHUB_TOKEN pushes do not
 # trigger this workflow, so the two never double-deploy.
+#
+# Whether site/ changed is decided inside the job, not with an `on.push.paths`
+# filter: GitHub's filter gives up when a push changes more than 3,000 files
+# ("if the generated diff contains more than 3,000 files and the files the
+# workflow filter matches are not in the first 3,000 returned by the filter,
+# the workflow will not run": workflow-syntax, Git diff comparisons). The
+# switch-over push of 6 Nov 2026 changed 21,394 files and did not deploy
+# (aios-harness#142).
 on:
   push:
     branches: [master]
-    paths: ["site/**"]
   workflow_dispatch: {}
 
 concurrency:
@@ -17,8 +24,27 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Did site/ change in this push?
+        id: site
+        env:
+          EVENT: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          # a hand-started run, a new branch or a force-push with no known base: deploy
+          if [ "$EVENT" != push ] || [ -z "$BEFORE" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            echo "changed=yes" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          if git diff --quiet "$BEFORE" "$AFTER" -- site/; then
+            echo "site/ unchanged in $BEFORE..$AFTER: nothing to deploy"; echo "changed=no" >> "$GITHUB_OUTPUT"
+          else
+            git diff --stat "$BEFORE" "$AFTER" -- site/ | tail -1; echo "changed=yes" >> "$GITHUB_OUTPUT"
+          fi
       - name: Deploy to Cloudflare Pages
+        if: steps.site.outputs.changed == 'yes'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: 99b63c8b76711ecc6e202087e5860cc2
