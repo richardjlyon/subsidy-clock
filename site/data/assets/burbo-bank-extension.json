@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 910493382.23,
+ "hero_gbp": 910646979.21,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -104,7 +104,7 @@
   },
   {
    "q": "2022-Q1",
-   "payment_gbp": -2281148.119999999,
+   "payment_gbp": -2281148.12,
    "generation_mwh": 265434.202
   },
   {
@@ -149,13 +149,13 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 29361357.75,
+   "payment_gbp": 29361357.750000004,
    "generation_mwh": 190668.24
   },
   {
    "q": "2024-Q3",
-   "payment_gbp": 27978967.78000001,
-   "generation_mwh": 186165.35400000008
+   "payment_gbp": 27978967.770000007,
+   "generation_mwh": 186165.35500000007
   },
   {
    "q": "2024-Q4",
@@ -174,8 +174,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 26617729.52000001,
-   "generation_mwh": 171443.00800000003
+   "payment_gbp": 26617859.530000012,
+   "generation_mwh": 171442.80400000003
   },
   {
    "q": "2025-Q4",
@@ -189,18 +189,18 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 25685631.699999996,
-   "generation_mwh": 188008.25699999993
+   "payment_gbp": 25685999.739999995,
+   "generation_mwh": 188010.5679999999
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 19582183.969999995,
-   "generation_mwh": 175565.23600000003
+   "payment_gbp": 19576978.119999994,
+   "generation_mwh": 175505.73400000005
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": 8376325.590000002,
-   "generation_mwh": 82515.32499999998
+   "payment_gbp": 8534630.380000003,
+   "generation_mwh": 86863.855
   }
  ],
  "contracts": [
@@ -209,7 +209,7 @@
    "unit_name": "Burbo Bank Extension Offshore Wind Farm",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 910493382.23,
+   "cumulative_gbp": 910646979.21,
    "first_settlement": "2017-04-11",
    "latest_strike_gbp_mwh": 220.95
   }
@@ -220,7 +220,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-27"
+  "data_to": "2026-10-29"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -318,8 +318,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 8334052.665,
-  "rate_gbp_per_mwh": 109.24977544883322,
+  "generation_mwh": 8338343.801,
+  "rate_gbp_per_mwh": 109.21197313797352,
   "rate_label": "payment per subsidised MWh"
  }
 }

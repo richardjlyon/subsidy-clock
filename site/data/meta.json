@@ -1,33 +1,33 @@
 {
- "generated_at": "2026-11-09T14:13:49.335505+00:00",
+ "generated_at": "2026-11-10T13:42:03.273404+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-11-09T06:32:53.142426+00:00",
+   "retrieved_at": "2026-11-10T06:24:55.203690+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
-   "row_count": 120333
+   "row_count": 120520
   },
   "constraints": {
-   "retrieved_at": "2026-11-09T06:39:41.490215+00:00",
-   "source_date": "2015-11-12",
+   "retrieved_at": "2026-11-10T06:25:29.648663+00:00",
+   "source_date": "2026-11-09",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 32
+   "row_count": 0
   },
   "capacity_market": {
-   "retrieved_at": "2026-11-09T06:33:53.983009+00:00",
+   "retrieved_at": "2026-11-10T06:25:36.782953+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
-   "row_count": 805
+   "row_count": 818
   },
   "bsuos": {
-   "retrieved_at": "2026-11-09T06:34:23.671979+00:00",
+   "retrieved_at": "2026-11-10T06:26:01.109739+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/current-balancing-services-use-of-system-bsuos-data",
-   "row_count": 212
+   "row_count": 215
   },
   "constraint_turnup": {
-   "retrieved_at": "2026-11-09T06:33:53.244249+00:00",
-   "source_date": "2026-11-08",
+   "retrieved_at": "2026-11-10T06:25:35.950857+00:00",
+   "source_date": "2026-11-09",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/offer",
    "row_count": 1
   }
@@ -76,9 +76,9 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 262152576882.4784,
-  "combined_real_running": 290230842715.46246,
-  "running_at": "2026-11-09T14:13:49.335505+00:00"
+  "combined_real": 262203422519.61835,
+  "combined_real_running": 290282901668.898,
+  "running_at": "2026-11-10T13:42:03.273404+00:00"
  },
  "factoids": [
   {
