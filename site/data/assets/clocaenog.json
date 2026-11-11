@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 29780361.39,
+ "hero_gbp": 29780282.84,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -44,7 +44,7 @@
   },
   {
    "q": "2021-Q3",
-   "payment_gbp": -761779.2199999999,
+   "payment_gbp": -761779.22,
    "generation_mwh": 27796.160999999993
   },
   {
@@ -79,7 +79,7 @@
   },
   {
    "q": "2023-Q2",
-   "payment_gbp": 686377.73,
+   "payment_gbp": 686377.7300000001,
    "generation_mwh": 32150.340000000004
   },
   {
@@ -115,7 +115,7 @@
   {
    "q": "2025-Q1",
    "payment_gbp": 1169105.66,
-   "generation_mwh": 59986.36600000001
+   "generation_mwh": 59986.366
   },
   {
    "q": "2025-Q2",
@@ -139,13 +139,13 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 2153427.3100000005,
-   "generation_mwh": 55481.27899999997
+   "payment_gbp": 2153348.7600000002,
+   "generation_mwh": 55480.214999999975
   },
   {
    "q": "2026-Q3",
    "payment_gbp": 264962.23000000004,
-   "generation_mwh": 6619.754
+   "generation_mwh": 6619.755
   },
   {
    "q": "2026-Q4",
@@ -159,7 +159,7 @@
    "unit_name": "Clocaenog Forest Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 29780361.39,
+   "cumulative_gbp": 29780282.84,
    "first_settlement": "2019-10-31",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -170,11 +170,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-10-29"
+  "data_to": "2026-11-01"
  },
  "tiles": {
-  "generation_mwh": 1545040.4379999998,
-  "rate_gbp_per_mwh": 19.274810327003237,
+  "generation_mwh": 1545039.3750000002,
+  "rate_gbp_per_mwh": 19.274772748105526,
   "rate_label": "payment per subsidised MWh"
  }
 }

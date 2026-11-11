@@ -1,24 +1,24 @@
 {
- "generated_at": "2026-11-10T13:42:03.273404+00:00",
+ "generated_at": "2026-11-11T12:54:02.595546+00:00",
  "window": {
   "from": "2015-11-06",
-  "to": "2026-11-05"
+  "to": "2026-11-10"
  },
- "gb_cost": 2547822372.73,
- "scotland_cost": 2381944864.69,
+ "gb_cost": 2547774838.58,
+ "scotland_cost": 2381896241.45,
  "scotland_share": 0.9349,
- "scotland_mwh": 49146557,
- "gb_mwh": 50729268,
- "scotland_last12_cost": 339426125.08,
- "gb_last12_cost": 345079181.73,
- "scotland_per_mwh": 48.47,
+ "scotland_mwh": 49146785,
+ "gb_mwh": 50729503,
+ "scotland_last12_cost": 338994237.79,
+ "gb_last12_cost": 344630428.11,
+ "scotland_per_mwh": 48.46,
  "unplaced_cost": 0.0,
  "n_farms_paid": 111,
  "farms": [
   {
    "farm": "Moray East",
-   "cost": 311752605.65,
-   "mwh": 6918775,
+   "cost": 311703982.41,
+   "mwh": 6919003,
    "units": [
     "T_MOWEO-1",
     "T_MOWEO-2",
@@ -818,22 +818,22 @@
   },
   {
    "month": "2026-11",
-   "scotland": -45599,
-   "rest": 59609
+   "scotland": -94223,
+   "rest": 60698
   }
  ],
  "who_pays": {
   "scotland_consumption_twh": 21.6573,
   "gb_consumption_twh": 249.2477,
   "scotland_consumption_share": 0.0869,
-  "paid_in_scotland": 206968788.55,
-  "paid_elsewhere": 2174976076.14,
+  "paid_in_scotland": 206964563.64,
+  "paid_elsewhere": 2174931677.8,
   "source": "DESNZ, Subnational electricity consumption statistics, Electricity consumption by Region, 2005 to 2024",
   "source_url": "https://www.gov.uk/government/statistics/regional-and-local-authority-electricity-consumption-statistics"
  },
  "turnup_same_window": {
-  "cost": 5793638645.44,
-  "to": "2026-11-05",
+  "cost": 5793642068.1,
+  "to": "2026-11-10",
   "basis": "replacement_estimate (GB-wide)"
  },
  "zone_source": "reference/bmu_zone.csv (Elexon BM unit register: grid zone per unit)"
