@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 7724080.67,
+ "hero_gbp": 7723737.13,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -34,8 +34,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 890928.35,
-   "generation_mwh": 15040.121
+   "payment_gbp": 890914.86,
+   "generation_mwh": 15039.963
   },
   {
    "q": "2025-Q4",
@@ -49,18 +49,18 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 640732.86,
-   "generation_mwh": 16811.104
+   "payment_gbp": 640731.54,
+   "generation_mwh": 16811.005
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 231056.68,
-   "generation_mwh": 18623.504
+   "payment_gbp": 231026.88,
+   "generation_mwh": 18624.105
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": -44476.36,
-   "generation_mwh": 7821.724999999999
+   "payment_gbp": -44775.29,
+   "generation_mwh": 7826.543
   }
  ],
  "contracts": [
@@ -69,7 +69,7 @@
    "unit_name": "Sneddon Law Community Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 7724080.67,
+   "cumulative_gbp": 7723737.13,
    "first_settlement": "2024-04-04",
    "latest_strike_gbp_mwh": 118.08
   }
@@ -80,11 +80,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-11-01"
+  "data_to": "2026-11-02"
  },
  "tiles": {
-  "generation_mwh": 198392.402,
-  "rate_gbp_per_mwh": 38.933349221710614,
+  "generation_mwh": 198397.56399999998,
+  "rate_gbp_per_mwh": 38.93060466206128,
   "rate_label": "payment per subsidised MWh"
  }
 }
