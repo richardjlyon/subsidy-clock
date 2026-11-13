@@ -22,7 +22,8 @@ concurrency:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    # Ubuntu 26.04 named, not ubuntu-latest: tested ahead of GitHub's label move (runner-images#14748, aios-harness#142)
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
         with:

@@ -18,7 +18,8 @@ permissions:
 
 jobs:
   update:
-    runs-on: ubuntu-latest
+    # Ubuntu 26.04 named, not ubuntu-latest: tested ahead of GitHub's label move (runner-images#14748, aios-harness#142)
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3: no floating major tag since its releases went immutable at v8
