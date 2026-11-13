@@ -10,7 +10,7 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["pytest>=8.0", "playwright>=1.40"]
+dev = ["pytest>=8.0", "playwright>=1.61"]  # 1.61: first with Ubuntu 26.04, the robots' image (aios-harness#142)
 
 [build-system]
 requires = ["hatchling"]
