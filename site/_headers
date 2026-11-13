@@ -1,5 +1,7 @@
 # Cloudflare Pages response headers (carried over from the Vercel config when the site moved, 2026-10-01).
 # Every page and data file revalidates, so the daily figure is never stale.
+# site/ goes live two ways: the morning robot (update.yml) deploys after its data commit,
+# and deploy.yml deploys a hand-made push to master that changes site/.
 /*
   Cache-Control: public, max-age=0, must-revalidate
 
