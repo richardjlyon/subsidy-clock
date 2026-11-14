@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 3561158.52,
+ "hero_gbp": 3554600.05,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -134,8 +134,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 385787.5799999999,
-   "generation_mwh": 6491.480999999998
+   "payment_gbp": 385792.6799999999,
+   "generation_mwh": 6491.684999999998
   },
   {
    "q": "2025-Q4",
@@ -149,18 +149,18 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 225383.28000000003,
-   "generation_mwh": 5975.253000000002
+   "payment_gbp": 225315.30000000005,
+   "generation_mwh": 5974.223000000003
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 73687.82999999997,
-   "generation_mwh": 6729.807
+   "payment_gbp": 73693.59999999998,
+   "generation_mwh": 6729.322999999999
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": -35960.84,
-   "generation_mwh": 2931.3359999999993
+   "payment_gbp": -42462.2,
+   "generation_mwh": 3049.4099999999994
   }
  ],
  "contracts": [
@@ -169,7 +169,7 @@
    "unit_name": "Achlachan Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 3561158.52,
+   "cumulative_gbp": 3554600.05,
    "first_settlement": "2019-04-08",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -180,11 +180,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-11-03"
+  "data_to": "2026-11-04"
  },
  "tiles": {
-  "generation_mwh": 210982.332,
-  "rate_gbp_per_mwh": 16.87894188220462,
+  "generation_mwh": 211099.096,
+  "rate_gbp_per_mwh": 16.83853752741793,
   "rate_label": "payment per subsidised MWh"
  }
 }

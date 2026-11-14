@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 910679009.35,
+ "hero_gbp": 910715372.1,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -154,7 +154,7 @@
   },
   {
    "q": "2024-Q3",
-   "payment_gbp": 27978967.770000007,
+   "payment_gbp": 27978967.780000005,
    "generation_mwh": 186165.35500000007
   },
   {
@@ -174,8 +174,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 26617901.120000012,
-   "generation_mwh": 171441.86800000005
+   "payment_gbp": 26617787.63000001,
+   "generation_mwh": 171441.00000000006
   },
   {
    "q": "2025-Q4",
@@ -189,18 +189,18 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 25685747.389999993,
-   "generation_mwh": 188008.93099999992
+   "payment_gbp": 25686373.179999992,
+   "generation_mwh": 188012.40699999992
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 19531658.819999997,
-   "generation_mwh": 175237.92500000008
+   "payment_gbp": 19529980.819999997,
+   "generation_mwh": 175212.4150000001
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": 8612190.580000004,
-   "generation_mwh": 93816.28300000001
+   "payment_gbp": 8649719.020000003,
+   "generation_mwh": 96647.68400000001
   }
  ],
  "contracts": [
@@ -209,7 +209,7 @@
    "unit_name": "Burbo Bank Extension Offshore Wind Farm",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 910679009.35,
+   "cumulative_gbp": 910715372.1,
    "first_settlement": "2017-04-11",
    "latest_strike_gbp_mwh": 220.95
   }
@@ -220,7 +220,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-11-03"
+  "data_to": "2026-11-04"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -318,8 +318,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 8345025.846999999,
-  "rate_gbp_per_mwh": 109.1283629369926,
+  "generation_mwh": 8347834.345999999,
+  "rate_gbp_per_mwh": 109.09600434708963,
   "rate_label": "payment per subsidised MWh"
  }
 }
