@@ -1,24 +1,24 @@
 {
- "generated_at": "2026-11-15T12:54:41.436154+00:00",
+ "generated_at": "2026-11-16T13:55:10.556264+00:00",
  "window": {
   "from": "2015-11-06",
-  "to": "2026-11-12"
+  "to": "2026-11-15"
  },
- "gb_cost": 2546244945.73,
- "scotland_cost": 2380345147.67,
- "scotland_share": 0.9348,
- "scotland_mwh": 49263048,
- "gb_mwh": 50846072,
- "scotland_last12_cost": 336495555.5,
- "gb_last12_cost": 342150821.37,
- "scotland_per_mwh": 48.32,
+ "gb_cost": 2545462632.63,
+ "scotland_cost": 2379349806.75,
+ "scotland_share": 0.9347,
+ "scotland_mwh": 49430216,
+ "gb_mwh": 51017215,
+ "scotland_last12_cost": 332374115.8,
+ "gb_last12_cost": 338242409.47,
+ "scotland_per_mwh": 48.14,
  "unplaced_cost": 0.0,
  "n_farms_paid": 111,
  "farms": [
   {
    "farm": "Moray East",
-   "cost": 309182672.03,
-   "mwh": 6949327,
+   "cost": 306380489.96,
+   "mwh": 6990866,
    "units": [
     "T_MOWEO-1",
     "T_MOWEO-2",
@@ -27,8 +27,8 @@
   },
   {
    "farm": "Seagreen",
-   "cost": 162710172.66,
-   "mwh": 9707276,
+   "cost": 163265752.55,
+   "mwh": 9744884,
    "units": [
     "T_SGRWO-1",
     "T_SGRWO-2",
@@ -40,8 +40,8 @@
   },
   {
    "farm": "Whitelee",
-   "cost": 134472506.26,
-   "mwh": 1909454,
+   "cost": 134568965.56,
+   "mwh": 1910555,
    "units": [
     "T_WHILW-1",
     "T_WHILW-2"
@@ -49,8 +49,8 @@
   },
   {
    "farm": "Moray West",
-   "cost": 95574962.86,
-   "mwh": 2957180,
+   "cost": 95921064.09,
+   "mwh": 2990069,
    "units": [
     "T_MOWWO-1",
     "T_MOWWO-2",
@@ -60,8 +60,8 @@
   },
   {
    "farm": "Stronelairg",
-   "cost": 92429536.39,
-   "mwh": 1155399,
+   "cost": 92501067.56,
+   "mwh": 1156277,
    "units": [
     "T_STLGW-1",
     "T_STLGW-2",
@@ -70,8 +70,8 @@
   },
   {
    "farm": "Beatrice",
-   "cost": 82228615.48,
-   "mwh": 1165298,
+   "cost": 82572504.76,
+   "mwh": 1178366,
    "units": [
     "T_BEATO-1",
     "T_BEATO-2",
@@ -89,16 +89,16 @@
   },
   {
    "farm": "Bhlaraidh",
-   "cost": 67435059.23,
-   "mwh": 918551,
+   "cost": 67480187.23,
+   "mwh": 919091,
    "units": [
     "T_BHLAW-1"
    ]
   },
   {
    "farm": "Griffin",
-   "cost": 65059682.73,
-   "mwh": 869659,
+   "cost": 65084467.98,
+   "mwh": 869945,
    "units": [
     "T_GRIFW-1",
     "T_GRIFW-2"
@@ -106,16 +106,16 @@
   },
   {
    "farm": "Fallago Rig",
-   "cost": 63957805.8,
-   "mwh": 852586,
+   "cost": 64008388.64,
+   "mwh": 853203,
    "units": [
     "T_FALGW-1"
    ]
   },
   {
    "farm": "Dorenell",
-   "cost": 58115893.42,
-   "mwh": 1704508,
+   "cost": 57752460.53,
+   "mwh": 1711177,
    "units": [
     "T_DOREW-1",
     "T_DOREW-2"
@@ -147,14 +147,14 @@
   },
   {
    "farm": "Strathy North",
-   "cost": 46527216.49,
-   "mwh": 662964,
+   "cost": 46530934.1,
+   "mwh": 663010,
    "units": [
     "T_STRNW-1"
    ]
   }
  ],
- "top_farms_share": 0.5927,
+ "top_farms_share": 0.5923,
  "monthly": [
   {
    "month": "2015-11",
@@ -818,22 +818,22 @@
   },
   {
    "month": "2026-11",
-   "scotland": -1645316,
-   "rest": 81899
+   "scotland": -2640657,
+   "rest": 294927
   }
  ],
  "who_pays": {
   "scotland_consumption_twh": 21.6573,
   "gb_consumption_twh": 249.2477,
   "scotland_consumption_share": 0.0869,
-  "paid_in_scotland": 206829788.06,
-  "paid_elsewhere": 2173515359.6,
+  "paid_in_scotland": 206743302.22,
+  "paid_elsewhere": 2172606504.53,
   "source": "DESNZ, Subnational electricity consumption statistics, Electricity consumption by Region, 2005 to 2024",
   "source_url": "https://www.gov.uk/government/statistics/regional-and-local-authority-electricity-consumption-statistics"
  },
  "turnup_same_window": {
-  "cost": 5824895040.04,
-  "to": "2026-11-12",
+  "cost": 5867667070.96,
+  "to": "2026-11-15",
   "basis": "replacement_estimate (GB-wide)"
  },
  "zone_source": "reference/bmu_zone.csv (Elexon BM unit register: grid zone per unit)"

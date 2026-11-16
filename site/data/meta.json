@@ -1,35 +1,35 @@
 {
- "generated_at": "2026-11-15T12:54:41.436154+00:00",
+ "generated_at": "2026-11-16T13:55:10.556264+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-11-15T06:21:45.048256+00:00",
+   "retrieved_at": "2026-11-16T07:06:43.899914+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
    "row_count": 121084
   },
   "constraints": {
-   "retrieved_at": "2026-11-13T06:28:37.053921+00:00",
-   "source_date": "2026-11-12",
+   "retrieved_at": "2026-11-16T07:09:10.842846+00:00",
+   "source_date": "2026-11-15",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 42
+   "row_count": 47
   },
   "capacity_market": {
-   "retrieved_at": "2026-11-15T06:29:20.486475+00:00",
+   "retrieved_at": "2026-11-16T07:09:55.742794+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 818
   },
   "bsuos": {
-   "retrieved_at": "2026-11-15T06:29:43.630230+00:00",
+   "retrieved_at": "2026-11-16T07:10:46.154484+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/current-balancing-services-use-of-system-bsuos-data",
    "row_count": 219
   },
   "constraint_turnup": {
-   "retrieved_at": "2026-11-15T06:29:19.618216+00:00",
-   "source_date": "2026-11-14",
+   "retrieved_at": "2026-11-16T07:09:54.633979+00:00",
+   "source_date": "2026-11-15",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/offer",
-   "row_count": 10
+   "row_count": 14
   }
  },
  "context": {
@@ -76,9 +76,9 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 262211086833.912,
-  "combined_real_running": 290510463044.0707,
-  "running_at": "2026-11-15T12:54:41.436154+00:00"
+  "combined_real": 262210340399.82336,
+  "combined_real_running": 290569598528.14404,
+  "running_at": "2026-11-16T13:55:10.556264+00:00"
  },
  "factoids": [
   {
@@ -182,11 +182,11 @@
   },
   {
    "slug": "police",
-   "figure": "222,000",
+   "figure": "221,000",
    "basis": "runrate",
    "figure_label": "police officers",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of UK renewable subsidy pays the salaries of 222,000 police officers, in today's money.",
+   "sentence": "A year of UK renewable subsidy pays the salaries of 221,000 police officers, in today's money.",
    "label": "police officers' annual salaries paid by one year of UK renewable subsidy, in today's money",
    "source_name": "Police Federation of England & Wales, constable pay scales (top of scale, from 1 September 2025)",
    "source_url": "https://polfed.org/resources/pay-scales/constable-pay-scales/"
