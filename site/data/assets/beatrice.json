@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 1453902536.4099998,
+ "hero_gbp": 1453875581.7,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -144,7 +144,7 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 56469902.20000001,
+   "payment_gbp": 56469902.21000001,
    "generation_mwh": 410511.16700000013
   },
   {
@@ -159,18 +159,18 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 54158656.68000004,
-   "generation_mwh": 459808.1030000001
+   "payment_gbp": 54158750.50000004,
+   "generation_mwh": 459808.9900000001
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 36155986.42,
-   "generation_mwh": 385313.5750000002
+   "payment_gbp": 36151314.89,
+   "generation_mwh": 385225.6350000001
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": 10761848.61,
-   "generation_mwh": 136760.69900000002
+   "payment_gbp": 10739471.6,
+   "generation_mwh": 137434.01000000004
   }
  ],
  "contracts": [
@@ -179,7 +179,7 @@
    "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 2)",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 804573011.01,
+   "cumulative_gbp": 804557225.6,
    "first_settlement": "2019-04-28",
    "latest_strike_gbp_mwh": 205.7
   },
@@ -188,7 +188,7 @@
    "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 1)",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 649329525.4,
+   "cumulative_gbp": 649318356.1,
    "first_settlement": "2018-11-06",
    "latest_strike_gbp_mwh": 205.7
   }
@@ -199,7 +199,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-11-04"
+  "data_to": "2026-11-05"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -621,8 +621,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 15359535.179999998,
-  "rate_gbp_per_mwh": 94.65797756062042,
+  "generation_mwh": 15360121.438000001,
+  "rate_gbp_per_mwh": 94.6526098487217,
   "rate_label": "payment per subsidised MWh"
  }
 }
