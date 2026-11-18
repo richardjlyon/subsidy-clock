@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 910740408.34,
+ "hero_gbp": 910739721.85,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -55,7 +55,7 @@
   {
    "q": "2019-Q3",
    "payment_gbp": 28625444.839999996,
-   "generation_mwh": 213374.72900000002
+   "generation_mwh": 213374.729
   },
   {
    "q": "2019-Q4",
@@ -104,7 +104,7 @@
   },
   {
    "q": "2022-Q1",
-   "payment_gbp": -2281148.120000001,
+   "payment_gbp": -2281148.1199999996,
    "generation_mwh": 265434.202
   },
   {
@@ -149,12 +149,12 @@
   },
   {
    "q": "2024-Q2",
-   "payment_gbp": 29361357.75,
+   "payment_gbp": 29361357.750000004,
    "generation_mwh": 190668.23999999996
   },
   {
    "q": "2024-Q3",
-   "payment_gbp": 27978967.78000001,
+   "payment_gbp": 27978967.790000007,
    "generation_mwh": 186165.35500000007
   },
   {
@@ -189,18 +189,18 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 25686375.429999992,
-   "generation_mwh": 188012.42599999992
+   "payment_gbp": 25686456.619999994,
+   "generation_mwh": 188013.08599999992
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 19529201.71,
-   "generation_mwh": 175198.22700000007
+   "payment_gbp": 19524993.9,
+   "generation_mwh": 175166.51700000008
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": 8675532.120000003,
-   "generation_mwh": 97668.14800000002
+   "payment_gbp": 8678972.240000002,
+   "generation_mwh": 97872.09300000001
   }
  ],
  "contracts": [
@@ -209,7 +209,7 @@
    "unit_name": "Burbo Bank Extension Offshore Wind Farm",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 910740408.34,
+   "cumulative_gbp": 910739721.85,
    "first_settlement": "2017-04-11",
    "latest_strike_gbp_mwh": 220.95
   }
@@ -220,7 +220,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-11-05"
+  "data_to": "2026-11-08"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -318,8 +318,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 8348840.641000001,
-  "rate_gbp_per_mwh": 109.08585365343781,
+  "generation_mwh": 8349013.535999999,
+  "rate_gbp_per_mwh": 109.08351243209675,
   "rate_label": "payment per subsidised MWh"
  }
 }
