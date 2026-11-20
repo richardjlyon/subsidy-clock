@@ -1,24 +1,24 @@
 {
- "generated_at": "2026-11-19T14:38:26.752021+00:00",
+ "generated_at": "2026-11-20T14:16:55.990991+00:00",
  "window": {
   "from": "2015-11-06",
-  "to": "2026-11-18"
+  "to": "2026-11-19"
  },
- "gb_cost": 2545820406.36,
- "scotland_cost": 2379516813.97,
+ "gb_cost": 2545749588.11,
+ "scotland_cost": 2379445995.72,
  "scotland_share": 0.9347,
- "scotland_mwh": 49546132,
- "gb_mwh": 51135621,
- "scotland_last12_cost": 330837913.36,
- "gb_last12_cost": 336854115.36,
- "scotland_per_mwh": 48.03,
+ "scotland_mwh": 49547454,
+ "gb_mwh": 51136943,
+ "scotland_last12_cost": 329472448.22,
+ "gb_last12_cost": 335472290.39,
+ "scotland_per_mwh": 48.02,
  "unplaced_cost": 0.0,
  "n_farms_paid": 111,
  "farms": [
   {
    "farm": "Moray East",
-   "cost": 304659639.66,
-   "mwh": 7020201,
+   "cost": 304588689.78,
+   "mwh": 7021289,
    "units": [
     "T_MOWEO-1",
     "T_MOWEO-2",
@@ -49,8 +49,8 @@
   },
   {
    "farm": "Moray West",
-   "cost": 96203571.43,
-   "mwh": 3011854,
+   "cost": 96205066.71,
+   "mwh": 3012013,
    "units": [
     "T_MOWWO-1",
     "T_MOWWO-2",
@@ -114,8 +114,8 @@
   },
   {
    "farm": "Dorenell",
-   "cost": 57555602.33,
-   "mwh": 1715762,
+   "cost": 57554875.79,
+   "mwh": 1715785,
    "units": [
     "T_DOREW-1",
     "T_DOREW-2"
@@ -818,7 +818,7 @@
   },
   {
    "month": "2026-11",
-   "scotland": -2473650,
+   "scotland": -2544468,
    "rest": 485694
   }
  ],
@@ -826,14 +826,14 @@
   "scotland_consumption_twh": 21.6573,
   "gb_consumption_twh": 249.2477,
   "scotland_consumption_share": 0.0869,
-  "paid_in_scotland": 206757813.59,
-  "paid_elsewhere": 2172759000.37,
+  "paid_in_scotland": 206751660.15,
+  "paid_elsewhere": 2172694335.57,
   "source": "DESNZ, Subnational electricity consumption statistics, Electricity consumption by Region, 2005 to 2024",
   "source_url": "https://www.gov.uk/government/statistics/regional-and-local-authority-electricity-consumption-statistics"
  },
  "turnup_same_window": {
-  "cost": 5894049281.39,
-  "to": "2026-11-18",
+  "cost": 5894316308.18,
+  "to": "2026-11-19",
   "basis": "replacement_estimate (GB-wide)"
  },
  "zone_source": "reference/bmu_zone.csv (Elexon BM unit register: grid zone per unit)"

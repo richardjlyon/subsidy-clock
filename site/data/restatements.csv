@@ -1,5 +1,5 @@
 # The Subsidy Clock — subsidyclock.co.uk
-# Licence: CC BY 4.0 (credit "The Subsidy Clock — subsidyclock.co.uk") · contains public sector information licensed under OGL v3.0 — generated 2026-11-19 14:38 UTC
+# Licence: CC BY 4.0 (credit "The Subsidy Clock — subsidyclock.co.uk") · contains public sector information licensed under OGL v3.0 — generated 2026-11-20 14:16 UTC
 # Data revisions log: origin=publisher is a source restating its own history; origin=ours is a basis change we made, with the cause named — see subsidyclock.co.uk/corrections
 scheme,table,detected_at,partition,previous_version,new_version,origin,cause
 bsuos,daily,2026-06-10T06:31:04.650394+00:00,2026-2027,20260610T063012.224599,20260610T063104.650394,publisher,source revision
@@ -94,6 +94,8 @@ bsuos,daily,2026-11-18T06:34:08.076131+00:00,2025-2026,20261117T063241.269636,20
 bsuos,daily,2026-11-18T06:34:08.084381+00:00,2026-2027,20261117T063241.274690,20261118T063408.084381,publisher,source revision
 bsuos,daily,2026-11-19T06:28:39.445433+00:00,2025-2026,20261118T063408.076131,20261119T062839.445433,publisher,source revision
 bsuos,daily,2026-11-19T06:28:39.451838+00:00,2026-2027,20261118T063408.084381,20261119T062839.451838,publisher,source revision
+bsuos,daily,2026-11-20T06:31:56.322743+00:00,2025-2026,20261119T062839.445433,20261120T063156.322743,publisher,source revision
+bsuos,daily,2026-11-20T06:31:56.327548+00:00,2026-2027,20261119T062839.451838,20261120T063156.327548,publisher,source revision
 capacity_market,payments,2026-06-12T07:04:57.421142+00:00,full,20260611T201635.344897,20260612T070457.421142,"",""
 capacity_market,payments,2026-07-09T08:57:07.635346+00:00,full,20260708T075525.911839,20260709T085707.635346,"",""
 capacity_market,payments,2026-08-08T06:08:30.577839+00:00,full,20260807T064849.575079,20260808T060830.577839,"",""
@@ -212,6 +214,7 @@ cfd,generation,2026-11-14T06:20:08.972566+00:00,full,20261113T062809.769606,2026
 cfd,generation,2026-11-17T06:29:54.340304+00:00,full,20261116T070643.899914,20261117T062954.340304,publisher,source revision
 cfd,generation,2026-11-18T06:33:04.534543+00:00,full,20261117T062954.340304,20261118T063304.534543,publisher,source revision
 cfd,generation,2026-11-19T06:27:36.467154+00:00,full,20261118T063304.534543,20261119T062736.467154,publisher,source revision
+cfd,generation,2026-11-20T06:30:44.202975+00:00,full,20261119T062736.467154,20261120T063044.202975,publisher,source revision
 cfd,portfolio,2026-10-10T08:53:42.470737+00:00,full,20260729T162748.692584,20261010T085342.470737,publisher,source revision
 cfd,portfolio,2026-11-01T11:58:24.455154+00:00,full,20261031T110544.092090,20261101T115824.455154,publisher,source revision
 cfd,tracking,2026-06-17T07:18:28.498175+00:00,full,20260616T072049.119187,20260617T071828.498175,"",""
@@ -1344,3 +1347,4 @@ remit,outages,2026-11-13T06:37:06.401477+00:00,full,20261112T063744.014064,20261
 remit,outages,2026-11-17T06:42:53.867080+00:00,full,20261113T063706.401477,20261117T064253.867080,publisher,source revision
 remit,outages,2026-11-18T06:38:34.453005+00:00,full,20261117T064253.867080,20261118T063834.453005,publisher,source revision
 remit,outages,2026-11-19T06:34:35.094953+00:00,full,20261118T063834.453005,20261119T063435.094953,publisher,source revision
+remit,outages,2026-11-20T06:36:56.085789+00:00,full,20261119T063435.094953,20261120T063656.085789,publisher,source revision
