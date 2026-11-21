@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 3554442.7399999998,
+ "hero_gbp": 3554366.03,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -84,7 +84,7 @@
   },
   {
    "q": "2023-Q1",
-   "payment_gbp": -210493.78999999998,
+   "payment_gbp": -210493.79000000004,
    "generation_mwh": 7829.821999999999
   },
   {
@@ -119,7 +119,7 @@
   },
   {
    "q": "2024-Q4",
-   "payment_gbp": 278171.3700000001,
+   "payment_gbp": 278171.37000000005,
    "generation_mwh": 7919.603000000002
   },
   {
@@ -134,8 +134,8 @@
   },
   {
    "q": "2025-Q3",
-   "payment_gbp": 385803.06,
-   "generation_mwh": 6492.0819999999985
+   "payment_gbp": 385806.22000000003,
+   "generation_mwh": 6492.1979999999985
   },
   {
    "q": "2025-Q4",
@@ -149,18 +149,18 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 225296.82,
-   "generation_mwh": 5973.553000000003
+   "payment_gbp": 225247.52000000002,
+   "generation_mwh": 5972.225000000002
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 73700.53,
-   "generation_mwh": 6726.451999999998
+   "payment_gbp": 73702.99000000002,
+   "generation_mwh": 6726.498999999999
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": -42618.33999999999,
-   "generation_mwh": 3034.711
+   "payment_gbp": -42651.36999999999,
+   "generation_mwh": 3029.493
   }
  ],
  "contracts": [
@@ -169,7 +169,7 @@
    "unit_name": "Achlachan Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 3554442.7399999998,
+   "cumulative_gbp": 3554366.03,
    "first_settlement": "2019-04-08",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -180,11 +180,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-11-10"
+  "data_to": "2026-11-11"
  },
  "tiles": {
-  "generation_mwh": 211081.253,
-  "rate_gbp_per_mwh": 16.83921565502551,
+  "generation_mwh": 211074.87,
+  "rate_gbp_per_mwh": 16.83936145501357,
   "rate_label": "payment per subsidised MWh"
  }
 }

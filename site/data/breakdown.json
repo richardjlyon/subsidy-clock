@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-20T14:16:55.990991+00:00",
+ "generated_at": "2026-11-21T13:39:22.308101+00:00",
  "elexon_first_year": 2024,
  "register": {
   "sha256": "e38ae577d255e3cb6e350d8b4c4483d58c7903766d65ad879c49b7b6c3adf5b8",
@@ -9,7 +9,7 @@
   "checks": {
    "CFD": {
     "2024": {
-     "feed_gbp": 2360228417.7400002,
+     "feed_gbp": 2360228417.85,
      "register_gbp": 2360228417.2200007
     }
    },
@@ -88,45 +88,45 @@
    "attribution_pct": 1.0,
    "attribution_note": "",
    "attribution_confidence": "",
-   "cumulative": 13930127349.11,
-   "runrate_per_year": 2272839942.6164794,
-   "data_to": "2026-11-10",
+   "cumulative": 13929224832.919998,
+   "runrate_per_year": 2260702508.8658423,
+   "data_to": "2026-11-11",
    "carry_forward": {
-    "published_cumulative": 13930127349.11,
-    "data_to": "2026-11-10",
-    "from": "2026-11-11T00:00:00+00:00",
-    "rate_per_year": 2272839942.6164794,
-    "rate_per_sec": 72.02195168886352,
-    "rate_per_year_real": 2097641863.7064593,
-    "estimated_since": 59707349.652449116,
-    "estimated_since_real": 55104908.1167395,
-    "running_total": 13989834698.76245,
+    "published_cumulative": 13929224832.919998,
+    "data_to": "2026-11-11",
+    "from": "2026-11-12T00:00:00+00:00",
+    "rate_per_year": 2260702508.8658423,
+    "rate_per_sec": 71.63733962233637,
+    "rate_per_year_real": 2086440023.8074336,
+    "estimated_since": 59227052.25237804,
+    "estimated_since_real": 54661633.64125723,
+    "running_total": 13988451885.172377,
     "label": "estimated",
-    "at": "2026-11-20T14:16:55.990991+00:00"
+    "at": "2026-11-21T13:39:22.308101+00:00"
    },
-   "gross": 15320755063.339998,
-   "net": 13930127349.630001,
-   "mwh": 215698004.64,
+   "gross": 15321928115.43,
+   "net": 13929224833.55,
+   "mwh": 215760424.372,
    "by_technology": [
     {
      "technology": "Offshore Wind",
-     "cost": 10365511187.529999,
-     "generation_mwh": 142647766.49099976
+     "cost": 10363936843.499996,
+     "generation_mwh": 142676791.30799943
     },
     {
      "technology": "Biomass Conversion",
-     "cost": 3051925845.570002,
-     "generation_mwh": 55249452.96199999
+     "cost": 3052633322.720002,
+     "generation_mwh": 55270079.332999974
     },
     {
      "technology": "Dedicated Biomass",
-     "cost": 330384076.7699998,
-     "generation_mwh": 3738716.4409999996
+     "cost": 330822915.0499998,
+     "generation_mwh": 3745073.2399999998
     },
     {
      "technology": "Onshore Wind",
-     "cost": 221239870.17000043,
-     "generation_mwh": 11622911.112999994
+     "cost": 220962686.2500006,
+     "generation_mwh": 11628199.49399999
     },
     {
      "technology": "Advanced Conversion Technology",
@@ -135,525 +135,525 @@
     },
     {
      "technology": "Energy from Waste",
-     "cost": -9168843.699999996,
-     "generation_mwh": 788612.2460000005
+     "cost": -9168869.279999988,
+     "generation_mwh": 788611.6900000006
     },
     {
      "technology": "Solar PV",
-     "cost": -29764786.71000007,
-     "generation_mwh": 1650545.3870000038
+     "cost": -29962064.690000046,
+     "generation_mwh": 1651669.307000005
     }
    ],
    "by_recipient": [
     {
      "unit_name": "Drax 3rd conversion unit (unit 1)",
      "technology": "Biomass Conversion",
-     "cost": 2045100295.1199994
+     "cost": 2045556376.7399993
     },
     {
      "unit_name": "Walney Extension Offshore Wind Farm Phase 1",
      "technology": "Offshore Wind",
-     "cost": 1182219879.8200004
+     "cost": 1182238813.7500002
     },
     {
      "unit_name": "Walney Extension Offshore Wind Farm Phase 2",
      "technology": "Offshore Wind",
-     "cost": 1172041705.91
+     "cost": 1172071889.8
     },
     {
      "unit_name": "Hornsea Offshore Wind Farm Phase 1",
      "technology": "Offshore Wind",
-     "cost": 1104071683.9
+     "cost": 1104061035.74
     },
     {
      "unit_name": "Lynemouth Power Station",
      "technology": "Biomass Conversion",
-     "cost": 1006825550.4499998
+     "cost": 1007076945.9799999
     },
     {
      "unit_name": "Burbo Bank Extension Offshore Wind Farm",
      "technology": "Offshore Wind",
-     "cost": 910622227.9900004
+     "cost": 910637883.0000005
     },
     {
      "unit_name": "Hornsea Offshore Wind Farm Phase 2",
      "technology": "Offshore Wind",
-     "cost": 883976214.7500002
+     "cost": 883960135.3600005
     },
     {
      "unit_name": "Dudgeon Phase 2",
      "technology": "Offshore Wind",
-     "cost": 829499280.8199993
+     "cost": 829502956.8599993
     },
     {
      "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 2)",
      "technology": "Offshore Wind",
-     "cost": 804428433.3900002
+     "cost": 804407087.7500002
     },
     {
      "unit_name": "Hornsea Offshore Wind Farm Phase 3",
      "technology": "Offshore Wind",
-     "cost": 671974741.5000001
+     "cost": 671965194.8100002
     },
     {
      "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 1)",
      "technology": "Offshore Wind",
-     "cost": 649236707.05
+     "cost": 649216906.0899999
     },
     {
      "unit_name": "EA 1, Phase 2",
      "technology": "Offshore Wind",
-     "cost": 438072983.5999999
+     "cost": 437983489.09
     },
     {
      "unit_name": "Dudgeon Phase 3",
      "technology": "Offshore Wind",
-     "cost": 402457448.6899998
+     "cost": 402458928.64999986
     },
     {
      "unit_name": "Dudgeon Phase 1",
      "technology": "Offshore Wind",
-     "cost": 370151863.9
+     "cost": 370154860.91999996
     },
     {
      "unit_name": "EA 1, Phase 3",
      "technology": "Offshore Wind",
-     "cost": 368292021.4800001
+     "cost": 368214199.2400001
     },
     {
      "unit_name": "Teesside Renewable Energy Project",
      "technology": "Dedicated Biomass",
-     "cost": 330384076.7699998
+     "cost": 330822915.0499998
     },
     {
      "unit_name": "EA 1, Phase 1",
      "technology": "Offshore Wind",
-     "cost": 302204968.57000005
+     "cost": 302152164.97
     },
     {
      "unit_name": "Neart na Gaoithe",
      "technology": "Offshore Wind",
-     "cost": 203183716.30999997
+     "cost": 202964966.77
     },
     {
      "unit_name": "Triton Knoll Offshore Wind Farm Phase 3",
      "technology": "Offshore Wind",
-     "cost": 127475031.88
+     "cost": 127279354.52
     },
     {
      "unit_name": "Dorenell Wind Farm",
      "technology": "Onshore Wind",
-     "cost": 63973446.380000055
+     "cost": 63831111.97000006
     },
     {
      "unit_name": "Kype Muir Wind Farm",
      "technology": "Onshore Wind",
-     "cost": 35167948.11999998
+     "cost": 35159425.60999999
     },
     {
      "unit_name": "Clocaenog Forest Wind Farm",
      "technology": "Onshore Wind",
-     "cost": 29976808.550000012
+     "cost": 30017477.350000013
     },
     {
      "unit_name": "Middle Muir Wind Farm",
      "technology": "Onshore Wind",
-     "cost": 19057268.100000005
+     "cost": 19052645.790000003
     },
     {
      "unit_name": "Brenig Wind Farm",
      "technology": "Onshore Wind",
-     "cost": 13995442.650000004
+     "cost": 13970515.370000005
     },
     {
      "unit_name": "Bad A Cheo Wind Farm",
      "technology": "Onshore Wind",
-     "cost": 13809842.730000004
+     "cost": 13795238.270000003
     }
    ],
    "by_station": [
     {
      "station": "Hornsea 1",
      "technology": "Offshore Wind",
-     "cost": 2660022640.15,
+     "cost": 2659986365.91,
      "contracts": [
       {
        "cfd_id": "INV-HOR-001",
        "unit_name": "Hornsea Offshore Wind Farm Phase 1",
        "technology": "Offshore Wind",
-       "cost": 1104071683.9
+       "cost": 1104061035.74
       },
       {
        "cfd_id": "INV-HOR-002",
        "unit_name": "Hornsea Offshore Wind Farm Phase 2",
        "technology": "Offshore Wind",
-       "cost": 883976214.75
+       "cost": 883960135.36
       },
       {
        "cfd_id": "INV-HOR-003",
        "unit_name": "Hornsea Offshore Wind Farm Phase 3",
        "technology": "Offshore Wind",
-       "cost": 671974741.5
+       "cost": 671965194.81
       }
      ]
     },
     {
      "station": "Walney Ext",
      "technology": "Offshore Wind",
-     "cost": 2354261585.73,
+     "cost": 2354310703.55,
      "contracts": [
       {
        "cfd_id": "INV-WAL-001",
        "unit_name": "Walney Extension Offshore Wind Farm Phase 1",
        "technology": "Offshore Wind",
-       "cost": 1182219879.82
+       "cost": 1182238813.75
       },
       {
        "cfd_id": "INV-WAL-002",
        "unit_name": "Walney Extension Offshore Wind Farm Phase 2",
        "technology": "Offshore Wind",
-       "cost": 1172041705.91
+       "cost": 1172071889.8
       }
      ]
     },
     {
      "station": "Drax",
      "technology": "Biomass Conversion",
-     "cost": 2045100295.12,
+     "cost": 2045556376.74,
      "contracts": [
       {
        "cfd_id": "INV-DRX-001",
        "unit_name": "Drax 3rd conversion unit (unit 1)",
        "technology": "Biomass Conversion",
-       "cost": 2045100295.12
+       "cost": 2045556376.74
       }
      ]
     },
     {
      "station": "Dudgeon",
      "technology": "Offshore Wind",
-     "cost": 1602108593.41,
+     "cost": 1602116746.43,
      "contracts": [
       {
        "cfd_id": "INV-DUD-002",
        "unit_name": "Dudgeon Phase 2",
        "technology": "Offshore Wind",
-       "cost": 829499280.82
+       "cost": 829502956.86
       },
       {
        "cfd_id": "INV-DUD-003",
        "unit_name": "Dudgeon Phase 3",
        "technology": "Offshore Wind",
-       "cost": 402457448.69
+       "cost": 402458928.65
       },
       {
        "cfd_id": "INV-DUD-001",
        "unit_name": "Dudgeon Phase 1",
        "technology": "Offshore Wind",
-       "cost": 370151863.9
+       "cost": 370154860.92
       }
      ]
     },
     {
      "station": "Beatrice",
      "technology": "Offshore Wind",
-     "cost": 1453665140.44,
+     "cost": 1453623993.8400002,
      "contracts": [
       {
        "cfd_id": "INV-BEA-002",
        "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 2)",
        "technology": "Offshore Wind",
-       "cost": 804428433.39
+       "cost": 804407087.75
       },
       {
        "cfd_id": "INV-BEA-001",
        "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 1)",
        "technology": "Offshore Wind",
-       "cost": 649236707.05
+       "cost": 649216906.09
       }
      ]
     },
     {
      "station": "EA 1",
      "technology": "Offshore Wind",
-     "cost": 1108569973.65,
+     "cost": 1108349853.3,
      "contracts": [
       {
        "cfd_id": "CAA-EAS-167",
        "unit_name": "EA 1, Phase 2",
        "technology": "Offshore Wind",
-       "cost": 438072983.6
+       "cost": 437983489.09
       },
       {
        "cfd_id": "CAA-EAS-168",
        "unit_name": "EA 1, Phase 3",
        "technology": "Offshore Wind",
-       "cost": 368292021.48
+       "cost": 368214199.24
       },
       {
        "cfd_id": "CAA-EAS-166",
        "unit_name": "EA 1, Phase 1",
        "technology": "Offshore Wind",
-       "cost": 302204968.57
+       "cost": 302152164.97
       }
      ]
     },
     {
      "station": "Lynemouth",
      "technology": "Biomass Conversion",
-     "cost": 1006825550.45,
+     "cost": 1007076945.98,
      "contracts": [
       {
        "cfd_id": "INV-LYN-001",
        "unit_name": "Lynemouth Power Station",
        "technology": "Biomass Conversion",
-       "cost": 1006825550.45
+       "cost": 1007076945.98
       }
      ]
     },
     {
      "station": "Burbo Bank Ext",
      "technology": "Offshore Wind",
-     "cost": 910622227.99,
+     "cost": 910637883.0,
      "contracts": [
       {
        "cfd_id": "INV-BUR-001",
        "unit_name": "Burbo Bank Extension Offshore Wind Farm",
        "technology": "Offshore Wind",
-       "cost": 910622227.99
+       "cost": 910637883.0
       }
      ]
     },
     {
      "station": "Teesside",
      "technology": "Dedicated Biomass",
-     "cost": 330384076.77,
+     "cost": 330822915.05,
      "contracts": [
       {
        "cfd_id": "INV-TEE-001",
        "unit_name": "Teesside Renewable Energy Project",
        "technology": "Dedicated Biomass",
-       "cost": 330384076.77
+       "cost": 330822915.05
       }
      ]
     },
     {
      "station": "NNG",
      "technology": "Offshore Wind",
-     "cost": 203183716.31,
+     "cost": 202964966.77,
      "contracts": [
       {
        "cfd_id": "AAA-NEA-195",
        "unit_name": "Neart na Gaoithe",
        "technology": "Offshore Wind",
-       "cost": 203183716.31
+       "cost": 202964966.77
       }
      ]
     },
     {
      "station": "Triton Knoll",
      "technology": "Offshore Wind",
-     "cost": 113151151.61999999,
+     "cost": 112773016.61999999,
      "contracts": [
       {
        "cfd_id": "AR2-TKN-303",
        "unit_name": "Triton Knoll Offshore Wind Farm Phase 3",
        "technology": "Offshore Wind",
-       "cost": 127475031.88
+       "cost": 127279354.52
       },
       {
        "cfd_id": "AR2-TKN-203",
        "unit_name": "Triton Knoll Offshore Wind Farm Phase 2",
        "technology": "Offshore Wind",
-       "cost": -6320210.89
+       "cost": -6402715.92
       },
       {
        "cfd_id": "AR2-TKN-103",
        "unit_name": "Triton Knoll Offshore Wind Farm Phase 1",
        "technology": "Offshore Wind",
-       "cost": -8003669.37
+       "cost": -8103621.98
       }
      ]
     },
     {
      "station": "Dorenell",
      "technology": "Onshore Wind",
-     "cost": 63973446.38,
+     "cost": 63831111.97,
      "contracts": [
       {
        "cfd_id": "AAA-DOR-182",
        "unit_name": "Dorenell Wind Farm",
        "technology": "Onshore Wind",
-       "cost": 63973446.38
+       "cost": 63831111.97
       }
      ]
     },
     {
      "station": "Kype Muir",
      "technology": "Onshore Wind",
-     "cost": 35167948.12,
+     "cost": 35159425.61,
      "contracts": [
       {
        "cfd_id": "AAA-BAN-189",
        "unit_name": "Kype Muir Wind Farm",
        "technology": "Onshore Wind",
-       "cost": 35167948.12
+       "cost": 35159425.61
       }
      ]
     },
     {
      "station": "Clocaenog",
      "technology": "Onshore Wind",
-     "cost": 29976808.55,
+     "cost": 30017477.35,
      "contracts": [
       {
        "cfd_id": "AAA-CLO-186",
        "unit_name": "Clocaenog Forest Wind Farm",
        "technology": "Onshore Wind",
-       "cost": 29976808.55
+       "cost": 30017477.35
       }
      ]
     },
     {
      "station": "Middle Muir",
      "technology": "Onshore Wind",
-     "cost": 19057268.1,
+     "cost": 19052645.79,
      "contracts": [
       {
        "cfd_id": "AAA-BAN-192",
        "unit_name": "Middle Muir Wind Farm",
        "technology": "Onshore Wind",
-       "cost": 19057268.1
+       "cost": 19052645.79
       }
      ]
     },
     {
      "station": "Brenig",
      "technology": "Onshore Wind",
-     "cost": 13995442.65,
+     "cost": 13970515.37,
      "contracts": [
       {
        "cfd_id": "AAA-BRE-177",
        "unit_name": "Brenig Wind Farm",
        "technology": "Onshore Wind",
-       "cost": 13995442.65
+       "cost": 13970515.37
       }
      ]
     },
     {
      "station": "Bad A Cheo",
      "technology": "Onshore Wind",
-     "cost": 13809842.73,
+     "cost": 13795238.27,
      "contracts": [
       {
        "cfd_id": "AAA-BAD-185",
        "unit_name": "Bad A Cheo Wind Farm",
        "technology": "Onshore Wind",
-       "cost": 13809842.73
+       "cost": 13795238.27
       }
      ]
     },
     {
      "station": "Mynydd",
      "technology": "Onshore Wind",
-     "cost": 9954577.08,
+     "cost": 9890778.47,
      "contracts": [
       {
        "cfd_id": "AAA-MYN-178",
        "unit_name": "Mynydd Y Gwair Wind Farm",
        "technology": "Onshore Wind",
-       "cost": 9954577.08
+       "cost": 9890778.47
       }
      ]
     },
     {
      "station": "Coire",
      "technology": "Onshore Wind",
-     "cost": 7919290.84,
+     "cost": 7919592.69,
      "contracts": [
       {
        "cfd_id": "AAA-COI-196",
        "unit_name": "Coire Na Cloiche Windfarm",
        "technology": "Onshore Wind",
-       "cost": 7919290.84
+       "cost": 7919592.69
       }
      ]
     },
     {
      "station": "Sneddon",
      "technology": "Onshore Wind",
-     "cost": 7677089.54,
+     "cost": 7674030.75,
      "contracts": [
       {
        "cfd_id": "AAA-SNE-179",
        "unit_name": "Sneddon Law Community Wind Farm",
        "technology": "Onshore Wind",
-       "cost": 7677089.54
+       "cost": 7674030.75
       }
      ]
     },
     {
      "station": "Moor House",
      "technology": "Onshore Wind",
-     "cost": 6413543.64,
+     "cost": 6413044.07,
      "contracts": [
       {
        "cfd_id": "AAA-BAN-190",
        "unit_name": "Moor House Wind Farm",
        "technology": "Onshore Wind",
-       "cost": 6413543.64
+       "cost": 6413044.07
       }
      ]
     },
     {
      "station": "Nanclach",
      "technology": "Onshore Wind",
-     "cost": 3646155.6,
+     "cost": 3646170.35,
      "contracts": [
       {
        "cfd_id": "AAA-NAN-184",
        "unit_name": "Nanclach Wind Farm",
        "technology": "Onshore Wind",
-       "cost": 3646155.6
+       "cost": 3646170.35
       }
      ]
     },
     {
      "station": "Achlachan",
      "technology": "Onshore Wind",
-     "cost": 3554442.7399999998,
+     "cost": 3554366.03,
      "contracts": [
       {
        "cfd_id": "AAA-ACH-183",
        "unit_name": "Achlachan Wind Farm",
        "technology": "Onshore Wind",
-       "cost": 3554442.7399999998
+       "cost": 3554366.03
       }
      ]
     },
     {
      "station": "Solwaybank",
      "technology": "Onshore Wind",
-     "cost": 3500631.04,
+     "cost": 3496979.78,
      "contracts": [
       {
        "cfd_id": "AAA-SOL-181",
        "unit_name": "Solwaybank Wind Farm",
        "technology": "Onshore Wind",
-       "cost": 3500631.04
+       "cost": 3496979.78
       }
      ]
     },
     {
      "station": "Charity Farm",
      "technology": "Solar PV",
-     "cost": 2785314.7,
+     "cost": 2784566.77,
      "contracts": [
       {
        "cfd_id": "AAA-LIG-176",
        "unit_name": "Charity Farm",
        "technology": "Solar PV",
-       "cost": 2785314.7
+       "cost": 2784566.77
       }
      ]
     }
@@ -662,9 +662,9 @@
     {
      "station": "Hornsea 1",
      "technology": "Offshore Wind",
-     "cost": 2660022640.15,
-     "generation_mwh": 31392445.067,
-     "data_to": "2026-11-10",
+     "cost": 2659986365.91,
+     "generation_mwh": 31397155.476999998,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2019-Q2",
@@ -773,8 +773,8 @@
       },
       {
        "q": "2024-Q3",
-       "payment_gbp": 130333587.5599999,
-       "generation_mwh": 999070.2249999999
+       "payment_gbp": 130333587.6099999,
+       "generation_mwh": 999070.2239999999
       },
       {
        "q": "2024-Q4",
@@ -793,7 +793,7 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 132295823.64999995,
+       "payment_gbp": 132295823.65999994,
        "generation_mwh": 990511.9240000002
       },
       {
@@ -808,18 +808,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 86792956.35,
-       "generation_mwh": 773552.3910000005
+       "payment_gbp": 86793952.72999999,
+       "generation_mwh": 773561.2200000004
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 89550827.28999998,
-       "generation_mwh": 954661.6250000002
+       "payment_gbp": 89554374.81,
+       "generation_mwh": 954688.4410000002
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": 39816439.760000005,
-       "generation_mwh": 631334.16
+       "payment_gbp": 39775621.56,
+       "generation_mwh": 636008.926
       }
      ],
      "contracts": [
@@ -828,7 +828,7 @@
        "unit_name": "Hornsea Offshore Wind Farm Phase 1",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 1104071683.9,
+       "cumulative_gbp": 1104061035.74,
        "first_settlement": "2019-05-02",
        "latest_strike_gbp_mwh": 206.06
       },
@@ -837,7 +837,7 @@
        "unit_name": "Hornsea Offshore Wind Farm Phase 2",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 883976214.75,
+       "cumulative_gbp": 883960135.36,
        "first_settlement": "2020-03-31",
        "latest_strike_gbp_mwh": 206.06
       },
@@ -846,7 +846,7 @@
        "unit_name": "Hornsea Offshore Wind Farm Phase 3",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 671974741.5,
+       "cumulative_gbp": 671965194.81,
        "first_settlement": "2021-03-31",
        "latest_strike_gbp_mwh": 206.06
       }
@@ -1232,9 +1232,9 @@
     {
      "station": "Walney Ext",
      "technology": "Offshore Wind",
-     "cost": 2354261585.73,
-     "generation_mwh": 22217486.220999997,
-     "data_to": "2026-11-10",
+     "cost": 2354310703.55,
+     "generation_mwh": 22220629.161000002,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2017-Q4",
@@ -1289,7 +1289,7 @@
       {
        "q": "2020-Q2",
        "payment_gbp": 75577333.35000001,
-       "generation_mwh": 496354.3079999999
+       "generation_mwh": 496354.30799999984
       },
       {
        "q": "2020-Q3",
@@ -1373,7 +1373,7 @@
       },
       {
        "q": "2024-Q3",
-       "payment_gbp": 79461049.46,
+       "payment_gbp": 79461049.44999999,
        "generation_mwh": 549614.7889999999
       },
       {
@@ -1393,7 +1393,7 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 77263745.92999999,
+       "payment_gbp": 77263745.94,
        "generation_mwh": 523907.6709999999
       },
       {
@@ -1408,18 +1408,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 76790193.34000005,
-       "generation_mwh": 598444.318
+       "payment_gbp": 76791321.68000005,
+       "generation_mwh": 598452.986
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 56436621.94,
-       "generation_mwh": 537795.8879999998
+       "payment_gbp": 56440245.7,
+       "generation_mwh": 537821.7449999999
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": 22449883.189999994,
-       "generation_mwh": 279553.307
+       "payment_gbp": 22494248.909999996,
+       "generation_mwh": 282661.722
       }
      ],
      "contracts": [
@@ -1428,7 +1428,7 @@
        "unit_name": "Walney Extension Offshore Wind Farm Phase 1",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 1182219879.82,
+       "cumulative_gbp": 1182238813.75,
        "first_settlement": "2017-12-19",
        "latest_strike_gbp_mwh": 220.95
       },
@@ -1437,7 +1437,7 @@
        "unit_name": "Walney Extension Offshore Wind Farm Phase 2",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 1172041705.91,
+       "cumulative_gbp": 1172071889.8,
        "first_settlement": "2018-04-13",
        "latest_strike_gbp_mwh": 220.95
       }
@@ -1661,9 +1661,9 @@
     {
      "station": "Drax",
      "technology": "Biomass Conversion",
-     "cost": 2045100295.12,
-     "generation_mwh": 37905387.828,
-     "data_to": "2026-11-10",
+     "cost": 2045556376.74,
+     "generation_mwh": 37919626.074,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2016-Q4",
@@ -1822,8 +1822,8 @@
       },
       {
        "q": "2024-Q3",
-       "payment_gbp": 72740276.78,
-       "generation_mwh": 1261975.677
+       "payment_gbp": 72740276.77,
+       "generation_mwh": 1261975.6749999998
       },
       {
        "q": "2024-Q4",
@@ -1857,18 +1857,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 40803180.610000014,
-       "generation_mwh": 572997.906
+       "payment_gbp": 40803842.81000001,
+       "generation_mwh": 573007.209
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 49770108.160000004,
-       "generation_mwh": 698920.1969999998
+       "payment_gbp": 49770018.440000005,
+       "generation_mwh": 698918.9309999997
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": 17972158.32,
-       "generation_mwh": 561454.51
+       "payment_gbp": 18427667.470000003,
+       "generation_mwh": 575684.721
       }
      ],
      "contracts": [
@@ -1877,7 +1877,7 @@
        "unit_name": "Drax 3rd conversion unit (unit 1)",
        "technology": "Biomass Conversion",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 2045100295.12,
+       "cumulative_gbp": 2045556376.74,
        "first_settlement": "2016-12-21",
        "latest_strike_gbp_mwh": 146.51
       }
@@ -3067,9 +3067,9 @@
     {
      "station": "Dudgeon",
      "technology": "Offshore Wind",
-     "cost": 1602108593.41,
-     "generation_mwh": 14950066.654,
-     "data_to": "2026-11-10",
+     "cost": 1602116746.43,
+     "generation_mwh": 14951938.530000001,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2017-Q2",
@@ -3253,18 +3253,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 47512031.460000016,
-       "generation_mwh": 352458.23699999996
+       "payment_gbp": 47512517.30000001,
+       "generation_mwh": 352461.96299999993
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 31907866.00000002,
-       "generation_mwh": 291375.36500000005
+       "payment_gbp": 31908222.62000002,
+       "generation_mwh": 291377.92700000014
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": 13284932.879999999,
-       "generation_mwh": 165047.90999999995
+       "payment_gbp": 13292243.44,
+       "generation_mwh": 166913.49799999996
       }
      ],
      "contracts": [
@@ -3273,7 +3273,7 @@
        "unit_name": "Dudgeon Phase 2",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 829499280.82,
+       "cumulative_gbp": 829502956.86,
        "first_settlement": "2017-08-02",
        "latest_strike_gbp_mwh": 220.95
       },
@@ -3282,7 +3282,7 @@
        "unit_name": "Dudgeon Phase 3",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 402457448.69,
+       "cumulative_gbp": 402458928.65,
        "first_settlement": "2017-10-01",
        "latest_strike_gbp_mwh": 220.95
       },
@@ -3291,7 +3291,7 @@
        "unit_name": "Dudgeon Phase 1",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 370151863.9,
+       "cumulative_gbp": 370154860.92,
        "first_settlement": "2017-04-27",
        "latest_strike_gbp_mwh": 220.95
       }
@@ -3635,9 +3635,9 @@
     {
      "station": "Beatrice",
      "technology": "Offshore Wind",
-     "cost": 1453665140.44,
-     "generation_mwh": 15362032.702,
-     "data_to": "2026-11-10",
+     "cost": 1453623993.8400002,
+     "generation_mwh": 15362943.994000003,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2018-Q4",
@@ -3791,18 +3791,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 54159602.720000036,
-       "generation_mwh": 459815.6650000001
+       "payment_gbp": 54160649.41000004,
+       "generation_mwh": 459824.4610000001
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 36148931.34,
-       "generation_mwh": 385209.79500000016
+       "payment_gbp": 36149191.38,
+       "generation_mwh": 385210.66900000017
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": 10530561.700000001,
-       "generation_mwh": 139354.44200000004
+       "payment_gbp": 10488108.370000001,
+       "generation_mwh": 140256.06400000004
       }
      ],
      "contracts": [
@@ -3811,7 +3811,7 @@
        "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 2)",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 804428433.39,
+       "cumulative_gbp": 804407087.75,
        "first_settlement": "2019-04-28",
        "latest_strike_gbp_mwh": 205.7
       },
@@ -3820,7 +3820,7 @@
        "unit_name": "Beatrice Offshore Wind Farm Limited (Phase 1)",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 649236707.05,
+       "cumulative_gbp": 649216906.09,
        "first_settlement": "2018-11-06",
        "latest_strike_gbp_mwh": 205.7
       }
@@ -4248,9 +4248,9 @@
     {
      "station": "EA 1",
      "technology": "Offshore Wind",
-     "cost": 1108569973.65,
-     "generation_mwh": 18175833.658,
-     "data_to": "2026-11-10",
+     "cost": 1108349853.3,
+     "generation_mwh": 18180817.432,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2019-Q4",
@@ -4384,18 +4384,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 54883640.52000002,
-       "generation_mwh": 609745.7230000007
+       "payment_gbp": 54883974.69000001,
+       "generation_mwh": 609749.6340000007
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 31240821.119999994,
-       "generation_mwh": 505105.338
+       "payment_gbp": 31243100.099999994,
+       "generation_mwh": 505151.91400000016
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": 11849292.849999998,
-       "generation_mwh": 348386.36600000015
+       "payment_gbp": 11626559.35,
+       "generation_mwh": 353319.65300000017
       }
      ],
      "contracts": [
@@ -4404,7 +4404,7 @@
        "unit_name": "EA 1, Phase 2",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 438072983.6,
+       "cumulative_gbp": 437983489.09,
        "first_settlement": "2020-03-31",
        "latest_strike_gbp_mwh": 176.12
       },
@@ -4413,7 +4413,7 @@
        "unit_name": "EA 1, Phase 3",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 368292021.48,
+       "cumulative_gbp": 368214199.24,
        "first_settlement": "2020-05-30",
        "latest_strike_gbp_mwh": 176.12
       },
@@ -4422,7 +4422,7 @@
        "unit_name": "EA 1, Phase 1",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 302204968.57,
+       "cumulative_gbp": 302152164.97,
        "first_settlement": "2019-10-30",
        "latest_strike_gbp_mwh": 176.12
       }
@@ -4574,9 +4574,9 @@
     {
      "station": "Lynemouth",
      "technology": "Biomass Conversion",
-     "cost": 1006825550.45,
-     "generation_mwh": 17344065.134,
-     "data_to": "2026-11-10",
+     "cost": 1007076945.98,
+     "generation_mwh": 17350453.259,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2018-Q2",
@@ -4705,13 +4705,13 @@
       },
       {
        "q": "2024-Q3",
-       "payment_gbp": 27271737.550000004,
+       "payment_gbp": 27271737.580000002,
        "generation_mwh": 422817.6299999999
       },
       {
        "q": "2024-Q4",
-       "payment_gbp": 29966853.03000001,
-       "generation_mwh": 507912.7470000001
+       "payment_gbp": 29966853.030000012,
+       "generation_mwh": 507912.7470000002
       },
       {
        "q": "2025-Q1",
@@ -4725,7 +4725,7 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 44884121.81999999,
+       "payment_gbp": 44884121.83999999,
        "generation_mwh": 682440.656
       },
       {
@@ -4740,18 +4740,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 56400052.21999999,
-       "generation_mwh": 719204.9799999997
+       "payment_gbp": 56400503.86999999,
+       "generation_mwh": 719210.7439999997
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 57049258.22000001,
-       "generation_mwh": 727483.5050000002
+       "payment_gbp": 57050514.12000002,
+       "generation_mwh": 727499.5140000003
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": 11661636.209999999,
-       "generation_mwh": 297339.0299999999
+       "payment_gbp": 11911324.139999999,
+       "generation_mwh": 303705.3819999999
       }
      ],
      "contracts": [
@@ -4760,7 +4760,7 @@
        "unit_name": "Lynemouth Power Station",
        "technology": "Biomass Conversion",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 1006825550.45,
+       "cumulative_gbp": 1007076945.98,
        "first_settlement": "2018-06-23",
        "latest_strike_gbp_mwh": 153.72
       }
@@ -9946,9 +9946,9 @@
     {
      "station": "Burbo Bank Ext",
      "technology": "Offshore Wind",
-     "cost": 910622227.99,
-     "generation_mwh": 8350639.673,
-     "data_to": "2026-11-10",
+     "cost": 910637883.0,
+     "generation_mwh": 8351410.642,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2017-Q2",
@@ -10092,12 +10092,12 @@
       },
       {
        "q": "2024-Q2",
-       "payment_gbp": 29361357.750000004,
-       "generation_mwh": 190668.24
+       "payment_gbp": 29361357.75,
+       "generation_mwh": 190668.23999999996
       },
       {
        "q": "2024-Q3",
-       "payment_gbp": 27978967.790000007,
+       "payment_gbp": 27978967.80000001,
        "generation_mwh": 186165.35500000007
       },
       {
@@ -10132,18 +10132,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 25686686.359999996,
-       "generation_mwh": 188014.5709999999
+       "payment_gbp": 25686987.929999992,
+       "generation_mwh": 188016.8349999999
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 19531442.14,
-       "generation_mwh": 175212.08900000004
+       "payment_gbp": 19532562.020000003,
+       "generation_mwh": 175220.38500000004
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": 8554800.390000002,
-       "generation_mwh": 99451.17400000001
+       "payment_gbp": 8569033.940000003,
+       "generation_mwh": 100211.58300000001
       }
      ],
      "contracts": [
@@ -10152,7 +10152,7 @@
        "unit_name": "Burbo Bank Extension Offshore Wind Farm",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 910622227.99,
+       "cumulative_gbp": 910637883.0,
        "first_settlement": "2017-04-11",
        "latest_strike_gbp_mwh": 220.95
       }
@@ -10256,9 +10256,9 @@
     {
      "station": "Teesside",
      "technology": "Dedicated Biomass",
-     "cost": 330384076.77,
-     "generation_mwh": 3738716.4409999996,
-     "data_to": "2026-11-10",
+     "cost": 330822915.05,
+     "generation_mwh": 3745073.24,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2023-Q3",
@@ -10297,13 +10297,13 @@
       },
       {
        "q": "2025-Q2",
-       "payment_gbp": 39168625.08999999,
-       "generation_mwh": 413913.39900000003
+       "payment_gbp": 39168625.09,
+       "generation_mwh": 413913.3990000001
       },
       {
        "q": "2025-Q3",
        "payment_gbp": 42257618.38999999,
-       "generation_mwh": 446556.246
+       "generation_mwh": 446556.245
       },
       {
        "q": "2025-Q4",
@@ -10317,18 +10317,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 16790171.47,
-       "generation_mwh": 155248.939
+       "payment_gbp": 16790333.53,
+       "generation_mwh": 155250.442
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 47634392.65000002,
-       "generation_mwh": 440447.44400000013
+       "payment_gbp": 47635712.39000002,
+       "generation_mwh": 440459.64500000014
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": 16279784.630000005,
-       "generation_mwh": 236110.00099999996
+       "payment_gbp": 16717141.110000005,
+       "generation_mwh": 242453.09699999995
       }
      ],
      "contracts": [
@@ -10337,7 +10337,7 @@
        "unit_name": "Teesside Renewable Energy Project",
        "technology": "Dedicated Biomass",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 330384076.77,
+       "cumulative_gbp": 330822915.05,
        "first_settlement": "2023-09-30",
        "latest_strike_gbp_mwh": 183.45
       }
@@ -11095,9 +11095,9 @@
     {
      "station": "NNG",
      "technology": "Offshore Wind",
-     "cost": 203183716.31,
-     "generation_mwh": 2447706.088,
-     "data_to": "2026-11-10",
+     "cost": 202964966.77,
+     "generation_mwh": 2450854.541,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2025-Q2",
@@ -11106,7 +11106,7 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 35243612.3,
+       "payment_gbp": 35243612.29,
        "generation_mwh": 356596.529
       },
       {
@@ -11121,18 +11121,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 26627688.1,
-       "generation_mwh": 338289.088
+       "payment_gbp": 26628069.49,
+       "generation_mwh": 338293.659
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 13893894.56,
-       "generation_mwh": 266347.941
+       "payment_gbp": 13894566.5,
+       "generation_mwh": 266355.775
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": 2178300.93,
-       "generation_mwh": 81526.02100000001
+       "payment_gbp": 1958498.07,
+       "generation_mwh": 84662.069
       }
      ],
      "contracts": [
@@ -11141,7 +11141,7 @@
        "unit_name": "Neart na Gaoithe",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 203183716.31,
+       "cumulative_gbp": 202964966.77,
        "first_settlement": "2025-04-16",
        "latest_strike_gbp_mwh": 167.68
       }
@@ -11245,9 +11245,9 @@
     {
      "station": "Triton Knoll",
      "technology": "Offshore Wind",
-     "cost": 113151151.61999999,
-     "generation_mwh": 12524382.534,
-     "data_to": "2026-11-10",
+     "cost": 112773016.61999999,
+     "generation_mwh": 12527992.661999999,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2021-Q2",
@@ -11291,8 +11291,8 @@
       },
       {
        "q": "2023-Q2",
-       "payment_gbp": 4773376.9700000025,
-       "generation_mwh": 504843.5830000002
+       "payment_gbp": 4773376.970000002,
+       "generation_mwh": 504843.58300000016
       },
       {
        "q": "2023-Q3",
@@ -11311,13 +11311,13 @@
       },
       {
        "q": "2024-Q2",
-       "payment_gbp": 27402106.17000001,
-       "generation_mwh": 638288.7670000002
+       "payment_gbp": 27402106.169999998,
+       "generation_mwh": 638288.7670000005
       },
       {
        "q": "2024-Q3",
-       "payment_gbp": 23546104.799999986,
-       "generation_mwh": 577647.136
+       "payment_gbp": 23546104.809999984,
+       "generation_mwh": 577647.137
       },
       {
        "q": "2024-Q4",
@@ -11337,7 +11337,7 @@
       {
        "q": "2025-Q3",
        "payment_gbp": 22855425.550000004,
-       "generation_mwh": 532060.943
+       "generation_mwh": 532060.9429999996
       },
       {
        "q": "2025-Q4",
@@ -11351,18 +11351,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 10527501.619999997,
-       "generation_mwh": 583069.8000000005
+       "payment_gbp": 10527622.639999995,
+       "generation_mwh": 583077.6630000005
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": -2980524.2399999956,
-       "generation_mwh": 531779.3640000004
+       "payment_gbp": -2979932.9299999955,
+       "generation_mwh": 531802.8730000004
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": -11237758.999999996,
-       "generation_mwh": 342562.76200000005
+       "payment_gbp": -11616606.339999996,
+       "generation_mwh": 346141.517
       }
      ],
      "contracts": [
@@ -11371,7 +11371,7 @@
        "unit_name": "Triton Knoll Offshore Wind Farm Phase 3",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 127475031.88,
+       "cumulative_gbp": 127279354.52,
        "first_settlement": "2023-03-31",
        "latest_strike_gbp_mwh": 108.2
       },
@@ -11380,7 +11380,7 @@
        "unit_name": "Triton Knoll Offshore Wind Farm Phase 2",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": -6320210.89,
+       "cumulative_gbp": -6402715.92,
        "first_settlement": "2021-07-06",
        "latest_strike_gbp_mwh": 108.2
       },
@@ -11389,7 +11389,7 @@
        "unit_name": "Triton Knoll Offshore Wind Farm Phase 1",
        "technology": "Offshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": -8003669.37,
+       "cumulative_gbp": -8103621.98,
        "first_settlement": "2021-05-17",
        "latest_strike_gbp_mwh": 108.2
       }
@@ -11469,9 +11469,9 @@
     {
      "station": "Dorenell",
      "technology": "Onshore Wind",
-     "cost": 63973446.38,
-     "generation_mwh": 2757047.3249999997,
-     "data_to": "2026-11-10",
+     "cost": 63831111.97,
+     "generation_mwh": 2758219.517,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2018-Q4",
@@ -11555,7 +11555,7 @@
       },
       {
        "q": "2022-Q4",
-       "payment_gbp": -4734715.12,
+       "payment_gbp": -4734715.120000001,
        "generation_mwh": 72335.56999999998
       },
       {
@@ -11595,8 +11595,8 @@
       },
       {
        "q": "2024-Q4",
-       "payment_gbp": 1376151.4999999998,
-       "generation_mwh": 50397.278000000006
+       "payment_gbp": 1376151.4999999995,
+       "generation_mwh": 50397.27799999999
       },
       {
        "q": "2025-Q1",
@@ -11625,18 +11625,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 2725688.7199999993,
-       "generation_mwh": 67367.72099999998
+       "payment_gbp": 2725722.2699999996,
+       "generation_mwh": 67368.59699999997
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 1070550.4999999998,
-       "generation_mwh": 84305.11299999998
+       "payment_gbp": 1070766.7699999998,
+       "generation_mwh": 84311.25199999998
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": -22211.38,
-       "generation_mwh": 27131.372999999996
+       "payment_gbp": -164795.61000000002,
+       "generation_mwh": 28296.549999999996
       }
      ],
      "contracts": [
@@ -11645,7 +11645,7 @@
        "unit_name": "Dorenell Wind Farm",
        "technology": "Onshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 63973446.38,
+       "cumulative_gbp": 63831111.97,
        "first_settlement": "2018-12-20",
        "latest_strike_gbp_mwh": 120.28
       }
@@ -11671,9 +11671,9 @@
     {
      "station": "Kype Muir",
      "technology": "Onshore Wind",
-     "cost": 35167948.12,
-     "generation_mwh": 1499510.605,
-     "data_to": "2026-11-10",
+     "cost": 35159425.61,
+     "generation_mwh": 1499582.063,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2019-Q1",
@@ -11793,7 +11793,7 @@
       {
        "q": "2024-Q4",
        "payment_gbp": 2241935.51,
-       "generation_mwh": 62497.03899999999
+       "generation_mwh": 62497.03899999998
       },
       {
        "q": "2025-Q1",
@@ -11822,18 +11822,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 1839016.34,
-       "generation_mwh": 45449.66299999997
+       "payment_gbp": 1839033.51,
+       "generation_mwh": 45449.99999999997
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 822597.15,
-       "generation_mwh": 41380.768999999986
+       "payment_gbp": 822690.52,
+       "generation_mwh": 41383.81099999999
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": 71432.45,
-       "generation_mwh": 16106.078000000003
+       "payment_gbp": 62799.40000000001,
+       "generation_mwh": 16174.157000000005
       }
      ],
      "contracts": [
@@ -11842,7 +11842,7 @@
        "unit_name": "Kype Muir Wind Farm",
        "technology": "Onshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 35167948.12,
+       "cumulative_gbp": 35159425.61,
        "first_settlement": "2019-03-28",
        "latest_strike_gbp_mwh": 120.28
       }
@@ -11855,9 +11855,9 @@
     {
      "station": "Clocaenog",
      "technology": "Onshore Wind",
-     "cost": 29976808.55,
-     "generation_mwh": 1556196.0459999999,
-     "data_to": "2026-11-10",
+     "cost": 30017477.35,
+     "generation_mwh": 1558741.5860000001,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2019-Q4",
@@ -11896,8 +11896,8 @@
       },
       {
        "q": "2021-Q3",
-       "payment_gbp": -761779.22,
-       "generation_mwh": 27796.160999999993
+       "payment_gbp": -761779.2199999999,
+       "generation_mwh": 27796.161000000004
       },
       {
        "q": "2021-Q4",
@@ -11931,7 +11931,7 @@
       },
       {
        "q": "2023-Q2",
-       "payment_gbp": 686377.73,
+       "payment_gbp": 686377.7300000001,
        "generation_mwh": 32150.340000000004
       },
       {
@@ -11966,8 +11966,8 @@
       },
       {
        "q": "2025-Q1",
-       "payment_gbp": 1169105.66,
-       "generation_mwh": 59986.366
+       "payment_gbp": 1169105.6600000001,
+       "generation_mwh": 59986.365999999995
       },
       {
        "q": "2025-Q2",
@@ -11976,8 +11976,8 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 2319950.5499999993,
-       "generation_mwh": 38105.62900000001
+       "payment_gbp": 2319951.2699999996,
+       "generation_mwh": 38105.63500000001
       },
       {
        "q": "2025-Q4",
@@ -11991,18 +11991,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 2152875.7800000007,
-       "generation_mwh": 55470.40999999998
+       "payment_gbp": 2152735.6600000006,
+       "generation_mwh": 55467.55799999998
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 247118.45000000007,
-       "generation_mwh": 10030.380999999998
+       "payment_gbp": 253365.86000000007,
+       "generation_mwh": 10883.980999999998
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": 214847.43,
-       "generation_mwh": 7755.9890000000005
+       "payment_gbp": 249408.22,
+       "generation_mwh": 9450.775000000001
       }
      ],
      "contracts": [
@@ -12011,7 +12011,7 @@
        "unit_name": "Clocaenog Forest Wind Farm",
        "technology": "Onshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 29976808.55,
+       "cumulative_gbp": 30017477.35,
        "first_settlement": "2019-10-31",
        "latest_strike_gbp_mwh": 121.79
       }
@@ -12020,9 +12020,9 @@
     {
      "station": "Middle Muir",
      "technology": "Onshore Wind",
-     "cost": 19057268.1,
-     "generation_mwh": 795915.8999999999,
-     "data_to": "2026-11-10",
+     "cost": 19052645.79,
+     "generation_mwh": 795945.598,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2019-Q1",
@@ -12062,7 +12062,7 @@
       {
        "q": "2020-Q4",
        "payment_gbp": 1427266.6200000006,
-       "generation_mwh": 27390.18999999999
+       "generation_mwh": 27390.189999999995
       },
       {
        "q": "2021-Q1",
@@ -12141,8 +12141,8 @@
       },
       {
        "q": "2024-Q4",
-       "payment_gbp": 1185182.3200000005,
-       "generation_mwh": 31032.778000000017
+       "payment_gbp": 1185182.32,
+       "generation_mwh": 31032.77800000001
       },
       {
        "q": "2025-Q1",
@@ -12171,18 +12171,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 981290.2200000002,
-       "generation_mwh": 24898.50500000001
+       "payment_gbp": 981298.8000000002,
+       "generation_mwh": 24898.741000000005
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 378812.61,
-       "generation_mwh": 21002.937
+       "payment_gbp": 378864.51999999996,
+       "generation_mwh": 21004.643999999997
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": -13484.789999999995,
-       "generation_mwh": 8134.126999999999
+       "payment_gbp": -18167.589999999997,
+       "generation_mwh": 8161.882
       }
      ],
      "contracts": [
@@ -12191,7 +12191,7 @@
        "unit_name": "Middle Muir Wind Farm",
        "technology": "Onshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 19057268.1,
+       "cumulative_gbp": 19052645.79,
        "first_settlement": "2019-01-09",
        "latest_strike_gbp_mwh": 120.28
       }
@@ -12204,9 +12204,9 @@
     {
      "station": "Brenig",
      "technology": "Onshore Wind",
-     "cost": 13995442.65,
-     "generation_mwh": 793112.641,
-     "data_to": "2026-11-10",
+     "cost": 13970515.37,
+     "generation_mwh": 793369.775,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2019-Q1",
@@ -12250,7 +12250,7 @@
       },
       {
        "q": "2021-Q1",
-       "payment_gbp": 1121572.9500000002,
+       "payment_gbp": 1121572.9499999997,
        "generation_mwh": 32891.607
       },
       {
@@ -12355,18 +12355,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 877271.87,
-       "generation_mwh": 27125.388
+       "payment_gbp": 877208.6799999999,
+       "generation_mwh": 27123.968
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 71094.54999999996,
-       "generation_mwh": 17879.13000000001
+       "payment_gbp": 71063.39999999995,
+       "generation_mwh": 17878.42100000001
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": -171839.65,
-       "generation_mwh": 11181.534999999996
+       "payment_gbp": -196672.59,
+       "generation_mwh": 11440.797999999995
       }
      ],
      "contracts": [
@@ -12375,7 +12375,7 @@
        "unit_name": "Brenig Wind Farm",
        "technology": "Onshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 13995442.65,
+       "cumulative_gbp": 13970515.37,
        "first_settlement": "2019-03-29",
        "latest_strike_gbp_mwh": 116.96
       }
@@ -12384,9 +12384,9 @@
     {
      "station": "Bad A Cheo",
      "technology": "Onshore Wind",
-     "cost": 13809842.73,
-     "generation_mwh": 496081.951,
-     "data_to": "2026-11-10",
+     "cost": 13795238.27,
+     "generation_mwh": 496186.83,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2019-Q1",
@@ -12535,18 +12535,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 569549.4299999999,
-       "generation_mwh": 15210.757999999998
+       "payment_gbp": 569556.7699999999,
+       "generation_mwh": 15210.847999999998
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 193022.4,
-       "generation_mwh": 15177.328000000001
+       "payment_gbp": 193031.66,
+       "generation_mwh": 15177.597000000002
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": -39430.95,
-       "generation_mwh": 4523.599999999999
+       "payment_gbp": -54052.009999999995,
+       "generation_mwh": 4628.12
       }
      ],
      "contracts": [
@@ -12555,7 +12555,7 @@
        "unit_name": "Bad A Cheo Wind Farm",
        "technology": "Onshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 13809842.73,
+       "cumulative_gbp": 13795238.27,
        "first_settlement": "2019-03-31",
        "latest_strike_gbp_mwh": 120.46
       }
@@ -12587,9 +12587,9 @@
     {
      "station": "Mynydd",
      "technology": "Onshore Wind",
-     "cost": 9954577.08,
-     "generation_mwh": 751124.388,
-     "data_to": "2026-11-10",
+     "cost": 9890778.47,
+     "generation_mwh": 751781.343,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2019-Q1",
@@ -12673,8 +12673,8 @@
       },
       {
        "q": "2023-Q1",
-       "payment_gbp": -576974.1699999998,
-       "generation_mwh": 32368.402999999988
+       "payment_gbp": -576974.17,
+       "generation_mwh": 32368.403
       },
       {
        "q": "2023-Q2",
@@ -12723,8 +12723,8 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 873069.1799999999,
-       "generation_mwh": 15631.347
+       "payment_gbp": 873069.3099999999,
+       "generation_mwh": 15631.348
       },
       {
        "q": "2025-Q4",
@@ -12738,18 +12738,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 892590.3799999999,
-       "generation_mwh": 27472.557999999994
+       "payment_gbp": 892547.5799999998,
+       "generation_mwh": 27471.361999999994
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 47840.19000000001,
-       "generation_mwh": 16602.934
+       "payment_gbp": 47839.110000000015,
+       "generation_mwh": 16602.969
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": -465629.2,
-       "generation_mwh": 14723.827999999996
+       "payment_gbp": -529384.0599999999,
+       "generation_mwh": 15381.942999999996
       }
      ],
      "contracts": [
@@ -12758,7 +12758,7 @@
        "unit_name": "Mynydd Y Gwair Wind Farm",
        "technology": "Onshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 9954577.08,
+       "cumulative_gbp": 9890778.47,
        "first_settlement": "2019-03-20",
        "latest_strike_gbp_mwh": 118.08
       }
@@ -12767,9 +12767,9 @@
     {
      "station": "Coire",
      "technology": "Onshore Wind",
-     "cost": 7919290.84,
-     "generation_mwh": 485825.537,
-     "data_to": "2026-11-10",
+     "cost": 7919592.69,
+     "generation_mwh": 485934.962,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2019-Q2",
@@ -12849,7 +12849,7 @@
       {
        "q": "2023-Q1",
        "payment_gbp": -490353.0000000001,
-       "generation_mwh": 18275.134000000002
+       "generation_mwh": 18275.134
       },
       {
        "q": "2023-Q2",
@@ -12888,7 +12888,7 @@
       },
       {
        "q": "2025-Q1",
-       "payment_gbp": 450903.07,
+       "payment_gbp": 450903.07000000007,
        "generation_mwh": 21079.678
       },
       {
@@ -12913,13 +12913,13 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 416186.95999999996,
-       "generation_mwh": 12012.848999999997
+       "payment_gbp": 416195.7199999999,
+       "generation_mwh": 12013.028999999997
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 119977.24999999997,
-       "generation_mwh": 11960.104999999996
+       "payment_gbp": 120270.33999999997,
+       "generation_mwh": 12069.349999999995
       },
       {
        "q": "2026-Q4",
@@ -12933,7 +12933,7 @@
        "unit_name": "Coire Na Cloiche Windfarm",
        "technology": "Onshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 7919290.84,
+       "cumulative_gbp": 7919592.69,
        "first_settlement": "2019-06-25",
        "latest_strike_gbp_mwh": 121.79
       }
@@ -12946,9 +12946,9 @@
     {
      "station": "Sneddon",
      "technology": "Onshore Wind",
-     "cost": 7677089.54,
-     "generation_mwh": 198977.173,
-     "data_to": "2026-11-10",
+     "cost": 7674030.75,
+     "generation_mwh": 199029.637,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2024-Q2",
@@ -12977,8 +12977,8 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 890915.11,
-       "generation_mwh": 15039.967
+       "payment_gbp": 890915.32,
+       "generation_mwh": 15039.958
       },
       {
        "q": "2025-Q4",
@@ -12992,18 +12992,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 640327.67,
-       "generation_mwh": 16804.291
+       "payment_gbp": 640247.81,
+       "generation_mwh": 16802.186
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 230536.4,
-       "generation_mwh": 18634.231
+       "payment_gbp": 230505.99,
+       "generation_mwh": 18633.306
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": -90528.78,
-       "generation_mwh": 8402.735999999999
+       "payment_gbp": -93477.51,
+       "generation_mwh": 8458.239
       }
      ],
      "contracts": [
@@ -13012,7 +13012,7 @@
        "unit_name": "Sneddon Law Community Wind Farm",
        "technology": "Onshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 7677089.54,
+       "cumulative_gbp": 7674030.75,
        "first_settlement": "2024-04-04",
        "latest_strike_gbp_mwh": 118.08
       }
@@ -13021,9 +13021,9 @@
     {
      "station": "Moor House",
      "technology": "Onshore Wind",
-     "cost": 6413543.64,
-     "generation_mwh": 291364.688,
-     "data_to": "2026-11-10",
+     "cost": 6413044.07,
+     "generation_mwh": 291376.939,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2018-Q2",
@@ -13112,7 +13112,7 @@
       },
       {
        "q": "2022-Q3",
-       "payment_gbp": -1015557.7100000001,
+       "payment_gbp": -1015557.71,
        "generation_mwh": 5959.671000000001
       },
       {
@@ -13152,8 +13152,8 @@
       },
       {
        "q": "2024-Q3",
-       "payment_gbp": 377534.79999999993,
-       "generation_mwh": 6597.688999999999
+       "payment_gbp": 377534.8,
+       "generation_mwh": 6597.689
       },
       {
        "q": "2024-Q4",
@@ -13172,8 +13172,8 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 402762.02,
-       "generation_mwh": 6645.757000000001
+       "payment_gbp": 402763.12,
+       "generation_mwh": 6645.783000000001
       },
       {
        "q": "2025-Q4",
@@ -13187,18 +13187,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 329267.3199999999,
-       "generation_mwh": 7871.467999999999
+       "payment_gbp": 329260.8599999999,
+       "generation_mwh": 7871.261999999999
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 110690.48000000003,
-       "generation_mwh": 6841.575999999999
+       "payment_gbp": 110676.73000000004,
+       "generation_mwh": 6841.208999999999
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": -45743.99999999999,
-       "generation_mwh": 4264.853999999999
+       "payment_gbp": -46224.45999999999,
+       "generation_mwh": 4277.651999999999
       }
      ],
      "contracts": [
@@ -13207,7 +13207,7 @@
        "unit_name": "Moor House Wind Farm",
        "technology": "Onshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 6413543.64,
+       "cumulative_gbp": 6413044.07,
        "first_settlement": "2018-04-03",
        "latest_strike_gbp_mwh": 121.79
       }
@@ -13216,9 +13216,9 @@
     {
      "station": "Nanclach",
      "technology": "Onshore Wind",
-     "cost": 3646155.6,
-     "generation_mwh": 827068.979,
-     "data_to": "2026-11-10",
+     "cost": 3646170.35,
+     "generation_mwh": 827069.215,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2019-Q4",
@@ -13327,7 +13327,7 @@
       },
       {
        "q": "2025-Q1",
-       "payment_gbp": 515957.9499999999,
+       "payment_gbp": 515957.94999999995,
        "generation_mwh": 37817.490999999995
       },
       {
@@ -13337,8 +13337,8 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 1119377.5400000003,
-       "generation_mwh": 24059.363
+       "payment_gbp": 1119399.8800000004,
+       "generation_mwh": 24060.231
       },
       {
        "q": "2025-Q4",
@@ -13352,18 +13352,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 530266.1200000002,
-       "generation_mwh": 23181.298000000003
+       "payment_gbp": 530235.2900000002,
+       "generation_mwh": 23180.253000000004
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": -159689.22,
-       "generation_mwh": 22946.18800000001
+       "payment_gbp": -159639.84999999998,
+       "generation_mwh": 22946.914000000008
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": -137824.16000000003,
-       "generation_mwh": 5365.766
+       "payment_gbp": -137850.29000000004,
+       "generation_mwh": 5365.4529999999995
       }
      ],
      "contracts": [
@@ -13372,7 +13372,7 @@
        "unit_name": "Nanclach Wind Farm",
        "technology": "Onshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 3646155.6,
+       "cumulative_gbp": 3646170.35,
        "first_settlement": "2019-10-01",
        "latest_strike_gbp_mwh": 121.79
       }
@@ -13381,9 +13381,9 @@
     {
      "station": "Achlachan",
      "technology": "Onshore Wind",
-     "cost": 3554442.7399999998,
-     "generation_mwh": 211081.253,
-     "data_to": "2026-11-10",
+     "cost": 3554366.03,
+     "generation_mwh": 211074.87,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2019-Q2",
@@ -13462,7 +13462,7 @@
       },
       {
        "q": "2023-Q1",
-       "payment_gbp": -210493.78999999998,
+       "payment_gbp": -210493.79000000004,
        "generation_mwh": 7829.821999999999
       },
       {
@@ -13497,7 +13497,7 @@
       },
       {
        "q": "2024-Q4",
-       "payment_gbp": 278171.3700000001,
+       "payment_gbp": 278171.37000000005,
        "generation_mwh": 7919.603000000002
       },
       {
@@ -13512,8 +13512,8 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 385803.06,
-       "generation_mwh": 6492.0819999999985
+       "payment_gbp": 385806.22000000003,
+       "generation_mwh": 6492.1979999999985
       },
       {
        "q": "2025-Q4",
@@ -13527,18 +13527,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 225296.82,
-       "generation_mwh": 5973.553000000003
+       "payment_gbp": 225247.52000000002,
+       "generation_mwh": 5972.225000000002
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 73700.53,
-       "generation_mwh": 6726.451999999998
+       "payment_gbp": 73702.99000000002,
+       "generation_mwh": 6726.498999999999
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": -42618.33999999999,
-       "generation_mwh": 3034.711
+       "payment_gbp": -42651.36999999999,
+       "generation_mwh": 3029.493
       }
      ],
      "contracts": [
@@ -13547,7 +13547,7 @@
        "unit_name": "Achlachan Wind Farm",
        "technology": "Onshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 3554442.7399999998,
+       "cumulative_gbp": 3554366.03,
        "first_settlement": "2019-04-08",
        "latest_strike_gbp_mwh": 121.79
       }
@@ -13556,9 +13556,9 @@
     {
      "station": "Solwaybank",
      "technology": "Onshore Wind",
-     "cost": 3500631.04,
-     "generation_mwh": 496500.917,
-     "data_to": "2026-11-10",
+     "cost": 3496979.78,
+     "generation_mwh": 496565.74700000003,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2020-Q4",
@@ -13622,8 +13622,8 @@
       },
       {
        "q": "2023-Q4",
-       "payment_gbp": 1066357.2900000003,
-       "generation_mwh": 25104.28499999999
+       "payment_gbp": 1066357.29,
+       "generation_mwh": 25104.285000000003
       },
       {
        "q": "2024-Q1",
@@ -13652,8 +13652,8 @@
       },
       {
        "q": "2025-Q2",
-       "payment_gbp": 1174654.5399999998,
-       "generation_mwh": 21413.417000000005
+       "payment_gbp": 1174654.54,
+       "generation_mwh": 21413.417
       },
       {
        "q": "2025-Q3",
@@ -13672,18 +13672,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 882227.38,
-       "generation_mwh": 23569.631999999998
+       "payment_gbp": 882217.1799999999,
+       "generation_mwh": 23569.380999999998
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 277734.57,
-       "generation_mwh": 22660.062
+       "payment_gbp": 277687.70999999996,
+       "generation_mwh": 22658.964000000004
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": -146732.39999999997,
-       "generation_mwh": 10126.127999999999
+       "payment_gbp": -150326.6,
+       "generation_mwh": 10192.306999999997
       }
      ],
      "contracts": [
@@ -13692,7 +13692,7 @@
        "unit_name": "Solwaybank Wind Farm",
        "technology": "Onshore Wind",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 3500631.04,
+       "cumulative_gbp": 3496979.78,
        "first_settlement": "2020-11-27",
        "latest_strike_gbp_mwh": 121.79
       }
@@ -13701,9 +13701,9 @@
     {
      "station": "Charity Farm",
      "technology": "Solar PV",
-     "cost": 2785314.7,
-     "generation_mwh": 143695.98,
-     "data_to": "2026-11-10",
+     "cost": 2784566.77,
+     "generation_mwh": 143702.33800000002,
+     "data_to": "2026-11-11",
      "quarters": [
       {
        "q": "2016-Q2",
@@ -13892,8 +13892,8 @@
       },
       {
        "q": "2025-Q3",
-       "payment_gbp": 249831.15999999992,
-       "generation_mwh": 5043.051999999999
+       "payment_gbp": 249831.7199999999,
+       "generation_mwh": 5043.065999999999
       },
       {
        "q": "2025-Q4",
@@ -13907,18 +13907,18 @@
       },
       {
        "q": "2026-Q2",
-       "payment_gbp": 211604.80000000005,
-       "generation_mwh": 6152.217000000004
+       "payment_gbp": 211594.86000000004,
+       "generation_mwh": 6152.077000000005
       },
       {
        "q": "2026-Q3",
-       "payment_gbp": 116262.94999999998,
-       "generation_mwh": 5698.449999999999
+       "payment_gbp": 116253.76999999997,
+       "generation_mwh": 5698.105999999999
       },
       {
        "q": "2026-Q4",
-       "payment_gbp": -18006.74,
-       "generation_mwh": 1091.9910000000007
+       "payment_gbp": -18736.109999999997,
+       "generation_mwh": 1098.8190000000006
       }
      ],
      "contracts": [
@@ -13927,7 +13927,7 @@
        "unit_name": "Charity Farm",
        "technology": "Solar PV",
        "status": "Live (Post-FIC)",
-       "cumulative_gbp": 2785314.7,
+       "cumulative_gbp": 2784566.77,
        "first_settlement": "2016-06-30",
        "latest_strike_gbp_mwh": 116.96
       }
@@ -13947,21 +13947,21 @@
    "attribution_pct": 1.0,
    "attribution_note": "",
    "attribution_confidence": "",
-   "cumulative": 2668574056.8674216,
-   "runrate_per_year": 335702065.92878294,
-   "data_to": "2026-11-19",
+   "cumulative": 2668583593.740761,
+   "runrate_per_year": 335106246.6560558,
+   "data_to": "2026-11-20",
    "carry_forward": {
-    "published_cumulative": 2668574056.8674216,
-    "data_to": "2026-11-19",
-    "from": "2026-11-20T00:00:00+00:00",
-    "rate_per_year": 335702065.92878294,
-    "rate_per_sec": 10.63775654450221,
-    "rate_per_year_real": 309825031.6801059,
-    "estimated_since": 546950.7946565769,
-    "estimated_since_real": 504790.0042351325,
-    "running_total": 2669121007.6620784,
+    "published_cumulative": 2668583593.740761,
+    "data_to": "2026-11-20",
+    "from": "2026-11-21T00:00:00+00:00",
+    "rate_per_year": 335106246.6560558,
+    "rate_per_sec": 10.618876171066741,
+    "rate_per_year_real": 309275140.1429848,
+    "estimated_since": 522048.46200835035,
+    "estimated_since_real": 481807.22639520664,
+    "running_total": 2669105642.2027693,
     "label": "estimated",
-    "at": "2026-11-20T14:16:55.990991+00:00"
+    "at": "2026-11-21T13:39:22.308101+00:00"
    },
    "by_recipient": [
     {
@@ -14090,10 +14090,10 @@
      "volume_mwh": -236028.2910575225
     }
    ],
-   "curtailed_mwh": 51136943.18311376,
+   "curtailed_mwh": 51137002.291447096,
    "history_source_url": "https://www.ref.org.uk/constraints/index.php?tab=yr",
    "held_from": "2015-11-06",
-   "held_to": "2026-11-19"
+   "held_to": "2026-11-20"
   },
   {
    "id": "capacity_market",
@@ -14113,12 +14113,12 @@
     "from": "2026-10-01T00:00:00+00:00",
     "rate_per_year": 274814442.4592791,
     "rate_per_sec": 8.708344185213043,
-    "rate_per_year_real": 253630829.18637636,
-    "estimated_since": 38067795.026293784,
-    "estimated_since_real": 35133402.49301697,
-    "running_total": 1276138114.865704,
+    "rate_per_year_real": 253630829.18637633,
+    "estimated_since": 38800570.11760575,
+    "estimated_since_real": 35809692.837706976,
+    "running_total": 1276870889.957016,
     "label": "estimated",
-    "at": "2026-11-20T14:16:55.990991+00:00"
+    "at": "2026-11-21T13:39:22.308101+00:00"
    },
    "source": "LCCC data portal, capacity market payments",
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
@@ -14287,11 +14287,11 @@
     "rate_per_year": 7706343000.0,
     "rate_per_sec": 244.1992737090273,
     "rate_per_year_real": 7112312393.75,
-    "estimated_since": 12629648462.236086,
-    "estimated_since_real": 11656113059.93872,
-    "running_total": 87839969656.84608,
+    "estimated_since": 12650196931.75964,
+    "estimated_since_real": 11675077584.9365,
+    "running_total": 87860518126.36964,
     "label": "estimated",
-    "at": "2026-11-20T14:16:55.990991+00:00"
+    "at": "2026-11-21T13:39:22.308101+00:00"
    },
    "source": "Ofgem Renewables Obligation Annual Reports. 2024 (SY23): Annual Report 2024-25 headline scheme value (PDF, RO_24-25_SY23_Annual_Report, Mar 2026). 2010-2023 (SY9-SY22): scheme value = total ROCs presented x notional worth of a ROC, Figure A4.1 of the SY22 Annual Report (2023-24, PDF, Mar 2025), cross-checked against headline values stated in the SY22/SY23 report text (SY1 GBP 0.25bn, SY18 GBP 6.31bn, SY19 GBP 5.73bn, SY22 GBP 6.75bn, SY23 GBP 7.70bn). 2002-2009 (SY1-SY8): ROCs presented x worth of a ROC from the compliance tables of Ofgem's second annual report (2003-04, Feb 2005), the RO Annual Report 2004-2005 (Feb 2006), the RO Annual Report 2008-09 (Feb 2010) and the RO Annual Report 2010-11 (Mar 2012).",
    "source_url": "https://www.ofgem.gov.uk/transparency-document/renewables-obligation-ro-annual-report-scheme-year-22-april-2023-march-2024",
@@ -14446,12 +14446,12 @@
     "from": "2025-04-01T00:00:00+00:00",
     "rate_per_year": 1725741218.0,
     "rate_per_sec": 54.68543926027328,
-    "rate_per_year_real": 1592715332.4458334,
-    "estimated_since": 2828255233.4007363,
-    "estimated_since_real": 2610243892.492763,
-    "running_total": 19589120003.932735,
+    "rate_per_year_real": 1592715332.4458332,
+    "estimated_since": 2832856811.7140307,
+    "estimated_since_real": 2614490765.8110743,
+    "running_total": 19593721582.24603,
     "label": "estimated",
-    "at": "2026-11-20T14:16:55.990991+00:00"
+    "at": "2026-11-21T13:39:22.308101+00:00"
    },
    "source": "The shared cost register (reference/register_pin.yaml), line FIT: the levelisation fund cost, what licensed suppliers paid in, by scheme year (April-March, keyed by start year), GB (no FiT scheme in Northern Ireland), from Ofgem's FiT annual reports (SY1-5, SY14-15) and annual levelisation notices (2015-16 to 2022-23); includes correction C-008. Valued as the levelisation fund, as Reliable Britain does (0084; Richard, 1 Nov 2026; aios-harness#45), not Ofgem's scheme value.",
    "source_url": "https://www.ofgem.gov.uk/transparency-document/feed-tariffs-annual-report-scheme-year-15-april-2024-march-2025",
@@ -14476,11 +14476,11 @@
     "rate_per_year": 806774929.67,
     "rate_per_sec": 25.565154817539987,
     "rate_per_year_real": 744586028.8412708,
-    "estimated_since": 1520989068.619775,
-    "estimated_since_real": 1403746161.2470007,
-    "running_total": 15204363648.969772,
+    "estimated_since": 1523140282.244018,
+    "estimated_since_real": 1405731552.1543748,
+    "running_total": 15206514862.594015,
     "label": "estimated",
-    "at": "2026-11-20T14:16:55.990991+00:00"
+    "at": "2026-11-21T13:39:22.308101+00:00"
    },
    "source": "HMRC Environmental Taxes Bulletin (formerly Climate Change Levy and Carbon Price Floor Bulletin), March 2026 edition, tables ODS (2026_March_env_tabs_test.ods), Table 1b \"CCL and CPF receipts and clearances data by calendar year\": electricity main-rate declared liabilities (the only commodity split HMRC publishes), rounded down to the nearest GBP 0.1m, as read by the shared cost register (line CCL_ELEC). Carbon Price Support is not in this line: it is part of the carbon line's tax collected (aios-harness#44).",
    "source_url": "https://www.gov.uk/government/statistics/environmental-taxes-bulletin",
@@ -14504,12 +14504,12 @@
     "from": "2025-01-01T00:00:00+00:00",
     "rate_per_year": 5579855189.031232,
     "rate_per_sec": 176.81494121958679,
-    "rate_per_year_real": 5149741351.543408,
-    "estimated_since": 10519537029.32896,
-    "estimated_since_real": 9708656049.984854,
-    "running_total": 77180381431.85799,
+    "rate_per_year_real": 5149741351.543407,
+    "estimated_since": 10534415355.44261,
+    "estimated_since_real": 9722387505.127241,
+    "running_total": 77195259757.97163,
     "label": "estimated",
-    "at": "2026-11-20T14:16:55.990991+00:00"
+    "at": "2026-11-21T13:39:22.308101+00:00"
    },
    "parts": [
     {
@@ -14679,12 +14679,12 @@
     "from": "2025-01-01T00:00:00+00:00",
     "rate_per_year": 1429699756.2032666,
     "rate_per_sec": 45.3044514222649,
-    "rate_per_year_real": 1319493733.3292649,
-    "estimated_since": 2695370940.050156,
-    "estimated_since_real": 2487602763.42129,
-    "running_total": 14636706434.725273,
+    "rate_per_year_real": 1319493733.3292646,
+    "estimated_since": 2699183142.7860284,
+    "estimated_since_real": 2491121108.8629384,
+    "running_total": 14640518637.461145,
     "label": "estimated",
-    "at": "2026-11-20T14:16:55.990991+00:00"
+    "at": "2026-11-21T13:39:22.308101+00:00"
    },
    "source": "The shared cost register (reference/register_pin.yaml), line TNUOS, its primary-source series of the whole charge (demand and generators' parts), calendar years: 2006-24 from Ofgem's TPCR4 final proposals and Transmission Annual Reports and NESO's TNUoS tariff statements, charging years weighted to calendar years (1/4 previous + 3/4 own); 2002-05 the gas-counterfactual engine's assembled transmission owners' allowances (NGC, SP Transmission, SHETL; no GB charge before BETTA). Richard's rulings of 1 Nov 2026 (primary sources; calendar years; aios-harness#43).",
    "source_url": "https://www.neso.energy/industry-information/charging/tnuos-charges",
@@ -14911,37 +14911,37 @@
    "attribution_pct": 1.0,
    "attribution_note": "Estimated cost of paying other stations to replace the wind energy switched off for network constraints: each half-hour's switched-off wind volume priced against that half-hour's accepted offers (Octopus Energy Wasted Wind method). Taken out of the balancing (BSUoS) uplift, never more than it, so no total changes.",
    "attribution_confidence": "low",
-   "cumulative": 5720199244.307372,
-   "runrate_per_year": 1821780112.9409695,
-   "data_to": "2026-11-10",
+   "cumulative": 5751454134.213637,
+   "runrate_per_year": 1850329912.947468,
+   "data_to": "2026-11-12",
    "carry_forward": {
-    "published_cumulative": 5720199244.307372,
-    "data_to": "2026-11-10",
-    "from": "2026-11-11T00:00:00+00:00",
-    "rate_per_year": 1821780112.9409695,
-    "rate_per_sec": 57.72872819672502,
-    "rate_per_year_real": 1681351229.2351031,
-    "estimated_since": 47858038.814658076,
-    "estimated_since_real": 44168981.65602818,
-    "running_total": 5768057283.12203,
+    "published_cumulative": 5751454134.213637,
+    "data_to": "2026-11-12",
+    "from": "2026-11-13T00:00:00+00:00",
+    "rate_per_year": 1850329912.947468,
+    "rate_per_sec": 58.63341676640391,
+    "rate_per_year_real": 1707700315.4911005,
+    "estimated_since": 43409971.76902267,
+    "estimated_since_real": 40063786.44516051,
+    "running_total": 5794864105.98266,
     "label": "estimated",
-    "at": "2026-11-20T14:16:55.990991+00:00"
+    "at": "2026-11-21T13:39:22.308101+00:00"
    },
    "by_fuel_while_wind_constrained": [
     {
      "fuel": "CCGT",
-     "cost": 2562096110.5763197,
-     "volume_mwh": 18908926.01264085
+     "cost": 2564236555.1285143,
+     "volume_mwh": 18917601.170979008
     },
     {
      "fuel": "NESO_TRADE",
-     "cost": 1148123013.1480708,
-     "volume_mwh": 8490733.933
+     "cost": 1152671070.908071,
+     "volume_mwh": 8507037.983
     },
     {
      "fuel": "BIOMASS",
-     "cost": 94041800.80694714,
-     "volume_mwh": 596188.7946239733
+     "cost": 94041800.80694711,
+     "volume_mwh": 596188.7946239734
     },
     {
      "fuel": "COAL",
@@ -14950,13 +14950,13 @@
     },
     {
      "fuel": "UNCLASSIFIED",
-     "cost": 13954844.736335473,
-     "volume_mwh": 98784.59791348025
+     "cost": 13987658.930206882,
+     "volume_mwh": 98954.33958389689
     },
     {
      "fuel": "PS",
-     "cost": 9951360.5522367,
-     "volume_mwh": 68653.9935906046
+     "cost": 10151817.218903366,
+     "volume_mwh": 69382.92692393794
     },
     {
      "fuel": "NO_ID",
@@ -14965,23 +14965,23 @@
     },
     {
      "fuel": "OCGT",
-     "cost": 5153826.975533334,
+     "cost": 5153826.975533333,
      "volume_mwh": 8400.880233333333
     },
     {
      "fuel": "OTHER",
-     "cost": 3715934.622668608,
-     "volume_mwh": 19653.298190320347
+     "cost": 3721679.6909692716,
+     "volume_mwh": 19682.764861511227
     },
     {
      "fuel": "NPSHYD",
-     "cost": 2037617.896507691,
-     "volume_mwh": 15392.575249822257
+     "cost": 2037617.8965076907,
+     "volume_mwh": 15392.575249822261
     }
    ],
    "cross_check_cumulative": {
-    "accepted_offers": 6271233959.714635,
-    "accepted_offers_wind": 3881150418.9194965
+    "accepted_offers": 6278971302.47567,
+    "accepted_offers_wind": 3888077937.160531
    },
    "measured_from": "2015-11-06",
    "measured_annual": [
@@ -15031,7 +15031,7 @@
     },
     {
      "year": 2026,
-     "cost": 1655364034.654584
+     "cost": 1686618924.5608492
     }
    ],
    "source": "Elexon Insights settlement stacks (bids and offers)",
@@ -15043,24 +15043,24 @@
    "perspectives": [],
    "cadence": "daily",
    "layer": "indirect",
-   "attribution_pct": 0.13783545240000006,
+   "attribution_pct": 0.13799679129373502,
    "attribution_note": "Raw totals stored; attribution happens in the money model. Only each year's cost above what the same year would have cost without net-zero policy (the gas-counterfactual engine's balancing road, GO4, reference/model_pin.yaml) is attributed, NET of wind constraint payments already counted in the direct layer; a year below it counts as negative (signed years, as Reliable Britain). The estimated cost of replacing switched-off wind (constraint turn-up) is then shown as its own line and taken out of this one.",
    "attribution_confidence": "low",
-   "cumulative": 3729801944.1362796,
-   "runrate_per_year": 1330345336.919909,
-   "data_to": "2026-11-10",
+   "cumulative": 3740971726.246378,
+   "runrate_per_year": 1331707279.5621102,
+   "data_to": "2026-11-12",
    "carry_forward": {
-    "published_cumulative": 3729801944.1362796,
-    "data_to": "2026-11-10",
-    "from": "2026-11-11T00:00:00+00:00",
-    "rate_per_year": 1330345336.919909,
-    "rate_per_sec": 42.156099859302,
-    "rate_per_year_real": 1227797883.8656662,
-    "estimated_since": 34948080.901174806,
-    "estimated_since_real": 32254166.33170925,
-    "running_total": 3764750025.0374546,
+    "published_cumulative": 3740971726.246378,
+    "data_to": "2026-11-12",
+    "from": "2026-11-13T00:00:00+00:00",
+    "rate_per_year": 1331707279.5621102,
+    "rate_per_sec": 42.199257217345746,
+    "rate_per_year_real": 1229054843.4291975,
+    "estimated_since": 31242739.473581884,
+    "estimated_since_real": 28834444.97249328,
+    "running_total": 3772214465.7199597,
     "label": "estimated",
-    "at": "2026-11-20T14:16:55.990991+00:00"
+    "at": "2026-11-21T13:39:22.308101+00:00"
    },
    "raw_annual": [
     {
@@ -15157,11 +15157,11 @@
     },
     {
      "year": 2025,
-     "cost": 3721918184.63
+     "cost": 3723784237.08
     },
     {
      "year": 2026,
-     "cost": 4460498830.18
+     "cost": 4507938137.01
     }
    ],
    "road_annual": [
@@ -15287,8 +15287,8 @@
     },
     {
      "year": 2026,
-     "cost": 1320461077.2710865,
-     "basis": "carried forward from 2025 by CPIH, pro-rated to 2026-11-10"
+     "cost": 1328871657.3810935,
+     "basis": "carried forward from 2025 by CPIH, pro-rated to 2026-11-12"
     }
    ],
    "road_source": "gas-counterfactual engine v4-s43, GO4 balancing, generators' share removed",
@@ -15296,7 +15296,7 @@
    "source_url": "https://www.nao.org.uk/wp-content/uploads/2014/05/Electricity-Balancing-Services.pdf",
    "verified": false,
    "held_from": "2016-04-01",
-   "held_to": "2026-11-10"
+   "held_to": "2026-11-12"
   },
   {
    "id": "vat",
@@ -15307,32 +15307,32 @@
    "attribution_pct": 1.0,
    "attribution_note": "5% VAT on households' share of the costs counted above (the Climate Change Levy apart, which households do not pay), as Reliable Britain counts it. Households' share is the engine's domestic share of electricity each year.",
    "attribution_confidence": "medium",
-   "cumulative": 3693302232.1922603,
-   "runrate_per_year": 410722378.0952841,
-   "data_to": "2026-11-19",
+   "cumulative": 3694061137.0156713,
+   "runrate_per_year": 411036279.0655588,
+   "data_to": "2026-11-20",
    "carry_forward": {
-    "published_cumulative": 3693302232.1922603,
-    "data_to": "2026-11-19",
+    "published_cumulative": 3694061137.0156713,
+    "data_to": "2026-11-20",
     "from": null,
-    "rate_per_year": 410722378.0952841,
-    "rate_per_sec": 13.015006784270163,
-    "rate_per_year_real": 379062528.11710596,
-    "estimated_since": 527245405.28210163,
-    "estimated_since_real": 486603571.958273,
-    "running_total": 4220547637.474362,
+    "rate_per_year": 411036279.0655588,
+    "rate_per_sec": 13.024953705781137,
+    "rate_per_year_real": 379352232.55425525,
+    "estimated_since": 527901672.10766166,
+    "estimated_since_real": 487209251.5493627,
+    "running_total": 4221962809.123333,
     "label": "estimated",
     "with_lines": [
      {
       "id": "vat:cfd_renewable",
-      "data_to": "2026-11-10",
-      "from": "2026-11-11T00:00:00+00:00",
-      "rate_per_sec": 1.3160505381607794
+      "data_to": "2026-11-11",
+      "from": "2026-11-12T00:00:00+00:00",
+      "rate_per_sec": 1.309022557034652
      },
      {
       "id": "vat:constraints",
-      "data_to": "2026-11-19",
-      "from": "2026-11-20T00:00:00+00:00",
-      "rate_per_sec": 0.19438275271538116
+      "data_to": "2026-11-20",
+      "from": "2026-11-21T00:00:00+00:00",
+      "rate_per_sec": 0.19403775337784906
      },
      {
       "id": "vat:capacity_market",
@@ -15366,18 +15366,18 @@
      },
      {
       "id": "vat:constraint_turnup",
-      "data_to": "2026-11-10",
-      "from": "2026-11-11T00:00:00+00:00",
-      "rate_per_sec": 1.054871772134785
+      "data_to": "2026-11-12",
+      "from": "2026-11-13T00:00:00+00:00",
+      "rate_per_sec": 1.0714030636518113
      },
      {
       "id": "vat:bsuos",
-      "data_to": "2026-11-10",
-      "from": "2026-11-11T00:00:00+00:00",
-      "rate_per_sec": 0.7703145583483619
+      "data_to": "2026-11-12",
+      "from": "2026-11-13T00:00:00+00:00",
+      "rate_per_sec": 0.7711031688059683
      }
     ],
-    "at": "2026-11-20T14:16:55.990991+00:00"
+    "at": "2026-11-21T13:39:22.308101+00:00"
    },
    "base_lines": [
     "cfd_renewable",
