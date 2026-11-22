@@ -1,24 +1,24 @@
 {
- "generated_at": "2026-11-21T13:39:22.308101+00:00",
+ "generated_at": "2026-11-22T13:31:45.460658+00:00",
  "window": {
   "from": "2015-11-06",
-  "to": "2026-11-20"
+  "to": "2026-11-21"
  },
- "gb_cost": 2545759124.98,
- "scotland_cost": 2379445995.72,
+ "gb_cost": 2545748456.16,
+ "scotland_cost": 2379435326.9,
  "scotland_share": 0.9347,
- "scotland_mwh": 49547454,
- "gb_mwh": 51137002,
- "scotland_last12_cost": 328867499.89,
- "gb_last12_cost": 334876878.93,
+ "scotland_mwh": 49547977,
+ "gb_mwh": 51137526,
+ "scotland_last12_cost": 328597742.51,
+ "gb_last12_cost": 334607121.55,
  "scotland_per_mwh": 48.02,
  "unplaced_cost": 0.0,
  "n_farms_paid": 111,
  "farms": [
   {
    "farm": "Moray East",
-   "cost": 304588689.78,
-   "mwh": 7021289,
+   "cost": 304575857.3,
+   "mwh": 7021500,
    "units": [
     "T_MOWEO-1",
     "T_MOWEO-2",
@@ -27,8 +27,8 @@
   },
   {
    "farm": "Seagreen",
-   "cost": 163553179.73,
-   "mwh": 9764383,
+   "cost": 163553287.42,
+   "mwh": 9764391,
    "units": [
     "T_SGRWO-1",
     "T_SGRWO-2",
@@ -49,8 +49,8 @@
   },
   {
    "farm": "Moray West",
-   "cost": 96205066.71,
-   "mwh": 3012013,
+   "cost": 96205970.32,
+   "mwh": 3012069,
    "units": [
     "T_MOWWO-1",
     "T_MOWWO-2",
@@ -114,8 +114,8 @@
   },
   {
    "farm": "Dorenell",
-   "cost": 57554875.79,
-   "mwh": 1715785,
+   "cost": 57553326.01,
+   "mwh": 1715819,
    "units": [
     "T_DOREW-1",
     "T_DOREW-2"
@@ -818,7 +818,7 @@
   },
   {
    "month": "2026-11",
-   "scotland": -2544468,
+   "scotland": -2555137,
    "rest": 495230
   }
  ],
@@ -826,14 +826,14 @@
   "scotland_consumption_twh": 21.6573,
   "gb_consumption_twh": 249.2477,
   "scotland_consumption_share": 0.0869,
-  "paid_in_scotland": 206751660.15,
-  "paid_elsewhere": 2172694335.57,
+  "paid_in_scotland": 206750733.13,
+  "paid_elsewhere": 2172684593.77,
   "source": "DESNZ, Subnational electricity consumption statistics, Electricity consumption by Region, 2005 to 2024",
   "source_url": "https://www.gov.uk/government/statistics/regional-and-local-authority-electricity-consumption-statistics"
  },
  "turnup_same_window": {
-  "cost": 5894329818.99,
-  "to": "2026-11-20",
+  "cost": 5894440405.18,
+  "to": "2026-11-21",
   "basis": "replacement_estimate (GB-wide)"
  },
  "zone_source": "reference/bmu_zone.csv (Elexon BM unit register: grid zone per unit)"
