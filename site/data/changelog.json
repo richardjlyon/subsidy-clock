@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-22T13:31:45.460658+00:00",
+ "generated_at": "2026-11-22T21:25:56.314054+00:00",
  "entries": [
   {
    "date": "2026-06-12",
@@ -498,6 +498,20 @@
     "Also changed: the methodology page calls the indirect lines \u201cindirect costs\u201d, not \u201cindirect subsidies\u201d; and the Capacity Market explainer, which said the model behind the net-zero share was not yet published, now links to it, published with Reliable Britain."
    ],
    "credit": "Mark W Tebbutt"
+  },
+  {
+   "date": "2026-11-22",
+   "kind": "change",
+   "figure": "release-price-of-climate-policy",
+   "figure_label": "The Clock now counts as The Price of Climate Policy does",
+   "was": "\u00a3262.3bn in 2024 prices, including estimated indirect costs, to each source's latest data.",
+   "now": "\u00a3268.8bn on the same basis. From 2002 to 2024 every line agrees with The Price of Climate Policy (Report No. 2): \u00a3258.6bn in 2024 prices.",
+   "cause": [
+    "The Subsidy Clock and [The Price of Climate Policy (Report No. 2)](https://richardlyon.net/research/price-of-climate-policy/) now count the bill from the same model, version 1.7.0, in the same way.",
+    "A new line: power stations' share of grid and balancing charges, the part paid by stations with no subsidy, which they recover through the price of power, +\u00a36.4bn from 2002, with the VAT on it, +\u00a30.1bn. The part paid by subsidised stations stays out, because it comes out of subsidy income the Clock already counts. The method is on the methodology page.",
+    "Wind constraint payments before 2024 now come from primary records: Elexon's from 2016, National Grid's for 2010 to 2015. Paid to switch off, paid to switch on and balancing are split again, so the three together barely move (+\u00a30.0bn) and the direct total moves by +\u00a30.1bn."
+   ],
+   "credit": "Richard Lyon"
   }
  ]
 }
