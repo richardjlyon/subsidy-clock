@@ -19,8 +19,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=f090bb39e3">
-<link rel="stylesheet" href="skin-ft.css?v=45f2db1000">
+<link rel="stylesheet" href="style.css?v=b0056f6e30">
+<link rel="stylesheet" href="skin-ft.css?v=95e7e7dd88">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <!-- Matomo (self-hosted, cookieless) -->
@@ -123,14 +123,19 @@
   <p class="scheme-meta" id="im-tnuos"></p>
   <blockquote id="attr-tnuos"></blockquote>
   <p id="raw-tnuos"></p>
-  <p>Each year’s charge is compared with what the same year would have cost in a Britain without net-zero policy: the 2002–05 grid carried forward, as the engine behind Reliable Britain models it. Only the difference is counted, and a year below that comparison counts as negative. The part of the charge that generators pay is left out of both, because generators recover it through prices and subsidies already counted.</p>
+  <p>Each year’s charge is compared with what the same year would have cost in a Britain without net-zero policy: the 2002–05 grid carried forward, as the engine behind Reliable Britain models it. Only the difference is counted, and a year below that comparison counts as negative. The part of the charge that generators pay is left out of both: stations with a subsidy pay it out of subsidy income, which is already counted, and the part paid by stations with none has its own line, below.</p>
 
   <h3>Balancing costs (BSUoS)</h3>
   <p class="scheme-meta" id="im-bsuos"></p>
   <blockquote id="attr-bsuos"></blockquote>
   <p id="raw-bsuos"></p>
-  <p>As for TNUoS: each year is compared with what balancing would have cost the same year in a Britain without net-zero policy, as the engine behind Reliable Britain models it; only the difference counts, a year below it counts as negative, and the generators’ part of the charge is left out of both. For the current year the comparison is cut to the days the data cover.</p>
+  <p>As for TNUoS: each year is compared with what balancing would have cost the same year in a Britain without net-zero policy, as the engine behind Reliable Britain models it; only the difference counts, a year below it counts as negative, and the generators’ part of the charge is left out of both, as for TNUoS, with the part paid by stations with no subsidy on its own line, below. For the current year the comparison is cut to the days the data cover.</p>
   <p><strong>Corrected 30 September 2026.</strong> This series previously came from NESO’s <em>Daily Balancing Costs</em> dataset, which breaks down balancing-mechanism and ancillary spend. That is not the same quantity as the balancing cost recovered from bill-payers through BSUoS: it ran 23–39% below the outturn in NESO’s own <em>Annual Balancing Costs Report</em> in every year from 2018-19. Because the pre-2017 history and the baseline are both on the gross BSUoS basis, the old series joined two different definitions mid-run. The series now reads NESO’s settled BSUoS charge data — the half-hourly charge up to 31 March 2023, and actual BSUoS cost thereafter, because the April 2023 fixed-tariff reform broke the identity between what users are charged and what balancing costs. Full detail, and the effect on the totals, is on the <a href="corrections.html">corrections page</a>.</p>
+
+  <h3>Power stations’ share of grid costs</h3>
+  <p class="scheme-meta" id="im-generators_share"></p>
+  <blockquote id="attr-generators_share"></blockquote>
+  <p>Power stations pay part of the grid (TNUoS) and balancing (BSUoS) charges themselves. A station with a subsidy pays its part out of subsidy income, which the Clock already counts. A station with no subsidy recovers its part through the price of power, which no other line counts. This line is that part: the generators’ share of each year’s grid and balancing cost above what a Britain without net-zero policy would have paid, as the engine behind Reliable Britain models it, times the share of the year’s electricity made by stations with no Renewables Obligation, Contract for Difference or Feed-in Tariff (DUKES 6.2, LCCC, Ofgem). It is an estimate, and its attribution confidence is <strong>low</strong>. From 2026 it continues at its 2025 rate. It is the line of the same name in <a href="https://richardlyon.net/research/price-of-climate-policy/">The Price of Climate Policy</a> (Report No. 2), counted the same way.</p>
 
   <h3 id="attr-constraint_turnup">Paid to switch on (constraint turn-up)</h3>
   <p class="scheme-meta" id="im-constraint_turnup"></p>
@@ -520,9 +525,10 @@
     vat: 'Households\' share (gas-counterfactual engine) of the counted lines, at 5%',
     tnuos: 'NESO Final TNUoS Tariffs publications',
     bsuos: 'NESO settled BSUoS charge data; NAO Electricity Balancing Services',
-    constraint_turnup: 'Elexon settlement stacks (accepted bids and offers)'
+    constraint_turnup: 'Elexon settlement stacks (accepted bids and offers)',
+    generators_share: 'NESO TNUoS and BSUoS charges, the gas-counterfactual engine (Reliable Britain), DUKES 6.2, LCCC and Ofgem output'
   };
-  ['capacity_market', 'ccl', 'carbon', 'vat', 'tnuos', 'bsuos', 'constraint_turnup'].forEach(function (id) {
+  ['capacity_market', 'ccl', 'carbon', 'vat', 'tnuos', 'bsuos', 'constraint_turnup', 'generators_share'].forEach(function (id) {
     var s = byId[id];
     if (!s) return;
     var srcLabel = esc(INDIRECT_SOURCE_NAMES[id] || s.source_url || id);

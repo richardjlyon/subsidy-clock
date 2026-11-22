@@ -514,6 +514,8 @@ SCHEME_FIELDS = {
     "bsuos": (_REF + ("raw_annual", "held_from", "held_to", "road_annual", "road_source"), ()),
     "constraint_turnup": (("by_fuel_while_wind_constrained", "cross_check_cumulative",
                            "measured_from", "measured_annual", "source", "source_url"), ()),
+    # model 1.7.0: the generators' share of grid and balancing charges not paid out of subsidy
+    "generators_share": (("method",), ()),
 }
 
 # top-level keys: (always, when present)

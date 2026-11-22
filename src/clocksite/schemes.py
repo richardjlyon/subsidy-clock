@@ -55,6 +55,10 @@ SCHEMES = [
     Scheme("constraint_turnup", "Paid to switch on (constraint turn-up)",
            "constraint-turnup", "constraint-turnup", "#6b8799",
            anchor="attr-constraint_turnup"),
+    # model 1.7.0 (Richard, 22 Nov 2026: "ensure the clock is consistent" with Report No. 2): the part of the
+    # generators' share of grid and balancing charges not paid out of subsidy; no explainer page yet
+    Scheme("generators_share", "Power stations’ share of grid costs", "generators-share",
+           "generators-share", "#a3b1bf", anchor="attr-generators_share"),
 ]
 
 _BY_ID = {s.id: s for s in SCHEMES}
