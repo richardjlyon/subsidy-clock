@@ -1,435 +1,435 @@
 {
- "generated_at": "2026-11-22T21:25:56.314054+00:00",
+ "generated_at": "2026-11-23T16:21:49.612638+00:00",
  "perspectives": {
   "renewables": {
-   "cumulative": 108637610760.60054,
-   "runrate_per_year": 12027623031.37562,
-   "rate_per_sec": 381.1323748122677,
+   "cumulative": 108637476811.4504,
+   "runrate_per_year": 12027477142.029655,
+   "rate_per_sec": 381.12775185786165,
    "per_household_per_year": 414.74,
    "per_person_per_year": 173.55,
    "per_mwh_delivered": 43.92,
    "since_year": 2002,
    "real": {
-    "cumulative": 130682446793.03394,
-    "runrate_per_year": 11100493756.040417,
-    "rate_per_sec": 351.75342092048874,
+    "cumulative": 130682321280.63402,
+    "runrate_per_year": 11100359112.331537,
+    "rate_per_sec": 351.74915431881817,
     "per_household_per_year": 382.77,
-    "per_person_per_year": 160.18,
+    "per_person_per_year": 160.17,
     "per_mwh_delivered": 40.54,
-    "published_cumulative": 130682446793.03394,
-    "estimated_since": 14384103819.332178,
-    "running_total": 145066550612.36612,
+    "published_cumulative": 130682321280.63402,
+    "estimated_since": 14407230656.81839,
+    "running_total": 145089551937.4524,
     "carry_forward": [
      {
       "id": "cfd_renewable",
       "data_to": "2026-11-11",
       "from": "2026-11-12T00:00:00+00:00",
       "rate_per_sec": 66.1152946931146,
-      "estimated_since": 62224827.05596573
+      "estimated_since": 66730802.47615472
      },
      {
       "id": "constraints",
-      "data_to": "2026-11-21",
-      "from": "2026-11-22T00:00:00+00:00",
-      "rate_per_sec": 9.792443216123802,
-      "estimated_since": 755548.8241392099
+      "data_to": "2026-11-22",
+      "from": "2026-11-23T00:00:00+00:00",
+      "rate_per_sec": 9.788176614453224,
+      "estimated_since": 576617.6927897697
      },
      {
       "id": "ro",
       "data_to": "2025-03-31",
       "from": "2025-04-01T00:00:00+00:00",
       "rate_per_sec": 225.37557969395647,
-      "estimated_since": 11700859200.341671
+      "estimated_since": 11716219289.518095
      },
      {
       "id": "fit",
       "data_to": "2025-03-31",
       "from": "2025-04-01T00:00:00+00:00",
       "rate_per_sec": 50.47010331729388,
-      "estimated_since": 2620264243.1104016
+      "estimated_since": 2623703947.1313505
      }
     ]
    },
-   "published_cumulative": 108637610760.60054,
-   "estimated_since": 15585484950.969402,
-   "running_total": 124223095711.56995,
+   "published_cumulative": 108637476811.4504,
+   "estimated_since": 15610543375.333694,
+   "running_total": 124248020186.78409,
    "carry_forward": [
     {
      "id": "cfd_renewable",
      "data_to": "2026-11-11",
      "from": "2026-11-12T00:00:00+00:00",
      "rate_per_sec": 71.63733962233637,
-     "estimated_since": 67421934.50759266
+     "estimated_since": 72304255.50463717
     },
     {
      "id": "constraints",
-     "data_to": "2026-11-21",
-     "from": "2026-11-22T00:00:00+00:00",
-     "rate_per_sec": 10.610322220630755,
-     "estimated_since": 818653.3534691213
+     "data_to": "2026-11-22",
+     "from": "2026-11-23T00:00:00+00:00",
+     "rate_per_sec": 10.605699266224711,
+     "estimated_since": 624777.6355284186
     },
     {
      "id": "ro",
      "data_to": "2025-03-31",
      "from": "2025-04-01T00:00:00+00:00",
      "rate_per_sec": 244.1992737090273,
-     "estimated_since": 12678131864.930027
+     "estimated_since": 12694774850.945114
     },
     {
      "id": "fit",
      "data_to": "2025-03-31",
      "from": "2025-04-01T00:00:00+00:00",
      "rate_per_sec": 54.68543926027328,
-     "estimated_since": 2839112498.1783133
+     "estimated_since": 2842839491.248416
     }
    ]
   },
   "low_carbon": {
-   "cumulative": 108637610760.60054,
-   "runrate_per_year": 12027623031.37562,
-   "rate_per_sec": 381.1323748122677,
+   "cumulative": 108637476811.4504,
+   "runrate_per_year": 12027477142.029655,
+   "rate_per_sec": 381.12775185786165,
    "per_household_per_year": 414.74,
    "per_person_per_year": 173.55,
    "per_mwh_delivered": 43.92,
    "since_year": 2002,
    "real": {
-    "cumulative": 130682446793.03394,
-    "runrate_per_year": 11100493756.040417,
-    "rate_per_sec": 351.75342092048874,
+    "cumulative": 130682321280.63402,
+    "runrate_per_year": 11100359112.331537,
+    "rate_per_sec": 351.74915431881817,
     "per_household_per_year": 382.77,
-    "per_person_per_year": 160.18,
+    "per_person_per_year": 160.17,
     "per_mwh_delivered": 40.54,
-    "published_cumulative": 130682446793.03394,
-    "estimated_since": 14384103819.332178,
-    "running_total": 145066550612.36612,
+    "published_cumulative": 130682321280.63402,
+    "estimated_since": 14407230656.81839,
+    "running_total": 145089551937.4524,
     "carry_forward": [
      {
       "id": "cfd_renewable",
       "data_to": "2026-11-11",
       "from": "2026-11-12T00:00:00+00:00",
       "rate_per_sec": 66.1152946931146,
-      "estimated_since": 62224827.05596573
+      "estimated_since": 66730802.47615472
      },
      {
       "id": "constraints",
-      "data_to": "2026-11-21",
-      "from": "2026-11-22T00:00:00+00:00",
-      "rate_per_sec": 9.792443216123802,
-      "estimated_since": 755548.8241392099
+      "data_to": "2026-11-22",
+      "from": "2026-11-23T00:00:00+00:00",
+      "rate_per_sec": 9.788176614453224,
+      "estimated_since": 576617.6927897697
      },
      {
       "id": "ro",
       "data_to": "2025-03-31",
       "from": "2025-04-01T00:00:00+00:00",
       "rate_per_sec": 225.37557969395647,
-      "estimated_since": 11700859200.341671
+      "estimated_since": 11716219289.518095
      },
      {
       "id": "fit",
       "data_to": "2025-03-31",
       "from": "2025-04-01T00:00:00+00:00",
       "rate_per_sec": 50.47010331729388,
-      "estimated_since": 2620264243.1104016
+      "estimated_since": 2623703947.1313505
      }
     ]
    },
-   "published_cumulative": 108637610760.60054,
-   "estimated_since": 15585484950.969402,
-   "running_total": 124223095711.56995,
+   "published_cumulative": 108637476811.4504,
+   "estimated_since": 15610543375.333694,
+   "running_total": 124248020186.78409,
    "carry_forward": [
     {
      "id": "cfd_renewable",
      "data_to": "2026-11-11",
      "from": "2026-11-12T00:00:00+00:00",
      "rate_per_sec": 71.63733962233637,
-     "estimated_since": 67421934.50759266
+     "estimated_since": 72304255.50463717
     },
     {
      "id": "constraints",
-     "data_to": "2026-11-21",
-     "from": "2026-11-22T00:00:00+00:00",
-     "rate_per_sec": 10.610322220630755,
-     "estimated_since": 818653.3534691213
+     "data_to": "2026-11-22",
+     "from": "2026-11-23T00:00:00+00:00",
+     "rate_per_sec": 10.605699266224711,
+     "estimated_since": 624777.6355284186
     },
     {
      "id": "ro",
      "data_to": "2025-03-31",
      "from": "2025-04-01T00:00:00+00:00",
      "rate_per_sec": 244.1992737090273,
-     "estimated_since": 12678131864.930027
+     "estimated_since": 12694774850.945114
     },
     {
      "id": "fit",
      "data_to": "2025-03-31",
      "from": "2025-04-01T00:00:00+00:00",
      "rate_per_sec": 54.68543926027328,
-     "estimated_since": 2839112498.1783133
+     "estimated_since": 2842839491.248416
     }
    ]
   }
  },
  "indirect": {
-  "cumulative": 112030556508.36116,
-  "runrate_per_year": 12015828912.064978,
-  "rate_per_sec": 380.758641723863,
-  "per_household_per_year": 414.33,
-  "per_person_per_year": 173.38,
+  "cumulative": 112030554060.72058,
+  "runrate_per_year": 12015974801.410942,
+  "rate_per_sec": 380.763264678269,
+  "per_household_per_year": 414.34,
+  "per_person_per_year": 173.39,
   "per_mwh_delivered": 43.88,
   "since_year": 2002,
   "real": {
-   "cumulative": 138143098293.36755,
-   "runrate_per_year": 11089608766.75997,
-   "rate_per_sec": 351.4084964243152,
+   "cumulative": 138143095999.89096,
+   "runrate_per_year": 11089743410.46885,
+   "rate_per_sec": 351.4127630259858,
    "per_household_per_year": 382.4,
    "per_person_per_year": 160.02,
    "per_mwh_delivered": 40.5,
-   "published_cumulative": 138143098293.36755,
-   "estimated_since": 14523087576.248941,
-   "running_total": 152666185869.6165,
+   "published_cumulative": 138143095999.89096,
+   "estimated_since": 14547025769.371973,
+   "running_total": 152690121769.26294,
    "carry_forward": [
     {
      "id": "capacity_market",
      "data_to": "2026-09-30",
      "from": "2026-10-01T00:00:00+00:00",
      "rate_per_sec": 8.037075987602872,
-     "estimated_since": 36729086.15607753
+     "estimated_since": 37276839.39560293
     },
     {
      "id": "ccl",
      "data_to": "2024-12-31",
      "from": "2025-01-01T00:00:00+00:00",
      "rate_per_sec": 23.59450746702128,
-     "estimated_since": 1408430622.3820157
+     "estimated_since": 1410038665.894358
     },
     {
      "id": "carbon",
      "data_to": "2024-12-31",
      "from": "2025-01-01T00:00:00+00:00",
      "rate_per_sec": 163.18545616724364,
-     "estimated_since": 9741054943.171482
+     "estimated_since": 9752176570.290215
     },
     {
      "id": "tnuos",
      "data_to": "2024-12-31",
      "from": "2025-01-01T00:00:00+00:00",
      "rate_per_sec": 41.81223329179865,
-     "estimated_since": 2495904177.727029
+     "estimated_since": 2498753819.3470287
     },
     {
      "id": "constraint_turnup",
      "data_to": "2026-11-12",
      "from": "2026-11-13T00:00:00+00:00",
      "rate_per_sec": 54.11375755732695,
-     "estimated_since": 46254075.94931257
+     "estimated_since": 49942107.02561926
     },
     {
      "id": "bsuos",
      "data_to": "2026-11-12",
      "from": "2026-11-13T00:00:00+00:00",
-     "rate_per_sec": 38.95429239026524,
-     "estimated_since": 33296427.380084883
+     "rate_per_sec": 38.95855899193581,
+     "estimated_since": 35955228.58818215
     },
     {
      "id": "vat:cfd_renewable",
      "data_to": "2026-11-11",
      "from": "2026-11-12T00:00:00+00:00",
      "rate_per_sec": 1.2081187349298976,
-     "estimated_since": 1137028.575506204
+     "estimated_since": 1219365.8523728056
     },
     {
      "id": "vat:constraints",
-     "data_to": "2026-11-21",
-     "from": "2026-11-22T00:00:00+00:00",
-     "rate_per_sec": 0.17893641955389172,
-     "estimated_since": 13806.074582798377
+     "data_to": "2026-11-22",
+     "from": "2026-11-23T00:00:00+00:00",
+     "rate_per_sec": 0.17885845633166553,
+     "estimated_since": 10536.482379529054
     },
     {
      "id": "vat:capacity_market",
      "data_to": "2026-09-30",
      "from": "2026-10-01T00:00:00+00:00",
      "rate_per_sec": 0.14686075468237203,
-     "estimated_since": 671147.2331474416
+     "estimated_since": 681156.2780115809
     },
     {
      "id": "vat:ro",
      "data_to": "2025-03-31",
      "from": "2025-04-01T00:00:00+00:00",
      "rate_per_sec": 4.118267361399372,
-     "estimated_since": 213808730.3448379
+     "estimated_since": 214089403.8499681
     },
     {
      "id": "vat:fit",
      "data_to": "2025-03-31",
      "from": "2025-04-01T00:00:00+00:00",
      "rate_per_sec": 0.9222355833773553,
-     "estimated_since": 47879848.94058493
+     "estimated_since": 47942702.33766364
     },
     {
      "id": "vat:carbon",
      "data_to": "2024-12-31",
      "from": "2025-01-01T00:00:00+00:00",
      "rate_per_sec": 2.9818729203102228,
-     "estimated_since": 177997406.34072283
+     "estimated_since": 178200630.81620026
     },
     {
      "id": "vat:tnuos",
      "data_to": "2024-12-31",
      "from": "2025-01-01T00:00:00+00:00",
      "rate_per_sec": 0.7640311160004885,
-     "estimated_since": 45607428.836218275
+     "estimated_since": 45659500.07699453
     },
     {
      "id": "vat:constraint_turnup",
      "data_to": "2026-11-12",
      "from": "2026-11-13T00:00:00+00:00",
      "rate_per_sec": 0.9888157441619841,
-     "estimated_since": 845196.5007584607
+     "estimated_since": 912587.5554148927
     },
     {
      "id": "vat:bsuos",
      "data_to": "2026-11-12",
      "from": "2026-11-13T00:00:00+00:00",
-     "rate_per_sec": 0.71180822321159,
-     "estimated_since": 608422.5731856655
+     "rate_per_sec": 0.711886186433816,
+     "estimated_since": 657006.6045639762
     },
     {
      "id": "vat:generators_share",
      "data_to": "2025-12-31",
      "from": "2026-01-01T00:00:00+00:00",
      "rate_per_sec": 0.1738911298824697,
-     "estimated_since": 4896279.725728167
+     "estimated_since": 4908130.979824156
     },
     {
      "id": "generators_share",
      "data_to": "2025-12-31",
      "from": "2026-01-01T00:00:00+00:00",
      "rate_per_sec": 9.516335575546945,
-     "estimated_since": 267952948.33766836
+     "estimated_since": 268601517.9975742
     }
    ]
   },
-  "published_cumulative": 112030556508.36116,
-  "estimated_since": 15736076832.053028,
-  "running_total": 127766633340.41418,
+  "published_cumulative": 112030554060.72058,
+  "estimated_since": 15762014377.64909,
+  "running_total": 127792568438.36967,
   "carry_forward": [
    {
     "id": "capacity_market",
     "data_to": "2026-09-30",
     "from": "2026-10-01T00:00:00+00:00",
     "rate_per_sec": 8.708344185213043,
-    "estimated_since": 39796752.49416978
+    "estimated_since": 40390254.87559685
    },
    {
     "id": "ccl",
     "data_to": "2024-12-31",
     "from": "2025-01-01T00:00:00+00:00",
     "rate_per_sec": 25.565154817539987,
-    "estimated_since": 1526064782.7164052
+    "estimated_since": 1527807132.3460312
    },
    {
     "id": "carbon",
     "data_to": "2024-12-31",
     "from": "2025-01-01T00:00:00+00:00",
     "rate_per_sec": 176.81494121958679,
-    "estimated_since": 10554641924.881063
+    "estimated_since": 10566692446.364115
    },
    {
     "id": "tnuos",
     "data_to": "2024-12-31",
     "from": "2025-01-01T00:00:00+00:00",
     "rate_per_sec": 45.3044514222649,
-    "estimated_since": 2704365700.471724
+    "estimated_since": 2707453348.27669
    },
    {
     "id": "constraint_turnup",
     "data_to": "2026-11-12",
     "from": "2026-11-13T00:00:00+00:00",
     "rate_per_sec": 58.63341676640391,
-    "estimated_since": 50117283.19564341
+    "estimated_since": 54113343.95552425
    },
    {
     "id": "bsuos",
     "data_to": "2026-11-12",
     "from": "2026-11-13T00:00:00+00:00",
-    "rate_per_sec": 42.20781116778174,
-    "estimated_since": 36077393.09806037
+    "rate_per_sec": 42.21243412218778,
+    "estimated_since": 38958261.22421542
    },
    {
     "id": "vat:cfd_renewable",
     "data_to": "2026-11-11",
     "from": "2026-11-12T00:00:00+00:00",
     "rate_per_sec": 1.309022557034652,
-    "estimated_since": 1231994.8447922752
+    "estimated_since": 1321209.049975049
    },
    {
     "id": "vat:constraints",
-    "data_to": "2026-11-21",
-    "from": "2026-11-22T00:00:00+00:00",
-    "rate_per_sec": 0.19388144782362984,
-    "estimated_since": 14959.1778775242
+    "data_to": "2026-11-22",
+    "from": "2026-11-23T00:00:00+00:00",
+    "rate_per_sec": 0.19379697300045023,
+    "estimated_since": 11416.504609873467
    },
    {
     "id": "vat:capacity_market",
     "data_to": "2026-09-30",
     "from": "2026-10-01T00:00:00+00:00",
     "rate_per_sec": 0.15912677708247985,
-    "estimated_since": 727202.4196631422
+    "estimated_since": 738047.434414354
    },
    {
     "id": "vat:ro",
     "data_to": "2025-03-31",
     "from": "2025-04-01T00:00:00+00:00",
     "rate_per_sec": 4.462231001064782,
-    "estimated_since": 231666344.39169794
+    "estimated_since": 231970460.1534643
    },
    {
     "id": "vat:fit",
     "data_to": "2025-03-31",
     "from": "2025-04-01T00:00:00+00:00",
     "rate_per_sec": 0.9992620316504075,
-    "estimated_since": 51878843.095893376
+    "estimated_since": 51946946.099500105
    },
    {
     "id": "vat:carbon",
     "data_to": "2024-12-31",
     "from": "2025-01-01T00:00:00+00:00",
     "rate_per_sec": 3.2309232545122053,
-    "estimated_since": 192864006.87030914
+    "estimated_since": 193084204.9475759
    },
    {
     "id": "vat:tnuos",
     "data_to": "2024-12-31",
     "from": "2025-01-01T00:00:00+00:00",
     "rate_per_sec": 0.8278440986009806,
-    "estimated_since": 49416627.18145546
+    "estimated_since": 49473047.487488426
    },
    {
     "id": "vat:constraint_turnup",
     "data_to": "2026-11-12",
     "from": "2026-11-13T00:00:00+00:00",
     "rate_per_sec": 1.0714030636518113,
-    "estimated_since": 915788.5335531854
+    "estimated_since": 988808.1864540598
    },
    {
     "id": "vat:bsuos",
     "data_to": "2026-11-12",
     "from": "2026-11-13T00:00:00+00:00",
-    "rate_per_sec": 0.7712594743601877,
-    "estimated_since": 659238.9054833396
+    "rate_per_sec": 0.7713439491833671,
+    "estimated_since": 711880.7453514866
    },
    {
     "id": "vat:generators_share",
     "data_to": "2025-12-31",
     "from": "2026-01-01T00:00:00+00:00",
     "rate_per_sec": 0.1884147682699446,
-    "estimated_since": 5305224.082053093
+    "estimated_since": 5318065.170012629
    },
    {
     "id": "generators_share",
     "data_to": "2025-12-31",
     "from": "2026-01-01T00:00:00+00:00",
     "rate_per_sec": 10.31115367102152,
-    "estimated_since": 290332765.6931847
+    "estimated_since": 291035504.82807136
    }
   ]
  }

@@ -1,35 +1,35 @@
 {
- "generated_at": "2026-11-22T21:25:56.314054+00:00",
+ "generated_at": "2026-11-23T16:21:49.612638+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-11-22T21:19:52.451683+00:00",
+   "retrieved_at": "2026-11-23T06:39:00.783258+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
    "row_count": 121732
   },
   "constraints": {
-   "retrieved_at": "2026-11-22T21:20:24.048522+00:00",
-   "source_date": "2026-11-21",
+   "retrieved_at": "2026-11-23T06:39:17.950136+00:00",
+   "source_date": "2026-11-22",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 20
+   "row_count": 35
   },
   "capacity_market": {
-   "retrieved_at": "2026-11-22T21:20:31.310921+00:00",
+   "retrieved_at": "2026-11-23T06:39:22.681450+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 818
   },
   "bsuos": {
-   "retrieved_at": "2026-11-22T21:20:55.540644+00:00",
+   "retrieved_at": "2026-11-23T06:39:49.062559+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/current-balancing-services-use-of-system-bsuos-data",
    "row_count": 226
   },
   "constraint_turnup": {
-   "retrieved_at": "2026-11-22T21:20:30.422719+00:00",
-   "source_date": "2026-11-21",
+   "retrieved_at": "2026-11-23T06:39:21.986541+00:00",
+   "source_date": "2026-11-22",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/offer",
-   "row_count": 6
+   "row_count": 4
   }
  },
  "context": {
@@ -76,9 +76,9 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 268825545086.4015,
-  "combined_real_running": 297732736481.9826,
-  "running_at": "2026-11-22T21:25:56.314054+00:00"
+  "combined_real": 268825417280.52496,
+  "combined_real_running": 297779673706.71533,
+  "running_at": "2026-11-23T16:21:49.612638+00:00"
  },
  "factoids": [
   {
