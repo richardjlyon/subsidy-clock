@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 13970515.37,
+ "hero_gbp": 13955620.12,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -144,8 +144,8 @@
   },
   {
    "q": "2025-Q4",
-   "payment_gbp": 1437360.7699999998,
-   "generation_mwh": 31101.172000000006
+   "payment_gbp": 1437360.69,
+   "generation_mwh": 31101.169
   },
   {
    "q": "2026-Q1",
@@ -154,18 +154,18 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 877208.6799999999,
-   "generation_mwh": 27123.968
+   "payment_gbp": 877205.51,
+   "generation_mwh": 27123.837999999996
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 71063.39999999995,
-   "generation_mwh": 17878.42100000001
+   "payment_gbp": 71046.59999999996,
+   "generation_mwh": 17878.91700000001
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": -196672.59,
-   "generation_mwh": 11440.797999999995
+   "payment_gbp": -211547.79,
+   "generation_mwh": 11692.212999999996
   }
  ],
  "contracts": [
@@ -174,7 +174,7 @@
    "unit_name": "Brenig Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 13970515.37,
+   "cumulative_gbp": 13955620.12,
    "first_settlement": "2019-03-29",
    "latest_strike_gbp_mwh": 116.96
   }
@@ -185,11 +185,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-11-11"
+  "data_to": "2026-11-12"
  },
  "tiles": {
-  "generation_mwh": 793369.775,
-  "rate_gbp_per_mwh": 17.60908445245472,
+  "generation_mwh": 793621.553,
+  "rate_gbp_per_mwh": 17.584729229247632,
   "rate_label": "payment per subsidised MWh"
  }
 }

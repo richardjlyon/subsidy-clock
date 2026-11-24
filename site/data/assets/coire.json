@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 7919592.69,
+ "hero_gbp": 7919331.98,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -149,18 +149,18 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 416195.7199999999,
-   "generation_mwh": 12013.028999999997
+   "payment_gbp": 416199.9599999999,
+   "generation_mwh": 12013.180999999995
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 120270.33999999997,
-   "generation_mwh": 12069.349999999995
+   "payment_gbp": 120015.12999999998,
+   "generation_mwh": 12183.116999999995
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": 9633.36999999999,
-   "generation_mwh": 2617.748
+   "payment_gbp": 9623.629999999992,
+   "generation_mwh": 2617.968
   }
  ],
  "contracts": [
@@ -169,7 +169,7 @@
    "unit_name": "Coire Na Cloiche Windfarm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 7919592.69,
+   "cumulative_gbp": 7919331.98,
    "first_settlement": "2019-06-25",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -180,15 +180,15 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-11-11"
+  "data_to": "2026-11-12"
  },
  "outages": {
   "coverage_from": "2016-01-01",
   "windows": []
  },
  "tiles": {
-  "generation_mwh": 485934.962,
-  "rate_gbp_per_mwh": 16.29763920958624,
+  "generation_mwh": 486049.10099999997,
+  "rate_gbp_per_mwh": 16.29327564582822,
   "rate_label": "payment per subsidised MWh"
  }
 }
