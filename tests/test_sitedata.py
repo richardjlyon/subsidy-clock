@@ -852,3 +852,23 @@ def test_asset_note_attached_and_unknown_station_fails():
     assert "note" not in assets["hornsea-1"]
     with pytest.raises(ValueError, match="Unknown Farm"):
         sitedata._asset_data(mm, md, {"Unknown Farm": notes["Drax Power Station"]})
+
+
+def test_widget_loads_are_counted_apart_from_the_sites_own_visits(tmp_path):
+    # Matomo site 2 is the Clock itself, site 7 "Subsidy Clock Embeds". A widget load on
+    # someone else's page is not a visit to the Clock (172,425 of 175,336 "visits" in the
+    # 30 days to 25 Nov 2026 were widget loads), so the widget reports to site 7.
+    totals = {
+        "generated_at": "2026-06-11T05:45:00+00:00",
+        "perspectives": {"renewables": {
+            "cumulative": 1.0, "rate_per_sec": 1.0, "since_year": 2002,
+            "real": {"cumulative": 1.0, "rate_per_sec": 1.0},
+        }},
+        "indirect": {"cumulative": 1.0, "rate_per_sec": 1.0,
+                     "real": {"cumulative": 1.0, "rate_per_sec": 1.0}},
+    }
+    out = tmp_path / "widget.html"
+    sitedata.write_widget(totals, out)
+    html = out.read_text()
+    assert "matomo.php?idsite=7&" in html
+    assert "idsite=2" not in html
