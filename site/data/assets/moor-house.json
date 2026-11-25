@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 6412539.2,
+ "hero_gbp": 6411233.42,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -50,7 +50,7 @@
   {
    "q": "2020-Q2",
    "payment_gbp": 563207.1699999999,
-   "generation_mwh": 7624.192000000002
+   "generation_mwh": 7624.192000000001
   },
   {
    "q": "2020-Q3",
@@ -94,8 +94,8 @@
   },
   {
    "q": "2022-Q3",
-   "payment_gbp": -1015557.7100000001,
-   "generation_mwh": 5959.671000000001
+   "payment_gbp": -1015557.7099999998,
+   "generation_mwh": 5959.671
   },
   {
    "q": "2022-Q4",
@@ -134,8 +134,8 @@
   },
   {
    "q": "2024-Q3",
-   "payment_gbp": 377534.79999999993,
-   "generation_mwh": 6597.688999999999
+   "payment_gbp": 377534.8,
+   "generation_mwh": 6597.689
   },
   {
    "q": "2024-Q4",
@@ -159,8 +159,8 @@
   },
   {
    "q": "2025-Q4",
-   "payment_gbp": 601352.5899999996,
-   "generation_mwh": 11223.2
+   "payment_gbp": 601354.9399999996,
+   "generation_mwh": 11223.24
   },
   {
    "q": "2026-Q1",
@@ -169,18 +169,18 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 329261.17999999993,
-   "generation_mwh": 7871.290999999998
+   "payment_gbp": 329265.61999999994,
+   "generation_mwh": 7871.365999999999
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 110674.66000000005,
-   "generation_mwh": 6841.273999999999
+   "payment_gbp": 110669.22000000004,
+   "generation_mwh": 6841.246999999999
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": -46733.69999999999,
-   "generation_mwh": 4287.295999999999
+   "payment_gbp": -48040.82999999999,
+   "generation_mwh": 4310.1759999999995
   }
  ],
  "contracts": [
@@ -189,7 +189,7 @@
    "unit_name": "Moor House Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 6412539.2,
+   "cumulative_gbp": 6411233.42,
    "first_settlement": "2018-04-03",
    "latest_strike_gbp_mwh": 121.79
   }
@@ -200,11 +200,11 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-11-12"
+  "data_to": "2026-11-15"
  },
  "tiles": {
-  "generation_mwh": 291386.834,
-  "rate_gbp_per_mwh": 22.006962744239846,
+  "generation_mwh": 291409.80199999997,
+  "rate_gbp_per_mwh": 22.000747318719228,
   "rate_label": "payment per subsidised MWh"
  }
 }

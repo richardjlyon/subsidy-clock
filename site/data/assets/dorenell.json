@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Onshore Wind",
- "hero_gbp": 63734558.53,
+ "hero_gbp": 63616195.56,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -124,7 +124,7 @@
   },
   {
    "q": "2024-Q3",
-   "payment_gbp": 2727240.4600000004,
+   "payment_gbp": 2727240.4700000007,
    "generation_mwh": 52999.38699999995
   },
   {
@@ -159,18 +159,18 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 2725734.619999999,
-   "generation_mwh": 67368.81099999997
+   "payment_gbp": 2725741.4699999993,
+   "generation_mwh": 67368.84999999996
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 1070773.7599999998,
-   "generation_mwh": 84310.58299999998
+   "payment_gbp": 1070920.2299999997,
+   "generation_mwh": 84311.08599999998
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": -261368.39,
-   "generation_mwh": 30140.926999999996
+   "payment_gbp": -379884.68999999994,
+   "generation_mwh": 32304.45499999999
   }
  ],
  "contracts": [
@@ -179,7 +179,7 @@
    "unit_name": "Dorenell Wind Farm",
    "technology": "Onshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 63734558.53,
+   "cumulative_gbp": 63616195.56,
    "first_settlement": "2018-12-20",
    "latest_strike_gbp_mwh": 120.28
   }
@@ -190,7 +190,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-11-12"
+  "data_to": "2026-11-15"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -210,8 +210,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 2760063.4390000002,
-  "rate_gbp_per_mwh": 23.091700585364695,
+  "generation_mwh": 2762227.509,
+  "rate_gbp_per_mwh": 23.030758817918933,
   "rate_label": "payment per subsidised MWh"
  }
 }

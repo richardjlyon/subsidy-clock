@@ -1,35 +1,35 @@
 {
- "generated_at": "2026-11-24T16:12:15.759098+00:00",
+ "generated_at": "2026-11-25T11:54:33.776449+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-11-24T06:24:41.609589+00:00",
+   "retrieved_at": "2026-11-25T06:25:17.527004+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
-   "row_count": 121823
+   "row_count": 122096
   },
   "constraints": {
-   "retrieved_at": "2026-11-24T06:25:10.541655+00:00",
-   "source_date": "2026-11-23",
+   "retrieved_at": "2026-11-25T06:25:39.303933+00:00",
+   "source_date": "2026-11-24",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 32
+   "row_count": 42
   },
   "capacity_market": {
-   "retrieved_at": "2026-11-24T06:25:18.563419+00:00",
+   "retrieved_at": "2026-11-25T06:25:45.511881+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 818
   },
   "bsuos": {
-   "retrieved_at": "2026-11-24T06:25:45.480977+00:00",
+   "retrieved_at": "2026-11-25T06:26:52.929556+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/current-balancing-services-use-of-system-bsuos-data",
-   "row_count": 229
+   "row_count": 230
   },
   "constraint_turnup": {
-   "retrieved_at": "2026-11-24T06:25:17.619434+00:00",
-   "source_date": "2026-11-23",
+   "retrieved_at": "2026-11-25T06:25:44.570298+00:00",
+   "source_date": "2026-11-24",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/offer",
-   "row_count": 6
+   "row_count": 16
   }
  },
  "context": {
@@ -76,18 +76,18 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 268876123027.0166,
-  "combined_real_running": 297859835431.998,
-  "running_at": "2026-11-24T16:12:15.759098+00:00"
+  "combined_real": 268880968716.85284,
+  "combined_real_running": 297887171455.8117,
+  "running_at": "2026-11-25T11:54:33.776449+00:00"
  },
  "factoids": [
   {
    "slug": "nurses",
-   "figure": "283,000",
+   "figure": "282,000",
    "basis": "runrate",
    "figure_label": "NHS nurses",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of direct UK renewable subsidy pays the salaries of 283,000 NHS nurses, in today's money.",
+   "sentence": "A year of direct UK renewable subsidy pays the salaries of 282,000 NHS nurses, in today's money.",
    "label": "NHS nurses' annual salaries paid by one year of direct renewable subsidy, in today's money",
    "source_name": "NHS Employers, Agenda for Change pay scales 2026/27",
    "source_url": "https://www.nhsemployers.org/articles/pay-scales-202627"
@@ -171,22 +171,22 @@
   },
   {
    "slug": "teachers",
-   "figure": "217,000",
+   "figure": "216,000",
    "basis": "runrate",
    "figure_label": "schoolteachers",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of UK renewable subsidy pays the salaries of 217,000 experienced schoolteachers, in today's money.",
+   "sentence": "A year of UK renewable subsidy pays the salaries of 216,000 experienced schoolteachers, in today's money.",
    "label": "experienced schoolteachers' annual salaries paid by one year of UK renewable subsidy, in today's money",
    "source_name": "STPCD 2025, Upper Pay Range UPS3, England excluding London (2025-26)",
    "source_url": "https://www.gov.uk/government/publications/school-teachers-pay-and-conditions"
   },
   {
    "slug": "police",
-   "figure": "220,000",
+   "figure": "219,000",
    "basis": "runrate",
    "figure_label": "police officers",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of UK renewable subsidy pays the salaries of 220,000 police officers, in today's money.",
+   "sentence": "A year of UK renewable subsidy pays the salaries of 219,000 police officers, in today's money.",
    "label": "police officers' annual salaries paid by one year of UK renewable subsidy, in today's money",
    "source_name": "Police Federation of England & Wales, constable pay scales (top of scale, from 1 September 2025)",
    "source_url": "https://polfed.org/resources/pay-scales/constable-pay-scales/"

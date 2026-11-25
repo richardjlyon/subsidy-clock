@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Dedicated Biomass",
- "hero_gbp": 331174871.18,
+ "hero_gbp": 332090344.15,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -29,8 +29,8 @@
   },
   {
    "q": "2024-Q3",
-   "payment_gbp": 34385679.49,
-   "generation_mwh": 371576.41699999996
+   "payment_gbp": 34385679.51,
+   "generation_mwh": 371576.4179999999
   },
   {
    "q": "2024-Q4",
@@ -45,7 +45,7 @@
   {
    "q": "2025-Q2",
    "payment_gbp": 39168625.09,
-   "generation_mwh": 413913.3990000001
+   "generation_mwh": 413913.39900000003
   },
   {
    "q": "2025-Q3",
@@ -59,23 +59,23 @@
   },
   {
    "q": "2026-Q1",
-   "payment_gbp": 39311080.97999999,
-   "generation_mwh": 420979.654
+   "payment_gbp": 39311080.98,
+   "generation_mwh": 420979.65400000004
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 16790333.53,
-   "generation_mwh": 155250.442
+   "payment_gbp": 16790459.990000002,
+   "generation_mwh": 155251.609
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 47634994.00000002,
-   "generation_mwh": 440453.00100000005
+   "payment_gbp": 47634780.81000002,
+   "generation_mwh": 440451.03300000005
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": 17069815.560000002,
-   "generation_mwh": 247568.02599999995
+   "payment_gbp": 17985375.240000002,
+   "generation_mwh": 260846.61899999992
   }
  ],
  "contracts": [
@@ -84,7 +84,7 @@
    "unit_name": "Teesside Renewable Energy Project",
    "technology": "Dedicated Biomass",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 331174871.18,
+   "cumulative_gbp": 332090344.15,
    "first_settlement": "2023-09-30",
    "latest_strike_gbp_mwh": 183.45
   }
@@ -95,7 +95,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-11-12"
+  "data_to": "2026-11-15"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -847,8 +847,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 3750181.5250000004,
-  "rate_gbp_per_mwh": 88.30902423583349,
+  "generation_mwh": 3763459.318,
+  "rate_gbp_per_mwh": 88.24071581208999,
   "rate_label": "payment per subsidised MWh"
  }
 }
