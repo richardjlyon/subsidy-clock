@@ -1,35 +1,35 @@
 {
- "generated_at": "2026-11-25T15:56:01.380747+00:00",
+ "generated_at": "2026-11-26T15:38:41.182482+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-11-25T06:25:17.527004+00:00",
+   "retrieved_at": "2026-11-26T06:24:53.856133+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
-   "row_count": 122096
+   "row_count": 122187
   },
   "constraints": {
-   "retrieved_at": "2026-11-25T06:25:39.303933+00:00",
-   "source_date": "2026-11-24",
+   "retrieved_at": "2026-11-26T06:25:12.013633+00:00",
+   "source_date": "2026-11-25",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 42
+   "row_count": 30
   },
   "capacity_market": {
-   "retrieved_at": "2026-11-25T06:25:45.511881+00:00",
+   "retrieved_at": "2026-11-26T06:25:16.714849+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 818
   },
   "bsuos": {
-   "retrieved_at": "2026-11-25T06:26:52.929556+00:00",
+   "retrieved_at": "2026-11-26T06:25:55.890650+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/current-balancing-services-use-of-system-bsuos-data",
-   "row_count": 230
+   "row_count": 231
   },
   "constraint_turnup": {
-   "retrieved_at": "2026-11-25T06:25:44.570298+00:00",
-   "source_date": "2026-11-24",
+   "retrieved_at": "2026-11-26T06:25:16.116463+00:00",
+   "source_date": "2026-11-25",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/offer",
-   "row_count": 16
+   "row_count": 14
   }
  },
  "context": {
@@ -76,9 +76,9 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 268880968716.85284,
-  "combined_real_running": 297897349687.0867,
-  "running_at": "2026-11-25T15:56:01.380747+00:00"
+  "combined_real": 268903405202.96692,
+  "combined_real_running": 297965236786.12805,
+  "running_at": "2026-11-26T15:38:41.182482+00:00"
  },
  "factoids": [
   {

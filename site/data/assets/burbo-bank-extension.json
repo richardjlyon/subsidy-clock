@@ -4,7 +4,7 @@
  "scheme": "cfd_renewable",
  "scheme_label": "CfD - renewables",
  "technology": "Offshore Wind",
- "hero_gbp": 910944395.84,
+ "hero_gbp": 911046972.29,
  "hero_label": "cumulative payments",
  "quarters": [
   {
@@ -104,7 +104,7 @@
   },
   {
    "q": "2022-Q1",
-   "payment_gbp": -2281148.120000001,
+   "payment_gbp": -2281148.1199999996,
    "generation_mwh": 265434.202
   },
   {
@@ -179,8 +179,8 @@
   },
   {
    "q": "2025-Q4",
-   "payment_gbp": 38022080.76000002,
-   "generation_mwh": 256446.51500000004
+   "payment_gbp": 38022163.03000002,
+   "generation_mwh": 256446.71100000004
   },
   {
    "q": "2026-Q1",
@@ -189,18 +189,18 @@
   },
   {
    "q": "2026-Q2",
-   "payment_gbp": 25687176.769999992,
-   "generation_mwh": 188017.8659999999
+   "payment_gbp": 25687393.299999993,
+   "generation_mwh": 188019.3969999999
   },
   {
    "q": "2026-Q3",
-   "payment_gbp": 19532560.690000005,
-   "generation_mwh": 175219.58700000003
+   "payment_gbp": 19532583.730000004,
+   "generation_mwh": 175219.77600000004
   },
   {
    "q": "2026-Q4",
-   "payment_gbp": 8875359.280000001,
-   "generation_mwh": 108034.22900000002
+   "payment_gbp": 8977613.890000002,
+   "generation_mwh": 110597.04000000001
   }
  ],
  "contracts": [
@@ -209,7 +209,7 @@
    "unit_name": "Burbo Bank Extension Offshore Wind Farm",
    "technology": "Offshore Wind",
    "status": "Live (Post-FIC)",
-   "cumulative_gbp": 910944395.84,
+   "cumulative_gbp": 911046972.29,
    "first_settlement": "2017-04-11",
    "latest_strike_gbp_mwh": 220.95
   }
@@ -220,7 +220,7 @@
  },
  "provenance": {
   "source": "Source: LCCC actual CfD generation and payments, daily settlement.",
-  "data_to": "2026-11-15"
+  "data_to": "2026-11-16"
  },
  "outages": {
   "coverage_from": "2016-01-01",
@@ -318,8 +318,8 @@
   ]
  },
  "tiles": {
-  "generation_mwh": 8359233.521,
-  "rate_gbp_per_mwh": 108.97463189077477,
+  "generation_mwh": 8361798.248000001,
+  "rate_gbp_per_mwh": 108.95347451224464,
   "rate_label": "payment per subsidised MWh"
  }
 }
