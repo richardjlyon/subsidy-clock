@@ -1,35 +1,35 @@
 {
- "generated_at": "2026-11-27T15:28:50.977694+00:00",
+ "generated_at": "2026-11-28T14:27:02.204576+00:00",
  "freshness": {
   "cfd": {
-   "retrieved_at": "2026-11-27T06:28:46.427077+00:00",
+   "retrieved_at": "2026-11-28T06:27:53.319125+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/actual-cfd-generation-and-avoided-ghg-emissions",
-   "row_count": 122277
+   "row_count": 122370
   },
   "constraints": {
-   "retrieved_at": "2026-11-27T06:29:03.447809+00:00",
-   "source_date": "2026-11-26",
+   "retrieved_at": "2026-11-28T06:28:21.288998+00:00",
+   "source_date": "2026-11-27",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/bid",
-   "row_count": 44
+   "row_count": 35
   },
   "capacity_market": {
-   "retrieved_at": "2026-11-27T06:29:08.137554+00:00",
+   "retrieved_at": "2026-11-28T06:28:29.681142+00:00",
    "source_date": null,
    "source_url": "https://dp.lowcarboncontracts.uk/dataset/capacity-obligation-by-auction",
    "row_count": 818
   },
   "bsuos": {
-   "retrieved_at": "2026-11-27T06:29:42.190911+00:00",
+   "retrieved_at": "2026-11-28T06:28:59.526497+00:00",
    "source_date": "2026-2027",
    "source_url": "https://www.neso.energy/data-portal/current-balancing-services-use-of-system-bsuos-data",
-   "row_count": 232
+   "row_count": 233
   },
   "constraint_turnup": {
-   "retrieved_at": "2026-11-27T06:29:07.453267+00:00",
-   "source_date": "2026-11-26",
+   "retrieved_at": "2026-11-28T06:28:28.625528+00:00",
+   "source_date": "2026-11-27",
    "source_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/stack/all/offer",
-   "row_count": 14
+   "row_count": 10
   }
  },
  "context": {
@@ -76,9 +76,9 @@
   "verified": true
  },
  "headline": {
-  "combined_real": 268908275671.9334,
-  "combined_real_running": 298015372783.57764,
-  "running_at": "2026-11-27T15:28:50.977694+00:00"
+  "combined_real": 268908835937.55707,
+  "combined_real_running": 298058928820.3089,
+  "running_at": "2026-11-28T14:27:02.204576+00:00"
  },
  "factoids": [
   {
@@ -171,11 +171,11 @@
   },
   {
    "slug": "teachers",
-   "figure": "216,000",
+   "figure": "215,000",
    "basis": "runrate",
    "figure_label": "schoolteachers",
    "frame": "a year of this subsidy pays",
-   "sentence": "A year of UK renewable subsidy pays the salaries of 216,000 experienced schoolteachers, in today's money.",
+   "sentence": "A year of UK renewable subsidy pays the salaries of 215,000 experienced schoolteachers, in today's money.",
    "label": "experienced schoolteachers' annual salaries paid by one year of UK renewable subsidy, in today's money",
    "source_name": "STPCD 2025, Upper Pay Range UPS3, England excluding London (2025-26)",
    "source_url": "https://www.gov.uk/government/publications/school-teachers-pay-and-conditions"

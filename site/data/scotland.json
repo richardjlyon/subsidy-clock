@@ -1,24 +1,24 @@
 {
- "generated_at": "2026-11-27T15:28:50.977694+00:00",
+ "generated_at": "2026-11-28T14:27:02.204576+00:00",
  "window": {
   "from": "2015-11-06",
-  "to": "2026-11-26"
+  "to": "2026-11-27"
  },
- "gb_cost": 2541708275.48,
- "scotland_cost": 2375367279.69,
- "scotland_share": 0.9346,
- "scotland_mwh": 49825550,
- "gb_mwh": 51416876,
- "scotland_last12_cost": 322715059.0,
- "gb_last12_cost": 328901794.93,
- "scotland_per_mwh": 47.67,
+ "gb_cost": 2540617293.08,
+ "scotland_cost": 2374276297.29,
+ "scotland_share": 0.9345,
+ "scotland_mwh": 49868203,
+ "gb_mwh": 51459528,
+ "scotland_last12_cost": 317060649.47,
+ "gb_last12_cost": 323242605.25,
+ "scotland_per_mwh": 47.61,
  "unplaced_cost": 0.0,
  "n_farms_paid": 111,
  "farms": [
   {
    "farm": "Moray East",
-   "cost": 298555886.73,
-   "mwh": 7093269,
+   "cost": 297249592.99,
+   "mwh": 7105610,
    "units": [
     "T_MOWEO-1",
     "T_MOWEO-2",
@@ -27,8 +27,8 @@
   },
   {
    "farm": "Seagreen",
-   "cost": 164207538.44,
-   "mwh": 9808979,
+   "cost": 164367584.42,
+   "mwh": 9819891,
    "units": [
     "T_SGRWO-1",
     "T_SGRWO-2",
@@ -49,8 +49,8 @@
   },
   {
    "farm": "Moray West",
-   "cost": 96814377.64,
-   "mwh": 3066573,
+   "cost": 96863131.88,
+   "mwh": 3075004,
    "units": [
     "T_MOWWO-1",
     "T_MOWWO-2",
@@ -70,8 +70,8 @@
   },
   {
    "farm": "Beatrice",
-   "cost": 83453577.51,
-   "mwh": 1219417,
+   "cost": 83437037.66,
+   "mwh": 1220801,
    "units": [
     "T_BEATO-1",
     "T_BEATO-2",
@@ -122,8 +122,8 @@
   },
   {
    "farm": "Dorenell",
-   "cost": 56770219.19,
-   "mwh": 1727567,
+   "cost": 56657938.5,
+   "mwh": 1729261,
    "units": [
     "T_DOREW-1",
     "T_DOREW-2"
@@ -154,7 +154,7 @@
    ]
   }
  ],
- "top_farms_share": 0.5909,
+ "top_farms_share": 0.5906,
  "monthly": [
   {
    "month": "2015-11",
@@ -818,7 +818,7 @@
   },
   {
    "month": "2026-11",
-   "scotland": -6623184,
+   "scotland": -7714167,
    "rest": 523097
   }
  ],
@@ -826,14 +826,14 @@
   "scotland_consumption_twh": 21.6573,
   "gb_consumption_twh": 249.2477,
   "scotland_consumption_share": 0.0869,
-  "paid_in_scotland": 206397257.77,
-  "paid_elsewhere": 2168970021.92,
+  "paid_in_scotland": 206302461.58,
+  "paid_elsewhere": 2167973835.71,
   "source": "DESNZ, Subnational electricity consumption statistics, Electricity consumption by Region, 2005 to 2024",
   "source_url": "https://www.gov.uk/government/statistics/regional-and-local-authority-electricity-consumption-statistics"
  },
  "turnup_same_window": {
-  "cost": 5984655568.44,
-  "to": "2026-11-26",
+  "cost": 5997082442.2,
+  "to": "2026-11-27",
   "basis": "replacement_estimate (GB-wide)"
  },
  "zone_source": "reference/bmu_zone.csv (Elexon BM unit register: grid zone per unit)"
